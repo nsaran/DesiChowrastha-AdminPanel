@@ -1,0 +1,589 @@
+/** # AdminLogin.css **/
+.admin-login-wrapper {
+    display: flex;
+    justify-content: center;
+    /* background-image: url('https://iili.io/HitqSTl.md.png'); */
+    align-items: center;
+    height: 100vh;
+}
+
+.admin-login-container {
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dc-logo-img {
+    margin-bottom: 24px;
+}
+
+.admin-login-form .ant-form-item {
+    margin-bottom: 16px;
+}
+
+.login-button {
+    width: 100%;
+}
+/* ----------------------- */
+/** # AdminRegister.css **/
+.admin-register-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* background-image: url('https://iili.io/HitqSTl.md.png'); */
+}
+
+.admin-register-container {
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-register-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-register-form .ant-form-item {
+    margin-bottom: 16px;
+}
+
+.register-button {
+    width: 100%;
+}
+/* -------------------------------- */
+/** # AdminDashboard.css **/
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.admin-dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.admin-header-right {
+    display: flex;
+    margin-right: -16px !important;
+    align-items: center;
+}
+
+.admin-avatar-button {
+    margin-left: 16px;
+}
+
+.admin-avatar-button .ant-avatar-icon {
+    color: #fff;
+}
+
+.admin-avatar-button:hover {
+    background-color: transparent !important;
+}
+
+.admin-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.admin-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+    background-color: #FFF6F2;
+}
+
+.admin-footer h4{
+   font-size: 18px !important;
+}
+.footer-logo {
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.social-links {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+/* ------------------------------- */
+/** # RestaurantDashboard.css **/
+.restaurant-dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.restaurant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-logo {
+    width: 200px;
+}
+
+.restaurant-logout-button {
+    margin-left: auto;
+}
+
+.restaurant-logout-button:hover {
+    background-color: transparent;
+}
+
+.restaurant-content {
+    flex-grow: 1;
+    padding: 16px;
+}
+
+.restaurant-footer {
+    padding: 16px;
+    text-align: center;
+    background-color: #f0f2f5;
+}
+
+.restaurant-navlink {
+    color: gray;
+    font-size: 16px;
+    padding: 0;
+}
+
+.restaurant-navlink:hover {
+    color: #40a9ff;
+    text-decoration: underline;
+}
+
+.restaurant-navlink:focus {
+    color: gray;
+    text-decoration: underline;
+    border-color: gray;
+}
+/* ---------------------------- */
+/* CSS for small screens (up to 768px) */
+@media (max-width: 768px) {
+    .restaurant-header {
+        padding: 10px;
+    }
+
+    .restaurant-logo {
+        width: 50%;
+    }
+}
+/* --------------------------------- */
+/** # RestaurantLoginPage.css **/
+.restaurant-login-wrapper {
+    display: flex;
+    justify-content: center;
+    /* background-image: url('https://iili.io/HitqSTl.md.png'); */
+    align-items: center;
+    height: 100vh;
+}
+
+.restaurant-login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-login-container h4{
+    padding-top: 5px !important;
+font-size: 18px !important;
+}
+.admin-logo {
+    display: block;
+    margin: 0 auto;
+}
+
+h2 {
+    color: #018900;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.restaurant-login-form .ant-form-item {
+    margin-bottom: 15px;
+}
+
+.restaurant-login-form .login-button {
+    width: 100%;
+}
+
+.login-button{
+    margin-left: -3px !important;
+}
+/* --------------------------- */
+/** # RestaurantDashboardContent.css **/
+
+
+.restaurant-info {
+    margin: 20px;
+}
+
+.restaurant-info h3 {
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.restaurant-info p {
+    margin-top: -24px;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.restaurant-info a {
+    color: #000;
+}
+
+.restaurant-info h4 {
+    margin-top: -22px;
+    margin-left: 30px;
+    font-weight: 600;
+    font-size: 16px;
+}
+/* ----------------------------- */
+/* Home page css */
+
+.Home-Page-Admin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh; 
+}
+
+.signup-button, .login-button {
+    width: 100%; 
+    margin-bottom: 10px;
+}
+
+
+@media (min-width: 768px) {
+    .signup-button, .login-button {
+        width: 200px; 
+    }
+}
+
+
+@media (min-width: 1024px) {
+    .Home-Page-Admin {
+        flex-direction: row; 
+        justify-content: center; 
+        align-items: center; 
+    }
+
+    .signup-button, .login-button {
+        margin: 0 20px; 
+    }
+}
+
+
+/* ------------------------------- */
+/* order analysis page */
+.flex-container {
+    display: flex;
+    margin-top: 40px;
+}
+
+/* left container */
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #007bff; 
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 50px; 
+    }
+    
+.left-container {
+        flex: 1;
+        margin-left: 80px;
+    }
+.completedOrders-heading{
+    padding-top: 20px;
+    }
+
+.order-count-container {
+        display: flex;
+        flex-direction: column;
+}
+
+.order-count-container h4{
+    margin: 5px 0;
+}
+.timeframe-dropdown{
+    font-size: 16px;
+      
+}
+
+/* right container */
+.right-container{
+    margin-right: 100px;
+}
+
+.customdateselectionevent input[type="date"] {
+    border: 2px solid black;
+    border-radius: 4px; 
+    font-size: 14px; 
+    font-family: Arial, sans-serif; 
+    
+}
+.customdateselectionevent{
+    padding-top: 20px;
+}
+.endDate{
+    padding-left: 20px;
+}
+
+.customdateselectionevent label{
+    padding-right: 10px;
+}
+
+
+/* ---------------------------- */
+/* orderheader and ordermade css page */
+.order-header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; 
+}
+
+.tab-container {
+    display: flex;
+    justify-content: flex-end; 
+    flex-grow: 1; 
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: green;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-left: 10px; 
+}
+
+.tab.active {
+    color: white !important;
+    background-color: blue !important;
+    border: 1px solid blue !important;
+}
+
+@media (max-width: 768px) {
+    .tab-container {
+        justify-content: center; 
+        padding: 0 10px; 
+    }
+
+    .tab {
+        padding: 8px 16px; 
+    }
+}
+
+/* -------------- */
+/* Party Order Header  page CSS */
+.notifications-button {
+    margin-left: 900px;
+    cursor: pointer;
+    font-size: 24px;
+    color:blue;
+}
+.notifications-button:hover {
+    color: #333; 
+}
+
+.notification-popup {
+    position: absolute;
+    top: 40px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    background-color: grey;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 700px;
+}
+
+.notification-popup ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notification-popup ul li {
+    margin-bottom: 5px;
+}
+
+.notification-popup h3 {
+    margin-top: 0;
+}
+
+.notification-button{
+margin-left: 50px;
+}
+
+.popup-Header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.popup-header-part {
+  flex: 1;
+}
+
+.close-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 280px;
+  font-size: 20px;
+}
+
+.close-button:hover {
+    background-color: #d32f2f;
+  }
+/* ----------------------------------- */
+/* TV Menu page */
+
+.TV-Menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh; 
+}
+
+.menu1-button, .menu2-button, .menu3-button, .menu4-button {
+    width: 100%; 
+    margin-bottom: 10px; 
+}
+
+@media (min-width: 768px) {
+    .menu1-button, .menu2-button, .menu3-button, .menu4-button {
+        width: 200px; 
+    }
+}
+
+
+@media (min-width: 1024px) {
+    .TV-Menu{
+        flex-direction: row; 
+        justify-content: center; 
+        align-items: center; 
+    }
+
+    .menu1-button, .menu2-button, .menu3-button, .menu4-button {
+        margin: 0 20px; 
+    }
+}
+/* -------------------------- */
+/* chefs kitchen header css part */
+
+.ChefsKitchenHeader img{
+margin-left: 20px;
+}
+
+.ChefsKitchenHeader {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 20px; 
+}
+
+.addIngredients {
+    margin-left: auto; 
+}
+
+.menu-container .ant-menu-horizontal {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .ant-menu-horizontal {
+    border-bottom: none;
+}
+
+.ant-menu-horizontal .ant-menu-item::after, 
+.ant-menu-horizontal .ant-menu-submenu::after {
+    display: none;
+}
+
+.custom-table th, .custom-table td {
+    padding: 8px 15px; 
+    text-align: left;
+    
+}
+.custom-table tr {
+    height: 50px; 
+}
+
+.custom-table{
+    border: 1px solid black;
+}
+
+.order-count {
+    font-size: 0.85em; 
+    color: white;
+    margin-left: 5px; 
+    vertical-align: super; 
+}
+
+
+.AddIngredientInsidePopUp{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,32 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.menu-container {
+    padding: 20px;
+    height: 100vh;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-container {
+    width: 100%;
+    text-align: center;
+}
+
+@media (min-width: 1024px) {
+    .menu-item {
+        font-size: 1.5vw; /* Adjusts text size based on the width of the viewport */
+    }
+}
+
+@media (max-width: 1023px) {
+    .menu-item {
+        font-size: 3vw;
+    }
+}

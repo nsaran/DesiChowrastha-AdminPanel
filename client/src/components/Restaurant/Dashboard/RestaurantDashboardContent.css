@@ -1,0 +1,79 @@
+/* Desktop View */
+.desktop-view {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.desktop-card {
+    width: 100%;
+    margin-bottom: 20px;
+    background-image: url('https://desichowrastha.com/storage/banner_react/big/iTfHfua5h9Ib0RROj0mjOGv3la3QT7CPuysez0yu.png');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: left;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.desktop-card .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.desktop-card h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.desktop-button {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    margin-top: 16px;
+}
+
+/* Mobile View */
+.mobile-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mobile-card {
+    width: 100%;
+    margin-bottom: 20px;
+    background-image: url('https://desichowrastha.com/storage/banner_react/big/iTfHfua5h9Ib0RROj0mjOGv3la3QT7CPuysez0yu.png');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.mobile-card h1 {
+    margin: 0;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.mobile-button {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}

@@ -1,0 +1,111 @@
+.restaurant-dashboard {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.restaurant-info {
+    padding: 20px;
+}
+
+.info-block {
+    margin-bottom: 16px;
+}
+
+.order-now-button {
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.restaurant-image {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.admin-header-right {
+    display: flex;
+    align-items: center;
+}
+
+.admin-avatar-button {
+    margin-left: 16px;
+}
+
+.admin-avatar-button .ant-avatar-icon {
+    color: #fff;
+}
+
+.admin-avatar-button:hover {
+    background-color: transparent !important;
+}
+
+.restaurant-footer {
+    background-color: #ffffff;
+    padding: 20px;
+    border-top: 1px solid #e8e8e8;
+    text-align: center;
+}
+
+.footer-logo {
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.social-links {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.social-links img {
+    width: 24px;
+}
+
+@media (max-width: 768px) {
+    .admin-header {
+        padding: 10px;
+    }
+
+    .footer-logo {
+        width: 50%;
+    }
+
+    .restaurant-footer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .restaurant-footer > div {
+        margin-bottom: 20px;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .restaurant-info h3, .restaurant-info h4, .restaurant-info p {
+        text-align: center;
+    }
+
+    .restaurant-image {
+        margin-top: 20px;
+    }
+}

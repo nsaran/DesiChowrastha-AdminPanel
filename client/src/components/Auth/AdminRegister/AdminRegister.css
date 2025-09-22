@@ -1,0 +1,49 @@
+.admin-register-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    background-image: url('https://iili.io/HitqSTl.md.png');
+    background-position: center;
+  }
+  
+  .admin-register-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  .dc-logo-img {
+    display: block;
+    margin: 0 auto 24px;
+    max-width: 100px;
+  }
+  
+  .register-title {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  
+  .admin-register-form .ant-form-item {
+    margin-bottom: 16px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .register-button {
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .register-button {
+      width: 200px;
+    }
+  }

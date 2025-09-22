@@ -1,0 +1,85 @@
+/* Import Bootstrap CSS for base styling */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+/* html {
+    font-size: 80%; 
+} */
+
+/* body {
+    background-image: url('https://iili.io/HitqSTl.md.png');
+} */
+
+/* category heading */
+.cat-title {
+    text-align: left;
+    font-size: 3rem; 
+    color: #fd590d;
+    font-family: 'Lobster', cursive; 
+    margin-bottom: 0.5rem; 
+}
+
+.sold-out-menu-item-name {
+    font-family: "Rockwell";
+    opacity: 0.6;
+}
+
+.sold-out-menu-item-price-txt {
+    color: #fd590d !important;
+    font-family: "Rockwell";
+    margin-top: 8px;
+}
+
+/* snacks available text css */
+h5 {
+    font-size: 2.4rem; 
+    margin-bottom: 0.5rem; 
+    line-height: 1.4; 
+    font-family: 'Lobster', cursive; 
+}
+/* menu css */
+h4 {
+    font-size: 1.8rem; 
+}
+
+img {
+    width: 100%; 
+    height: auto; 
+}
+
+
+.container-fluid {
+    padding: 2rem; 
+}
+
+.menu-item-icon {
+  width: 20px;
+  margin-right: 10px;
+  margin-top: -3px;
+}
+
+.menu-item-price {
+  float: right;
+}
+
+.carousel-image {
+    border-radius: 8px; /* Rounded edges for the image */
+}
+
+.carousel-badge {
+    position: absolute;
+    bottom: 48px; /* Adjust this value based on your needs */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000000;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px; /* Adjust based on your preference */
+}
+
+.disclaimer {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 20px;
+}

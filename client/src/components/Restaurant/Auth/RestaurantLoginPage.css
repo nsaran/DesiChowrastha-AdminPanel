@@ -1,0 +1,65 @@
+.restaurant-login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://iili.io/HitqSTl.md.png');
+}
+
+.restaurant-login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-logo {
+    display: block;
+    margin: 0 auto;
+}
+
+h4 {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.restaurant-login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.restaurant-login-form .ant-form-item {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.login-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.login-button {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .login-button {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .restaurant-login-container {
+        padding: 20px;
+    }
+
+    .restaurant-login-form .login-button {
+        margin-left: 0;
+    }
+}

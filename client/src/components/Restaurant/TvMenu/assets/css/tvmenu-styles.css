@@ -1,0 +1,129 @@
+/* Import Bootstrap CSS for base styling */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.table th,
+.table td {
+  background-color: transparent !important;
+}
+
+/* category heading */
+.cat-title {
+    text-align: left;
+    font-size: 3rem; 
+    color: #fd590d;
+    font-family: 'Lobster', cursive; 
+    margin-bottom: 0.5rem; 
+}
+
+.sold-out-menu-item-name {
+    font-family: "Rockwell";
+    opacity: 0.6;
+}
+
+.sold-out-menu-item-price-txt {
+    color: #fd590d !important;
+    font-family: "Rockwell";
+    margin-top: 8px;
+}
+
+/* snacks available text css */
+h5 {
+    font-size: 2.4rem; 
+    margin-bottom: 0.5rem; 
+    line-height: 1.4; 
+    font-family: 'Lobster', cursive; 
+}
+/* menu css */
+h4 {
+    font-size: 1.8rem; 
+}
+
+img {
+    width: 100%; 
+    height: auto; 
+}
+
+
+.container-fluid {
+    padding: 2rem; 
+}
+
+.menu-item-icon {
+  width: 20px;
+  margin-right: 10px;
+  margin-top: -3px;
+}
+
+.undefined-item-type {
+  margin-left: 30px;
+}
+
+.menu-item-price {
+  float: right;
+}
+
+.non-veg-appetizers-item {
+    margin-top: -2.4px;
+}
+
+.desserts-item {
+    margin-top: -1.5px;
+}
+
+.familypack-biryani-item {
+    margin-bottom: 1px;
+}
+
+.chowrastha-specials-item {
+    margin-top: -2.4px;
+}
+
+.carousel-image {
+    border-radius: 8px; 
+}
+
+.carousel-badge {
+    position: absolute;
+    bottom: 48px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000000;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px; 
+}
+
+.disclaimer {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* herndon and nashua table page 4 */
+.biryani-table-font{
+    font-size: 1.8rem;
+}
+
+.sold-out-menu-item-biryani{
+    font-family: "Rockwell";
+    opacity: 0.6;
+    font-size: 1.8rem;
+}
+
+.pulao-table-font{
+    font-size: 1.8rem;
+}
+
+.sold-out-menu-item-pulao{
+    font-family: "Rockwell";
+    opacity: 0.6;
+    font-size: 1.8rem;
+}
+
+.biryani-nashua-table-font{
+    font-size: 1.5rem;
+}
+
+.pulao-nashua-table-font{
+    font-size: 1.5rem;
+}
