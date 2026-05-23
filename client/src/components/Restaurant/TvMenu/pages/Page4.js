@@ -12,12 +12,12 @@ import { useParams } from 'react-router-dom';
 import LoaderIcon from '../assets/images/loader_icon.gif';
 import { firestore } from '../../../../config/firebase';
 import { Tag } from 'antd';
-import fillergif from '../../../../assets/images/filler.gif';
+// import fillergif from '../../../../assets/images/filler.gif';
 import CHILLI from "../assets/images/chilli.png";
 
 // Importing Nashua Signature Dishes
 import SamosaImg from "../assets/images/SignatureDishesNashua/Samosa-2-PCS.png";
-import MysoreBondaImg from "../assets/images/SignatureDishesNashua/Mysore Bonda (3 PCS).png";
+// import MysoreBondaImg from "../assets/images/SignatureDishesNashua/Mysore Bonda (3 PCS).png";
 import MirchiBajiImg from "../assets/images/SignatureDishesNashua/Mirchi Bajji (4 PCS).png";
 import PaneerTikkaKebabImg from "../assets/images/SignatureDishesNashua/Paneer Tikka Kebab.webp";
 import ChickenTandoorImg from "../assets/images/SignatureDishesNashua/Chicken Tandoor (4 pcs) with Bone.webp";
@@ -188,7 +188,7 @@ const Page4 = () => {
 
     const signatureDishesNashua = [
         SamosaImg,
-        MysoreBondaImg,
+        // MysoreBondaImg,
         MirchiBajiImg,
         PaneerTikkaKebabImg,
         ChickenTandoorImg,

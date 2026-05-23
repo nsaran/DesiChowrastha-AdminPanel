@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Layout,
     Table,
@@ -15,17 +15,76 @@ import {
     Menu,
     Upload,
 } from 'antd';
-import { EditOutlined, DeleteOutlined, MenuOutlined, UploadOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, MenuOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import CustomMenuHeader from './components/CustomMenuheader';
 import { useMediaQuery } from 'react-responsive';
 import { useParams } from "react-router-dom";
 import { firestore } from '../../../config/firebase';
 import CustomMenuFooter from './components/CustomMenufooter';
+import CustomTvPagesConfigPanel from './components/CustomTvPagesConfig';
 import Papa from 'papaparse'; 
 
 const { Title } = Typography;
 const { Content } = Layout;
 const { Option } = Select;
+
+const getCustomMenuCategoryRef = (restaurantId, category) =>
+    firestore
+        .collection('restaurants')
+        .doc(restaurantId)
+        .collection('custom menu')
+        .doc(category);
+
+const getCustomMenuItemsRef = (restaurantId, category) =>
+    getCustomMenuCategoryRef(restaurantId, category).collection('items');
+
+const getRestaurantMenuItemsPathPrefix = (restaurantId) =>
+    `restaurants/${restaurantId}/custom menu/`;
+
+const ensureCategoryDoc = async (restaurantId, category) => {
+    await getCustomMenuCategoryRef(restaurantId, category).set(
+        { name: category },
+        { merge: true }
+    );
+};
+
+const mapItemDocToMenuRow = (itemDoc) => {
+    const itemData = itemDoc.data();
+    const categoryName = itemDoc.ref.parent.parent.id;
+
+    return {
+        id: itemDoc.id,
+        name: itemData.name || itemDoc.id,
+        category: categoryName,
+        itemType: normalizeItemType(itemData.itemType),
+        price: itemData.price,
+        availability: itemData.availability || 'available',
+    };
+};
+
+const normalizeItemType = (raw) => {
+    const value = String(raw || '').trim().toLowerCase();
+    if (value === 'veg' || value === 'vegetarian') {
+        return 'Veg';
+    }
+    return 'Non-Veg';
+};
+
+const parseCsvRow = (row) => {
+    const name = String(row.Name ?? row.name ?? '').trim();
+    const category = String(row.Category ?? row.category ?? '').trim();
+    const priceRaw = row.Price ?? row.price ?? '';
+    const price = parseFloat(String(priceRaw).replace(/[^0-9.-]/g, ''));
+
+    return {
+        name,
+        category,
+        itemType: normalizeItemType(
+            row['Item Type'] ?? row['item type'] ?? row.ItemType ?? row.itemType
+        ),
+        price: Number.isFinite(price) ? price.toFixed(2) : null,
+    };
+};
 
 const CustomMenu = () => {
     const { restaurantId } = useParams();
@@ -37,69 +96,55 @@ const CustomMenu = () => {
     const [form] = Form.useForm();
     const [currentPage, setCurrentPage] = useState(1);
     const [cardsPerPage, setCardsPerPage] = useState(10);
+    const [loading, setLoading] = useState(false);
+    const [importing, setImporting] = useState(false);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
-    useEffect(() => {
-        const fetchMenuData = async () => {
-            try {
-                const restaurantRef = firestore.collection('restaurants').doc(restaurantId);
-                const customMenuRef = restaurantRef.collection('custom menu');
-    
-                console.log("Fetching data for restaurant:", restaurantId);
-    
-                // Fetch all 'items' subcollections across all categories using collectionGroup
-                const itemsSnapshot = await firestore.collectionGroup('items').get();
-    
-                if (itemsSnapshot.empty) {
-                    console.warn('No menu items found.');
-                    return;
+    const fetchMenuData = useCallback(async () => {
+        if (!restaurantId) {
+            return;
+        }
+
+        setLoading(true);
+        setMenuData([]);
+        setCategories(['All']);
+        setSelectedCategory('All');
+
+        try {
+            const menuPathPrefix = getRestaurantMenuItemsPathPrefix(restaurantId);
+            const itemsSnapshot = await firestore.collectionGroup('items').get();
+
+            const restaurantItems = itemsSnapshot.docs.filter((itemDoc) =>
+                itemDoc.ref.path.startsWith(menuPathPrefix)
+            );
+
+            const allMenuData = restaurantItems.map(mapItemDocToMenuRow);
+            const categoryNames = ['All'];
+
+            allMenuData.forEach((item) => {
+                if (!categoryNames.includes(item.category)) {
+                    categoryNames.push(item.category);
                 }
-    
-                const allMenuData = [];
-                const categoryNames = ['All'];
-    
-                // Process each item found in the collectionGroup query
-                itemsSnapshot.docs.forEach(itemDoc => {
-                    const itemData = itemDoc.data();
-                    const categoryName = itemDoc.ref.parent.parent.id;  // Access category name from document reference
-    
-                    console.log(`Item found in category ${categoryName}:`, itemData);
-    
-                    allMenuData.push({
-                        id: itemDoc.id,
-                        name: itemData.name,
-                        category: categoryName,
-                        itemType: itemData.itemType,
-                        price: itemData.price,
-                        availability: itemData.availability
-                    });
-    
-                    // Ensure the category is added to the categoryNames array (for filtering purposes)
-                    if (!categoryNames.includes(categoryName)) {
-                        categoryNames.push(categoryName);
-                    }
-                });
-    
-                // Set state with the fetched data
-                setMenuData(allMenuData);
-                setCategories(categoryNames);
-    
-                console.log("Final Menu Data:", allMenuData);
-                console.log("Final Category Names:", categoryNames);
-    
-            } catch (error) {
-                console.error("Error fetching menu data:", error);
-                message.error("Failed to load menu data.");
-            }
-        };
-    
-        fetchMenuData();
+            });
+
+            setMenuData(allMenuData);
+            setCategories(categoryNames);
+        } catch (error) {
+            console.error('Error fetching menu data:', error);
+            message.error('Failed to load menu data.');
+        } finally {
+            setLoading(false);
+        }
     }, [restaurantId]);
+
+    useEffect(() => {
+        fetchMenuData();
+    }, [fetchMenuData]);
 
     // Show modal for adding/editing an item
     const showModal = (item = null) => {
         setCurrentItem(item);
-        form.setFieldsValue(item || { itemType: 'veg' });
+        form.setFieldsValue(item || { itemType: 'Veg' });
         setVisible(true);
     };
 
@@ -113,46 +158,58 @@ const CustomMenu = () => {
     };
 
     const handleOk = async () => {
+        if (!restaurantId) {
+            message.error('Restaurant not found.');
+            return;
+        }
+
         try {
             const values = await form.validateFields();
             const { name, category, itemType, price } = values;
-    
-            // Keep the current availability value if it exists (or use 'available' by default)
+
             const availability = currentItem ? currentItem.availability : 'available';
-    
+            const normalizedItemType = normalizeItemType(itemType);
+
             const dataToSave = {
                 name,
                 category,
-                itemType: itemType === "Veg" ? "Veg" : "Non-Veg",
+                itemType: normalizedItemType,
                 price: parseFloat(price).toFixed(2),
-                availability, // Don't overwrite if not modified
+                availability,
             };
-    
-            const categoryRef = firestore
-                .collection('restaurants')
-                .doc(restaurantId)
-                .collection('custom menu')
-                .doc(category)  // Now category is a document in the "custom menu" collection
-                .collection('items');
-    
+
+            await ensureCategoryDoc(restaurantId, category);
+            const newItemRef = getCustomMenuItemsRef(restaurantId, category).doc(name);
+
             if (currentItem) {
-                // If we're editing an existing item, update it in Firestore by its ID
-                await categoryRef.doc(currentItem.id).update(dataToSave);
-                // Update the item in the local state
-                setMenuData(prevData =>
-                    prevData.map(item =>
-                        item.id === currentItem.id ? { ...item, ...dataToSave } : item
-                    )
+                const categoryChanged = currentItem.category !== category;
+                const nameChanged = currentItem.id !== name;
+
+                if (categoryChanged || nameChanged) {
+                    await getCustomMenuItemsRef(restaurantId, currentItem.category)
+                        .doc(currentItem.id)
+                        .delete();
+                    await newItemRef.set(dataToSave);
+                } else {
+                    await newItemRef.update(dataToSave);
+                }
+
+                setMenuData((prevData) =>
+                    prevData
+                        .filter((item) => item.id !== currentItem.id)
+                        .concat({ ...dataToSave, id: name })
                 );
                 message.success('Item updated successfully');
             } else {
-                // If adding a new item, add it to Firestore
-                await categoryRef.doc(name).set(dataToSave);
-                // Add the new item to the local state
-                setMenuData(prevData => [...prevData, { ...dataToSave, id: name }]);
+                await newItemRef.set(dataToSave);
+                setMenuData((prevData) => [...prevData, { ...dataToSave, id: name }]);
                 message.success('Item added successfully');
             }
-    
+
+            if (!categories.includes(category)) {
+                setCategories((prev) => [...prev, category]);
+            }
+
             setVisible(false);
             form.resetFields();
         } catch (error) {
@@ -164,19 +221,29 @@ const CustomMenu = () => {
 
     // Handle item deletion
     const handleDelete = async (item) => {
+        if (!restaurantId) {
+            return;
+        }
+
         try {
-            // Delete the item from the specific category's items collection
-            await firestore
-                .collection('restaurants')
-                .doc(restaurantId)
-                .collection('custom menu')
-                .doc(item.category)   // Reference the item's category collection
-                .collection('items')
-                .doc(item.id)         // Delete the specific item document by its ID
-                .delete();
-            
-            // Remove the deleted item from the local state
-            setMenuData(prevData => prevData.filter(menuItem => menuItem.id !== item.id));
+            await getCustomMenuItemsRef(restaurantId, item.category).doc(item.id).delete();
+
+            setMenuData((prevData) => {
+                const remaining = prevData.filter(
+                    (menuItem) =>
+                        !(menuItem.id === item.id && menuItem.category === item.category)
+                );
+                const hasCategoryItems = remaining.some((menuItem) => menuItem.category === item.category);
+                if (!hasCategoryItems) {
+                    setCategories((prevCategories) =>
+                        prevCategories.filter((cat) => cat !== item.category)
+                    );
+                    if (selectedCategory === item.category) {
+                        setSelectedCategory('All');
+                    }
+                }
+                return remaining;
+            });
 
             message.success('Item deleted successfully');
         } catch (error) {
@@ -187,15 +254,13 @@ const CustomMenu = () => {
 
     // Handle availability change
     const handleAvailabilityChange = async (record, value) => {
+        if (!restaurantId) {
+            return;
+        }
+
         try {
-            // Update availability for the item in the specific category
-            await firestore
-                .collection('restaurants')
-                .doc(restaurantId)
-                .collection('custom menu')
-                .doc(record.category)  // Reference the item's category collection
-                .collection('items')
-                .doc(record.id)        // Reference the specific item document by its ID
+            await getCustomMenuItemsRef(restaurantId, record.category)
+                .doc(record.id)
                 .update({ availability: value });
     
             // After successful update in Firestore, update the local state to reflect the change in the table
@@ -212,71 +277,221 @@ const CustomMenu = () => {
         }
     };
 
-    // Handle CSV upload and import
-    const handleCSVUpload = async (file) => {
+    const handleDownloadSampleCSV = () => {
+        const fields = ['Name', 'Category', 'Item Type', 'Price'];
+        const data = [
+            { Name: 'Margherita Pizza', Category: 'Pizza', 'Item Type': 'Veg', Price: '12.99' },
+            { Name: 'Chicken Wings', Category: 'Appetizers', 'Item Type': 'Non-Veg', Price: '9.99' },
+        ];
+        const csv = Papa.unparse({ fields, data });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'custom-menu-sample.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+    };
+
+    const deleteItemsInBatches = async (docRefs) => {
+        const batchSize = 500;
+        for (let i = 0; i < docRefs.length; i += batchSize) {
+            const batch = firestore.batch();
+            docRefs.slice(i, i + batchSize).forEach((ref) => batch.delete(ref));
+            await batch.commit();
+        }
+    };
+
+    const getCategoryItemRefs = async (categoryName) => {
+        const snapshot = await getCustomMenuItemsRef(restaurantId, categoryName).get();
+        return snapshot.docs.map((doc) => doc.ref);
+    };
+
+    const handleDeleteAll = () => {
+        Modal.confirm({
+            title: 'Delete all menu items?',
+            content: 'This will permanently remove every item in the custom menu. This action cannot be undone.',
+            okText: 'Delete all',
+            okType: 'danger',
+            cancelText: 'Cancel',
+            onOk: async () => {
+                try {
+                    const menuPathPrefix = getRestaurantMenuItemsPathPrefix(restaurantId);
+                    const itemsSnapshot = await firestore.collectionGroup('items').get();
+                    const itemRefs = itemsSnapshot.docs
+                        .filter((itemDoc) => itemDoc.ref.path.startsWith(menuPathPrefix))
+                        .map((itemDoc) => itemDoc.ref);
+
+                    if (itemRefs.length === 0) {
+                        message.info('No menu items to delete.');
+                        return;
+                    }
+
+                    await deleteItemsInBatches(itemRefs);
+                    setMenuData([]);
+                    setCategories(['All']);
+                    setSelectedCategory('All');
+                    message.success(`Deleted ${itemRefs.length} item(s) successfully`);
+                } catch (error) {
+                    console.error('Error deleting all items:', error);
+                    message.error('Failed to delete all items');
+                }
+            },
+        });
+    };
+
+    const performDeleteByCategory = async (categoryName) => {
+        try {
+            const itemRefs = await getCategoryItemRefs(categoryName);
+
+            if (itemRefs.length === 0) {
+                message.info(`No items found in category "${categoryName}".`);
+                return;
+            }
+
+            await deleteItemsInBatches(itemRefs);
+            setMenuData((prevData) => prevData.filter((item) => item.category !== categoryName));
+            setCategories((prevCategories) => prevCategories.filter((cat) => cat !== categoryName));
+            if (selectedCategory === categoryName) {
+                setSelectedCategory('All');
+            }
+            message.success(`Deleted ${itemRefs.length} item(s) from "${categoryName}"`);
+        } catch (error) {
+            console.error('Error deleting category items:', error);
+            message.error('Failed to delete category items');
+        }
+    };
+
+    const handleDeleteByCategory = () => {
+        const deletableCategories = categories.filter((cat) => cat !== 'All');
+
+        if (deletableCategories.length === 0) {
+            message.info('No categories with items to delete.');
+            return;
+        }
+
+        const categoryToDelete =
+            selectedCategory !== 'All' ? selectedCategory : deletableCategories[0];
+
+        if (selectedCategory !== 'All') {
+            Modal.confirm({
+                title: `Delete all items in "${categoryToDelete}"?`,
+                content: 'This will permanently remove every item in this category. This action cannot be undone.',
+                okText: 'Delete category',
+                okType: 'danger',
+                cancelText: 'Cancel',
+                onOk: () => performDeleteByCategory(categoryToDelete),
+            });
+            return;
+        }
+
+        let chosenCategory = categoryToDelete;
+
+        Modal.confirm({
+            title: 'Delete items by category',
+            content: (
+                <div>
+                    <p style={{ marginBottom: 8 }}>Select a category to delete all of its items:</p>
+                    <Select
+                        defaultValue={categoryToDelete}
+                        style={{ width: '100%' }}
+                        onChange={(value) => { chosenCategory = value; }}
+                    >
+                        {deletableCategories.map((category) => (
+                            <Option key={category} value={category}>{category}</Option>
+                        ))}
+                    </Select>
+                </div>
+            ),
+            okText: 'Delete category',
+            okType: 'danger',
+            cancelText: 'Cancel',
+            onOk: () => performDeleteByCategory(chosenCategory),
+        });
+    };
+
+    const handleCSVUpload = (file) => {
+        if (!restaurantId) {
+            message.error('Restaurant not found.');
+            return;
+        }
+
+        setImporting(true);
         Papa.parse(file, {
             header: true,
             skipEmptyLines: true,
+            transformHeader: (header) => header.trim(),
             complete: async (result) => {
-                const items = result.data.map(item => ({
-                    name: item["Name"] || item["name"] || "",
-                    category: item["Category"] || item["category"] || "",
-                    itemType: (item["Item Type"] || item["item type"] || item["ItemType"] || item["itemType"] || "Non-Veg"),
-                    price: parseFloat(item["Price"] || "0.00").toFixed(2),
-                    availability: "available"
-                }));
+                try {
+                    const parsedRows = result.data.map(parseCsvRow);
+                    const validItems = parsedRows.filter(
+                        (item) => item.name && item.category && item.price !== null
+                    );
+                    const skippedCount = parsedRows.length - validItems.length;
 
-                let updatesCount = 0;
-                let newItemsCount = 0;
-
-                for (const item of items) {
-                    const categoryRef = firestore
-                        .collection('restaurants')
-                        .doc(restaurantId)
-                        .collection('custom menu')
-                        .doc(item.category)  // Category is a document in the "custom menu" collection
-                        .collection('items');
-
-                    const snapshot = await categoryRef
-                        .where("name", "==", item.name)
-                        .get();
-
-                    if (!snapshot.empty) {
-                        // If item exists, update it
-                        snapshot.forEach(async (doc) => {
-                            await doc.ref.update({
-                                itemType: item.itemType,
-                                price: item.price,
-                                availability: item.availability,
-                            });
-                            // Immediately reflect the update in the table (local state)
-                            setMenuData(prevData =>
-                                prevData.map(existingItem =>
-                                    existingItem.id === doc.id ? { ...existingItem, ...item } : existingItem
-                                )
-                            );
-                        });
-                        updatesCount++;
-                    } else {
-                        // If item doesn't exist, create a new document
-                        await categoryRef.doc(item.name).set(item);
-                        // Immediately add the new item to the local state (table)
-                        setMenuData(prevData => [...prevData, { ...item, id: item.name }]);
-                        newItemsCount++;
+                    if (validItems.length === 0) {
+                        message.warning(
+                            'No valid rows found. Each row needs Name, Category, and Price.'
+                        );
+                        return;
                     }
-                }
 
-                if (updatesCount > 0) {
-                    message.success(`${updatesCount} item(s) updated successfully`);
-                }
-                if (newItemsCount > 0) {
-                    message.success(`${newItemsCount} new item(s) added successfully`);
+                    let updatesCount = 0;
+                    let newItemsCount = 0;
+
+                    for (const item of validItems) {
+                        await ensureCategoryDoc(restaurantId, item.category);
+                        const itemRef = getCustomMenuItemsRef(restaurantId, item.category).doc(item.name);
+                        const existingDoc = await itemRef.get();
+
+                        const dataToSave = {
+                            name: item.name,
+                            category: item.category,
+                            itemType: item.itemType,
+                            price: item.price,
+                            availability: 'available',
+                        };
+
+                        if (existingDoc.exists) {
+                            const existingData = existingDoc.data();
+                            await itemRef.update({
+                                ...dataToSave,
+                                availability: existingData.availability || 'available',
+                            });
+                            updatesCount++;
+                        } else {
+                            await itemRef.set(dataToSave);
+                            newItemsCount++;
+                        }
+                    }
+
+                    await fetchMenuData();
+
+                    const summaryParts = [];
+                    if (newItemsCount > 0) {
+                        summaryParts.push(`${newItemsCount} added`);
+                    }
+                    if (updatesCount > 0) {
+                        summaryParts.push(`${updatesCount} updated`);
+                    }
+                    if (skippedCount > 0) {
+                        summaryParts.push(`${skippedCount} skipped`);
+                    }
+
+                    message.success(`Import complete: ${summaryParts.join(', ')}.`);
+                } catch (error) {
+                    console.error('Error importing CSV:', error);
+                    message.error('Failed to import CSV');
+                } finally {
+                    setImporting(false);
                 }
             },
             error: (error) => {
                 console.error('Error parsing CSV:', error);
                 message.error('Failed to import CSV');
-            }
+                setImporting(false);
+            },
         });
     };
 
@@ -378,7 +593,10 @@ const CustomMenu = () => {
                 <div>
                     <Title level={3} style={{ marginLeft: '25px' }}>Custom Menu</Title>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'right' }}>
+                <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                    <Button icon={<DownloadOutlined />} onClick={handleDownloadSampleCSV}>
+                        Download Sample CSV
+                    </Button>
                     <Upload
                         beforeUpload={(file) => {
                             handleCSVUpload(file);
@@ -386,10 +604,27 @@ const CustomMenu = () => {
                         }}
                         showUploadList={false}
                     >
-                        <Button icon={<UploadOutlined />}>Import CSV</Button>
+                        <Button icon={<UploadOutlined />} loading={importing} disabled={importing}>
+                            Import CSV
+                        </Button>
                     </Upload>
-                    <span style={{ marginLeft: '15px', marginTop:'5px' }}>Filter by Category: </span>
-                    <Select defaultValue="All" style={{ width: 200, marginLeft: '10px' }} onChange={handleCategoryChange}>
+                    <Dropdown
+                        overlay={
+                            <Menu>
+                                <Menu.Item key="deleteCategory" danger onClick={handleDeleteByCategory}>
+                                    <DeleteOutlined /> Delete by Category
+                                </Menu.Item>
+                                <Menu.Item key="deleteAll" danger onClick={handleDeleteAll}>
+                                    <DeleteOutlined /> Delete All Items
+                                </Menu.Item>
+                            </Menu>
+                        }
+                        trigger={['click']}
+                    >
+                        <Button danger icon={<DeleteOutlined />}>Bulk Delete</Button>
+                    </Dropdown>
+                    <span style={{ marginLeft: '7px', marginTop: '5px' }}>Filter by Category: </span>
+                    <Select value={selectedCategory} style={{ width: 200, marginLeft: '10px' }} onChange={handleCategoryChange}>
                         {categories.map(category => (
                             <Option key={category} value={category}>{category}</Option>
                         ))}
@@ -402,7 +637,8 @@ const CustomMenu = () => {
             <Table
                 columns={columns}
                 dataSource={filteredData}
-                rowKey="name"
+                rowKey={(record) => `${record.category}-${record.id}`}
+                loading={loading}
                 pagination={{
                     current: currentPage,
                     pageSize: cardsPerPage,
@@ -415,6 +651,8 @@ const CustomMenu = () => {
                 }}
                 style={{ margin: 16 }}
             />
+
+            <CustomTvPagesConfigPanel menuCategories={categories} />
         </Content>
         <CustomMenuFooter 
             style={{
