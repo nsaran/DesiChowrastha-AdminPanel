@@ -23,8 +23,8 @@ const Page1 = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`);
-                //   const response = await fetch(`http://localhost:3010/api/menu?location=${restaurantId}`);
+                //const response = await fetch(`https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`);
+                const response = await fetch(`http://localhost:3010/api/menu?location=${restaurantId}`);
                 const data = await response.json();
 
                 if (JSON.stringify(data) !== JSON.stringify(previousMenu)) {

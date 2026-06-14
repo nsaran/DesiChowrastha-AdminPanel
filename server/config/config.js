@@ -11,6 +11,11 @@ module.exports = {
             clientId: process.env.NASHUA_CLIENT_ID,
             clientSecret: process.env.NASHUA_CLIENT_SECRET,
             restaurantExternalId: process.env.NASHUA_RESTAURANT_EXTERNAL_ID
+        },
+        WESTBOROUGH: {
+            clientId: process.env.WESTBOROUGH_CLIENT_ID,
+            clientSecret: process.env.WESTBOROUGH_CLIENT_SECRET,
+            restaurantExternalId: process.env.WESTBOROUGH_RESTAURANT_EXTERNAL_ID
         }
     }
 };

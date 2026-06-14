@@ -43,9 +43,9 @@ const MenuComponent = () => {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const response = await axios.get(
-          `https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`
-        );
+        //const response = await axios.get(`https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`);
+        const response = await axios.get(`http://localhost:3010/api/menu?location=${restaurantId}`);
+
         setMenuData(response.data);
         const flattenedData = response.data.flatMap((menu) =>
           menu.menuGroups.flatMap((group) =>
