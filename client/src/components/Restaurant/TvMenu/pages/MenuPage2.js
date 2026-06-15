@@ -241,8 +241,6 @@ const MenuPage2 = () => {
                         Karam Podi Mushroom, Veg Ball Manchurian, Chilli Paneer,
                         Paneer Vepudu, Paneer Manchuria */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
-                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Street Style</h2>
-                        {renderToastMenuItems(menu, "Street Style")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Appetizers</h2>
                         {renderToastMenuItems(menu, "Veg Appetizers")}
                     </Col>
@@ -257,15 +255,9 @@ const MenuPage2 = () => {
                         Chilli Momo, Pepper Shrimp, Chilli Goat Roast, Goat Sukka */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Appetizers Non-Veg</h2>
-                        <h5 style={{
-                            fontFamily: "Lobster",
-                            marginLeft: "-4px",
-                            marginTop: "-8px",
-                            color: "rgb(1, 137, 0)"
-                        }}>
-                            (Chicken/Fish/Shrimp/Goat)
-                        </h5>
                         {renderToastMenuItems(menu, "Non-Veg Appetizers")}
+                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Egg Station</h2>
+                        {renderToastMenuItems(menu, "Egg Station")}
                     </Col>
 
                     {/* Column 3: Egg Station + Special Dips + Tandoori
@@ -276,8 +268,6 @@ const MenuPage2 = () => {
                         Chicken Tikka, Tandoori Chicken, Chicken Malai Kabab,
                         Hariyali Chicken Tikka, Tangri Kebab, Shrimp Tikka, Tandoori Pomfret */}
                     <Col style={{ flex: '0 0 33.2%', maxWidth: '33.2%' }}>
-                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Egg Station</h2>
-                        {renderToastMenuItems(menu, "Egg Station")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Special Dips</h2>
                         {renderToastMenuItems(menu, "Special Dips")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tandoori</h2>

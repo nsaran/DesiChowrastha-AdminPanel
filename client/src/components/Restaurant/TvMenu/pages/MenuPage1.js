@@ -247,7 +247,7 @@ const MenuPage1 = () => {
                         Plain Uthappam, Onion Uthappam, Onion Chilli Uthappam, Paneer Uthappam,
                         Rava Dosa, Rava Onion Dosa, Rava Masala Dosa */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
-                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tiffins/Dosas</h2>
+                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tiffins</h2>
                         {renderToastMenuItems(menu, "Tiffins")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Non-Veg Combo</h2>
                         {renderToastMenuItems(menu, "Non-Veg Combo")}
@@ -272,7 +272,7 @@ const MenuPage1 = () => {
                             <span style={{ color: "red" }}>Add on: </span>
                             Ghee +$1.00 | Onion +$1.00 | Podi +$0.99 | Karam +$0.99 | Cheese +$2.00
                         </p>
-                        {renderToastMenuItems(menu, "Dosa")}
+                        {renderToastMenuItems(menu, "Dosa")}                        
                     </Col>
 
                     {/* Column 3: Snacks (Available From 5PM) + Chaat Section - 33.2% width
@@ -282,18 +282,10 @@ const MenuPage1 = () => {
                         Papadi Chaat, Bhel Puri, Spl Bhel Puri, Sev Puri,
                         Murukku Sandwich, Vada Pav, Pav Bhaji, Masala Peanuts, Extra Pav */}
                     <Col style={{ flex: '0 0 33.2%', maxWidth: '33.2%' }}>
-                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Snacks</h2>
-                        <h5 style={{
-                            fontFamily: "Lobster",
-                            marginLeft: "-4px",
-                            marginTop: "-8px",
-                            color: "rgb(1, 137, 0)"
-                        }}>
-                            (Available From 5PM)
-                        </h5>
-                        {renderToastMenuItems(menu, `Snack Box`)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Chaat Section</h2>
                         {renderToastMenuItems(menu, "Chaat")}
+                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Street Style</h2>
+                        {renderToastMenuItems(menu, "Street Style")}
                     </Col>
                 </Row>
             </Container>

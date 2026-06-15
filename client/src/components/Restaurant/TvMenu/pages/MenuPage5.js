@@ -197,18 +197,11 @@ const MenuPage5 = () => {
                         + Freshly Baked Cakes By Pre-Order (www.desichowrastha.com) */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Fresh Bakes</h2>
-                        <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
-                            Makes U Refresh
-                        </h5>
                         {renderToastMenuItems(menu, "Bakers")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Hot Beverages</h2>
                         {renderToastMenuItems(menu, "Chai/Coffee")}
-                        <h4 style={{ fontFamily: "Lobster", marginTop: "30px", fontSize: "1.8rem", color: "#fd590d" }}>
-                            Freshly Baked Cakes By Pre-Order
-                        </h4>
-                        <h4 style={{ fontFamily: "Bree Serif", fontSize: "1.5rem", color: "black" }}>
-                            www.desichowrastha.com
-                        </h4>
+                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Desserts</h2>
+                        {renderToastMenuItems(menu, "Desserts")}
                     </Col>
 
                     {/* Column 2: Drinks + Fresh Juice
@@ -218,12 +211,14 @@ const MenuPage5 = () => {
                         Sugar Cane Juice, Blue Berry Mojito, Fresh Lime Soda */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Drinks</h2>
-                        <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
-                            Fill U'R Thirst
-                        </h5>
                         {renderToastMenuItems(menu, "Beverages")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Fresh Juice</h2>
                         {renderToastMenuItems(menu, "Fresh Juice")}
+                        <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Ice Cream</h2>
+                        <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
+                            (Vanilla | Chocolate | Butterscotch | Strawberry | Pistachio)
+                        </h5>
+                        {renderToastMenuItems(menu, "Ice Cream")}
                     </Col>
 
                     {/* Column 3: Desserts + Ice Cream + Pastries + Catering info
@@ -234,16 +229,16 @@ const MenuPage5 = () => {
                         Pastries: various pastries
                         + We Do Catering Services FOR ALL YOUR EVENTS */}
                     <Col style={{ flex: '0 0 33.2%', maxWidth: '33.2%' }}>
-                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Desserts</h2>
-                        <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
-                            "life tastes better with dessert"
+                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Snacks</h2>
+                        <h5 style={{
+                            fontFamily: "Lobster",
+                            marginLeft: "-4px",
+                            marginTop: "-8px",
+                            color: "rgb(1, 137, 0)"
+                        }}>
+                            (Available From 5PM)
                         </h5>
-                        {renderToastMenuItems(menu, "Desserts")}
-                        <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Ice Cream</h2>
-                        <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
-                            (Vanilla | Chocolate | Butterscotch | Strawberry | Pistachio)
-                        </h5>
-                        {renderToastMenuItems(menu, "Ice Cream")}
+                        {renderToastMenuItems(menu, `Snack Box`)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
                         {renderToastMenuItems(menu, "Pastries")}
                         <div style={{ marginTop: "30px", textAlign: "center" }}>

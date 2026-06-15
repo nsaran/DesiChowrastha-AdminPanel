@@ -1,6 +1,6 @@
 {
   "restaurantGuid": "bda948cd-2639-41ce-85a0-25b01e7b6839",
-  "lastUpdated": "2026-06-14T15:30:51.138+0000",
+  "lastUpdated": "2026-06-15T03:15:35.364+0000",
   "restaurantTimeZone": "America/New_York",
   "menus": [
     {
@@ -4403,7 +4403,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Chuteny",
+              "name": "Chutney",
               "posName": "",
               "guid": "048b28c9-f2a4-4afe-9b03-a414ad5838b8",
               "multiLocationId": "600000054055781369",
@@ -4458,7 +4458,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Mint Chuteny",
+              "name": "Mint Chutney",
               "posName": "",
               "guid": "c854cd0d-1e42-478e-a285-fd7695358200",
               "multiLocationId": "600000054055781371",
@@ -4513,7 +4513,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Tamrind Chuteny",
+              "name": "Tamrind Chutney",
               "posName": "",
               "guid": "ae8034ff-855d-469c-b3c4-23ccc7cfa7d3",
               "multiLocationId": "600000054055781373",
@@ -5228,7 +5228,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "GOBI 65",
+              "name": "Gobi 65",
               "posName": "",
               "guid": "80195ef1-1398-4abd-a639-0e14efc67b22",
               "multiLocationId": "600000054058032449",
@@ -5294,7 +5294,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "KARAM PODI GOBI",
+              "name": "Karam Podi Gobi",
               "posName": "",
               "guid": "39842060-6098-4e33-a179-edeebf144aef",
               "multiLocationId": "600000054058032951",
@@ -5360,7 +5360,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "BABY CORN SALT&PEPPER",
+              "name": "Baby Corn Salt & Pepper",
               "posName": "",
               "guid": "4996b0ce-c5c4-4a29-82cb-539da62a93d6",
               "multiLocationId": "600000054058032953",
@@ -5426,7 +5426,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CRISPY C0RN",
+              "name": "Crispy Corn",
               "posName": "",
               "guid": "4314b5b8-91c7-4eb0-9a64-a39e6512c894",
               "multiLocationId": "600000054058032955",
@@ -5492,7 +5492,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHILL MUSHROOM",
+              "name": "Chilli Mushroom",
               "posName": "",
               "guid": "4de32f14-ff0b-42e7-ad95-7b348b1538c3",
               "multiLocationId": "600000054088028828",
@@ -5558,7 +5558,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "KARAM PODI MUSHROOM",
+              "name": "Karam Podi Mushroom",
               "posName": "",
               "guid": "376d9ac6-e6f0-4774-a506-d9c1e702fbcf",
               "multiLocationId": "600000054087458987",
@@ -5624,7 +5624,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "PANEER VEPUDU",
+              "name": "Paneer Vepudu",
               "posName": "",
               "guid": "1025d540-05d7-448c-832c-39b94e1230b2",
               "multiLocationId": "600000054088086101",
@@ -5690,7 +5690,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "KARAM PODI PANEER",
+              "name": "Karam Podi Paneer",
               "posName": "",
               "guid": "f46aa537-8c7a-4794-b94e-c1808911bfd1",
               "multiLocationId": "600000054088097021",
@@ -5756,7 +5756,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CURRY LEAF PANEER",
+              "name": "Curry Leaf Paneer",
               "posName": "",
               "guid": "fdc2cdfa-d5fd-476e-acbb-373de5f8737b",
               "multiLocationId": "600000054088398091",
@@ -5822,7 +5822,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "JALAPENO PANNER",
+              "name": "Jalapeno Paneer",
               "posName": "",
               "guid": "4b3c29ca-95f5-457f-9dc1-96ca1114e154",
               "multiLocationId": "600000054088097022",
@@ -5914,7 +5914,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "chowrastha fried chicken",
+              "name": "Chowrastha Fried Chicken",
               "posName": "",
               "guid": "cfc0263d-c75d-4e98-9fb2-ef0054b0451d",
               "multiLocationId": "600000054095934875",
@@ -5976,7 +5976,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken 65",
+              "name": "Chicken 65",
               "posName": "",
               "guid": "99616ccb-71a1-49b1-af7b-04a846e07550",
               "multiLocationId": "600000054095934877",
@@ -6038,7 +6038,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "pepper chicken",
+              "name": "Pepper Chicken",
               "posName": "",
               "guid": "b3b90f75-eab8-4072-9a89-680ec48eb33c",
               "multiLocationId": "600000054095934879",
@@ -6100,7 +6100,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "curry leaf chicken",
+              "name": "Curry Leaf Chicken",
               "posName": "",
               "guid": "1300ec08-a401-463c-9560-758b7d5f0211",
               "multiLocationId": "600000054095934881",
@@ -6162,7 +6162,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chilli chicken",
+              "name": "Chilli Chicken",
               "posName": "",
               "guid": "b94401b3-dd49-4525-846b-f4ce732c043d",
               "multiLocationId": "600000054095934883",
@@ -6224,7 +6224,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "cashew chicken",
+              "name": "Cashew Chicken",
               "posName": "",
               "guid": "b63feb8d-ff99-4c60-a701-4ea63c167957",
               "multiLocationId": "600000054095934885",
@@ -6286,7 +6286,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "guntur kodi vepudu",
+              "name": "Guntur Kodi Vepudu",
               "posName": "",
               "guid": "2939a18e-4d74-42da-8781-33c2b13300b8",
               "multiLocationId": "600000054095934887",
@@ -6348,7 +6348,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "jalapeno chicken",
+              "name": "Jalapeno Chicken",
               "posName": "",
               "guid": "3ea7f347-b5e4-4421-b92e-c34d795099ba",
               "multiLocationId": "600000054095934889",
@@ -6410,7 +6410,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "pachimirchi kodi vapudu",
+              "name": "Pachimirchi Kodi Vapudu",
               "posName": "",
               "guid": "af51e25d-816e-4e1a-872d-ad5e7c908f28",
               "multiLocationId": "600000054095934891",
@@ -6472,7 +6472,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "hong kong chicken",
+              "name": "Hong Kong Chicken",
               "posName": "",
               "guid": "a81aa602-5fc8-4716-bf6f-eef94bdf0587",
               "multiLocationId": "600000054095934893",
@@ -6534,7 +6534,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken sukka (bone-in)",
+              "name": "Chicken Sukka (Bone-In)",
               "posName": "",
               "guid": "48d20f02-b6db-401a-aaf0-fe370abf5a67",
               "multiLocationId": "600000054095934895",
@@ -6596,7 +6596,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken lollipop",
+              "name": "Chicken Lollipop",
               "posName": "",
               "guid": "5b86ea28-6183-4747-b4f0-33c2280767c5",
               "multiLocationId": "600000054095934897",
@@ -6658,7 +6658,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "phuket fish",
+              "name": "Phuket Fish",
               "posName": "",
               "guid": "0701f7b4-2737-4773-96e8-39aefaaa39b8",
               "multiLocationId": "600000054095934899",
@@ -6720,7 +6720,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "apollo fish",
+              "name": "Apollo Fish",
               "posName": "",
               "guid": "eb51c3c5-37d7-4570-89c4-50f901a4c4fd",
               "multiLocationId": "600000054095937901",
@@ -6782,7 +6782,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "jhol achaar momo",
+              "name": "Jhol Achaar Momo",
               "posName": "",
               "guid": "671d1a07-32cd-4cc5-b167-fd2f9f0e1df5",
               "multiLocationId": "600000054095937903",
@@ -6844,7 +6844,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chilli momo",
+              "name": "Chilli Momo",
               "posName": "",
               "guid": "1b9994b1-7e96-4d2a-9fd8-dfbd86af8a65",
               "multiLocationId": "600000054095937905",
@@ -6906,7 +6906,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "pepper shrimp",
+              "name": "Pepper Shrimp",
               "posName": "",
               "guid": "46ea3651-e086-4fda-8a8f-f493223a8836",
               "multiLocationId": "600000054095937907",
@@ -6968,7 +6968,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chilli goat roast",
+              "name": "Chilli Goat Roast",
               "posName": "",
               "guid": "0d966ca4-a569-4bd9-a257-61ce4d74be0a",
               "multiLocationId": "600000054095937909",
@@ -7030,7 +7030,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat sukka",
+              "name": "Goat Sukka",
               "posName": "",
               "guid": "65577e9f-4f84-418a-a16d-186244c37bfc",
               "multiLocationId": "600000054095937911",
@@ -7113,7 +7113,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "paneer tikka",
+              "name": "Paneer Tikka",
               "posName": "",
               "guid": "9aa1f34d-f16f-429c-a175-057711c50405",
               "multiLocationId": "600000054097943928",
@@ -7173,7 +7173,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "malai broccoli",
+              "name": "Malai Broccoli",
               "posName": "",
               "guid": "b43e79f3-abbd-4ecb-bff5-8ece424d6235",
               "multiLocationId": "600000054097943929",
@@ -7228,7 +7228,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "mushroom tikka",
+              "name": "Mushroom Tikka",
               "posName": "",
               "guid": "938e3032-000e-41d3-814d-4434ef676513",
               "multiLocationId": "600000054097943930",
@@ -7283,7 +7283,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "soya kabab",
+              "name": "Soya Kabab",
               "posName": "",
               "guid": "a665c0c9-c871-42b8-91c2-8b8fedbc0dc9",
               "multiLocationId": "600000054095750847",
@@ -7338,7 +7338,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken tikka",
+              "name": "Chicken Tikka",
               "posName": "",
               "guid": "cd8abb65-eff3-4732-bd8b-d7b239a824dd",
               "multiLocationId": "600000054095750848",
@@ -7393,7 +7393,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "tandoori chicken",
+              "name": "Tandoori Chicken",
               "posName": "",
               "guid": "8ce36442-cb6e-4802-a479-97f8e69427ec",
               "multiLocationId": "600000054095750849",
@@ -7448,7 +7448,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken malai kabab",
+              "name": "Chicken Malai Kabab",
               "posName": "",
               "guid": "3c66b836-4588-4800-a8f3-ab051fa84c51",
               "multiLocationId": "600000054100413900",
@@ -7503,7 +7503,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "hariyali chicken tikka",
+              "name": "Hariyali Chicken Tikka",
               "posName": "",
               "guid": "7891cb90-699f-492b-94ac-c0d40fb69090",
               "multiLocationId": "600000054100413901",
@@ -7558,7 +7558,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "tangri kabab",
+              "name": "Tangri Kabab",
               "posName": "",
               "guid": "61d89093-975e-410c-add8-4f365afcc9e9",
               "multiLocationId": "600000054100413902",
@@ -7613,7 +7613,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "shrimp tikka",
+              "name": "Shrimp Tikka",
               "posName": "",
               "guid": "5a840fe9-f844-408f-8bf4-24a7e33fb342",
               "multiLocationId": "600000054100413903",
@@ -7668,7 +7668,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "tandoori pomfret",
+              "name": "Tandoori Pomfret",
               "posName": "",
               "guid": "5e6d3306-3905-4afe-b583-f9d8a08afe25",
               "multiLocationId": "600000054100413904",
@@ -7723,7 +7723,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "VEG PLATTER",
+              "name": "Veg Platter",
               "posName": "",
               "guid": "5e71de6a-e115-4526-8eef-fd493946701e",
               "multiLocationId": "600000054100953031",
@@ -7778,7 +7778,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "VEG + NON VEG PLATTER",
+              "name": "Veg + Non-Veg Platter",
               "posName": "",
               "guid": "ee091544-7c5a-4f85-93b2-939bebdfcd04",
               "multiLocationId": "600000054100953033",
@@ -7833,7 +7833,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "NON VEG PLATTER",
+              "name": "Non-Veg Platter",
               "posName": "",
               "guid": "eaa3b393-8d06-467c-a87e-d324e40ff6c3",
               "multiLocationId": "600000054100953035",
@@ -7914,7 +7914,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "egg pepper fry",
+              "name": "Egg Pepper Fry",
               "posName": "",
               "guid": "aa1188c5-a802-4f3c-953f-4fdafcf17eea",
               "multiLocationId": "600000054105465057",
@@ -7974,7 +7974,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chilli egg",
+              "name": "Chilli Egg",
               "posName": "",
               "guid": "5800f342-ea04-42a1-b27f-398255301069",
               "multiLocationId": "600000054105465059",
@@ -8034,7 +8034,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "egg burji dhaba style",
+              "name": "Egg Burji Dhaba Style",
               "posName": "",
               "guid": "c09a6d35-3037-4eae-ab3d-45a5e7149597",
               "multiLocationId": "600000054105465061",
@@ -8094,7 +8094,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "egg masala",
+              "name": "Egg Masala",
               "posName": "",
               "guid": "d541d75d-96de-4c45-b681-05a938add2e3",
               "multiLocationId": "600000054105465063",
@@ -8180,7 +8180,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "yellow dal tadka",
+              "name": "Yellow Dal Tadka",
               "posName": "",
               "guid": "6658278d-b65b-4775-9470-66bd81430aa9",
               "multiLocationId": "600000054106433561",
@@ -8240,7 +8240,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "dal makhani",
+              "name": "Dal Makhani",
               "posName": "",
               "guid": "1b991708-f0a5-491f-b539-814f1440f2d2",
               "multiLocationId": "600000054106433563",
@@ -8300,7 +8300,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "MIX VEG CURRY",
+              "name": "Mixed Veg Curry",
               "posName": "",
               "guid": "fa328085-7ae2-42ec-87d3-58895c46b5c1",
               "multiLocationId": "600000054106433565",
@@ -8360,7 +8360,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "KADAI VEG CURRY",
+              "name": "Kadai Veg Curry",
               "posName": "",
               "guid": "93ab91fb-5ba2-4806-8a5c-74f75e7fb58f",
               "multiLocationId": "600000054106433567",
@@ -8420,7 +8420,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "NIZAMI HANDI VEG",
+              "name": "Nizami Handi Veg",
               "posName": "",
               "guid": "1ab8c920-adce-4df7-997a-cec658a58ea0",
               "multiLocationId": "600000054106433569",
@@ -8480,7 +8480,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ALOO GOBI MASALA",
+              "name": "Aloo Gobi Masala",
               "posName": "",
               "guid": "c6f0e2c4-3b49-4c66-a579-79c71ec2f78a",
               "multiLocationId": "600000054106433571",
@@ -8540,7 +8540,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "BHINDI MASALA",
+              "name": "Bhindi Masala",
               "posName": "",
               "guid": "3358b885-bf84-438c-9433-b1085238be4b",
               "multiLocationId": "600000054106433573",
@@ -8600,7 +8600,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHANA MASALA",
+              "name": "Chana Masala",
               "posName": "",
               "guid": "e5715d19-5445-4507-b501-64ad036cbb04",
               "multiLocationId": "600000054106433575",
@@ -8660,7 +8660,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "GUTTIVANKAYA CURRY",
+              "name": "Gutivankaya Curry",
               "posName": "",
               "guid": "45bf7f4d-5fef-45d4-9ecb-a3fe2855f9fb",
               "multiLocationId": "600000054106433577",
@@ -8720,7 +8720,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ALOO MUTTER MASALA",
+              "name": "Aloo Mutter Masala",
               "posName": "",
               "guid": "983ae6f3-8362-4c2c-9c0a-8d7b7f4b6ba1",
               "multiLocationId": "600000054106433579",
@@ -8780,7 +8780,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "MUTTER PANEER MASALA",
+              "name": "Mutter Paneer Masala",
               "posName": "",
               "guid": "0c5ad34c-680a-4aa4-9e69-4b1cd9209021",
               "multiLocationId": "600000054106433581",
@@ -8840,7 +8840,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "MALAI METHI PANEER",
+              "name": "Malai Methi Paneer",
               "posName": "",
               "guid": "5402fbcb-d59b-4d65-86db-3f3176a2a7aa",
               "multiLocationId": "600000054106433583",
@@ -8900,7 +8900,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "MALAI KOFTA",
+              "name": "Malai Kofta",
               "posName": "",
               "guid": "93288ef6-9ebd-4acf-82aa-579f633e7fd7",
               "multiLocationId": "600000054106433585",
@@ -8960,7 +8960,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "PANEER BUTTER MASALA",
+              "name": "Paneer Butter Masala",
               "posName": "",
               "guid": "415c5b2b-e737-4454-8723-9f651e21ac3a",
               "multiLocationId": "600000054106433587",
@@ -9020,7 +9020,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "PANEER TIKKA MASALA",
+              "name": "Paneer Tikka Masala",
               "posName": "",
               "guid": "f67ef324-a784-41c4-a07e-5c87c84b7886",
               "multiLocationId": "600000054106433589",
@@ -9080,7 +9080,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "PALAK PANEER",
+              "name": "Palak Paneer",
               "posName": "",
               "guid": "476238e5-93d2-407b-8721-8327b803a760",
               "multiLocationId": "600000054106433591",
@@ -9140,7 +9140,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "KADAI PANEER",
+              "name": "Kadai Paneer",
               "posName": "",
               "guid": "274e9b09-88fd-4e74-a300-94e8fb346d9e",
               "multiLocationId": "600000054106433593",
@@ -9225,7 +9225,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "CHOWRASTHA SPL-CHICKEN CURRY",
+              "name": "Chowrastha Special Chicken Curry",
               "posName": "",
               "guid": "8a37c76f-0397-4507-922c-5dee1d146eb8",
               "multiLocationId": "600000054119730541",
@@ -9280,7 +9280,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ANDHRA CHICKEN CURRY",
+              "name": "Andhra Chicken Curry",
               "posName": "",
               "guid": "47df95d1-bca3-4c9d-b597-295a731bdc17",
               "multiLocationId": "600000054119730543",
@@ -9335,7 +9335,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "DHABA STYLE CHICKEN CURRY",
+              "name": "Dhaba Style Chicken Curry",
               "posName": "",
               "guid": "7317888c-f30d-4613-bf00-381733df72c1",
               "multiLocationId": "600000054119730545",
@@ -9390,7 +9390,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHETTINAD CHICKEN CURRY",
+              "name": "Chettinad Chicken Curry",
               "posName": "",
               "guid": "eecab8ae-cd1b-4ff2-ac38-713782bfb551",
               "multiLocationId": "600000054119730547",
@@ -9445,7 +9445,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "KADAI CHICKEN CURRY",
+              "name": "Kadai Chicken Curry",
               "posName": "",
               "guid": "44b87fe3-a235-490c-9fde-89dfb8135d69",
               "multiLocationId": "600000054119730549",
@@ -9500,7 +9500,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "MUGHLAI CHICKEN CURRY",
+              "name": "Mughalai Chicken Curry",
               "posName": "",
               "guid": "60101282-1365-4af9-8677-22682b25d6bf",
               "multiLocationId": "600000054119732151",
@@ -9555,7 +9555,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "GONGURA CHICKEN CURRY",
+              "name": "Gongura Chicken Curry",
               "posName": "",
               "guid": "2c401b55-1252-4c14-bef9-1c2429b39c82",
               "multiLocationId": "600000054119732153",
@@ -9610,7 +9610,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "BUTTER CHICKEN MASALA",
+              "name": "Butter Chicken Masala",
               "posName": "",
               "guid": "08c385cd-85e0-4463-bbb2-c6bcd3a8bb3e",
               "multiLocationId": "600000054119732155",
@@ -9665,7 +9665,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHICHEN TIKKA MASALA",
+              "name": "Chicken Tikka Masala",
               "posName": "",
               "guid": "cf4c67fe-4db4-4db1-af07-0ca4bb1037b0",
               "multiLocationId": "600000054119732157",
@@ -9720,7 +9720,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHICKEN JALFREZI",
+              "name": "Chicken Jalfrezi",
               "posName": "",
               "guid": "2798216c-afd8-41b1-b9fe-5103fde99f40",
               "multiLocationId": "600000054119732159",
@@ -9775,7 +9775,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHICKEN VINDALOO",
+              "name": "Chicken Vindaloo",
               "posName": "",
               "guid": "54b9dd63-ef27-4e11-a1de-4bc1b5c60d7d",
               "multiLocationId": "600000054119732161",
@@ -9830,7 +9830,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "PALAK CHICKEN CURRY",
+              "name": "Palak Chicken Curry",
               "posName": "",
               "guid": "6279c719-75c5-4a0a-9e85-c4aea1b57c17",
               "multiLocationId": "600000054119732163",
@@ -9885,7 +9885,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "GONGURA GOAT CURRY",
+              "name": "Gongura Goat Curry",
               "posName": "",
               "guid": "fda84094-dbca-4b4c-bad0-f620c053e21c",
               "multiLocationId": "600000054119732165",
@@ -9940,7 +9940,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ANDHRA GOAT CURRY",
+              "name": "Andhra Goat Curry",
               "posName": "",
               "guid": "6eb8db0a-48cc-4161-832d-4555b27183bf",
               "multiLocationId": "600000054119732167",
@@ -9995,7 +9995,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHOWRASTHA SPL-GOAT CURRY",
+              "name": "Chowrastha Special Goat Curry",
               "posName": "",
               "guid": "22201c55-d115-4651-8e3a-f856e0b65722",
               "multiLocationId": "600000054119732169",
@@ -10050,7 +10050,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "PALAK GOAT CURRY",
+              "name": "Palak Goat Curry",
               "posName": "",
               "guid": "8bd614da-b5c9-44cd-ae35-8992347c99e9",
               "multiLocationId": "600000054119732171",
@@ -10105,7 +10105,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "DHABA STYLLE GOAT CURRY",
+              "name": "Dhaba Style Goat Curry",
               "posName": "",
               "guid": "36e41dae-02db-4727-8e36-098e1beb25b8",
               "multiLocationId": "600000054119732173",
@@ -10160,7 +10160,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "CHETTINAD GOAT CURRY",
+              "name": "Chettinad Goat Curry",
               "posName": "",
               "guid": "87cbecf5-21ea-4746-8bd0-5dce5f433ed1",
               "multiLocationId": "600000054119732175",
@@ -10215,7 +10215,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "GOAT MANDAKINI",
+              "name": "Goat Mandakini",
               "posName": "",
               "guid": "4cf482cb-45de-4c07-8cfd-dcb184aa3fbe",
               "multiLocationId": "600000054119732177",
@@ -10270,7 +10270,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "GOAT RARA",
+              "name": "Goat Rara",
               "posName": "",
               "guid": "beff1742-b139-4b9c-8db3-f60b417c57d4",
               "multiLocationId": "600000054119732179",
@@ -10325,7 +10325,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat kheema curry",
+              "name": "Goat Kheema Curry",
               "posName": "",
               "guid": "e1389850-dd93-41dd-ad72-8617b5e54759",
               "multiLocationId": "600000054119732181",
@@ -10380,7 +10380,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "fish masala",
+              "name": "Fish Masala",
               "posName": "",
               "guid": "69e3086d-4a90-49ca-af33-10bd9ea15b61",
               "multiLocationId": "600000054119732183",
@@ -10435,7 +10435,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "shrimp masala",
+              "name": "Shrimp Masala",
               "posName": "",
               "guid": "8c68d76e-8341-48fc-b51c-1d25f492ce68",
               "multiLocationId": "600000054119732185",
@@ -10516,7 +10516,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "plain naan",
+              "name": "Plain Naan",
               "posName": "",
               "guid": "04efb6ab-0b6f-44cd-ba6f-1f2562229e8f",
               "multiLocationId": "600000054120068160",
@@ -10576,7 +10576,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "butter naan",
+              "name": "Butter Naan",
               "posName": "",
               "guid": "611eb872-3649-4082-b428-abfc37183110",
               "multiLocationId": "600000054120068162",
@@ -10636,7 +10636,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "garlic naan",
+              "name": "Garlic Naan",
               "posName": "",
               "guid": "2b2feb66-c697-4475-bbff-67ef206b2d00",
               "multiLocationId": "600000054120068164",
@@ -10696,7 +10696,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "bullet naan",
+              "name": "Bullet Naan",
               "posName": "",
               "guid": "c6c91b01-8ecf-4380-919a-36098919f3e7",
               "multiLocationId": "600000054120068166",
@@ -10756,7 +10756,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "plain kulcha",
+              "name": "Plain Kulcha",
               "posName": "",
               "guid": "ba965e21-3bb6-4de3-88a3-7aa0fa3e6dac",
               "multiLocationId": "600000054120068168",
@@ -10816,7 +10816,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "panner kulcha",
+              "name": "Panner Kulcha",
               "posName": "",
               "guid": "68d6d373-35b5-45c1-baae-a9b7ca8177f6",
               "multiLocationId": "600000054120068170",
@@ -10876,7 +10876,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "methi paratha",
+              "name": "Methi Paratha",
               "posName": "",
               "guid": "955a59db-1a11-42e9-b36d-533644c57c91",
               "multiLocationId": "600000054120068172",
@@ -10936,7 +10936,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "lachha paratha",
+              "name": "Lachha Paratha",
               "posName": "",
               "guid": "e8f19a70-b5f1-4a66-8c7e-da8793347259",
               "multiLocationId": "600000054120068174",
@@ -10996,7 +10996,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "aloo paratha",
+              "name": "Aloo Paratha",
               "posName": "",
               "guid": "b6c64e80-3852-4808-b83e-febbd3545918",
               "multiLocationId": "600000054120068176",
@@ -11056,7 +11056,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "panner paratha",
+              "name": "Panner Paratha",
               "posName": "",
               "guid": "addcb0d3-a9e9-4476-8caa-bb9cfc0b1a58",
               "multiLocationId": "600000054120068178",
@@ -11116,7 +11116,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "butter  roti",
+              "name": "Butter Roti",
               "posName": "",
               "guid": "fc2f641e-5755-4c27-843e-951ef5e76bc1",
               "multiLocationId": "600000054120068180",
@@ -11176,7 +11176,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "tandoori roti",
+              "name": "Tandoori Roti",
               "posName": "",
               "guid": "6ad1adb0-506d-45f9-abf6-68047660b115",
               "multiLocationId": "600000054120068182",
@@ -11257,7 +11257,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "street style fried rice",
+              "name": "Street Style Fried Rice",
               "posName": "",
               "guid": "0eb467c3-e4c9-4c1e-8d3b-df5b59e0a146",
               "multiLocationId": "600000054120216231",
@@ -11315,7 +11315,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "fried rice",
+              "name": "Fried Rice",
               "posName": "",
               "guid": "ac1f49e8-7597-4b90-b6b3-5c33eb2e7fcf",
               "multiLocationId": "600000054120216233",
@@ -11373,7 +11373,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "schezwan fried rice",
+              "name": "Schezwan Fried Rice",
               "posName": "",
               "guid": "56e5d595-c166-49ad-b3b9-dd2d0920216d",
               "multiLocationId": "600000054120216235",
@@ -11431,7 +11431,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "hakka noodles",
+              "name": "Hakka Noodles",
               "posName": "",
               "guid": "ddcd9ca5-7d48-4b15-9d81-70374eb1ffa0",
               "multiLocationId": "600000054120216237",
@@ -11489,7 +11489,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "hot garlic noodles",
+              "name": "Hot Garlic Noodles",
               "posName": "",
               "guid": "8e2f6bbb-4e01-434e-a084-859a3013ef4a",
               "multiLocationId": "600000054120216239",
@@ -11547,7 +11547,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "schezwan noodles",
+              "name": "Schezwan Noodles",
               "posName": "",
               "guid": "8d933a97-be1f-4a52-88ec-af96725dcd3d",
               "multiLocationId": "600000054120216241",
@@ -11626,7 +11626,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "veg dum biryani",
+              "name": "Veg Dum Biryani",
               "posName": "",
               "guid": "1a4d2e1c-9656-4161-b2e9-d5bed55abb5f",
               "multiLocationId": "600000054120562598",
@@ -11681,7 +11681,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura veg biryani",
+              "name": "Gongura Veg Biryani",
               "posName": "",
               "guid": "dfe11e6e-65b1-40ee-a219-49ba52e20c6e",
               "multiLocationId": "600000054120563650",
@@ -11736,7 +11736,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulavacharu veg biryani",
+              "name": "Ulavacharu Veg Biryani",
               "posName": "",
               "guid": "268ad61b-69e9-454a-b0bc-74cb6a76e9a5",
               "multiLocationId": "600000054120563652",
@@ -11791,7 +11791,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "guttivankaya biryani",
+              "name": "Guttivankaya Biryani",
               "posName": "",
               "guid": "d9295dde-5741-4140-861d-9eb04e692672",
               "multiLocationId": "600000054120563654",
@@ -11846,7 +11846,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "panner biryani",
+              "name": "Paneer Biryani",
               "posName": "",
               "guid": "474fb82e-800b-4ba6-a0dd-3c603040a304",
               "multiLocationId": "600000054120563656",
@@ -11901,7 +11901,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura panner biryani",
+              "name": "Gongura Paneer Biryani",
               "posName": "",
               "guid": "b58dc246-b1b0-49fe-afce-605fd86a4222",
               "multiLocationId": "600000054120563658",
@@ -11956,7 +11956,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulvacharu panner biryani",
+              "name": "Ulvacharu Paneer Biryani",
               "posName": "",
               "guid": "76b7b813-1a9e-4505-a349-9d4471e1b121",
               "multiLocationId": "600000054120563660",
@@ -12011,7 +12011,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "kaju gobi biryani",
+              "name": "Kaju Gobi Biryani",
               "posName": "",
               "guid": "ad0f5c5a-7a59-497d-90f9-156740ae603a",
               "multiLocationId": "600000054120563662",
@@ -12087,7 +12087,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "veg dum biryan family pack",
+              "name": "Veg Dum Biryani Family Pack",
               "posName": "",
               "guid": "913cf461-80f6-4a18-bca4-680d9ec8a709",
               "multiLocationId": "600000054121528584",
@@ -12142,7 +12142,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura veg biryani family pack",
+              "name": "Gongura Veg Biryani Family Pack",
               "posName": "",
               "guid": "b89d64ac-f0df-4718-9736-eb9a45782f8d",
               "multiLocationId": "600000054121528586",
@@ -12197,7 +12197,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulavacharu veg biryani family pack",
+              "name": "Ulavacharu Veg Biryani Family Pack",
               "posName": "",
               "guid": "0c66bdc9-2f45-4c83-893d-cc0d53cd2311",
               "multiLocationId": "600000054121528588",
@@ -12252,7 +12252,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "guttivankaya biryani family pack",
+              "name": "Guttivankaya Biryani Family Pack",
               "posName": "",
               "guid": "76f72808-892d-4d72-9672-5baf373dcbd2",
               "multiLocationId": "600000054121528590",
@@ -12307,7 +12307,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "panner biryani family pack",
+              "name": "Paneer Biryani Family Pack",
               "posName": "",
               "guid": "c34fd350-d429-4524-90cf-60e8a5ea3435",
               "multiLocationId": "600000054121528592",
@@ -12362,7 +12362,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura panner biryani family pack",
+              "name": "Gongura Paneer Biryani Family Pack",
               "posName": "",
               "guid": "add5c026-1620-4112-9bca-7e06fe8806cb",
               "multiLocationId": "600000054121528594",
@@ -12417,7 +12417,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulvacharu panner biryani family pack",
+              "name": "Ulvacharu Paneer Biryani Family Pack",
               "posName": "",
               "guid": "c0d188f7-f37c-411d-ad7f-e9f23df2a5a2",
               "multiLocationId": "600000054121528596",
@@ -12472,7 +12472,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "kaju gobi biryani family pack",
+              "name": "Kaju Gobi Biryani Family Pack",
               "posName": "",
               "guid": "454e43d1-ed57-44d4-9936-1c75d4e2b65f",
               "multiLocationId": "600000054121528598",
@@ -12548,7 +12548,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "chicken dum  biryani",
+              "name": "Chicken Dum  Biryani",
               "posName": "",
               "guid": "042c3b3f-9ecd-48fb-a7ed-bdf33217a3a5",
               "multiLocationId": "600000054122318452",
@@ -12603,7 +12603,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura chicken biryani",
+              "name": "Gongura Chicken Biryani",
               "posName": "",
               "guid": "6305fe26-2c80-4e0f-94c1-6921629112ab",
               "multiLocationId": "600000054122318454",
@@ -12658,7 +12658,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulavacharu chicken biryani",
+              "name": "Ulavacharu Chicken Biryani",
               "posName": "",
               "guid": "0202f72d-54ac-46ec-bce9-029cc5589b61",
               "multiLocationId": "600000054122318456",
@@ -12713,7 +12713,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat dum biryani",
+              "name": "Goat Dum Biryani",
               "posName": "",
               "guid": "3ed7b694-909f-4f99-82e2-a65e86b9ebbc",
               "multiLocationId": "600000054122318458",
@@ -12768,7 +12768,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura goat biryani",
+              "name": "Gongura Goat Biryani",
               "posName": "",
               "guid": "8849dcc1-accb-47b2-bcc2-df96f808c927",
               "multiLocationId": "600000054122318460",
@@ -12823,7 +12823,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulavacharu goat biryani",
+              "name": "Ulavacharu Goat Biryani",
               "posName": "",
               "guid": "1df96c44-887b-4647-a6d4-dda8d7d9485c",
               "multiLocationId": "600000054122318462",
@@ -12878,7 +12878,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken fry biryani",
+              "name": "Chicken Fry Biryani",
               "posName": "",
               "guid": "262fbe3e-4988-42fc-a7f5-b5a0c21913c6",
               "multiLocationId": "600000054122318464",
@@ -12933,7 +12933,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken 65 biryani",
+              "name": "Chicken 65 Biryani",
               "posName": "",
               "guid": "c825b85f-f04b-420c-9002-e581f7baca66",
               "multiLocationId": "600000054122318466",
@@ -12988,7 +12988,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "vijayawada boneless",
+              "name": "Vijayawada Boneless Biryani",
               "posName": "",
               "guid": "d7a53f4e-7a1a-4b6f-8ddd-e22c3eecbc90",
               "multiLocationId": "600000054122318468",
@@ -13043,7 +13043,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat fry biryani",
+              "name": "Goat Fry Biryani",
               "posName": "",
               "guid": "9d0ed89a-154c-498b-944d-34e09009529a",
               "multiLocationId": "600000054122318470",
@@ -13098,7 +13098,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat keema biryani",
+              "name": "Goat Keema Biryani",
               "posName": "",
               "guid": "a30d61f8-f912-4014-a23a-250f5b42edc7",
               "multiLocationId": "600000054122318472",
@@ -13153,7 +13153,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "fish biryani",
+              "name": "Fish Biryani",
               "posName": "",
               "guid": "7a22ca19-729b-4ca4-b574-b9cfbffa94e3",
               "multiLocationId": "600000054122318474",
@@ -13208,7 +13208,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "shrimp biryani",
+              "name": "Shrimp Biryani",
               "posName": "",
               "guid": "89501a9d-d520-4664-b0f5-8df29c04dd74",
               "multiLocationId": "600000054122318476",
@@ -13263,7 +13263,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "egg biryani",
+              "name": "Egg Biryani",
               "posName": "",
               "guid": "fa9c975b-398b-40db-b24a-ccbcd10eba59",
               "multiLocationId": "600000054122923615",
@@ -13339,7 +13339,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "chicken dum  biryani family pack",
+              "name": "Chicken Dum  Biryani Family Pack",
               "posName": "",
               "guid": "3a9c08c9-bd22-497d-9ca3-7c2f9c7a150c",
               "multiLocationId": "600000054122894413",
@@ -13394,7 +13394,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura chicken biryani family pack",
+              "name": "Gongura Chicken Biryani Family Pack",
               "posName": "",
               "guid": "792064a1-8c92-4289-9167-1cd027f98510",
               "multiLocationId": "600000054122894415",
@@ -13449,7 +13449,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulavacharu chicken biryani family pack",
+              "name": "Ulavacharu Chicken Biryani Family Pack",
               "posName": "",
               "guid": "611d1da4-8223-4c8c-bdb8-1d0da4ed2194",
               "multiLocationId": "600000054122894417",
@@ -13504,7 +13504,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat dum biryani family pack",
+              "name": "Goat Dum Biryani Family Pack",
               "posName": "",
               "guid": "8648bfca-2093-457b-b6e5-11aab4936806",
               "multiLocationId": "600000054122894419",
@@ -13559,7 +13559,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "gongura goat biryani family pack",
+              "name": "Gongura Goat Biryani Family Pack",
               "posName": "",
               "guid": "7ccc1699-478b-467a-9f7d-61a7bbaa38dd",
               "multiLocationId": "600000054122894421",
@@ -13614,7 +13614,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "ulavacharu goat biryani family pack",
+              "name": "Ulavacharu Goat Biryani Family Pack",
               "posName": "",
               "guid": "8092565a-ed2b-47dc-a657-3cb257fa6a61",
               "multiLocationId": "600000054122894423",
@@ -13669,7 +13669,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "egg biryani family pack",
+              "name": "Egg Biryani Family Pack",
               "posName": "",
               "guid": "dfe50380-43cd-4de1-95b3-a15136216570",
               "multiLocationId": "600000054122894425",
@@ -13724,7 +13724,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken 65 biryani family pack",
+              "name": "Chicken 65 Biryani Family Pack",
               "posName": "",
               "guid": "83c587c4-0e7e-49a9-aaa0-639ec9456cfe",
               "multiLocationId": "600000054122894427",
@@ -13779,7 +13779,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken fry biryani family pack",
+              "name": "Chicken Fry Biryani Family Pack",
               "posName": "",
               "guid": "36c31918-91e4-480d-a7e6-4d5a2b4674be",
               "multiLocationId": "600000054122894429",
@@ -13834,7 +13834,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "vijayawada boneless family pack",
+              "name": "Vijayawada Boneless Family Pack",
               "posName": "",
               "guid": "6fa3bbc4-3019-4357-b37d-9f4086d713a5",
               "multiLocationId": "600000054122894431",
@@ -13889,7 +13889,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat keema biryani family pack",
+              "name": "Goat Keema Biryani Family Pack",
               "posName": "",
               "guid": "0803bbe9-e25d-4a71-926b-0e41cbc6e0b0",
               "multiLocationId": "600000054122894433",
@@ -13944,7 +13944,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat fry biryani family pack",
+              "name": "Goat Fry Biryani Family Pack",
               "posName": "",
               "guid": "d990cd4f-c313-4a2c-93f1-8b754ff8414d",
               "multiLocationId": "600000054122894435",
@@ -13999,7 +13999,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "fish biryani",
+              "name": "Fish Biryani Family Pack",
               "posName": "",
               "guid": "9b836653-a36e-4f96-8e8f-9658743ec8f9",
               "multiLocationId": "600000054122894437",
@@ -14054,7 +14054,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "shrimp biryani",
+              "name": "Shrimp Biryani Family Pack",
               "posName": "",
               "guid": "b74fc7af-c72d-45b8-900e-95ea76d52d62",
               "multiLocationId": "600000054122894439",
@@ -14130,7 +14130,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "chef spl-veg pulao",
+              "name": "Chef Special Veg Pulao",
               "posName": "",
               "guid": "d642cc75-955a-4abc-aa75-ec1a6307c36c",
               "multiLocationId": "600000054123231213",
@@ -14185,7 +14185,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "guttivankaya pulao",
+              "name": "Guttivankaya Pulao",
               "posName": "",
               "guid": "2269dc9e-19bf-4bf0-a217-f573f8ba8e72",
               "multiLocationId": "600000054123231215",
@@ -14240,7 +14240,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "paneer pulao",
+              "name": "Paneer Pulao",
               "posName": "",
               "guid": "19ec20cc-c90b-4efa-af1e-3f6fbc4e0d89",
               "multiLocationId": "600000054123231217",
@@ -14295,7 +14295,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken fry pulao",
+              "name": "Chicken Fry Pulao",
               "posName": "",
               "guid": "b5372f9d-9518-4247-bb9b-6e6d53ae30a3",
               "multiLocationId": "600000054123231219",
@@ -14350,7 +14350,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "pachimirchi chicken pulao",
+              "name": "Pachimirchi Chicken Pulao",
               "posName": "",
               "guid": "14cefbb7-4da2-43bc-b005-ab2455e131ff",
               "multiLocationId": "600000054123231221",
@@ -14405,7 +14405,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat fry pulao",
+              "name": "Goat Fry Pulao",
               "posName": "",
               "guid": "ff7cede8-478e-45e6-8f72-19b005cb097f",
               "multiLocationId": "600000054123231223",
@@ -14460,7 +14460,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat keema pulao",
+              "name": "Goat Keema Pulao",
               "posName": "",
               "guid": "373034a2-282e-4950-a125-008be60e2432",
               "multiLocationId": "600000054123231225",
@@ -14536,7 +14536,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "chef spl-veg pulao family pack",
+              "name": "Chef Special Veg Pulao Family Pack",
               "posName": "",
               "guid": "30d5b20d-9794-4bf0-8f83-b50678220015",
               "multiLocationId": "600000054123437069",
@@ -14591,7 +14591,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "guttivankaya pulao family pack",
+              "name": "Guttivankaya Pulao Family Pack",
               "posName": "",
               "guid": "e37acf44-0548-4792-ad9e-c2096395f2f9",
               "multiLocationId": "600000054123437071",
@@ -14646,7 +14646,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "paneer pulao family pack",
+              "name": "Paneer Pulao Family Pack",
               "posName": "",
               "guid": "559b537d-e64a-4955-a76b-658c234ca382",
               "multiLocationId": "600000054123437073",
@@ -14701,7 +14701,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken fry pulao family pack",
+              "name": "Chicken Fry Pulao Family Pack",
               "posName": "",
               "guid": "95a6f7e3-2612-45c3-9c11-ffe40f39f903",
               "multiLocationId": "600000054123437075",
@@ -14756,7 +14756,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "pachimirchi chicken pulao family pack",
+              "name": "Pachimirchi Chicken Pulao Family Pack",
               "posName": "",
               "guid": "341969a8-1b87-4a08-ad05-771061f28478",
               "multiLocationId": "600000054123437077",
@@ -14811,7 +14811,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat fry pulao family pack",
+              "name": "Goat Fry Pulao Family Pack",
               "posName": "",
               "guid": "b02fc6cf-66de-4587-aad8-48f5d30b4bc5",
               "multiLocationId": "600000054123437079",
@@ -14866,7 +14866,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "goat keema pulao family pack",
+              "name": "Goat Keema Pulao Family Pack",
               "posName": "",
               "guid": "0053da36-529b-41ed-905e-d28749fd1c6a",
               "multiLocationId": "600000054123437081",
@@ -15052,7 +15052,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Egg puff",
+              "name": "Egg Puff",
               "posName": "",
               "guid": "b3e63e4a-7ed5-40d0-a9ef-fdccac12a033",
               "multiLocationId": "600000053915932889",
@@ -15107,7 +15107,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Chicken puff",
+              "name": "Chicken Puff",
               "posName": "",
               "guid": "093ecf9d-5259-4602-b355-0443e64ecae8",
               "multiLocationId": "600000053926278903",
@@ -15162,7 +15162,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chicken tikka puffs",
+              "name": "Chicken Tikka Puffs",
               "posName": "",
               "guid": "eaa7e772-74b2-4336-b629-85c375a18feb",
               "multiLocationId": "600000054130771954",
@@ -15217,7 +15217,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "bun butter jam",
+              "name": "Bun Butter Jam",
               "posName": "",
               "guid": "4581e037-fcd7-4ce4-99e1-61a844eb46ac",
               "multiLocationId": "600000054162991269",
@@ -15272,7 +15272,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "cookies",
+              "name": "Cookies",
               "posName": "",
               "guid": "1dfdd52a-858c-4227-95db-37cdf115aa61",
               "multiLocationId": "600000054162991271",
@@ -15327,7 +15327,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "osmania biscuits",
+              "name": "Osmania Biscuits",
               "posName": "",
               "guid": "1112b56b-5daa-4c9c-9dd4-85d34d2da8cb",
               "multiLocationId": "600000054162991273",
@@ -15403,7 +15403,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "Badam milk",
+              "name": "Badam Milk",
               "posName": "",
               "guid": "142becd3-85c7-4135-85b2-e791eec6571f",
               "multiLocationId": "600000014510655836",
@@ -15458,7 +15458,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "chichoo shake",
+              "name": "Chichoo Shake",
               "posName": "",
               "guid": "0ed744bf-0f60-4474-820c-813e5a3464b9",
               "multiLocationId": "600000015844264705",
@@ -15513,7 +15513,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Mango  lassi",
+              "name": "Mango Lassi",
               "posName": "",
               "guid": "97eb6904-6307-468b-bffa-afb397fb01a4",
               "multiLocationId": "600000054188830955",
@@ -15568,7 +15568,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Pistachio milk shake",
+              "name": "Pistachio Milk Shake",
               "posName": "",
               "guid": "3c934f93-3cfa-44df-b227-acfa5831288e",
               "multiLocationId": "600000054188830957",
@@ -15623,7 +15623,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "rose milk",
+              "name": "Rose Milk",
               "posName": "",
               "guid": "b1e7f9dd-7e51-4114-bcf5-372432ac8f1c",
               "multiLocationId": "600000054188830959",
@@ -15678,7 +15678,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "masala butter milk",
+              "name": "Masala Butter Milk",
               "posName": "",
               "guid": "2199d47b-0181-40d0-9908-ce867d09c26e",
               "multiLocationId": "600000054188830961",
@@ -15733,7 +15733,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "canned drink",
+              "name": "Canned Drink",
               "posName": "",
               "guid": "ba6f5b2e-caa7-461c-b2c7-0a988d859b3a",
               "multiLocationId": "600000054188830963",
@@ -15788,7 +15788,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "water",
+              "name": "Water",
               "posName": "",
               "guid": "c32365e2-0828-42ed-986c-b5fa58eefdce",
               "multiLocationId": "600000054188830965",
@@ -15864,7 +15864,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "Sweet paan",
+              "name": "Sweet Paan",
               "posName": "",
               "guid": "c61acded-60fd-439e-9d7c-d0150ae86ef6",
               "multiLocationId": "600000054188855100",
@@ -15974,7 +15974,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Gulab jamun",
+              "name": "Gulab Jamun",
               "posName": "",
               "guid": "a2e14220-be16-4ee8-bade-1222662eaf2f",
               "multiLocationId": "600000054188855104",
@@ -16029,7 +16029,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Double ka meetha",
+              "name": "Double Ka Meetha",
               "posName": "",
               "guid": "bb0dc6e1-d417-44c4-9cf1-020b41d597bd",
               "multiLocationId": "600000054188855106",
@@ -16084,7 +16084,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Rava laddu",
+              "name": "Rava Laddu",
               "posName": "",
               "guid": "15c2d3f9-87a9-47a1-9239-a3a536e1c7ff",
               "multiLocationId": "600000054188855108",
@@ -16215,7 +16215,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "irani chai",
+              "name": "Irani Chai",
               "posName": "",
               "guid": "6b577278-9d8f-49bc-a10c-9d415462b4e2",
               "multiLocationId": "600000054165230899",
@@ -16270,7 +16270,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "masala chai",
+              "name": "Masala Chai",
               "posName": "",
               "guid": "f484cff9-6383-40d4-94c1-8e2d1ddfa9ec",
               "multiLocationId": "600000054165234051",
@@ -16325,7 +16325,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "madras filter coffee",
+              "name": "Madras Filter Coffee",
               "posName": "",
               "guid": "6115b2cd-5432-4f49-a7e9-ba00d8ed541d",
               "multiLocationId": "600000054165234053",
@@ -16401,7 +16401,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "boiled rice (16oz)",
+              "name": "Boiled Rice (16oz)",
               "posName": "",
               "guid": "20153065-a433-476f-ba06-69bbe1e8381b",
               "multiLocationId": "600000054123825658",
@@ -16456,7 +16456,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "curd rice (16oz)",
+              "name": "Curd Rice (16oz)",
               "posName": "",
               "guid": "b6fc8798-0a42-4921-aebb-c50db02e6a76",
               "multiLocationId": "600000054123825660",
@@ -16511,7 +16511,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "pulao (16oz)",
+              "name": "Pulao (16oz)",
               "posName": "",
               "guid": "c0d3039a-ab7a-4ccf-8cdf-40a0aa10a491",
               "multiLocationId": "600000054123825662",
@@ -16566,7 +16566,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "jeera rice",
+              "name": "Jeera Rice",
               "posName": "",
               "guid": "30da312c-0b34-4241-b4f8-2197df896ca9",
               "multiLocationId": "600000054123825664",
@@ -16621,7 +16621,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "dal khichdi",
+              "name": "Dal Khichdi",
               "posName": "",
               "guid": "49b62ade-7ff8-4e90-bb6d-54e48b5093d3",
               "multiLocationId": "600000054123825666",
@@ -16697,7 +16697,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "Pine apple juice",
+              "name": "Pineapple Juice",
               "posName": "",
               "guid": "8485a98c-3709-47ec-acdb-ae4d58b2d958",
               "multiLocationId": "600000054188843123",
@@ -16752,7 +16752,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Orange juice",
+              "name": "Orange Juice",
               "posName": "",
               "guid": "fb5b6cc2-3181-4060-96a5-f0cc43426109",
               "multiLocationId": "600000054188843125",
@@ -16807,7 +16807,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Watermelon juice",
+              "name": "Watermelon Juice",
               "posName": "",
               "guid": "e55e4182-e90e-4371-a2a9-53a7783be7c7",
               "multiLocationId": "600000054188843127",
@@ -16862,7 +16862,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Sugarcane juice",
+              "name": "Sugarcane Juice",
               "posName": "",
               "guid": "a5406473-78a3-41fa-9468-4c9df525b4fd",
               "multiLocationId": "600000054188843129",
@@ -16917,7 +16917,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Blueberry mojito",
+              "name": "Blueberry Mojito",
               "posName": "",
               "guid": "0f641ee5-5e05-4a5a-a053-135d56cba1a3",
               "multiLocationId": "600000054188843131",
@@ -16972,7 +16972,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Fresh lime soda",
+              "name": "Fresh Lime Soda",
               "posName": "",
               "guid": "fee03e2d-9089-4ac4-81d1-6e4d35830a76",
               "multiLocationId": "600000054188843133",
@@ -17048,7 +17048,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "Ice cream /1 scoop",
+              "name": "Ice Cream - 1 Scoop",
               "posName": "",
               "guid": "f4b604a9-a075-4a69-bfc1-571bea9f355c",
               "multiLocationId": "600000054188855112",
@@ -17103,7 +17103,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Ice cream /2scoop",
+              "name": "Ice Cream - 2 Scoop",
               "posName": "",
               "guid": "deaab535-efb3-470a-a7e3-67d718da8ea1",
               "multiLocationId": "600000054188855114",
