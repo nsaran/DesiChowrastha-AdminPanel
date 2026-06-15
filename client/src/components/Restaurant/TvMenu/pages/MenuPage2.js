@@ -243,6 +243,8 @@ const MenuPage2 = () => {
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Appetizers</h2>
                         {renderToastMenuItems(menu, "Veg Appetizers")}
+                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Egg Station</h2>
+                        {renderToastMenuItems(menu, "Egg Station")}
                     </Col>
 
                     {/* Column 2: Veg Appetizers (continued) + Non-Veg Appetizers
@@ -256,8 +258,6 @@ const MenuPage2 = () => {
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Appetizers Non-Veg</h2>
                         {renderToastMenuItems(menu, "Non-Veg Appetizers")}
-                        <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Egg Station</h2>
-                        {renderToastMenuItems(menu, "Egg Station")}
                     </Col>
 
                     {/* Column 3: Egg Station + Special Dips + Tandoori
