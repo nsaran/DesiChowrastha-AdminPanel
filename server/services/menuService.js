@@ -88,6 +88,7 @@ async function fetchMenuData(location) {
                             itemType: itemType
                         };
 
+                        menuItem.isAvailable = true;
                         if (isNotAvailable) {
                             menuItem.isAvailable = false;
                         }
