@@ -20,6 +20,7 @@ import { EditOutlined, DeleteOutlined, MenuOutlined } from "@ant-design/icons";
 import MenuHeader from "./components/MenuHeader";
 import MenuFooter from "./components/MenuFooter";
 import { useMediaQuery } from "react-responsive";
+import API_BASE_URL from "../../../config/api";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -44,7 +45,7 @@ const MenuComponent = () => {
     const fetchMenu = async () => {
       try {
         //const response = await axios.get(`https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`);
-        const response = await axios.get(`http://localhost:3010/api/menu?location=${restaurantId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/menu?location=${restaurantId}`);
 
         setMenuData(response.data);
         const flattenedData = response.data.flatMap((menu) =>

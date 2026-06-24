@@ -9,6 +9,7 @@ import { renderToastMenuItems } from "../renderMenuItems";
 import { useParams } from 'react-router-dom';
 import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
+import API_BASE_URL from '../../../../config/api';
 
 const Page2 = () => {
     const { restaurantId } = useParams();
@@ -20,7 +21,7 @@ const Page2 = () => {
         const fetchData = async () => {
             try {
                 //const response = await fetch(`https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`);
-                const response = await fetch(`http://localhost:3010/api/menu?location=${restaurantId}`);
+                const response = await fetch(`${API_BASE_URL}/api/menu?location=${restaurantId}`);
                 const data = await response.json();
 
                 if (JSON.stringify(data) !== JSON.stringify(previousMenu)) {

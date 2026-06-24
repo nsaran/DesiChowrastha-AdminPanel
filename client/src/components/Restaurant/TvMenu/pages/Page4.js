@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import LoaderIcon from '../assets/images/loader_icon.gif';
 import { firestore } from '../../../../config/firebase';
 import { Tag } from 'antd';
+import API_BASE_URL from '../../../../config/api';
 // import fillergif from '../../../../assets/images/filler.gif';
 import CHILLI from "../assets/images/chilli.png";
 
@@ -76,7 +77,7 @@ const Page4 = () => {
         const fetchData = async () => {
             try {
                 const res = await fetch(
-                    `https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`
+                    `${API_BASE_URL}/api/menu?location=${restaurantId}`
                 );
                 const data = await res.json();
                 if (JSON.stringify(data) !== JSON.stringify(previousMenu)) {
@@ -103,7 +104,7 @@ const Page4 = () => {
         const fetchPending = async () => {
             try {
                 const res = await fetch(
-                    `https://desichowrastha-admin.azurewebsites.net/api/pendingOrders?location=${restaurantId}`
+                    `${API_BASE_URL}/api/pendingOrders?location=${restaurantId}`
                 );
                 const data = await res.json();
                 setPendingOrders(data);
@@ -121,7 +122,7 @@ const Page4 = () => {
         const fetchCompleted = async () => {
             try {
                 const res = await fetch(
-                    `https://desichowrastha-admin.azurewebsites.net/api/completedOrders?location=${restaurantId}`
+                    `${API_BASE_URL}/api/completedOrders?location=${restaurantId}`
                 );
                 const data = await res.json();
                 if (JSON.stringify(data) !== JSON.stringify(completedOrders)) {

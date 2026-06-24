@@ -1,6 +1,6 @@
 {
   "restaurantGuid": "bda948cd-2639-41ce-85a0-25b01e7b6839",
-  "lastUpdated": "2026-06-15T03:15:35.364+0000",
+  "lastUpdated": "2026-06-24T00:11:49.312+0000",
   "restaurantTimeZone": "America/New_York",
   "menus": [
     {
@@ -705,8 +705,8 @@
               "eligiblePaymentAssistancePrograms": []
             }
           ],
-          "posButtonColorLight": "#f7f7f7",
-          "posButtonColorDark": "#1a1c23"
+          "posButtonColorLight": "#32a206",
+          "posButtonColorDark": "#113a00"
         },
         {
           "name": "Dosa",
@@ -1931,8 +1931,8 @@
               "eligiblePaymentAssistancePrograms": []
             }
           ],
-          "posButtonColorLight": "#f7f7f7",
-          "posButtonColorDark": "#1a1c23"
+          "posButtonColorLight": "#32a206",
+          "posButtonColorDark": "#113a00"
         },
         {
           "name": "Non-Veg Combo",
@@ -2409,8 +2409,8 @@
               "eligiblePaymentAssistancePrograms": []
             }
           ],
-          "posButtonColorLight": "#f7f7f7",
-          "posButtonColorDark": "#1a1c23"
+          "posButtonColorLight": "#e45a4e",
+          "posButtonColorDark": "#561408"
         },
         {
           "name": "Snack Box",
@@ -2975,8 +2975,8 @@
               "eligiblePaymentAssistancePrograms": []
             }
           ],
-          "posButtonColorLight": "#f7f7f7",
-          "posButtonColorDark": "#1a1c23"
+          "posButtonColorLight": "#e56f1a",
+          "posButtonColorDark": "#682d03"
         },
         {
           "name": "Chaat",
@@ -3656,8 +3656,8 @@
               "eligiblePaymentAssistancePrograms": []
             }
           ],
-          "posButtonColorLight": "#f7f7f7",
-          "posButtonColorDark": "#1a1c23"
+          "posButtonColorLight": "#fed850",
+          "posButtonColorDark": "#7b5f27"
         },
         {
           "name": "Street Style",
@@ -4162,8 +4162,8 @@
               "eligiblePaymentAssistancePrograms": []
             }
           ],
-          "posButtonColorLight": "#f7f7f7",
-          "posButtonColorDark": "#1a1c23"
+          "posButtonColorLight": "#f07166",
+          "posButtonColorDark": "#722e25"
         },
         {
           "name": "Special Dips",
@@ -4403,120 +4403,10 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Chutney",
+              "name": "Chutney (Peanut/Mint/Tamrind)",
               "posName": "",
               "guid": "048b28c9-f2a4-4afe-9b03-a414ad5838b8",
               "multiLocationId": "600000054055781369",
-              "masterId": 600000054055781400,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 1,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Mint Chutney",
-              "posName": "",
-              "guid": "c854cd0d-1e42-478e-a285-fd7695358200",
-              "multiLocationId": "600000054055781371",
-              "masterId": 600000054055781400,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 1,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Tamrind Chutney",
-              "posName": "",
-              "guid": "ae8034ff-855d-469c-b3c4-23ccc7cfa7d3",
-              "multiLocationId": "600000054055781373",
               "masterId": 600000054055781400,
               "description": "",
               "image": null,
@@ -4678,8 +4568,8 @@
               "eligiblePaymentAssistancePrograms": []
             }
           ],
-          "posButtonColorLight": "#f7f7f7",
-          "posButtonColorDark": "#1a1c23"
+          "posButtonColorLight": "#ffe6e9",
+          "posButtonColorDark": "#7e635d"
         },
         {
           "name": "Veg Appetizers",
@@ -4809,7 +4699,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                5
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -4875,7 +4765,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                5
+                6
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -4937,7 +4827,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                9
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5003,7 +4893,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                10
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5069,7 +4959,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                14
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5135,7 +5025,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                15
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5201,7 +5091,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                16
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5267,7 +5157,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                5
+                17
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5333,7 +5223,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                18
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5399,7 +5289,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                19
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5465,7 +5355,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                20
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5531,7 +5421,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                21
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5597,7 +5487,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                22
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5663,7 +5553,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                23,
+                24
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5729,7 +5620,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                28
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5795,7 +5686,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                29
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5861,7 +5752,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                1
+                30
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -5949,7 +5840,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                31
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6011,7 +5902,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                32
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6073,7 +5964,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                33
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6135,7 +6026,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                34
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6197,7 +6088,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                38
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6259,7 +6150,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                10
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6321,7 +6212,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6383,7 +6274,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                40
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6445,7 +6336,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                41
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6507,7 +6398,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                42
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6569,7 +6460,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                41
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6631,7 +6522,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                40
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6693,7 +6584,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                40
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6755,7 +6646,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                41
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6816,9 +6707,7 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [
-                7
-              ],
+              "modifierGroupReferences": [],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -6879,7 +6768,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                41
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6941,7 +6830,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                41
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6981,7 +6870,7 @@
                 "POS",
                 "KIOSK"
               ],
-              "price": 18.99,
+              "price": 19.99,
               "pricingStrategy": "BASE_PRICE",
               "pricingRules": null,
               "isDeferred": false,
@@ -7003,7 +6892,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                41
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -7043,7 +6932,7 @@
                 "POS",
                 "KIOSK"
               ],
-              "price": 18.99,
+              "price": 19.99,
               "pricingStrategy": "BASE_PRICE",
               "pricingRules": null,
               "isDeferred": false,
@@ -7065,7 +6954,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                7
+                41
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -7948,7 +7837,10 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40,
+                43
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8008,7 +7900,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                41
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8068,7 +7962,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8128,7 +8024,10 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                47,
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8214,7 +8113,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                50
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8274,7 +8175,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                51
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8334,7 +8237,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8394,7 +8299,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                52
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8514,7 +8421,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                53
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8574,7 +8483,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                57
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8634,7 +8545,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                58
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8694,7 +8607,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                59
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8754,7 +8669,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                60
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8814,7 +8731,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                61
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8874,7 +8793,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                62
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8934,7 +8855,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                63
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -8994,7 +8917,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                64
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9054,7 +8979,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                65
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9114,7 +9041,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                66
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9178,7 +9107,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                41
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9309,7 +9240,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                41
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9364,7 +9297,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9419,7 +9354,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9474,7 +9411,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                41
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9529,7 +9468,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9584,7 +9525,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9639,7 +9582,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9694,7 +9639,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9749,7 +9696,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9804,7 +9753,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9859,7 +9810,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9914,7 +9867,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -9969,7 +9924,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                41
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10024,7 +9981,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10079,7 +10038,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10134,7 +10095,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10189,7 +10152,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10244,7 +10209,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10299,7 +10266,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10354,7 +10323,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10409,7 +10380,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -10464,7 +10437,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                40
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -11287,8 +11262,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                8,
-                12
+                67,
+                71
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11345,8 +11320,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                8,
-                12
+                67,
+                71
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11403,8 +11378,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                8,
-                12
+                67,
+                71
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11461,8 +11436,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                8,
-                12
+                67,
+                71
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11519,8 +11494,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                8,
-                12
+                67,
+                71
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11577,8 +11552,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                8,
-                12
+                67,
+                71
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11655,7 +11630,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -11710,7 +11687,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -11765,7 +11744,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -11820,7 +11801,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -11875,7 +11858,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -11930,7 +11915,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -11985,7 +11972,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12040,7 +12029,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                79
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12116,7 +12107,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12171,7 +12164,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12226,7 +12221,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12281,7 +12278,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12336,7 +12335,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12391,7 +12392,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12446,7 +12449,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12501,7 +12506,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                80
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12577,7 +12584,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12632,7 +12641,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12687,7 +12698,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12742,7 +12755,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12797,7 +12812,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12852,7 +12869,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12907,7 +12926,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -12962,7 +12983,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13017,7 +13040,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13072,7 +13097,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13127,7 +13154,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13182,7 +13211,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13237,7 +13268,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13292,7 +13325,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                81
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13368,7 +13403,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13423,7 +13460,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13478,7 +13517,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13533,7 +13574,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13588,7 +13631,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13643,7 +13688,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13698,7 +13745,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13753,7 +13802,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13808,7 +13859,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13863,7 +13916,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13918,7 +13973,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -13973,7 +14030,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14028,7 +14087,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14083,7 +14144,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                82
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14159,7 +14222,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                83
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14214,7 +14279,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                83
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14269,7 +14336,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                83
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14324,7 +14393,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                83
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14379,7 +14450,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                83
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14434,7 +14507,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                83
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14489,7 +14564,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                83
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14565,7 +14642,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                84
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14620,7 +14699,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                84
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14675,7 +14756,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                84
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14730,7 +14813,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                84
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14785,7 +14870,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                84
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14840,7 +14927,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                84
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -14895,7 +14984,9 @@
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
-              "modifierGroupReferences": [],
+              "modifierGroupReferences": [
+                84
+              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -17247,9 +17338,9 @@
       "referenceId": 1,
       "name": "Spice level (Copy)",
       "posName": "",
-      "guid": "1bfb9162-0698-4acc-ab35-825a87c96908",
-      "multiLocationId": "600000054188912324",
-      "masterId": 600000054188912400,
+      "guid": "d120bed2-7069-413b-9e8e-d80295c73909",
+      "multiLocationId": "600000054998887530",
+      "masterId": 600000054998887600,
       "visibility": [
         "ORDERING_PARTNERS",
         "TOAST_ONLINE_ORDERING",
@@ -17260,9 +17351,9 @@
       "pricingRules": null,
       "defaultOptionsChargePrice": "YES",
       "defaultOptionsSubstitutionPricing": "NO",
-      "minSelections": 1,
+      "minSelections": 0,
       "maxSelections": 1,
-      "requiredMode": "REQUIRED",
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
@@ -17277,9 +17368,39 @@
       "referenceId": 5,
       "name": "Spice level (Copy)",
       "posName": "",
-      "guid": "1bfb9162-0698-4acc-ab35-825a87c96908",
-      "multiLocationId": "600000054188912324",
-      "masterId": 600000054188912400,
+      "guid": "a826e8a8-6303-41c0-b47d-2d5c5dc5d35a",
+      "multiLocationId": "600000054998895724",
+      "masterId": 600000054998895700,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "6": {
+      "referenceId": 6,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "eade12ed-08fd-48d6-9e4d-7fa931c855b5",
+      "multiLocationId": "600000054998802623",
+      "masterId": 600000054998802600,
       "visibility": [
         "ORDERING_PARTNERS",
         "TOAST_ONLINE_ORDERING",
@@ -17296,15 +17417,690 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "9": {
+      "referenceId": 9,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "dc53da47-feaf-44bc-9124-88fc725f08a0",
+      "multiLocationId": "600000054998912127",
+      "masterId": 600000054998912100,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
         2,
-        6,
+        3,
         4
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "7": {
-      "referenceId": 7,
+    "10": {
+      "referenceId": 10,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "20ec3780-9bed-4ab6-8516-05d5f34aa2aa",
+      "multiLocationId": "600000054999015382",
+      "masterId": 600000054999015400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        11,
+        12,
+        13
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "14": {
+      "referenceId": 14,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "02ab02ed-0e40-4bef-8fb7-2b843a586a10",
+      "multiLocationId": "600000054999034934",
+      "masterId": 600000054999034900,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "15": {
+      "referenceId": 15,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "1dd3cf1d-a512-4d51-a37f-1bdba4522953",
+      "multiLocationId": "600000054999063488",
+      "masterId": 600000054999063600,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        11,
+        12,
+        13
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "16": {
+      "referenceId": 16,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "b504ed9a-4b0d-476f-be21-45ae8ff2e8f6",
+      "multiLocationId": "600000054999153643",
+      "masterId": 600000054999153700,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "17": {
+      "referenceId": 17,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "157dcced-ef30-4b7f-a5cd-425653e16ebd",
+      "multiLocationId": "600000054999270825",
+      "masterId": 600000054999270800,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "18": {
+      "referenceId": 18,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "f2169505-4dfc-4a87-9670-98ea4a9ee8e9",
+      "multiLocationId": "600000054999281075",
+      "masterId": 600000054999281000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "19": {
+      "referenceId": 19,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "ab877ab1-8f48-4caa-aa1a-30bc5dd9d30e",
+      "multiLocationId": "600000054999364704",
+      "masterId": 600000054999364700,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        11,
+        12,
+        13
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "20": {
+      "referenceId": 20,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "cd810d76-c883-408f-b167-49ca94730955",
+      "multiLocationId": "600000054999453647",
+      "masterId": 600000054999453700,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        11,
+        12,
+        13
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "21": {
+      "referenceId": 21,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "9f8bb0b0-3203-4a8e-94be-a5881e4f36d4",
+      "multiLocationId": "600000054999481955",
+      "masterId": 600000054999482000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "22": {
+      "referenceId": 22,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "a2999ce1-cfc4-40ed-a036-399cd8e0666d",
+      "multiLocationId": "600000054999492282",
+      "masterId": 600000054999492200,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "23": {
+      "referenceId": 23,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "d86e1668-a8bb-48dd-b513-ffc6730f64e7",
+      "multiLocationId": "600000054999542067",
+      "masterId": 600000054999542000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "24": {
+      "referenceId": 24,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "225eeb3e-813d-428c-9178-043ca1017ce0",
+      "multiLocationId": "600000054999542065",
+      "masterId": 600000054999542000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        25,
+        26,
+        27
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "28": {
+      "referenceId": 28,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "a9ce9951-01af-47f1-a4e1-f627f7970980",
+      "multiLocationId": "600000054999551710",
+      "masterId": 600000054999551700,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "29": {
+      "referenceId": 29,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "aadd00b1-8f95-4baf-b5e3-3458d698d9b6",
+      "multiLocationId": "600000054999559893",
+      "masterId": 600000054999560000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "30": {
+      "referenceId": 30,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "a3317941-d64b-4020-842b-8c96db2df314",
+      "multiLocationId": "600000054999570974",
+      "masterId": 600000054999571000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "31": {
+      "referenceId": 31,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "83471558-5e69-446f-bed3-a81ae8831901",
+      "multiLocationId": "600000054999645825",
+      "masterId": 600000054999645800,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "32": {
+      "referenceId": 32,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "a8cb25ec-3176-4ba7-9f4a-f239a380d3e9",
+      "multiLocationId": "600000054999654164",
+      "masterId": 600000054999654100,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "33": {
+      "referenceId": 33,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "64709c62-784c-4287-93ce-a2c98fc602d7",
+      "multiLocationId": "600000054999665380",
+      "masterId": 600000054999665400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "34": {
+      "referenceId": 34,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "ad6c3f0b-0043-4aa0-a6bb-b725c2ca4ba9",
+      "multiLocationId": "600000054998056086",
+      "masterId": 600000054998056100,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        35,
+        36,
+        37
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "38": {
+      "referenceId": 38,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "00637a07-c0d6-4b1f-aa95-2a2befc7e66b",
+      "multiLocationId": "600000054999718417",
+      "masterId": 600000054999718400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "39": {
+      "referenceId": 39,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "9dc3d894-23e3-46f3-8442-61f3829c0709",
+      "multiLocationId": "600000055032834912",
+      "masterId": 600000055032835000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "40": {
+      "referenceId": 40,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "f26abdaf-5cfc-425c-8739-8211d900dcfc",
+      "multiLocationId": "600000014510653427",
+      "masterId": 600000014510653400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "41": {
+      "referenceId": 41,
       "name": "Spice level",
       "posName": "",
       "guid": "47e316e4-16f7-40e5-b3a5-15b35f6d970f",
@@ -17326,6 +18122,333 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "42": {
+      "referenceId": 42,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "e977db54-372a-4e82-9541-5e6f4f1028aa",
+      "multiLocationId": "600000054999829202",
+      "masterId": 600000054999829200,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        11,
+        12,
+        13
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "43": {
+      "referenceId": 43,
+      "name": "Spice level (Deep Copy)",
+      "posName": "",
+      "guid": "906b3d21-8335-485a-9062-41da43f17c39",
+      "multiLocationId": "600000054998146204",
+      "masterId": 600000054998146200,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        44,
+        45,
+        46
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "47": {
+      "referenceId": 47,
+      "name": "Spice level (Deep Copy)",
+      "posName": "",
+      "guid": "0adf2a36-047e-4bb2-af56-113790bed300",
+      "multiLocationId": "600000054998118957",
+      "masterId": 600000054998118900,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        48,
+        49
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "50": {
+      "referenceId": 50,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "eaa455f0-7125-47c9-8b47-61c75660f76f",
+      "multiLocationId": "600000055004213771",
+      "masterId": 600000055004213800,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        11,
+        12,
+        13
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "51": {
+      "referenceId": 51,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "ea5b9a72-82b6-4c75-a884-80871b0695cb",
+      "multiLocationId": "600000055029387908",
+      "masterId": 600000055029387900,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        11,
+        12,
+        13
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "52": {
+      "referenceId": 52,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "d8e44fdb-ce5d-4dd1-923a-a80c6fcdf8df",
+      "multiLocationId": "600000055004319849",
+      "masterId": 600000055004319900,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "53": {
+      "referenceId": 53,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "51d6ccbf-46ee-401b-b875-fd1a7c4fb992",
+      "multiLocationId": "600000055029498683",
+      "masterId": 600000055029498600,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        54,
+        55,
+        56
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "57": {
+      "referenceId": 57,
+      "name": "Spicy Level (Copy)",
+      "posName": "",
+      "guid": "42e76b4e-fbf7-4a2e-a4f7-ec459c67272d",
+      "multiLocationId": "600000055029515411",
+      "masterId": 600000055029515400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        54,
+        55,
+        56
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "58": {
+      "referenceId": 58,
+      "name": "Spicy Level",
+      "posName": "",
+      "guid": "e7e13056-ccef-4943-a39a-32ef085824d3",
+      "multiLocationId": "600000055029524727",
+      "masterId": 600000055029524700,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        54,
+        55,
+        56
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "59": {
+      "referenceId": 59,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "40ee9b31-ca17-416b-af96-cb9c42e95386",
+      "multiLocationId": "600000055029550913",
+      "masterId": 600000055029551000,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        25,
+        26,
+        27
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "60": {
+      "referenceId": 60,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "ba4764c8-0fe4-492e-b773-2b1310258338",
+      "multiLocationId": "600000055029560381",
+      "masterId": 600000055029560300,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
         2,
         3,
         4
@@ -17333,8 +18456,188 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "8": {
-      "referenceId": 8,
+    "61": {
+      "referenceId": 61,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "34d60091-c649-4709-a525-7248bd40ae84",
+      "multiLocationId": "600000055029577907",
+      "masterId": 600000055029577900,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        25,
+        26,
+        27
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "62": {
+      "referenceId": 62,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "577ee94c-d0c2-4619-bcaf-a5965cf216df",
+      "multiLocationId": "600000055029590346",
+      "masterId": 600000055029590400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "63": {
+      "referenceId": 63,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "be3ccfd4-e5ad-4da4-9077-50c1c86eb1eb",
+      "multiLocationId": "600000055029607350",
+      "masterId": 600000055029607300,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "64": {
+      "referenceId": 64,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "3c4bf38b-2b35-4e54-b57d-2f36da7955f2",
+      "multiLocationId": "600000055029615137",
+      "masterId": 600000055029615100,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "65": {
+      "referenceId": 65,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "a5deac3a-0e5a-440e-b36a-8d4decf087ee",
+      "multiLocationId": "600000055032543109",
+      "masterId": 600000055032543100,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "66": {
+      "referenceId": 66,
+      "name": "Spice level (Copy)",
+      "posName": "",
+      "guid": "484f4ea9-66f0-4bee-99e6-25bd03599990",
+      "multiLocationId": "600000055032673589",
+      "masterId": 600000055032673500,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "67": {
+      "referenceId": 67,
       "name": "Spice Level",
       "posName": "",
       "guid": "1b9512f8-ad02-4f33-93b6-7d94843bb759",
@@ -17356,15 +18659,15 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
-        9,
-        10,
-        11
+        68,
+        69,
+        70
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "12": {
-      "referenceId": 12,
+    "71": {
+      "referenceId": 71,
       "name": "Protein",
       "posName": "",
       "guid": "1ec1417d-a548-4044-998e-db949e581c79",
@@ -17381,18 +18684,192 @@
       "defaultOptionsChargePrice": "YES",
       "defaultOptionsSubstitutionPricing": "NO",
       "minSelections": 0,
-      "maxSelections": null,
+      "maxSelections": 1,
       "requiredMode": "OPTIONAL",
-      "isMultiSelect": true,
+      "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "79": {
+      "referenceId": 79,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "ded6227a-7411-4bfa-a7d0-f0a3f323ea58",
+      "multiLocationId": "600000054998357095",
+      "masterId": 600000054998357100,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        48,
+        49
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "80": {
+      "referenceId": 80,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "3cc1d256-e97d-42f3-92b4-33bd93dad922",
+      "multiLocationId": "600000054998433270",
+      "masterId": 600000054998433300,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "81": {
+      "referenceId": 81,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "45e0380d-e1f6-4a29-b88a-2d38887dea2c",
+      "multiLocationId": "600000054998443148",
+      "masterId": 600000054998443100,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "82": {
+      "referenceId": 82,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "0d4f04ef-e5b0-4b42-9494-1f6c5e7c1be6",
+      "multiLocationId": "600000054998452717",
+      "masterId": 600000054998452700,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "83": {
+      "referenceId": 83,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "78fe103d-30d0-4cca-95ed-2b899382fd12",
+      "multiLocationId": "600000054998464605",
+      "masterId": 600000054998464600,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "84": {
+      "referenceId": 84,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "5084bbbe-7872-481d-9bbe-9073ceb46ed3",
+      "multiLocationId": "600000054998469328",
+      "masterId": 600000054998469400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
@@ -17403,9 +18880,9 @@
       "referenceId": 2,
       "name": "Mild",
       "posName": "",
-      "guid": "0ab8fd50-0c90-41a3-b4e4-42962d7c995b",
-      "multiLocationId": "600000031364862164",
-      "masterId": 600000031364862200,
+      "guid": "804a7391-74e7-4cb7-b739-107a40133c98",
+      "multiLocationId": "600000014510653429",
+      "masterId": 600000014510653400,
       "description": "",
       "image": null,
       "visibility": [
@@ -17460,6 +18937,124 @@
     },
     "3": {
       "referenceId": 3,
+      "name": "Medium",
+      "posName": "",
+      "guid": "55df2ee4-f3e9-4ed6-aaac-85956c7b876c",
+      "multiLocationId": "600000014510653435",
+      "masterId": 600000014510653400,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "4": {
+      "referenceId": 4,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "6ad70aee-b3db-4f46-b5b8-be7ca776d8c9",
+      "multiLocationId": "600000014510653439",
+      "masterId": 600000014510653400,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "7": {
+      "referenceId": 7,
       "name": "Medium",
       "posName": "",
       "guid": "e3cb2e33-2d2e-4224-91fe-d65aed6d5472",
@@ -17517,8 +19112,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "4": {
-      "referenceId": 4,
+    "8": {
+      "referenceId": 8,
       "name": "Spicy",
       "posName": "",
       "guid": "8be1b499-f551-4a73-8af9-cd0f76dce4ac",
@@ -17576,13 +19171,13 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "6": {
-      "referenceId": 6,
+    "11": {
+      "referenceId": 11,
       "name": "Medium",
       "posName": "",
-      "guid": "e3cb2e33-2d2e-4224-91fe-d65aed6d5472",
-      "multiLocationId": "600000014510652508",
-      "masterId": 600000014510652500,
+      "guid": "1420fa7c-2004-49ba-a3ae-87efb15c37dc",
+      "multiLocationId": "600000054998056092",
+      "masterId": 600000054998056100,
       "description": "",
       "image": null,
       "visibility": [
@@ -17612,7 +19207,7 @@
       "kitchenName": "",
       "calories": null,
       "unitOfMeasure": "NONE",
-      "isDefault": true,
+      "isDefault": false,
       "allowsDuplicates": false,
       "portions": [],
       "modifierGroupReferences": [],
@@ -17635,8 +19230,952 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "9": {
-      "referenceId": 9,
+    "12": {
+      "referenceId": 12,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "65b691d3-1bc9-4a20-a009-de11d872ec2f",
+      "multiLocationId": "600000054998056096",
+      "masterId": 600000054998056100,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "13": {
+      "referenceId": 13,
+      "name": "Mild",
+      "posName": "",
+      "guid": "b5aaeab9-1da4-4fc9-991a-5d24add2860a",
+      "multiLocationId": "600000054998074927",
+      "masterId": 600000054998074900,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "25": {
+      "referenceId": 25,
+      "name": "Mild",
+      "posName": "",
+      "guid": "33ec9df4-1491-4128-a265-ed2b47e85af0",
+      "multiLocationId": "600000014510653740",
+      "masterId": 600000014510653700,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "26": {
+      "referenceId": 26,
+      "name": "Medium",
+      "posName": "",
+      "guid": "159483b1-839e-48ec-9c06-242299adce1f",
+      "multiLocationId": "600000014510653744",
+      "masterId": 600000014510653700,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "27": {
+      "referenceId": 27,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "0f058da3-7ece-429b-879b-db7508d12647",
+      "multiLocationId": "600000014510653749",
+      "masterId": 600000014510653700,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "35": {
+      "referenceId": 35,
+      "name": "Mild",
+      "posName": "",
+      "guid": "8ea0b646-f490-41a2-a8db-41732ce0dc52",
+      "multiLocationId": "600000055029465522",
+      "masterId": 600000055029465500,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "36": {
+      "referenceId": 36,
+      "name": "Medium",
+      "posName": "",
+      "guid": "b1945ee5-ca28-4352-949e-59658e9a86cf",
+      "multiLocationId": "600000055029465526",
+      "masterId": 600000055029465500,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "37": {
+      "referenceId": 37,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "c48d25a0-b945-4a75-b6f2-c43ad1c1cdb6",
+      "multiLocationId": "600000055029465530",
+      "masterId": 600000055029465500,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "44": {
+      "referenceId": 44,
+      "name": "Mild",
+      "posName": "",
+      "guid": "fc8e7408-b35a-47d9-84b4-c59080158d76",
+      "multiLocationId": "600000054998146206",
+      "masterId": 600000054998146200,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "45": {
+      "referenceId": 45,
+      "name": "Medium",
+      "posName": "",
+      "guid": "2c045029-032a-4bee-8366-b6a62df1a0f7",
+      "multiLocationId": "600000054998146210",
+      "masterId": 600000054998146200,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "46": {
+      "referenceId": 46,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "588b10f3-576d-48ed-92e7-8b51894b76cb",
+      "multiLocationId": "600000054998146214",
+      "masterId": 600000054998146200,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "48": {
+      "referenceId": 48,
+      "name": "Medium",
+      "posName": "",
+      "guid": "53e7dcde-8d09-4f2d-96ae-0947e480b35e",
+      "multiLocationId": "600000054998118963",
+      "masterId": 600000054998118900,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "49": {
+      "referenceId": 49,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "276d676a-59ce-4986-92fc-35714f089010",
+      "multiLocationId": "600000054998118967",
+      "masterId": 600000054998118900,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "54": {
+      "referenceId": 54,
+      "name": "Mild",
+      "posName": "",
+      "guid": "7c2d121c-49ef-4d68-a91c-a7970a211516",
+      "multiLocationId": "600000055029498686",
+      "masterId": 600000055029498600,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "55": {
+      "referenceId": 55,
+      "name": "Medium",
+      "posName": "",
+      "guid": "ae297da3-ffa2-4778-b6d7-1e596e5320da",
+      "multiLocationId": "600000055029498690",
+      "masterId": 600000055029498800,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "56": {
+      "referenceId": 56,
+      "name": "Spicy",
+      "posName": "",
+      "guid": "086eb1e3-81f3-4bc9-890d-590f129ec0b3",
+      "multiLocationId": "600000055029498694",
+      "masterId": 600000055029498800,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "68": {
+      "referenceId": 68,
       "name": "mild",
       "posName": "",
       "guid": "7d09896e-63de-426e-943c-05f16de7ad97",
@@ -17694,8 +20233,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "10": {
-      "referenceId": 10,
+    "69": {
+      "referenceId": 69,
       "name": "medium",
       "posName": "",
       "guid": "e11101fc-ea32-4738-b798-af590579e0cc",
@@ -17753,8 +20292,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "11": {
-      "referenceId": 11,
+    "70": {
+      "referenceId": 70,
       "name": "spice",
       "posName": "",
       "guid": "13f565cb-d0bc-468f-95fe-78811142b33a",
@@ -17812,8 +20351,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "13": {
-      "referenceId": 13,
+    "72": {
+      "referenceId": 72,
       "name": "veg burnt garlic",
       "posName": "",
       "guid": "019a8545-6174-408f-b85a-3bb37eee85f1",
@@ -17871,8 +20410,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "14": {
-      "referenceId": 14,
+    "73": {
+      "referenceId": 73,
       "name": "paneer",
       "posName": "",
       "guid": "72cadf25-046c-460f-a29e-080c7248d4af",
@@ -17930,8 +20469,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "15": {
-      "referenceId": 15,
+    "74": {
+      "referenceId": 74,
       "name": "egg",
       "posName": "",
       "guid": "365c9903-5c3b-48fc-8a12-b273c016b659",
@@ -17989,8 +20528,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "16": {
-      "referenceId": 16,
+    "75": {
+      "referenceId": 75,
       "name": "double eggs",
       "posName": "",
       "guid": "f036ae8e-19a9-421b-ac48-307035178a0b",
@@ -18048,8 +20587,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "17": {
-      "referenceId": 17,
+    "76": {
+      "referenceId": 76,
       "name": "chicken",
       "posName": "",
       "guid": "1b565d62-3fae-448b-bbc2-adc6d50e1d37",
@@ -18107,8 +20646,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "18": {
-      "referenceId": 18,
+    "77": {
+      "referenceId": 77,
       "name": "shrimp",
       "posName": "",
       "guid": "07bf8d64-6393-407a-9390-6084e5b90cde",
@@ -18166,8 +20705,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "19": {
-      "referenceId": 19,
+    "78": {
+      "referenceId": 78,
       "name": "goat keema",
       "posName": "",
       "guid": "69cf3114-241a-4268-bcac-92ad523f1807",
