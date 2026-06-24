@@ -102,6 +102,7 @@ img {
 /* herndon and nashua table page 4 */
 .biryani-table-font{
     font-size: 1.8rem;
+    font-weight: 500;
 }
 
 .sold-out-menu-item-biryani{
@@ -112,6 +113,7 @@ img {
 
 .pulao-table-font{
     font-size: 1.8rem;
+    font-weight: 500;
 }
 
 .sold-out-menu-item-pulao{
@@ -122,8 +124,10 @@ img {
 
 .biryani-nashua-table-font{
     font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .pulao-nashua-table-font{
     font-size: 1.5rem;
+    font-weight: 500;
 }
