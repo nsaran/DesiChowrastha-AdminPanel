@@ -10,19 +10,16 @@ const retryDelay = (retryCount) => Math.pow(2, retryCount) * 1000;
 function determineItemType(itemName) {
     const vegKeywords = ['paneer', 'veg', 'vegetable', 'dal', 'upma', 'idly', 'dosa', 'samosa', 'pulao', 'chaat', 'bhel', 'aloo', 'pav', 'utappam', 'gobi', 'manchuria', 'masala', 'pakora'];
     const eggKeywords = ['egg', 'omelette'];
-    const nonVegKeywords = ['chicken', 'mutton', 'goat', 'fish', 'shrimp', 'beef', 'pork', 'keema', 'haleem', 'mandi'];
+    const nonVegKeywords = ['boneless','non-veg','chicken', 'mutton', 'goat', 'fish', 'shrimp', 'beef', 'pork', 'keema', 'haleem', 'mandi'];
 
     itemName = itemName.toLowerCase();
-    if (eggKeywords.some(keyword => itemName.includes(keyword))) {
-        return 'Egg';
-    }
     if (nonVegKeywords.some(keyword => itemName.includes(keyword))) {
         return 'Non-Veg';
-    }
-    if (vegKeywords.some(keyword => itemName.includes(keyword))) {
+    }else if (eggKeywords.some(keyword => itemName.includes(keyword))) {
+        return 'Egg';
+    } else {
         return 'Veg';
     }
-    return 'Undefined';
 }
 
 function determineAvailability(itemTags) {
