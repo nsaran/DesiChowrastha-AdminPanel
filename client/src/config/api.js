@@ -9,6 +9,6 @@
  * otherwise falls back to the default below.
  */
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3010';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://71.83.55.46:3010';
 
 export default API_BASE_URL;
