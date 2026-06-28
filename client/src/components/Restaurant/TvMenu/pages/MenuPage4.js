@@ -218,7 +218,7 @@ const MenuPage4 = () => {
         );
     };
 
-    const renderNashuaMenu = () => {
+    const renderWestboroughMenu = () => {
         const groups = menu[0]?.menuGroups || [];
         const biryaniG = groups.find(g => g.name.toLowerCase().includes('veg special biryani') && !g.name.toLowerCase().includes('family pack'));
         const famBiryaniG = groups.find(g => g.name.toLowerCase().includes('veg special biryani family pack') && g.name.toLowerCase().includes('biryani'));
@@ -275,7 +275,7 @@ const MenuPage4 = () => {
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />
                 </div>
             ) : (
-                restaurantId === "Herndon" ? renderHerndonMenu() : renderNashuaMenu()
+                restaurantId === "Herndon" ? renderHerndonMenu() : renderWestboroughMenu()
             )}
         </>
     );

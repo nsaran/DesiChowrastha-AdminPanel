@@ -1,6 +1,6 @@
 {
   "restaurantGuid": "bda948cd-2639-41ce-85a0-25b01e7b6839",
-  "lastUpdated": "2026-06-24T00:12:25.542+0000",
+  "lastUpdated": "2026-06-25T18:29:18.791+0000",
   "restaurantTimeZone": "America/New_York",
   "menus": [
     {
@@ -2462,6 +2462,10 @@
                 {
                   "name": "Veg",
                   "guid": "220d79e7-d7d2-48b6-b40f-4579e39ff6bf"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -2522,6 +2526,10 @@
                 {
                   "name": "Veg",
                   "guid": "220d79e7-d7d2-48b6-b40f-4579e39ff6bf"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -2702,6 +2710,10 @@
                 {
                   "name": "Veg",
                   "guid": "220d79e7-d7d2-48b6-b40f-4579e39ff6bf"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -2762,6 +2774,10 @@
                 {
                   "name": "Veg",
                   "guid": "220d79e7-d7d2-48b6-b40f-4579e39ff6bf"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -2822,6 +2838,10 @@
                 {
                   "name": "Veg",
                   "guid": "220d79e7-d7d2-48b6-b40f-4579e39ff6bf"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -4129,6 +4149,10 @@
                 {
                   "name": "Veg",
                   "guid": "a4a67cf6-ef8e-4fc5-a9ef-493bc87e76a5"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
               ],
               "plu": "",
@@ -5832,6 +5856,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -5894,6 +5922,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -5956,6 +5988,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6018,6 +6054,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6080,6 +6120,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6150,7 +6194,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                10
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6212,7 +6256,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                39
+                40
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6274,7 +6318,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6328,6 +6372,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6398,7 +6446,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                42
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6452,6 +6500,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6522,7 +6574,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6584,7 +6636,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -6760,6 +6812,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6822,6 +6878,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6884,6 +6944,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -6946,6 +7010,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -7085,7 +7153,12 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Veg",
+                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7140,7 +7213,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Veg",
+                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7195,7 +7277,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Veg",
+                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7250,7 +7341,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7305,7 +7405,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7360,7 +7469,12 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7415,7 +7529,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7470,7 +7593,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7525,7 +7657,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7580,7 +7721,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7635,7 +7785,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Veg",
+                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7690,7 +7849,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7745,7 +7913,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "Non-Veg",
+                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -7798,6 +7975,10 @@
             {
               "name": "Non-Veg",
               "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+            },
+            {
+              "name": "Medium",
+              "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
             }
           ],
           "menuGroups": [],
@@ -7830,6 +8011,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -7838,8 +8023,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40,
-                43
+                39,
+                42
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -7893,6 +8078,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -7955,6 +8144,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -7963,7 +8156,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8017,6 +8210,10 @@
                 {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -8025,8 +8222,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                47,
-                40
+                46,
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8114,7 +8311,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                50
+                49
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8176,7 +8373,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                51
+                50
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8238,7 +8435,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8292,6 +8489,10 @@
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
               ],
               "plu": "",
@@ -8300,7 +8501,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                52
+                51
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8422,7 +8623,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                53
+                52
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8484,7 +8685,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                57
+                56
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8546,7 +8747,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                58
+                57
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8608,7 +8809,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                59
+                58
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8670,7 +8871,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                60
+                59
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8732,7 +8933,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                61
+                60
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8794,7 +8995,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                62
+                61
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8856,7 +9057,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                63
+                62
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8918,7 +9119,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                64
+                63
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -8980,7 +9181,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                65
+                64
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9042,7 +9243,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                66
+                65
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9179,7 +9380,12 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -9298,7 +9504,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9355,7 +9561,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9469,7 +9675,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9526,7 +9732,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9583,7 +9789,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9640,7 +9846,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9697,7 +9903,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9754,7 +9960,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9811,7 +10017,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9868,7 +10074,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -9982,7 +10188,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10039,7 +10245,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10096,7 +10302,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10153,7 +10359,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10210,7 +10416,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10267,7 +10473,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10324,7 +10530,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10381,7 +10587,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -10438,7 +10644,7 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                40
+                39
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11262,8 +11468,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                67,
-                71
+                66,
+                74
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11320,8 +11526,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                67,
-                71
+                75,
+                76
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11371,15 +11577,20 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                67,
-                71
+                77,
+                78
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11436,8 +11647,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                67,
-                71
+                79,
+                80
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11494,8 +11705,8 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                67,
-                71
+                81,
+                82
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11545,15 +11756,20 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Medium",
+                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                67,
-                71
+                83,
+                84
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11597,7 +11813,12 @@
             "POS",
             "KIOSK"
           ],
-          "itemTags": [],
+          "itemTags": [
+            {
+              "name": "Spicy",
+              "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+            }
+          ],
           "menuGroups": [],
           "menuItems": [
             {
@@ -11624,14 +11845,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11681,14 +11907,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11738,14 +11969,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11795,14 +12031,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11852,14 +12093,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11909,14 +12155,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -11966,14 +12217,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12023,14 +12279,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                79
+                85
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12074,7 +12335,12 @@
             "POS",
             "KIOSK"
           ],
-          "itemTags": [],
+          "itemTags": [
+            {
+              "name": "Spicy",
+              "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+            }
+          ],
           "menuGroups": [],
           "menuItems": [
             {
@@ -12101,14 +12367,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12158,14 +12429,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12215,14 +12491,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12272,14 +12553,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12329,14 +12615,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12386,14 +12677,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12443,14 +12739,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12500,14 +12801,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                80
+                86
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12551,7 +12857,12 @@
             "POS",
             "KIOSK"
           ],
-          "itemTags": [],
+          "itemTags": [
+            {
+              "name": "Spicy",
+              "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+            }
+          ],
           "menuGroups": [],
           "menuItems": [
             {
@@ -12578,14 +12889,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12635,14 +12951,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12692,14 +13013,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12749,14 +13075,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12806,14 +13137,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12863,14 +13199,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12920,14 +13261,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -12977,14 +13323,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13034,14 +13385,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13091,14 +13447,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13148,14 +13509,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13205,14 +13571,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13262,14 +13633,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13319,14 +13695,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                81
+                87
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13370,7 +13751,12 @@
             "POS",
             "KIOSK"
           ],
-          "itemTags": [],
+          "itemTags": [
+            {
+              "name": "Spicy",
+              "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+            }
+          ],
           "menuGroups": [],
           "menuItems": [
             {
@@ -13397,14 +13783,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13454,14 +13845,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13511,14 +13907,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13568,14 +13969,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13625,14 +14031,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13682,14 +14093,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13739,14 +14155,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13796,14 +14217,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13853,14 +14279,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13910,14 +14341,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -13967,14 +14403,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14024,14 +14465,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14081,14 +14527,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14138,14 +14589,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                82
+                88
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14189,7 +14645,12 @@
             "POS",
             "KIOSK"
           ],
-          "itemTags": [],
+          "itemTags": [
+            {
+              "name": "Spicy",
+              "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+            }
+          ],
           "menuGroups": [],
           "menuItems": [
             {
@@ -14216,14 +14677,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                83
+                89
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14273,14 +14739,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                83
+                89
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14330,14 +14801,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                83
+                89
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14387,14 +14863,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                83
+                89
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14444,14 +14925,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                83
+                89
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14501,14 +14987,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                83
+                89
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14558,14 +15049,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                83
+                89
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14609,7 +15105,12 @@
             "POS",
             "KIOSK"
           ],
-          "itemTags": [],
+          "itemTags": [
+            {
+              "name": "Spicy",
+              "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+            }
+          ],
           "menuGroups": [],
           "menuItems": [
             {
@@ -14636,14 +15137,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                84
+                90
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14693,14 +15199,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                84
+                90
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14750,14 +15261,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                84
+                90
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14807,14 +15323,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                84
+                90
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14864,14 +15385,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                84
+                90
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14921,14 +15447,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                84
+                90
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -14978,14 +15509,19 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "Spicy",
+                  "guid": "c95b8832-1b5f-4679-a169-910c385aa737"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [
-                84
+                90
               ],
               "kitchenName": "",
               "prepTime": null,
@@ -17336,7 +17872,7 @@
   "modifierGroupReferences": {
     "1": {
       "referenceId": 1,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "d120bed2-7069-413b-9e8e-d80295c73909",
       "multiLocationId": "600000054998887530",
@@ -17366,7 +17902,7 @@
     },
     "5": {
       "referenceId": 5,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "a826e8a8-6303-41c0-b47d-2d5c5dc5d35a",
       "multiLocationId": "600000054998895724",
@@ -17425,7 +17961,7 @@
     },
     "9": {
       "referenceId": 9,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "dc53da47-feaf-44bc-9124-88fc725f08a0",
       "multiLocationId": "600000054998912127",
@@ -17485,7 +18021,7 @@
     },
     "14": {
       "referenceId": 14,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "02ab02ed-0e40-4bef-8fb7-2b843a586a10",
       "multiLocationId": "600000054999034934",
@@ -17544,7 +18080,7 @@
     },
     "16": {
       "referenceId": 16,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "b504ed9a-4b0d-476f-be21-45ae8ff2e8f6",
       "multiLocationId": "600000054999153643",
@@ -17573,7 +18109,7 @@
     },
     "17": {
       "referenceId": 17,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "157dcced-ef30-4b7f-a5cd-425653e16ebd",
       "multiLocationId": "600000054999270825",
@@ -17602,7 +18138,7 @@
     },
     "18": {
       "referenceId": 18,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "f2169505-4dfc-4a87-9670-98ea4a9ee8e9",
       "multiLocationId": "600000054999281075",
@@ -17691,7 +18227,7 @@
     },
     "21": {
       "referenceId": 21,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "9f8bb0b0-3203-4a8e-94be-a5881e4f36d4",
       "multiLocationId": "600000054999481955",
@@ -17720,7 +18256,7 @@
     },
     "22": {
       "referenceId": 22,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "a2999ce1-cfc4-40ed-a036-399cd8e0666d",
       "multiLocationId": "600000054999492282",
@@ -17808,7 +18344,7 @@
     },
     "28": {
       "referenceId": 28,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "a9ce9951-01af-47f1-a4e1-f627f7970980",
       "multiLocationId": "600000054999551710",
@@ -17837,7 +18373,7 @@
     },
     "29": {
       "referenceId": 29,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "aadd00b1-8f95-4baf-b5e3-3458d698d9b6",
       "multiLocationId": "600000054999559893",
@@ -17866,7 +18402,7 @@
     },
     "30": {
       "referenceId": 30,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "a3317941-d64b-4020-842b-8c96db2df314",
       "multiLocationId": "600000054999570974",
@@ -17924,7 +18460,7 @@
     },
     "32": {
       "referenceId": 32,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "a8cb25ec-3176-4ba7-9f4a-f239a380d3e9",
       "multiLocationId": "600000054999654164",
@@ -17953,7 +18489,7 @@
     },
     "33": {
       "referenceId": 33,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
       "guid": "64709c62-784c-4287-93ce-a2c98fc602d7",
       "multiLocationId": "600000054999665380",
@@ -18041,11 +18577,11 @@
     },
     "39": {
       "referenceId": 39,
-      "name": "Spice level (Copy)",
+      "name": "Spice level",
       "posName": "",
-      "guid": "9dc3d894-23e3-46f3-8442-61f3829c0709",
-      "multiLocationId": "600000055032834912",
-      "masterId": 600000055032835000,
+      "guid": "f26abdaf-5cfc-425c-8739-8211d900dcfc",
+      "multiLocationId": "600000014510653427",
+      "masterId": 600000014510653400,
       "visibility": [
         "ORDERING_PARTNERS",
         "TOAST_ONLINE_ORDERING",
@@ -18073,9 +18609,9 @@
       "referenceId": 40,
       "name": "Spice level",
       "posName": "",
-      "guid": "f26abdaf-5cfc-425c-8739-8211d900dcfc",
-      "multiLocationId": "600000014510653427",
-      "masterId": 600000014510653400,
+      "guid": "9dc3d894-23e3-46f3-8442-61f3829c0709",
+      "multiLocationId": "600000055032834912",
+      "masterId": 600000055032835000,
       "visibility": [
         "ORDERING_PARTNERS",
         "TOAST_ONLINE_ORDERING",
@@ -18130,36 +18666,6 @@
     },
     "42": {
       "referenceId": 42,
-      "name": "Spice level",
-      "posName": "",
-      "guid": "e977db54-372a-4e82-9541-5e6f4f1028aa",
-      "multiLocationId": "600000054999829202",
-      "masterId": 600000054999829200,
-      "visibility": [
-        "ORDERING_PARTNERS",
-        "TOAST_ONLINE_ORDERING",
-        "POS",
-        "KIOSK"
-      ],
-      "pricingStrategy": "NONE",
-      "pricingRules": null,
-      "defaultOptionsChargePrice": "YES",
-      "defaultOptionsSubstitutionPricing": "NO",
-      "minSelections": 1,
-      "maxSelections": 1,
-      "requiredMode": "REQUIRED",
-      "isMultiSelect": false,
-      "preModifierGroupReference": null,
-      "modifierOptionReferences": [
-        11,
-        12,
-        13
-      ],
-      "posButtonColorLight": "#f7f7f7",
-      "posButtonColorDark": "#1a1c23"
-    },
-    "43": {
-      "referenceId": 43,
       "name": "Spice level (Deep Copy)",
       "posName": "",
       "guid": "906b3d21-8335-485a-9062-41da43f17c39",
@@ -18181,15 +18687,15 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        43,
         44,
-        45,
-        46
+        45
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "47": {
-      "referenceId": 47,
+    "46": {
+      "referenceId": 46,
       "name": "Spice level (Deep Copy)",
       "posName": "",
       "guid": "0adf2a36-047e-4bb2-af56-113790bed300",
@@ -18211,14 +18717,14 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
-        48,
-        49
+        47,
+        48
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "50": {
-      "referenceId": 50,
+    "49": {
+      "referenceId": 49,
       "name": "Spice level",
       "posName": "",
       "guid": "eaa455f0-7125-47c9-8b47-61c75660f76f",
@@ -18247,8 +18753,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "51": {
-      "referenceId": 51,
+    "50": {
+      "referenceId": 50,
       "name": "Spice level",
       "posName": "",
       "guid": "ea5b9a72-82b6-4c75-a884-80871b0695cb",
@@ -18277,8 +18783,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "52": {
-      "referenceId": 52,
+    "51": {
+      "referenceId": 51,
       "name": "Spice level",
       "posName": "",
       "guid": "d8e44fdb-ce5d-4dd1-923a-a80c6fcdf8df",
@@ -18306,8 +18812,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "53": {
-      "referenceId": 53,
+    "52": {
+      "referenceId": 52,
       "name": "Spicy",
       "posName": "",
       "guid": "51d6ccbf-46ee-401b-b875-fd1a7c4fb992",
@@ -18329,15 +18835,15 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        53,
         54,
-        55,
-        56
+        55
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "57": {
-      "referenceId": 57,
+    "56": {
+      "referenceId": 56,
       "name": "Spicy Level (Copy)",
       "posName": "",
       "guid": "42e76b4e-fbf7-4a2e-a4f7-ec459c67272d",
@@ -18359,15 +18865,15 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        53,
         54,
-        55,
-        56
+        55
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "58": {
-      "referenceId": 58,
+    "57": {
+      "referenceId": 57,
       "name": "Spicy Level",
       "posName": "",
       "guid": "e7e13056-ccef-4943-a39a-32ef085824d3",
@@ -18389,15 +18895,15 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        53,
         54,
-        55,
-        56
+        55
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "59": {
-      "referenceId": 59,
+    "58": {
+      "referenceId": 58,
       "name": "Spice level",
       "posName": "",
       "guid": "40ee9b31-ca17-416b-af96-cb9c42e95386",
@@ -18426,8 +18932,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "60": {
-      "referenceId": 60,
+    "59": {
+      "referenceId": 59,
       "name": "Spice level",
       "posName": "",
       "guid": "ba4764c8-0fe4-492e-b773-2b1310258338",
@@ -18456,8 +18962,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "61": {
-      "referenceId": 61,
+    "60": {
+      "referenceId": 60,
       "name": "Spice level",
       "posName": "",
       "guid": "34d60091-c649-4709-a525-7248bd40ae84",
@@ -18486,8 +18992,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "62": {
-      "referenceId": 62,
+    "61": {
+      "referenceId": 61,
       "name": "Spice level",
       "posName": "",
       "guid": "577ee94c-d0c2-4619-bcaf-a5965cf216df",
@@ -18516,8 +19022,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "63": {
-      "referenceId": 63,
+    "62": {
+      "referenceId": 62,
       "name": "Spice level",
       "posName": "",
       "guid": "be3ccfd4-e5ad-4da4-9077-50c1c86eb1eb",
@@ -18546,8 +19052,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "64": {
-      "referenceId": 64,
+    "63": {
+      "referenceId": 63,
       "name": "Spice level",
       "posName": "",
       "guid": "3c4bf38b-2b35-4e54-b57d-2f36da7955f2",
@@ -18576,8 +19082,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "65": {
-      "referenceId": 65,
+    "64": {
+      "referenceId": 64,
       "name": "Spice level",
       "posName": "",
       "guid": "a5deac3a-0e5a-440e-b36a-8d4decf087ee",
@@ -18606,8 +19112,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "66": {
-      "referenceId": 66,
+    "65": {
+      "referenceId": 65,
       "name": "Spice level (Copy)",
       "posName": "",
       "guid": "484f4ea9-66f0-4bee-99e6-25bd03599990",
@@ -18636,13 +19142,13 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "67": {
-      "referenceId": 67,
-      "name": "Spice Level",
+    "66": {
+      "referenceId": 66,
+      "name": "Pick Protein (Copy)",
       "posName": "",
-      "guid": "1b9512f8-ad02-4f33-93b6-7d94843bb759",
-      "multiLocationId": "600000054121470495",
-      "masterId": 600000054121470500,
+      "guid": "278d00f1-f7a6-4b13-a106-3057209ef7c6",
+      "multiLocationId": "600000055065148018",
+      "masterId": 600000055065148000,
       "visibility": [
         "ORDERING_PARTNERS",
         "TOAST_ONLINE_ORDERING",
@@ -18653,26 +19159,30 @@
       "pricingRules": null,
       "defaultOptionsChargePrice": "YES",
       "defaultOptionsSubstitutionPricing": "NO",
-      "minSelections": 0,
+      "minSelections": 1,
       "maxSelections": 1,
-      "requiredMode": "OPTIONAL",
+      "requiredMode": "REQUIRED",
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        67,
         68,
         69,
-        70
+        70,
+        71,
+        72,
+        73
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "71": {
-      "referenceId": 71,
-      "name": "Protein",
+    "74": {
+      "referenceId": 74,
+      "name": "Spice level (Copy)",
       "posName": "",
-      "guid": "1ec1417d-a548-4044-998e-db949e581c79",
-      "multiLocationId": "600000054130652122",
-      "masterId": 600000054130652200,
+      "guid": "2b5dbbb9-500b-4d7e-b6e4-98bcda411539",
+      "multiLocationId": "600000055065148020",
+      "masterId": 600000055065148000,
       "visibility": [
         "ORDERING_PARTNERS",
         "TOAST_ONLINE_ORDERING",
@@ -18685,23 +19195,337 @@
       "defaultOptionsSubstitutionPricing": "NO",
       "minSelections": 0,
       "maxSelections": 1,
-      "requiredMode": "OPTIONAL",
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "75": {
+      "referenceId": 75,
+      "name": "Pick Protein",
+      "posName": "",
+      "guid": "1527e14f-d311-430e-b486-e0c78e131729",
+      "multiLocationId": "600000055065155559",
+      "masterId": 600000055065155600,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        67,
+        68,
+        69,
+        70,
+        71,
         72,
-        73,
-        74,
-        75,
-        76,
-        77,
-        78
+        73
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "76": {
+      "referenceId": 76,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "4fe8b7f4-56b8-408f-a56c-9c7d9aab655f",
+      "multiLocationId": "600000055065155561",
+      "masterId": 600000055065155600,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "77": {
+      "referenceId": 77,
+      "name": "Pick Protein",
+      "posName": "",
+      "guid": "d1f752db-b5a3-4b9f-9c7d-895566b75d37",
+      "multiLocationId": "600000055065162427",
+      "masterId": 600000055065162400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "78": {
+      "referenceId": 78,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "83127451-8fec-4fbf-b0c8-93bccfe71ef8",
+      "multiLocationId": "600000055065162429",
+      "masterId": 600000055065162400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
     "79": {
       "referenceId": 79,
+      "name": "Pick Protein",
+      "posName": "",
+      "guid": "28e255df-e24c-4221-9e57-331b637bf7c5",
+      "multiLocationId": "600000055065167421",
+      "masterId": 600000055065167400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "80": {
+      "referenceId": 80,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "fbd313fe-8fc7-4f8f-8e62-48cb1893ff97",
+      "multiLocationId": "600000055065167423",
+      "masterId": 600000055065167400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL_FORCE_SHOW",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        2,
+        3,
+        4
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "81": {
+      "referenceId": 81,
+      "name": "Pick Protein",
+      "posName": "",
+      "guid": "dbaf4db7-692b-439a-aaa9-2bfbe6d050d7",
+      "multiLocationId": "600000055065175412",
+      "masterId": 600000055065175400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "82": {
+      "referenceId": 82,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "733cdf5e-dfab-4a72-b4ad-fff55df907e9",
+      "multiLocationId": "600000055065175414",
+      "masterId": 600000055065175400,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 0,
+      "maxSelections": 1,
+      "requiredMode": "OPTIONAL",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        25,
+        26,
+        27
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "83": {
+      "referenceId": 83,
+      "name": "Pick Protein",
+      "posName": "",
+      "guid": "01ac7eb6-e438-4bef-a26d-d74952977a13",
+      "multiLocationId": "600000055065181593",
+      "masterId": 600000055065181600,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "84": {
+      "referenceId": 84,
+      "name": "Spice level",
+      "posName": "",
+      "guid": "3e9ee3a9-3721-49a4-96ca-2abc11a6b4d5",
+      "multiLocationId": "600000055065181595",
+      "masterId": 600000055065181600,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "pricingStrategy": "NONE",
+      "pricingRules": null,
+      "defaultOptionsChargePrice": "YES",
+      "defaultOptionsSubstitutionPricing": "NO",
+      "minSelections": 1,
+      "maxSelections": 1,
+      "requiredMode": "REQUIRED",
+      "isMultiSelect": false,
+      "preModifierGroupReference": null,
+      "modifierOptionReferences": [
+        7,
+        8
+      ],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "85": {
+      "referenceId": 85,
       "name": "Spice level",
       "posName": "",
       "guid": "ded6227a-7411-4bfa-a7d0-f0a3f323ea58",
@@ -18723,14 +19547,14 @@
       "isMultiSelect": false,
       "preModifierGroupReference": null,
       "modifierOptionReferences": [
-        48,
-        49
+        47,
+        48
       ],
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "80": {
-      "referenceId": 80,
+    "86": {
+      "referenceId": 86,
       "name": "Spice level",
       "posName": "",
       "guid": "3cc1d256-e97d-42f3-92b4-33bd93dad922",
@@ -18758,8 +19582,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "81": {
-      "referenceId": 81,
+    "87": {
+      "referenceId": 87,
       "name": "Spice level",
       "posName": "",
       "guid": "45e0380d-e1f6-4a29-b88a-2d38887dea2c",
@@ -18787,8 +19611,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "82": {
-      "referenceId": 82,
+    "88": {
+      "referenceId": 88,
       "name": "Spice level",
       "posName": "",
       "guid": "0d4f04ef-e5b0-4b42-9494-1f6c5e7c1be6",
@@ -18816,8 +19640,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "83": {
-      "referenceId": 83,
+    "89": {
+      "referenceId": 89,
       "name": "Spice level",
       "posName": "",
       "guid": "78fe103d-30d0-4cca-95ed-2b899382fd12",
@@ -18845,8 +19669,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "84": {
-      "referenceId": 84,
+    "90": {
+      "referenceId": 90,
       "name": "Spice level",
       "posName": "",
       "guid": "5084bbbe-7872-481d-9bbe-9073ceb46ed3",
@@ -19702,8 +20526,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "44": {
-      "referenceId": 44,
+    "43": {
+      "referenceId": 43,
       "name": "Mild",
       "posName": "",
       "guid": "fc8e7408-b35a-47d9-84b4-c59080158d76",
@@ -19761,8 +20585,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "45": {
-      "referenceId": 45,
+    "44": {
+      "referenceId": 44,
       "name": "Medium",
       "posName": "",
       "guid": "2c045029-032a-4bee-8366-b6a62df1a0f7",
@@ -19820,8 +20644,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "46": {
-      "referenceId": 46,
+    "45": {
+      "referenceId": 45,
       "name": "Spicy",
       "posName": "",
       "guid": "588b10f3-576d-48ed-92e7-8b51894b76cb",
@@ -19879,8 +20703,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "48": {
-      "referenceId": 48,
+    "47": {
+      "referenceId": 47,
       "name": "Medium",
       "posName": "",
       "guid": "53e7dcde-8d09-4f2d-96ae-0947e480b35e",
@@ -19938,8 +20762,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "49": {
-      "referenceId": 49,
+    "48": {
+      "referenceId": 48,
       "name": "Spicy",
       "posName": "",
       "guid": "276d676a-59ce-4986-92fc-35714f089010",
@@ -19997,8 +20821,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "54": {
-      "referenceId": 54,
+    "53": {
+      "referenceId": 53,
       "name": "Mild",
       "posName": "",
       "guid": "7c2d121c-49ef-4d68-a91c-a7970a211516",
@@ -20056,8 +20880,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "55": {
-      "referenceId": 55,
+    "54": {
+      "referenceId": 54,
       "name": "Medium",
       "posName": "",
       "guid": "ae297da3-ffa2-4778-b6d7-1e596e5320da",
@@ -20115,8 +20939,8 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "56": {
-      "referenceId": 56,
+    "55": {
+      "referenceId": 55,
       "name": "Spicy",
       "posName": "",
       "guid": "086eb1e3-81f3-4bc9-890d-590f129ec0b3",
@@ -20174,308 +20998,72 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
+    "67": {
+      "referenceId": 67,
+      "name": "Veg Burnt Garlic",
+      "posName": "",
+      "guid": "90f18a1d-01f8-43db-a3ac-1c4a99ac7880",
+      "multiLocationId": "600000013185701600",
+      "masterId": 600000013185701600,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
     "68": {
       "referenceId": 68,
-      "name": "mild",
+      "name": "Egg",
       "posName": "",
-      "guid": "7d09896e-63de-426e-943c-05f16de7ad97",
-      "multiLocationId": "600000054121470492",
-      "masterId": 600000054121470500,
-      "description": "",
-      "image": null,
-      "visibility": [
-        "ORDERING_PARTNERS",
-        "TOAST_ONLINE_ORDERING",
-        "POS",
-        "KIOSK"
-      ],
-      "price": 0,
-      "pricingStrategy": "BASE_PRICE",
-      "pricingRules": null,
-      "salesCategory": null,
-      "taxInfo": [
-        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-      ],
-      "modifierOptionTaxInfo": {
-        "taxRateGuids": [
-          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-        ],
-        "overrideItemTaxRates": false
-      },
-      "itemTags": [],
-      "plu": "",
-      "sku": "",
-      "kitchenName": "",
-      "calories": null,
-      "unitOfMeasure": "NONE",
-      "isDefault": false,
-      "allowsDuplicates": false,
-      "portions": [],
-      "modifierGroupReferences": [],
-      "prepTime": null,
-      "prepStations": [],
-      "contentAdvisories": {
-        "alcohol": {
-          "containsAlcohol": null
-        }
-      },
-      "guestCount": null,
-      "length": null,
-      "width": null,
-      "height": null,
-      "weight": null,
-      "weightUnitOfMeasure": null,
-      "dimensionUnitOfMeasure": null,
-      "sortOrder": null,
-      "allergens": [],
-      "posButtonColorLight": "#f7f7f7",
-      "posButtonColorDark": "#1a1c23"
-    },
-    "69": {
-      "referenceId": 69,
-      "name": "medium",
-      "posName": "",
-      "guid": "e11101fc-ea32-4738-b798-af590579e0cc",
-      "multiLocationId": "600000054121470493",
-      "masterId": 600000054121470500,
-      "description": "",
-      "image": null,
-      "visibility": [
-        "ORDERING_PARTNERS",
-        "TOAST_ONLINE_ORDERING",
-        "POS",
-        "KIOSK"
-      ],
-      "price": 0,
-      "pricingStrategy": "BASE_PRICE",
-      "pricingRules": null,
-      "salesCategory": null,
-      "taxInfo": [
-        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-      ],
-      "modifierOptionTaxInfo": {
-        "taxRateGuids": [
-          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-        ],
-        "overrideItemTaxRates": false
-      },
-      "itemTags": [],
-      "plu": "",
-      "sku": "",
-      "kitchenName": "",
-      "calories": null,
-      "unitOfMeasure": "NONE",
-      "isDefault": false,
-      "allowsDuplicates": false,
-      "portions": [],
-      "modifierGroupReferences": [],
-      "prepTime": null,
-      "prepStations": [],
-      "contentAdvisories": {
-        "alcohol": {
-          "containsAlcohol": null
-        }
-      },
-      "guestCount": null,
-      "length": null,
-      "width": null,
-      "height": null,
-      "weight": null,
-      "weightUnitOfMeasure": null,
-      "dimensionUnitOfMeasure": null,
-      "sortOrder": null,
-      "allergens": [],
-      "posButtonColorLight": "#f7f7f7",
-      "posButtonColorDark": "#1a1c23"
-    },
-    "70": {
-      "referenceId": 70,
-      "name": "spice",
-      "posName": "",
-      "guid": "13f565cb-d0bc-468f-95fe-78811142b33a",
-      "multiLocationId": "600000054121470494",
-      "masterId": 600000054121470500,
-      "description": "",
-      "image": null,
-      "visibility": [
-        "ORDERING_PARTNERS",
-        "TOAST_ONLINE_ORDERING",
-        "POS",
-        "KIOSK"
-      ],
-      "price": 0,
-      "pricingStrategy": "BASE_PRICE",
-      "pricingRules": null,
-      "salesCategory": null,
-      "taxInfo": [
-        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-      ],
-      "modifierOptionTaxInfo": {
-        "taxRateGuids": [
-          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-        ],
-        "overrideItemTaxRates": false
-      },
-      "itemTags": [],
-      "plu": "",
-      "sku": "",
-      "kitchenName": "",
-      "calories": null,
-      "unitOfMeasure": "NONE",
-      "isDefault": false,
-      "allowsDuplicates": false,
-      "portions": [],
-      "modifierGroupReferences": [],
-      "prepTime": null,
-      "prepStations": [],
-      "contentAdvisories": {
-        "alcohol": {
-          "containsAlcohol": null
-        }
-      },
-      "guestCount": null,
-      "length": null,
-      "width": null,
-      "height": null,
-      "weight": null,
-      "weightUnitOfMeasure": null,
-      "dimensionUnitOfMeasure": null,
-      "sortOrder": null,
-      "allergens": [],
-      "posButtonColorLight": "#f7f7f7",
-      "posButtonColorDark": "#1a1c23"
-    },
-    "72": {
-      "referenceId": 72,
-      "name": "veg burnt garlic",
-      "posName": "",
-      "guid": "019a8545-6174-408f-b85a-3bb37eee85f1",
-      "multiLocationId": "600000054130652119",
-      "masterId": 600000054130652200,
-      "description": "",
-      "image": null,
-      "visibility": [
-        "ORDERING_PARTNERS",
-        "TOAST_ONLINE_ORDERING",
-        "POS",
-        "KIOSK"
-      ],
-      "price": 0,
-      "pricingStrategy": "BASE_PRICE",
-      "pricingRules": null,
-      "salesCategory": null,
-      "taxInfo": [
-        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-      ],
-      "modifierOptionTaxInfo": {
-        "taxRateGuids": [
-          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-        ],
-        "overrideItemTaxRates": false
-      },
-      "itemTags": [],
-      "plu": "",
-      "sku": "",
-      "kitchenName": "",
-      "calories": null,
-      "unitOfMeasure": "NONE",
-      "isDefault": false,
-      "allowsDuplicates": false,
-      "portions": [],
-      "modifierGroupReferences": [],
-      "prepTime": null,
-      "prepStations": [],
-      "contentAdvisories": {
-        "alcohol": {
-          "containsAlcohol": null
-        }
-      },
-      "guestCount": null,
-      "length": null,
-      "width": null,
-      "height": null,
-      "weight": null,
-      "weightUnitOfMeasure": null,
-      "dimensionUnitOfMeasure": null,
-      "sortOrder": null,
-      "allergens": [],
-      "posButtonColorLight": "#f7f7f7",
-      "posButtonColorDark": "#1a1c23"
-    },
-    "73": {
-      "referenceId": 73,
-      "name": "paneer",
-      "posName": "",
-      "guid": "72cadf25-046c-460f-a29e-080c7248d4af",
-      "multiLocationId": "600000054121447221",
-      "masterId": 600000054121447200,
-      "description": "",
-      "image": null,
-      "visibility": [
-        "ORDERING_PARTNERS",
-        "TOAST_ONLINE_ORDERING",
-        "POS",
-        "KIOSK"
-      ],
-      "price": 1.99,
-      "pricingStrategy": "BASE_PRICE",
-      "pricingRules": null,
-      "salesCategory": null,
-      "taxInfo": [
-        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-      ],
-      "modifierOptionTaxInfo": {
-        "taxRateGuids": [
-          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-        ],
-        "overrideItemTaxRates": false
-      },
-      "itemTags": [],
-      "plu": "",
-      "sku": "",
-      "kitchenName": "",
-      "calories": null,
-      "unitOfMeasure": "NONE",
-      "isDefault": false,
-      "allowsDuplicates": false,
-      "portions": [],
-      "modifierGroupReferences": [],
-      "prepTime": null,
-      "prepStations": [],
-      "contentAdvisories": {
-        "alcohol": {
-          "containsAlcohol": null
-        }
-      },
-      "guestCount": null,
-      "length": null,
-      "width": null,
-      "height": null,
-      "weight": null,
-      "weightUnitOfMeasure": null,
-      "dimensionUnitOfMeasure": null,
-      "sortOrder": null,
-      "allergens": [],
-      "posButtonColorLight": "#f7f7f7",
-      "posButtonColorDark": "#1a1c23"
-    },
-    "74": {
-      "referenceId": 74,
-      "name": "egg",
-      "posName": "",
-      "guid": "365c9903-5c3b-48fc-8a12-b273c016b659",
-      "multiLocationId": "600000054130652120",
-      "masterId": 600000054130652200,
+      "guid": "5f8c7f5b-1970-4234-aef3-b518bfc30629",
+      "multiLocationId": "600000013185701604",
+      "masterId": 600000013185701600,
       "description": "",
       "image": null,
       "visibility": [
@@ -20528,13 +21116,13 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "75": {
-      "referenceId": 75,
-      "name": "double eggs",
+    "69": {
+      "referenceId": 69,
+      "name": "Chicken",
       "posName": "",
-      "guid": "f036ae8e-19a9-421b-ac48-307035178a0b",
-      "multiLocationId": "600000054130652121",
-      "masterId": 600000054130652200,
+      "guid": "9e85c893-d921-4976-8ea7-93c311aa1f8b",
+      "multiLocationId": "600000013185701608",
+      "masterId": 600000013185701600,
       "description": "",
       "image": null,
       "visibility": [
@@ -20587,72 +21175,13 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "76": {
-      "referenceId": 76,
-      "name": "chicken",
+    "70": {
+      "referenceId": 70,
+      "name": "Kheema",
       "posName": "",
-      "guid": "1b565d62-3fae-448b-bbc2-adc6d50e1d37",
-      "multiLocationId": "600000054121447222",
-      "masterId": 600000054121447200,
-      "description": "",
-      "image": null,
-      "visibility": [
-        "ORDERING_PARTNERS",
-        "TOAST_ONLINE_ORDERING",
-        "POS",
-        "KIOSK"
-      ],
-      "price": 2,
-      "pricingStrategy": "BASE_PRICE",
-      "pricingRules": null,
-      "salesCategory": null,
-      "taxInfo": [
-        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-      ],
-      "modifierOptionTaxInfo": {
-        "taxRateGuids": [
-          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-        ],
-        "overrideItemTaxRates": false
-      },
-      "itemTags": [],
-      "plu": "",
-      "sku": "",
-      "kitchenName": "",
-      "calories": null,
-      "unitOfMeasure": "NONE",
-      "isDefault": false,
-      "allowsDuplicates": false,
-      "portions": [],
-      "modifierGroupReferences": [],
-      "prepTime": null,
-      "prepStations": [],
-      "contentAdvisories": {
-        "alcohol": {
-          "containsAlcohol": null
-        }
-      },
-      "guestCount": null,
-      "length": null,
-      "width": null,
-      "height": null,
-      "weight": null,
-      "weightUnitOfMeasure": null,
-      "dimensionUnitOfMeasure": null,
-      "sortOrder": null,
-      "allergens": [],
-      "posButtonColorLight": "#f7f7f7",
-      "posButtonColorDark": "#1a1c23"
-    },
-    "77": {
-      "referenceId": 77,
-      "name": "shrimp",
-      "posName": "",
-      "guid": "07bf8d64-6393-407a-9390-6084e5b90cde",
-      "multiLocationId": "600000054121447223",
-      "masterId": 600000054121447200,
+      "guid": "5a769a17-1f9d-4078-a5e7-90b3d383995a",
+      "multiLocationId": "600000013185701613",
+      "masterId": 600000013185701600,
       "description": "",
       "image": null,
       "visibility": [
@@ -20705,13 +21234,13 @@
       "posButtonColorLight": "#f7f7f7",
       "posButtonColorDark": "#1a1c23"
     },
-    "78": {
-      "referenceId": 78,
-      "name": "goat keema",
+    "71": {
+      "referenceId": 71,
+      "name": "Shrimp",
       "posName": "",
-      "guid": "69cf3114-241a-4268-bcac-92ad523f1807",
-      "multiLocationId": "600000054121447224",
-      "masterId": 600000054121447200,
+      "guid": "3b2f6902-059d-4446-b4ba-26ff867adddf",
+      "multiLocationId": "600000013185701617",
+      "masterId": 600000013185701600,
       "description": "",
       "image": null,
       "visibility": [
@@ -20720,7 +21249,125 @@
         "POS",
         "KIOSK"
       ],
-      "price": 4,
+      "price": 3,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "72": {
+      "referenceId": 72,
+      "name": "Double Egg",
+      "posName": "",
+      "guid": "a06ab00e-60a0-414d-9d6b-05882a7b9985",
+      "multiLocationId": "600000013185701621",
+      "masterId": 600000013185701600,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 2,
+      "pricingStrategy": "BASE_PRICE",
+      "pricingRules": null,
+      "salesCategory": null,
+      "taxInfo": [
+        "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+        "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+      ],
+      "modifierOptionTaxInfo": {
+        "taxRateGuids": [
+          "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+          "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+        ],
+        "overrideItemTaxRates": false
+      },
+      "itemTags": [],
+      "plu": "",
+      "sku": "",
+      "kitchenName": "",
+      "calories": null,
+      "unitOfMeasure": "NONE",
+      "isDefault": false,
+      "allowsDuplicates": false,
+      "portions": [],
+      "modifierGroupReferences": [],
+      "prepTime": null,
+      "prepStations": [],
+      "contentAdvisories": {
+        "alcohol": {
+          "containsAlcohol": null
+        }
+      },
+      "guestCount": null,
+      "length": null,
+      "width": null,
+      "height": null,
+      "weight": null,
+      "weightUnitOfMeasure": null,
+      "dimensionUnitOfMeasure": null,
+      "sortOrder": null,
+      "allergens": [],
+      "posButtonColorLight": "#f7f7f7",
+      "posButtonColorDark": "#1a1c23"
+    },
+    "73": {
+      "referenceId": 73,
+      "name": "vegetable",
+      "posName": "vegetable",
+      "guid": "77df13fe-06fe-46cf-8cbf-cc85d9782354",
+      "multiLocationId": "600000029056115538",
+      "masterId": 600000029056115600,
+      "description": "",
+      "image": null,
+      "visibility": [
+        "ORDERING_PARTNERS",
+        "TOAST_ONLINE_ORDERING",
+        "POS",
+        "KIOSK"
+      ],
+      "price": 0,
       "pricingStrategy": "BASE_PRICE",
       "pricingRules": null,
       "salesCategory": null,

@@ -213,7 +213,7 @@ const MenuPage1 = () => {
         );
     };
 
-    const renderNashuaMenu = () => (
+    const renderWestboroughMenu = () => (
         <div style={{ position: 'relative', minHeight: '100vh' }}>
             {/* Background watermark logo - DC logo centered, 800px, 20% opacity */}
             <div
@@ -300,7 +300,7 @@ const MenuPage1 = () => {
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />
                 </div>
             ) : (
-                restaurantId === "Herndon" ? renderHerndonMenu() : renderNashuaMenu()
+                restaurantId === "Herndon" ? renderHerndonMenu() : renderWestboroughMenu()
             )}
         </>
     );

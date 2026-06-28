@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
 const { fetchMenu } = require('./controllers/menuController');
 const { getOrders, getOrdersBulk, getPendingOrders, getCompletedOrders, getNotification, setNotification } = require('./controllers/orderController');
 const NodeCache = require("node-cache");
@@ -24,6 +26,19 @@ app.get('/api/pendingOrders', getPendingOrders);
 app.get('/api/completedOrders', getCompletedOrders);
 app.get('/api/completedOrders/notify', getNotification);
 app.get('/api/completedOrders/setNotify', setNotification);
+
+// Serve promo images list from _images/promos directory
+app.get('/api/promos', (req, res) => {
+    const promosDir = path.join(__dirname, '..', 'client', 'public', '_images', 'promos');
+    fs.readdir(promosDir, (err, files) => {
+        if (err) {
+            logger.error('Error reading promos directory:', err);
+            return res.status(500).json({ error: 'Unable to read promos directory' });
+        }
+        const jpgFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
+        res.json(jpgFiles);
+    });
+});
 
 app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
