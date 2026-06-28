@@ -170,7 +170,7 @@ const MenuPage6 = () => {
                         style={{
                             width: "100vh",
                             height: "100vw",
-                            objectFit: "cover",
+                            objectFit: "contain",
                             transform: "rotate(90deg)"
                         }}
                     />
