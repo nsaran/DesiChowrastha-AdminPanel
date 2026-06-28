@@ -170,7 +170,10 @@ const MenuPage6 = () => {
                         style={{
                             maxWidth: "100%",
                             maxHeight: "100%",
-                            objectFit: "contain"
+                            objectFit: "contain",
+                            transform: "rotate(90deg)",
+                            maxWidth: "100vh",
+                            maxHeight: "100vw"
                         }}
                     />
                 </div>
@@ -179,10 +182,11 @@ const MenuPage6 = () => {
             {/* Progress indicator dots */}
             <div style={{
                 position: "absolute",
-                bottom: "20px",
-                left: "50%",
-                transform: "translateX(-50%)",
+                right: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
                 display: "flex",
+                flexDirection: "column",
                 gap: "8px",
                 zIndex: 10
             }}>
