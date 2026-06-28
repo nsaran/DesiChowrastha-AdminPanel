@@ -168,12 +168,10 @@ const MenuPage6 = () => {
                         src={image.imageUrl}
                         alt={image.message || `Post ${index + 1}`}
                         style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                            transform: "rotate(90deg)",
-                            maxWidth: "100vh",
-                            maxHeight: "100vw"
+                            width: "100vh",
+                            height: "100vw",
+                            objectFit: "cover",
+                            transform: "rotate(90deg)"
                         }}
                     />
                 </div>
