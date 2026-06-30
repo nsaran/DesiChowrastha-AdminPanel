@@ -50,9 +50,9 @@ async function fetchMenuData(location) {
     for (let retry = 0; retry < 3; retry++) {
         try {
             const stockResponse = [];
-            stockResponse.data = [];
-            if (location == "WESTBOROUGH") {
-                stockResponse = await axios.get(`${toastApiBaseUrl}/stock/v1/inventory`, requestOptions);
+            stockResponse.data = []; 
+            if(location === 'WESTBOROUGH') {
+              const stockResponse = await axios.get(`${toastApiBaseUrl}/stock/v1/inventory`, requestOptions);
             }
             const menuResponse = await axios.get(`${toastApiBaseUrl}/menus/v2/menus`, requestOptions);
             //console.log(stockResponse.data);

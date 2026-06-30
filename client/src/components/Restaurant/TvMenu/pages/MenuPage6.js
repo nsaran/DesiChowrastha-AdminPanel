@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/tvmenu-styles.css";
 import LoaderIcon from '../assets/images/loader_icon.gif';
@@ -24,6 +24,16 @@ const MenuPage6 = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const queryParams = useMemo(() => {
+        return new URLSearchParams(window.location.search);
+    }, []);
+
+    const post = queryParams.get('post');
+
+    const FB_POST_ID = post || FB_POSTS_LIMIT;
+
+    console.log(FB_POST_ID);
 
     // Load local promo images from _images/promos/ as fallback
     const loadLocalPromoImages = useCallback(async () => {
@@ -52,7 +62,7 @@ const MenuPage6 = () => {
 
     const fetchImages = useCallback(async () => {
         try {
-            const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=id,message,story,created_time,full_picture,permalink_url&limit=${FB_POSTS_LIMIT}&access_token=${FB_ACCESS_TOKEN}`;
+            const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=id,message,story,created_time,full_picture,permalink_url&limit=${FB_POST_ID}&access_token=${FB_ACCESS_TOKEN}`;
             const response = await fetch(url, { method: 'GET' });
 
             if (!response.ok) {
