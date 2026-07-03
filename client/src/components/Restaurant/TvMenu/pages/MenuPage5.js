@@ -158,6 +158,13 @@ const MenuPage5 = () => {
                                 "life tastes better with dessert"
                             </h5>
                             {renderMenuItemsFromArray(desserts)}
+                            <div style={{ marginTop: "10px" }}>
+                                <img
+                                    src="/_images/promos/irani-chai.jpg"
+                                    alt="Irani Chai"
+                                    style={{ width: "100%", height: "100px", objectFit: "cover", borderRadius: "8px" }}
+                                />
+                            </div>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Ice Cream</h2>
                             <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
                                 (Vanilla | Chocolate | Butterscotch | Strawberry | Pistachio)
@@ -202,6 +209,13 @@ const MenuPage5 = () => {
                         {renderToastMenuItems(menu, "Chai/Coffee")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Desserts</h2>
                         {renderToastMenuItems(menu, "Desserts")}
+                        <div style={{ marginTop: "10px" }}>
+                            <img
+                                src="/_images/promos/irani-chai.jpg"
+                                alt="Irani Chai"
+                                style={{ width: "100%", height: "100px", objectFit: "cover", borderRadius: "8px" }}
+                            />
+                        </div>
                     </Col>
 
                     {/* Column 2: Drinks + Fresh Juice

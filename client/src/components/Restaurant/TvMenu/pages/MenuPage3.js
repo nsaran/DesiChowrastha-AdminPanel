@@ -128,6 +128,13 @@ const MenuPage3 = () => {
                         <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Curries</h2>
                             {renderMenuItemsFromArray(vegCurries)}
+                            <div style={{ marginTop: "15px" }}>
+                                <img
+                                    src="/_images/promos/goat-curry.jpg"
+                                    alt="Goat Curry"
+                                    style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "8px" }}
+                                />
+                            </div>
                         </Col>
                         <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Curries</h2>
@@ -172,6 +179,13 @@ const MenuPage3 = () => {
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Curries</h2>
                         {renderToastMenuItems(menu, "Veg Curries")}
+                        <div style={{ marginTop: "15px" }}>
+                            <img
+                                src="/_images/promos/goat-curry.jpg"
+                                alt="Goat Curry"
+                                style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }}
+                            />
+                        </div>
                     </Col>
 
                     {/* Column 2: Non-Veg Curries

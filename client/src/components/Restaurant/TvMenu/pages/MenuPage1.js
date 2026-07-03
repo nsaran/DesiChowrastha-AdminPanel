@@ -190,6 +190,13 @@ const MenuPage1 = () => {
                             {renderMenuItemsFromArray(dosas)}
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Non-Veg Combo</h2>
                             {renderMenuItemsFromArray(nonVegCombo)}
+                            <div style={{ marginTop: "15px" }}>
+                                <img
+                                    src="/_images/promos/idly-combo.jpg"
+                                    alt="Idly Combo"
+                                    style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }}
+                                />
+                            </div>
                         </Col>
 
                         {/* Column 3: Snacks + Chaat Section - 33.2% width */}
@@ -252,6 +259,13 @@ const MenuPage1 = () => {
                         {renderToastMenuItems(menu, "Tiffins")}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Non-Veg Combo</h2>
                         {renderToastMenuItems(menu, "Non-Veg Combo")}
+                        <div style={{ marginTop: "15px" }}>
+                            <img
+                                src="/_images/promos/idly-combo.jpg"
+                                alt="Idly Combo"
+                                style={{ width: "100%", height: "120px", objectFit: "cover", borderRadius: "8px" }}
+                            />
+                        </div>
                     </Col>
 
                     {/* Column 2: More Dosas + Add-on pricing + Non-Veg Combo - 33.4% width
