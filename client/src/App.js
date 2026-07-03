@@ -24,6 +24,7 @@ import MenuPage3 from './components/Restaurant/TvMenu/pages/MenuPage3';
 import MenuPage4 from './components/Restaurant/TvMenu/pages/MenuPage4';
 import MenuPage5 from './components/Restaurant/TvMenu/pages/MenuPage5';
 import MenuPage6 from './components/Restaurant/TvMenu/pages/MenuPage6';
+import MenuPage7 from './components/Restaurant/TvMenu/pages/MenuPage7';
 import ChefsKitchen from './components/Restaurant/ChefsKitchen';
 import FillerComponent from './components/Restaurant/Filler';
 import CustomMenu from './components/Restaurant/CustomMenu/index';
@@ -65,6 +66,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage4" element={<MenuPage4 />} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage5" element={<MenuPage5 />} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage6" element={<MenuPage6 />} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage7" element={<MenuPage7 />} />
           <Route path="/dashboard/:restaurantId/customTvMenu" element={<CustomTvMenuLanding />} />
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
           <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<ChefsKitchen />} />

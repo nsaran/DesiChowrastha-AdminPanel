@@ -166,12 +166,11 @@ const MenuPage5 = () => {
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
                             {renderMenuItemsFromArray(pastries)}
                             <div style={{ marginTop: "30px", textAlign: "center" }}>
-                                <h4 style={{ fontFamily: "Lobster", fontSize: "1.8rem", color: "#fd590d" }}>
-                                    We Do Catering Services
-                                </h4>
-                                <h4 style={{ fontFamily: "Lobster", fontSize: "1.5rem", color: "black" }}>
-                                    FOR ALL YOUR EVENTS
-                                </h4>
+                                <img
+                                    src="/_images/promos/catering.jpg"
+                                    alt="We Do Catering Services For All Your Events"
+                                    style={{ width: "90%", maxWidth: "400px", height: "auto", borderRadius: "8px" }}
+                                />
                             </div>
                         </Col>
                     </Row>
@@ -243,12 +242,11 @@ const MenuPage5 = () => {
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
                         {renderToastMenuItems(menu, "Pastries")}
                         <div style={{ marginTop: "30px", textAlign: "center" }}>
-                            <h4 style={{ fontFamily: "Lobster", fontSize: "1.8rem", color: "#fd590d" }}>
-                                We Do Catering Services
-                            </h4>
-                            <h4 style={{ fontFamily: "Lobster", fontSize: "1.5rem", color: "black" }}>
-                                FOR ALL YOUR EVENTS
-                            </h4>
+                            <img
+                                src="/_images/promos/catering.jpg"
+                                alt="We Do Catering Services For All Your Events"
+                                style={{ width: "100%", maxWidth: "100%", height: "350px", borderRadius: "8px" }}
+                            />
                         </div>
                     </Col>
                 </Row>

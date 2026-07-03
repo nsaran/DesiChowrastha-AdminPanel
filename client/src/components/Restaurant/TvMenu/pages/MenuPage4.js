@@ -253,6 +253,13 @@ const MenuPage4 = () => {
                     <Row>
                         <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%" }}>
                             {renderBiryaniTable("Veg Special Biryani", biryaniG?.menuItems || [], famBiryaniG?.menuItems || [], "biryani", true)}
+                            <div style={{ marginTop: "20px", textAlign: "center" }}>
+                                <img
+                                    src="/_images/promos/veg-biryani.jpg"
+                                    alt="Veg Biryani"
+                                    style={{ width: "100%", maxWidth: "100%", height: "450px", borderRadius: "8px" }}
+                                />
+                            </div>
                         </Col>
                         <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%" }}>
                             {renderBiryaniTable("Non-Veg Special Biryani", nonVegbiryaniG?.menuItems || [], nonVegfamBiryaniG?.menuItems || [], "biryani", true)}
