@@ -31,6 +31,7 @@ import FillerComponent from './components/Restaurant/Filler';
 import CustomMenu from './components/Restaurant/CustomMenu/index';
 import CustomTvMenuLanding from './components/Restaurant/CustomTvMenu/CustomTvMenuLanding';
 import CustomTvMenuPageView from './components/Restaurant/CustomTvMenu/CustomTvMenuPageView';
+import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
 const App = () => {
   return (
@@ -57,18 +58,18 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/filler" element={<FillerComponent />} />
           <Route path="/dashboard/:restaurantId/orders" element={<OrdersComponent />} />
           <Route path="/dashboard/:restaurantId/TVMenu" element={<TvMenu />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/Page1" element={<Page1 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/Page2" element={<Page2 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/Page3" element={<Page3 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/Page4" element={<Page4 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage1" element={<MenuPage1 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage2" element={<MenuPage2 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage3" element={<MenuPage3 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage4" element={<MenuPage4 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage5" element={<MenuPage5 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage6" element={<MenuPage6 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage7" element={<MenuPage7 />} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage8" element={<MenuPage8 />} />
+          <Route path="/dashboard/:restaurantId/TVMenu/Page1" element={<TvMenuErrorBoundary><Page1 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/Page2" element={<TvMenuErrorBoundary><Page2 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/Page3" element={<TvMenuErrorBoundary><Page3 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/Page4" element={<TvMenuErrorBoundary><Page4 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage1" element={<TvMenuErrorBoundary><MenuPage1 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage2" element={<TvMenuErrorBoundary><MenuPage2 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage3" element={<TvMenuErrorBoundary><MenuPage3 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage4" element={<TvMenuErrorBoundary><MenuPage4 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage5" element={<TvMenuErrorBoundary><MenuPage5 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage6" element={<TvMenuErrorBoundary><MenuPage6 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage7" element={<TvMenuErrorBoundary><MenuPage7 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage8" element={<TvMenuErrorBoundary><MenuPage8 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/customTvMenu" element={<CustomTvMenuLanding />} />
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
           <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<ChefsKitchen />} />

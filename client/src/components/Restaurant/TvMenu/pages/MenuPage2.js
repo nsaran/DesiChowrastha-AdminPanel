@@ -127,7 +127,7 @@ const MenuPage2 = () => {
                             </span>
                             {spiceLevelImages}
                             <span className="menu-item-price">
-                                {item.isAvailable === false ? "N/A" : `$ ${parseFloat(item.price).toFixed(2)}`}
+                                {item.isAvailable === false ? "N/A" : `$ ${parseFloat(item.price || 0).toFixed(2)}`}
                             </span>
                         </h4>
                     </div>

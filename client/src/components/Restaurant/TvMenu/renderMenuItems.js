@@ -27,7 +27,7 @@ export const renderToastMenuItems = (menu, category) => {
 
   const filteredMenu = menu[0].menuGroups.filter(item => item.name === category);
 
-  return filteredMenu.map(group => group.menuItems
+  return filteredMenu.map(group => (group.menuItems || [])
     .filter(item => item.name)
     .map(item => {
       // Check for the specific item name and update it
@@ -79,7 +79,7 @@ export const renderToastMenuItems = (menu, category) => {
             </span>
             {spiceLevelImages}
             <span className="menu-item-price">
-              {item.isAvailable === false ? "N/A" : `$ ${parseFloat(item.price).toFixed(2)}`}
+              {item.isAvailable === false ? "N/A" : `$ ${parseFloat(item.price || 0).toFixed(2)}`}
             </span>
           </h4>
         </div>

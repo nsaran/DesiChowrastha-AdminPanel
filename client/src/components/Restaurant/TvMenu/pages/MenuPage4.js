@@ -74,14 +74,14 @@ const MenuPage4 = () => {
     };
 
     const iconFor = type => (type === 'Veg' ? VEG : type === 'Egg' ? EGG : NONVEG);
-    const HPAD = { padding: '4px 15px 0px 4px' };
+    const HPAD = { padding: '4px 15px 0px 4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' };
 
     const renderBiryaniTable = (title, items, families, key, showSpice = false) => {
         const headerClass = key === 'pulao' ? 'pulao-table-font' : 'biryani-table-font';
         return (
             <>
                 <h2 className="cat-title" style={{ fontFamily: 'Lobster' }}>{title}</h2>
-                <Table borderless size="sm" style={{ tableLayout: 'fixed', width: '100%' }}>
+                <Table borderless size="sm" style={{ tableLayout: 'auto', width: '100%' }}>
                     <colgroup>
                         <col style={{ width: '60%' }} />
                         <col style={{ width: '20%' }} />
@@ -118,11 +118,11 @@ const MenuPage4 = () => {
                                         {spiceLevelImages}
                                     </td>
                                     <td style={{ ...HPAD, textAlign: 'left' }} className={rowClass}>
-                                        {item.isAvailable ? `$ ${item.price.toFixed(2)}` : 'N/A'}
+                                        {item.isAvailable ? `$ ${parseFloat(item.price || 0).toFixed(2)}` : 'N/A'}
                                     </td>
                                     <td style={{ ...HPAD, textAlign: 'left' }}
                                         className={fam?.isAvailable === false ? `sold-out-menu-item-${key}` : headerClass}>
-                                        {fam ? fam.isAvailable ? `$ ${fam.price.toFixed(2)}` : 'N/A' : '—'}
+                                        {fam ? fam.isAvailable ? `$ ${parseFloat(fam.price || 0).toFixed(2)}` : 'N/A' : '—'}
                                     </td>
                                 </tr>
                             );
@@ -165,7 +165,7 @@ const MenuPage4 = () => {
                             <span style={{ paddingLeft: !itemTypeImage ? "30px" : "0px" }}>{item.name}</span>
                             {spiceLevelImages}
                             <span className="menu-item-price">
-                                {item.isAvailable === false ? "N/A" : `$ ${parseFloat(item.price).toFixed(2)}`}
+                                {item.isAvailable === false ? "N/A" : `$ ${parseFloat(item.price || 0).toFixed(2)}`}
                             </span>
                         </h4>
                     </div>
@@ -201,7 +201,7 @@ const MenuPage4 = () => {
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Veg Special Biryani</h2>
                             {renderMenuItemsFromArray(vegSpecialBiryani)}
                         </Col>
-                        <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%" }}>
+                        <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%", paddingLeft: "15px" }}>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Special Biryani Non-Veg</h2>
                             {renderMenuItemsFromArray(nonVegSpecialBiryani)}
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pulao</h2>
@@ -268,9 +268,9 @@ const MenuPage4 = () => {
                         <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%" }}>
                             {renderBiryaniTable("Non-Veg Special Biryani", nonVegbiryaniG?.menuItems || [], nonVegfamBiryaniG?.menuItems || [], "biryani", true)}
                         </Col>
-                        <Col style={{ flex: "0 0 33.2%", maxWidth: "33.2%" }}>
+                        <Col style={{ flex: "0 0 33.2%", maxWidth: "33.2%", paddingLeft: "15px" }}>
                             {renderBiryaniTable("Pulao", pulaoG?.menuItems || [], famPulaoG?.menuItems || [], "pulao")}
-                            <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Rice</h2>
+                            <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Rice</h2>
                             {renderToastMenuItems(menu, "Rice")}
                         </Col>
                     </Row>
