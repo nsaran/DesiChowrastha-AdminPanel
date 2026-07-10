@@ -75,17 +75,12 @@ const MenuPage4 = () => {
         return (
             <>
                 <h2 className="cat-title" style={{ fontFamily: 'Lobster' }}>{title}</h2>
-                <Table borderless size="sm" style={{ tableLayout: 'auto', width: '100%' }}>
-                    <colgroup>
-                        <col style={{ width: '60%' }} />
-                        <col style={{ width: '20%' }} />
-                        <col style={{ width: '20%' }} />
-                    </colgroup>
+                <Table borderless size="sm" style={{ tableLayout: 'fixed', width: '100%' }}>
                     <thead>
                         <tr>
-                            <th className={headerClass}>Item</th>
-                            <th className={headerClass}>Single</th>
-                            <th className={headerClass}>Family Pack</th>
+                            <th className={headerClass} style={{ width: '60%' }}>Item</th>
+                            <th className={headerClass} style={{ width: '20%' }}>Single</th>
+                            <th className={headerClass} style={{ width: '20%' }}>Family Pack</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -249,20 +244,20 @@ const MenuPage4 = () => {
                         Gongura Paneer Biryani, Ulavacharu Paneer Biryani, Kaju Gobi Biryani
                         Rice: Boiled Rice, Curd Rice, Jeera Rice, Dal Khichdi */}
                     <Row>
-                        <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%" }}>
+                        <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%", overflow: "hidden", paddingRight: "5px" }}>
                             {renderBiryaniTable("Veg Special Biryani", biryaniG?.menuItems || [], famBiryaniG?.menuItems || [], "biryani", true)}
                             <div style={{ marginTop: "20px", textAlign: "center" }}>
                                 <img
                                     src="/_images/promos/veg-biryani.jpg"
                                     alt="Veg Biryani"
-                                    style={{ width: "100%", maxWidth: "100%", height: "450px", borderRadius: "8px" }}
+                                    style={{ width: "90%", maxWidth: "90%", height: "450px", borderRadius: "8px" }}
                                 />
                             </div>
                         </Col>
-                        <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%" }}>
+                        <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%", overflow: "hidden", paddingLeft: "5px", paddingRight: "5px" }}>
                             {renderBiryaniTable("Non-Veg Special Biryani", nonVegbiryaniG?.menuItems || [], nonVegfamBiryaniG?.menuItems || [], "biryani", true)}
                         </Col>
-                        <Col style={{ flex: "0 0 33.2%", maxWidth: "33.2%", paddingLeft: "15px" }}>
+                        <Col style={{ flex: "0 0 33.2%", maxWidth: "33.2%", paddingLeft: "5px", overflow: "hidden" }}>
                             {renderBiryaniTable("Pulao", pulaoG?.menuItems || [], famPulaoG?.menuItems || [], "pulao")}
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Rice</h2>
                             {renderToastMenuItems(menu, "Rice")}
