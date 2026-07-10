@@ -33,6 +33,7 @@ const MenuPage2 = () => {
     const [menu, setMenu] = useState([]);
     const [previousMenu, setPreviousMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,8 +46,11 @@ const MenuPage2 = () => {
                     setPreviousMenu(menu);
                     setMenu(data);
                 }
+                setFetchError(false);
             } catch (error) {
                 console.error("Error fetching menu:", error);
+                setFetchError(true);
+                setTimeout(() => setFetchError(false), 10000);
             }
             setIsLoading(false);
         };
@@ -281,6 +285,16 @@ const MenuPage2 = () => {
 
     return (
         <>
+            {fetchError && (
+                <div style={{
+                    position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
+                    backgroundColor: '#ff4d4f', color: '#fff', padding: '10px 20px',
+                    borderRadius: '8px', fontSize: '1rem', fontFamily: 'sans-serif',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)', opacity: 0.9,
+                }}>
+                    ⚠️ Menu refresh failed. Showing last known data.
+                </div>
+            )}
             {isLoading ? (
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />

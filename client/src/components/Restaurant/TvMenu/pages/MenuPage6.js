@@ -30,6 +30,7 @@ const MenuPage6 = () => {
     }, []);
 
     const post = queryParams.get('post');
+    const rotate = queryParams.get('rotate') || '90';
 
     const FB_POST_ID = post || FB_POSTS_LIMIT;
 
@@ -101,10 +102,14 @@ const MenuPage6 = () => {
         setIsLoading(false);
     }, [loadLocalPromoImages]);
 
-    // Fetch images on mount and refresh every 30 minutes
+    // Fetch images on mount and refresh twice a day (every 12 hours)
+    // Also triggers a full page reload to pick up any code/content changes
     useEffect(() => {
         fetchImages();
-        const intervalId = setInterval(fetchImages, 1800000);
+        const TWELVE_HOURS = 12 * 60 * 60 * 1000; // 43200000ms
+        const intervalId = setInterval(() => {
+            window.location.reload();
+        }, TWELVE_HOURS);
         return () => clearInterval(intervalId);
     }, [fetchImages]);
 
@@ -181,7 +186,7 @@ const MenuPage6 = () => {
                             width: "100vh",
                             height: "100vw",
                             objectFit: "contain",
-                            transform: "rotate(90deg)"
+                            transform: `rotate(${rotate}deg)`
                         }}
                     />
                 </div>

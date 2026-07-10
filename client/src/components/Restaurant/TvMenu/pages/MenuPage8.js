@@ -1,0 +1,300 @@
+import React, { useState } from "react";
+import GoogleFontLoader from "react-google-font";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../assets/css/tvmenu-styles.css";
+import logo from '../../../../assets/images/dc-nashua-logo.webp';
+
+/**
+ * MenuPage8 - Customer Feedback Page
+ * 
+ * Allows customers to submit complaints, suggestions, or reviews.
+ * Includes a "Write a Google Review" button that redirects to the Google review page.
+ * 
+ * Designed for 55-inch TV display (16:9 aspect ratio)
+ */
+const MenuPage8 = () => {
+    const [feedbackType, setFeedbackType] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [submitted, setSubmitted] = useState(false);
+
+    const GOOGLE_REVIEW_URL = "https://g.page/r/CRXCUfBy-TMMEAI/review";
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // For now, just show a thank you message
+        // This can be connected to a backend API later
+        console.log({ feedbackType, name, email, message });
+        setSubmitted(true);
+        setTimeout(() => {
+            setSubmitted(false);
+            setFeedbackType("");
+            setName("");
+            setEmail("");
+            setMessage("");
+        }, 5000);
+    };
+
+    const containerStyle = {
+        position: 'relative',
+        minHeight: '100vh',
+        backgroundColor: '#fff',
+    };
+
+    const cardStyle = {
+        backgroundColor: '#fff',
+        borderRadius: '12px',
+        padding: '30px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        border: '2px solid #fd590d',
+    };
+
+    const inputStyle = {
+        width: '100%',
+        padding: '12px 16px',
+        fontSize: '1.1rem',
+        borderRadius: '8px',
+        border: '1px solid #ddd',
+        marginBottom: '15px',
+        fontFamily: "'Bree Serif', serif",
+        outline: 'none',
+    };
+
+    const selectStyle = {
+        ...inputStyle,
+        cursor: 'pointer',
+    };
+
+    const textareaStyle = {
+        ...inputStyle,
+        minHeight: '120px',
+        resize: 'vertical',
+    };
+
+    const submitBtnStyle = {
+        width: '100%',
+        padding: '14px',
+        fontSize: '1.3rem',
+        fontFamily: "'Lobster', cursive",
+        backgroundColor: '#fd590d',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        marginTop: '10px',
+    };
+
+    const googleReviewBtnStyle = {
+        display: 'inline-block',
+        width: '100%',
+        padding: '16px',
+        fontSize: '1.4rem',
+        fontFamily: "'Lobster', cursive",
+        backgroundColor: '#4285F4',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        textAlign: 'center',
+        textDecoration: 'none',
+        marginTop: '20px',
+    };
+
+    const thankYouStyle = {
+        textAlign: 'center',
+        padding: '40px',
+        fontFamily: "'Lobster', cursive",
+        fontSize: '2rem',
+        color: '#28a745',
+    };
+
+    return (
+        <div style={containerStyle}>
+            {/* Background watermark logo */}
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: `url(${logo})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    backgroundSize: '600px auto',
+                    opacity: 0.1,
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                }}
+            />
+            <Container fluid style={{ padding: '2rem', position: 'relative', zIndex: 1 }}>
+                <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
+
+                {/* Header */}
+                <Row className="justify-content-center" style={{ marginBottom: '20px' }}>
+                    <Col xs={12} style={{ textAlign: 'center' }}>
+                        <h1 style={{
+                            fontFamily: "'Lobster', cursive",
+                            fontSize: '3rem',
+                            color: '#fd590d',
+                            marginBottom: '5px',
+                        }}>
+                            We Value Your Feedback
+                        </h1>
+                        <p style={{
+                            fontFamily: "'Bree Serif', serif",
+                            fontSize: '1.3rem',
+                            color: '#555',
+                        }}>
+                            Your opinions help us serve you better!
+                        </p>
+                    </Col>
+                </Row>
+
+                <Row className="justify-content-center">
+                    {/* Left Column: Feedback Form */}
+                    <Col md={6} style={{ maxWidth: '550px', marginBottom: '30px' }}>
+                        <div style={cardStyle}>
+                            <h2 style={{
+                                fontFamily: "'Lobster', cursive",
+                                fontSize: '2rem',
+                                color: '#fd590d',
+                                textAlign: 'center',
+                                marginBottom: '20px',
+                            }}>
+                                Share Your Experience
+                            </h2>
+
+                            {submitted ? (
+                                <div style={thankYouStyle}>
+                                    <p>🎉 Thank You!</p>
+                                    <p style={{ fontSize: '1.2rem', color: '#555' }}>
+                                        Your feedback has been received. We appreciate your time!
+                                    </p>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleSubmit}>
+                                    <select
+                                        style={selectStyle}
+                                        value={feedbackType}
+                                        onChange={(e) => setFeedbackType(e.target.value)}
+                                        required
+                                        aria-label="Feedback type"
+                                    >
+                                        <option value="" disabled>Select Feedback Type</option>
+                                        <option value="complaint">Complaint</option>
+                                        <option value="suggestion">Suggestion</option>
+                                        <option value="review">Review</option>
+                                        <option value="compliment">Compliment</option>
+                                    </select>
+
+                                    <input
+                                        type="text"
+                                        style={inputStyle}
+                                        placeholder="Your Name"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                        aria-label="Your name"
+                                    />
+
+                                    <input
+                                        type="email"
+                                        style={inputStyle}
+                                        placeholder="Your Email (optional)"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        aria-label="Your email"
+                                    />
+
+                                    <textarea
+                                        style={textareaStyle}
+                                        placeholder="Tell us more..."
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        required
+                                        aria-label="Your feedback message"
+                                    />
+
+                                    <button type="submit" style={submitBtnStyle}>
+                                        Submit Feedback
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    </Col>
+
+                    {/* Right Column: Google Review CTA */}
+                    <Col md={6} style={{ maxWidth: '550px', marginBottom: '30px' }}>
+                        <div style={{ ...cardStyle, textAlign: 'center' }}>
+                            <h2 style={{
+                                fontFamily: "'Lobster', cursive",
+                                fontSize: '2rem',
+                                color: '#fd590d',
+                                marginBottom: '15px',
+                            }}>
+                                Love Our Food?
+                            </h2>
+                            <p style={{
+                                fontFamily: "'Bree Serif', serif",
+                                fontSize: '1.2rem',
+                                color: '#333',
+                                marginBottom: '10px',
+                            }}>
+                                Leave us a Google Review and let others know about your experience!
+                            </p>
+                            <p style={{
+                                fontSize: '4rem',
+                                marginBottom: '10px',
+                            }}>
+                                ⭐⭐⭐⭐⭐
+                            </p>
+                            <p style={{
+                                fontFamily: "'Bree Serif', serif",
+                                fontSize: '1rem',
+                                color: '#666',
+                                marginBottom: '20px',
+                            }}>
+                                Your review helps us grow and serve our community better.
+                                It only takes a moment!
+                            </p>
+                            <a
+                                href={GOOGLE_REVIEW_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={googleReviewBtnStyle}
+                            >
+                                ✍️ Write a Google Review
+                            </a>
+
+                            <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+                                <h3 style={{
+                                    fontFamily: "'Lobster', cursive",
+                                    fontSize: '1.5rem',
+                                    color: '#fd590d',
+                                    marginBottom: '10px',
+                                }}>
+                                    Have a Complaint?
+                                </h3>
+                                <p style={{
+                                    fontFamily: "'Bree Serif', serif",
+                                    fontSize: '1rem',
+                                    color: '#555',
+                                }}>
+                                    We're sorry if something wasn't right. Please use the feedback form
+                                    to let us know, and we'll do our best to make it right!
+                                </p>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+};
+
+export default MenuPage8;
