@@ -48,7 +48,7 @@ const MenuPage3 = () => {
         };
 
         fetchData();
-        const intervalId = setInterval(fetchData, 1800000);
+        const intervalId = setInterval(fetchData, 120000);
 
         return () => clearInterval(intervalId);
     }, [restaurantId]);
