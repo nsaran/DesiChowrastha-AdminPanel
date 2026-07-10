@@ -31,21 +31,15 @@ import CHILLI from "../assets/images/chilli.png";
 const MenuPage2 = () => {
     const { restaurantId } = useParams();
     const [menu, setMenu] = useState([]);
-    const [previousMenu, setPreviousMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                //const response = await fetch(`https://desichowrastha-admin.azurewebsites.net/api/menu?location=${restaurantId}`);
                 const response = await fetch(`${API_BASE_URL}/api/menu?location=${restaurantId}`);
                 const data = await response.json();
-
-                if (JSON.stringify(data) !== JSON.stringify(previousMenu)) {
-                    setPreviousMenu(menu);
-                    setMenu(data);
-                }
+                setMenu(data);
                 setFetchError(false);
             } catch (error) {
                 console.error("Error fetching menu:", error);
@@ -59,7 +53,7 @@ const MenuPage2 = () => {
         const intervalId = setInterval(fetchData, 1800000);
 
         return () => clearInterval(intervalId);
-    }, [restaurantId, menu, previousMenu]);
+    }, [restaurantId]);
 
     // Utility function to find menu group by name
     const findMenuGroupByName = (groups, groupName) => {
