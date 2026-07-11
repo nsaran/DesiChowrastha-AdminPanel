@@ -6,6 +6,8 @@ import Col from "react-bootstrap/Col";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/tvmenu-styles.css";
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
+import API_BASE_URL from '../../../../config/api';
+import { useParams } from 'react-router-dom';
 
 /**
  * MenuPage8 - Customer Feedback Page
@@ -16,27 +18,51 @@ import logo from '../../../../assets/images/dc-nashua-logo.webp';
  * Designed for 55-inch TV display (16:9 aspect ratio)
  */
 const MenuPage8 = () => {
+    const { restaurantId } = useParams();
     const [feedbackType, setFeedbackType] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [sending, setSending] = useState(false);
+    const [sendError, setSendError] = useState("");
 
     const GOOGLE_REVIEW_URL = "https://g.page/r/CRXCUfBy-TMMEAI/review";
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // For now, just show a thank you message
-        // This can be connected to a backend API later
-        console.log({ feedbackType, name, email, message });
-        setSubmitted(true);
-        setTimeout(() => {
-            setSubmitted(false);
-            setFeedbackType("");
-            setName("");
-            setEmail("");
-            setMessage("");
-        }, 5000);
+        setSending(true);
+        setSendError("");
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ feedbackType, name, email, phone, message, location: restaurantId })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to send feedback');
+            }
+
+            setSubmitted(true);
+            setTimeout(() => {
+                setSubmitted(false);
+                setFeedbackType("");
+                setName("");
+                setEmail("");
+                setPhone("");
+                setMessage("");
+            }, 5000);
+        } catch (error) {
+            console.error("Error sending feedback:", error);
+            setSendError("Unable to send feedback. Please try again.");
+            setTimeout(() => setSendError(""), 5000);
+        } finally {
+            setSending(false);
+        }
     };
 
     const containerStyle = {
@@ -152,6 +178,13 @@ const MenuPage8 = () => {
                         }}>
                             Your opinions help us serve you better!
                         </p>
+                        <p style={{
+                            fontFamily: "'Bree Serif', serif",
+                            fontSize: '1.1rem',
+                            color: '#777',
+                        }}>
+                            Your feedback will be shared directly with our management team and they will get back to you personally.
+                        </p>
                     </Col>
                 </Row>
 
@@ -202,6 +235,10 @@ const MenuPage8 = () => {
                                         aria-label="Your name"
                                     />
 
+                                    <p style={{ fontSize: '0.9rem', color: '#888', fontStyle: 'italic', marginBottom: '10px' }}>
+                                        Please provide your email or phone number so we can get back to you.
+                                    </p>
+
                                     <input
                                         type="email"
                                         style={inputStyle}
@@ -209,6 +246,15 @@ const MenuPage8 = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         aria-label="Your email"
+                                    />
+
+                                    <input
+                                        type="tel"
+                                        style={inputStyle}
+                                        placeholder="Your Phone Number (optional)"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        aria-label="Your phone number"
                                     />
 
                                     <textarea
@@ -220,9 +266,14 @@ const MenuPage8 = () => {
                                         aria-label="Your feedback message"
                                     />
 
-                                    <button type="submit" style={submitBtnStyle}>
-                                        Submit Feedback
+                                    <button type="submit" style={submitBtnStyle} disabled={sending}>
+                                        {sending ? 'Sending...' : 'Submit Feedback'}
                                     </button>
+                                    {sendError && (
+                                        <p style={{ color: '#ff4d4f', textAlign: 'center', marginTop: '10px', fontSize: '0.9rem' }}>
+                                            {sendError}
+                                        </p>
+                                    )}
                                 </form>
                             )}
                         </div>
