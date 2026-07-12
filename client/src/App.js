@@ -26,6 +26,7 @@ import MenuPage5 from './components/Restaurant/TvMenu/pages/MenuPage5';
 import MenuPage6 from './components/Restaurant/TvMenu/pages/MenuPage6';
 import MenuPage7 from './components/Restaurant/TvMenu/pages/MenuPage7';
 import MenuPage8 from './components/Restaurant/TvMenu/pages/MenuPage8';
+import MenuPage9 from './components/Restaurant/TvMenu/pages/MenuPage9';
 import ChefsKitchen from './components/Restaurant/ChefsKitchen';
 import FillerComponent from './components/Restaurant/Filler';
 import CustomMenu from './components/Restaurant/CustomMenu/index';
@@ -70,6 +71,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage6" element={<TvMenuErrorBoundary><MenuPage6 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage7" element={<TvMenuErrorBoundary><MenuPage7 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage8" element={<TvMenuErrorBoundary><MenuPage8 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage9" element={<TvMenuErrorBoundary><MenuPage9 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/customTvMenu" element={<CustomTvMenuLanding />} />
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
           <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<ChefsKitchen />} />

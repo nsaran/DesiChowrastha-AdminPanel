@@ -19,7 +19,8 @@ const WA_PHONE_NUMBER_IDS = {
 };
 const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
 const OWNER_PHONE_NUMBERS = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
-const WA_TEMPLATE_NAME = process.env.WA_TEMPLATE_NAME || 'customer_feedback';
+const WA_FEEDBACK_TEMPLATE_NAME = process.env.WA_FEEDBACK_TEMPLATE_NAME || 'customer_feedback';
+const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en_US';
 const WA_API_VERSION = 'v21.0';
 
 /**
@@ -34,7 +35,7 @@ const WA_API_VERSION = 'v21.0';
  * @param {string} feedback.location - Restaurant location: 'Westborough' or 'Nashua'
  */
 async function sendFeedbackToOwner(feedback) {
-    const { feedbackType, name, message, phone, location } = feedback;
+    const { feedbackType, name, email, message, phone, location } = feedback;
 
     // Determine the correct WA phone number ID based on location
     const locationKey = (location || 'WESTBOROUGH').toUpperCase();
@@ -54,9 +55,9 @@ async function sendFeedbackToOwner(feedback) {
             to: ownerPhone,
             type: 'template',
             template: {
-                name: WA_TEMPLATE_NAME,
+                name: WA_FEEDBACK_TEMPLATE_NAME,
                 language: {
-                    code: 'en_US'
+                    code: WA_TEMPLATE_LANGUAGE
                 },
                 components: [
                     {
@@ -65,6 +66,7 @@ async function sendFeedbackToOwner(feedback) {
                             { type: 'text', text: feedbackType || 'General' },
                             { type: 'text', text: name || 'Anonymous' },
                             { type: 'text', text: message || 'No message provided' },
+                            { type: 'text', text: email || 'Not provided' },
                             { type: 'text', text: phone || 'Not provided' }
                         ]
                     }

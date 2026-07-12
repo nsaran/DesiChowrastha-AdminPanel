@@ -45,6 +45,38 @@ app.post('/api/feedback', async (req, res) => {
     }
 });
 
+// Today's Special endpoint
+app.get('/api/todaysSpecial', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    const cacheKey = `todaysSpecial_${location}`;
+    const cached = cache.get(cacheKey);
+
+    if (cached) {
+        return res.json(cached);
+    }
+
+    // Return empty array if no specials set yet
+    return res.json([]);
+});
+
+// Set Today's Special items (POST)
+app.post('/api/todaysSpecial', (req, res) => {
+    const { location, items } = req.body;
+
+    if (!location || !items || !Array.isArray(items)) {
+        return res.status(400).json({ error: 'location and items array are required' });
+    }
+
+    if (items.length > 3) {
+        return res.status(400).json({ error: 'Maximum 3 special items allowed' });
+    }
+
+    const cacheKey = `todaysSpecial_${location.toUpperCase()}`;
+    cache.set(cacheKey, items);
+    logger.info(`Today's special updated for ${location}: ${items.map(i => i.name).join(', ')}`);
+    res.json({ success: true, items });
+});
+
 // Serve promo images list from _images/promos directory
 app.get('/api/promos', (req, res) => {
     const promosDir = path.join(__dirname, '..', 'client', 'public', '_images', 'promos');

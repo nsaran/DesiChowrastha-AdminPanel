@@ -51,6 +51,9 @@ const TvMenu = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/MenuPage8')}>Menu Page 8</Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/MenuPage9')}>Menu Page 9</Button>
+                </Form.Item>
             </Form>
         </div>
     );
