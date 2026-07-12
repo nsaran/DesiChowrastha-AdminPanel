@@ -24,6 +24,7 @@ const MenuPage8 = () => {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
+    const [subscribePromo, setSubscribePromo] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [sending, setSending] = useState(false);
     const [sendError, setSendError] = useState("");
@@ -35,11 +36,17 @@ const MenuPage8 = () => {
         setSending(true);
         setSendError("");
 
+        if (subscribePromo && !email && !phone) {
+            setSendError("Please provide your email or phone number to subscribe for promotions.");
+            setSending(false);
+            return;
+        }
+
         try {
             const response = await fetch(`${API_BASE_URL}/api/feedback`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ feedbackType, name, email, phone, message, location: restaurantId })
+                body: JSON.stringify({ feedbackType, name, email, phone, message, subscribePromo, location: restaurantId })
             });
 
             if (!response.ok) {
@@ -55,6 +62,7 @@ const MenuPage8 = () => {
                 setEmail("");
                 setPhone("");
                 setMessage("");
+                setSubscribePromo(false);
             }, 5000);
         } catch (error) {
             console.error("Error sending feedback:", error);
@@ -265,6 +273,26 @@ const MenuPage8 = () => {
                                         required
                                         aria-label="Your feedback message"
                                     />
+
+                                    <label style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        fontSize: '1rem',
+                                        fontFamily: "'Bree Serif', serif",
+                                        color: '#555',
+                                        marginBottom: '15px',
+                                        cursor: 'pointer',
+                                    }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={subscribePromo}
+                                            onChange={(e) => setSubscribePromo(e.target.checked)}
+                                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                            aria-label="Subscribe to promotions"
+                                        />
+                                        Yes, I'd like to receive promotions, special offers, and updates!
+                                    </label>
 
                                     <button type="submit" style={submitBtnStyle} disabled={sending}>
                                         {sending ? 'Sending...' : 'Submit Feedback'}

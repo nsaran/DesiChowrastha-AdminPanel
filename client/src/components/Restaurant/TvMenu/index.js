@@ -43,16 +43,19 @@ const TvMenu = () => {
                     <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/MenuPage5')}>Menu Page 5</Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/MenuPage6')}>Menu Page 6</Button>
+                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/FacebookPost')}>Facebook Post</Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/MenuPage7')}>Menu Page 7</Button>
+                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/BarMenu')}>Bar Menu</Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/MenuPage8')}>Menu Page 8</Button>
+                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/CustomerFeedback')}>Customer Feedback</Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/MenuPage9')}>Menu Page 9</Button>
+                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/TodaysSpecial')}>Today's Special</Button>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/ManageTodaysSpecial')}>Manage Today's Special</Button>
                 </Form.Item>
             </Form>
         </div>

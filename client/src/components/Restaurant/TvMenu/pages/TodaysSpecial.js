@@ -171,7 +171,7 @@ const MenuPage9 = () => {
             </div>
 
             <div style={chalkDustStyle}>
-                ~ Desi Chowrastha ~
+                ~ Desi Chowrastha, {restaurantId} ~
             </div>
         </div>
     );

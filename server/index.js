@@ -31,10 +31,26 @@ app.get('/api/completedOrders/setNotify', setNotification);
 // Feedback endpoint - sends customer feedback to owner via WhatsApp
 app.post('/api/feedback', async (req, res) => {
     try {
-        const { feedbackType, name, email, message, phone, location } = req.body;
+        const { feedbackType, name, email, message, phone, subscribePromo, location } = req.body;
 
         if (!feedbackType || !name || !message) {
             return res.status(400).json({ error: 'feedbackType, name, and message are required' });
+        }
+
+        // If customer opted in for promotions, save their contact
+        if (subscribePromo && (email || phone)) {
+            const locationKey = (location || 'WESTBOROUGH').toUpperCase();
+            const subscribersKey = `promo_subscribers_${locationKey}`;
+            const existing = cache.get(subscribersKey) || [];
+            existing.push({
+                name: name,
+                email: email || '',
+                phone: phone || '',
+                subscribedAt: new Date().toISOString(),
+                location: locationKey
+            });
+            cache.set(subscribersKey, existing);
+            logger.info(`New promo subscriber: ${name} (${email || phone}) for ${locationKey}`);
         }
 
         const result = await sendFeedbackToOwner({ feedbackType, name, email, message, phone, location });
@@ -45,14 +61,32 @@ app.post('/api/feedback', async (req, res) => {
     }
 });
 
-// Today's Special endpoint
+// Get promotion subscribers for a location
+app.get('/api/subscribers', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    const subscribersKey = `promo_subscribers_${location}`;
+    const subscribers = cache.get(subscribersKey) || [];
+    res.json(subscribers);
+});
+
+// Today's Special endpoint - returns only items within their validity period
 app.get('/api/todaysSpecial', (req, res) => {
     const location = (req.query.location || '').toUpperCase();
+    const showAll = req.query.all === 'true';
     const cacheKey = `todaysSpecial_${location}`;
     const cached = cache.get(cacheKey);
 
     if (cached) {
-        return res.json(cached);
+        // If all=true (admin view), return all items regardless of dates
+        if (showAll) {
+            return res.json(cached);
+        }
+        // Otherwise filter by validity period
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const validItems = cached.filter(item => {
+            return today >= item.startDate && today <= item.endDate;
+        });
+        return res.json(validItems);
     }
 
     // Return empty array if no specials set yet
@@ -60,6 +94,8 @@ app.get('/api/todaysSpecial', (req, res) => {
 });
 
 // Set Today's Special items (POST)
+// Each item must have: name, price, startDate, endDate
+// startDate and endDate are in YYYY-MM-DD format
 app.post('/api/todaysSpecial', (req, res) => {
     const { location, items } = req.body;
 
@@ -71,9 +107,19 @@ app.post('/api/todaysSpecial', (req, res) => {
         return res.status(400).json({ error: 'Maximum 3 special items allowed' });
     }
 
+    // Validate that each item has startDate and endDate
+    for (const item of items) {
+        if (!item.startDate || !item.endDate) {
+            return res.status(400).json({ error: `Each item must have startDate and endDate. Missing for: ${item.name || 'unnamed item'}` });
+        }
+        if (item.endDate < item.startDate) {
+            return res.status(400).json({ error: `endDate must be on or after startDate for: ${item.name || 'unnamed item'}` });
+        }
+    }
+
     const cacheKey = `todaysSpecial_${location.toUpperCase()}`;
     cache.set(cacheKey, items);
-    logger.info(`Today's special updated for ${location}: ${items.map(i => i.name).join(', ')}`);
+    logger.info(`Today's special updated for ${location}: ${items.map(i => `${i.name} (${i.startDate} to ${i.endDate})`).join(', ')}`);
     res.json({ success: true, items });
 });
 

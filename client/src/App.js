@@ -23,10 +23,11 @@ import MenuPage2 from './components/Restaurant/TvMenu/pages/MenuPage2';
 import MenuPage3 from './components/Restaurant/TvMenu/pages/MenuPage3';
 import MenuPage4 from './components/Restaurant/TvMenu/pages/MenuPage4';
 import MenuPage5 from './components/Restaurant/TvMenu/pages/MenuPage5';
-import MenuPage6 from './components/Restaurant/TvMenu/pages/MenuPage6';
-import MenuPage7 from './components/Restaurant/TvMenu/pages/MenuPage7';
-import MenuPage8 from './components/Restaurant/TvMenu/pages/MenuPage8';
-import MenuPage9 from './components/Restaurant/TvMenu/pages/MenuPage9';
+import FacebookPost from './components/Restaurant/TvMenu/pages/FacebookPost';
+import BarMenu from './components/Restaurant/TvMenu/pages/BarMenu';
+import CustomerFeedback from './components/Restaurant/TvMenu/pages/CustomerFeedback';
+import TodaysSpecial from './components/Restaurant/TvMenu/pages/TodaysSpecial';
+import ManageTodaysSpecial from './components/Restaurant/TvMenu/pages/ManageTodaysSpecial';
 import ChefsKitchen from './components/Restaurant/ChefsKitchen';
 import FillerComponent from './components/Restaurant/Filler';
 import CustomMenu from './components/Restaurant/CustomMenu/index';
@@ -68,10 +69,11 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage3" element={<TvMenuErrorBoundary><MenuPage3 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage4" element={<TvMenuErrorBoundary><MenuPage4 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage5" element={<TvMenuErrorBoundary><MenuPage5 /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage6" element={<TvMenuErrorBoundary><MenuPage6 /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage7" element={<TvMenuErrorBoundary><MenuPage7 /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage8" element={<TvMenuErrorBoundary><MenuPage8 /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/MenuPage9" element={<TvMenuErrorBoundary><MenuPage9 /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/FacebookPost" element={<TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/BarMenu" element={<TvMenuErrorBoundary><BarMenu /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/CustomerFeedback" element={<TvMenuErrorBoundary><CustomerFeedback /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/TodaysSpecial" element={<TvMenuErrorBoundary><TodaysSpecial /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/TVMenu/ManageTodaysSpecial" element={<TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/customTvMenu" element={<CustomTvMenuLanding />} />
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
           <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<ChefsKitchen />} />

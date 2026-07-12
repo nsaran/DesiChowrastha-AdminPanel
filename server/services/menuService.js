@@ -196,7 +196,60 @@ async function fetchMenuData(location) {
 }
 
 /**
- * Start polling Westborough stock every 5 minutes.
+ * Send out-of-stock notification to managers via WhatsApp
+ */
+async function sendOutOfStockNotification(outOfStockItems) {
+    const WA_PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID;
+    const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
+    const OWNER_PHONE_NUMBERS = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+    const WA_OUT_OF_STOCK_TEMPLATE = process.env.WA_OUT_OF_STOCK_TEMPLATE_NAME;
+    const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en_US';
+
+    if (!WA_PHONE_NUMBER_ID || !WA_ACCESS_TOKEN || !WA_OUT_OF_STOCK_TEMPLATE || OWNER_PHONE_NUMBERS.length === 0) {
+        logger.warn('Out-of-stock WhatsApp notification not configured. Skipping.');
+        return;
+    }
+
+    const itemsList = outOfStockItems.map(item => item.name || item.guid).join(', ');
+    const url = `https://graph.facebook.com/v21.0/${WA_PHONE_NUMBER_ID}/messages`;
+
+    for (const phoneNumber of OWNER_PHONE_NUMBERS) {
+        try {
+            const payload = {
+                messaging_product: 'whatsapp',
+                to: phoneNumber,
+                type: 'template',
+                template: {
+                    name: WA_OUT_OF_STOCK_TEMPLATE,
+                    language: { code: WA_TEMPLATE_LANGUAGE },
+                    components: [
+                        {
+                            type: 'body',
+                            parameters: [
+                                { type: 'text', text: itemsList }
+                            ]
+                        }
+                    ]
+                }
+            };
+
+            await axios.post(url, payload, {
+                headers: {
+                    'Authorization': `Bearer ${WA_ACCESS_TOKEN}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            logger.info(`Out-of-stock notification sent to ${phoneNumber}`);
+        } catch (error) {
+            const errorMsg = error.response?.data?.error?.message || error.message;
+            logger.error(`Failed to send out-of-stock notification to ${phoneNumber}: ${errorMsg}`);
+        }
+    }
+}
+
+/**
+ * Start polling Westborough stock every 10 minutes.
  * If stock changes, automatically refresh the menu cache.
  */
 function startStockPolling() {
@@ -222,6 +275,12 @@ function startStockPolling() {
                 const menuData = await fetchFullMenuData('WESTBOROUGH', stockData);
                 westboroughMenuCache = menuData;
                 logger.info('Westborough menu cache updated successfully');
+
+                // Send out-of-stock WhatsApp notification
+                const outOfStockItems = (stockData || []).filter(item => item.status === 'OUT_OF_STOCK');
+                if (outOfStockItems.length > 0) {
+                    await sendOutOfStockNotification(outOfStockItems);
+                }
             } else {
                 logger.info('Westborough stock unchanged, no menu refresh needed');
             }
