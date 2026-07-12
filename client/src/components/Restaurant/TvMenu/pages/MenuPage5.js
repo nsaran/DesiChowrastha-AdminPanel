@@ -33,7 +33,13 @@ const MenuPage5 = () => {
     const [fetchError, setFetchError] = useState(false);
 
     useEffect(() => {
+        const isWithinOperatingHours = () => {
+            const hour = new Date().getHours();
+            return hour >= 10 && hour < 22;
+        };
+
         const fetchData = async () => {
+            if (!isWithinOperatingHours()) return;
             try {
                 const response = await fetch(`${API_BASE_URL}/api/menu?location=${restaurantId}`);
                 const data = await response.json();

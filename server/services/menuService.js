@@ -207,6 +207,12 @@ function startStockPolling() {
     const TWO_MINUTES = 2 * 60 * 1000;
 
     stockPollingInterval = setInterval(async () => {
+        const hour = new Date().getHours();
+        if (hour < 10 || hour >= 22) {
+            logger.info('Outside operating hours (10am-10pm), skipping stock poll');
+            return;
+        }
+
         try {
             logger.info('Polling Westborough stock inventory...');
             const { changed, stockData } = await fetchAndCompareStock('WESTBOROUGH');
