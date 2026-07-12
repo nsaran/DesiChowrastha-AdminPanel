@@ -1,6 +1,6 @@
 {
   "restaurantGuid": "bda948cd-2639-41ce-85a0-25b01e7b6839",
-  "lastUpdated": "2026-07-07T14:23:15.410+0000",
+  "lastUpdated": "2026-07-11T20:31:43.807+0000",
   "restaurantTimeZone": "America/New_York",
   "menus": [
     {
@@ -4909,7 +4909,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Spicy Gobi",
+              "name": "CFC  Gobi",
               "posName": "",
               "guid": "7adaaaf3-634d-4321-83ac-c67f99205853",
               "multiLocationId": "600000053916535374",
@@ -5433,7 +5433,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Baby Corn Salt & Pepper",
+              "name": "Baby Corn 65",
               "posName": "",
               "guid": "4996b0ce-c5c4-4a29-82cb-539da62a93d6",
               "multiLocationId": "600000054058032953",
@@ -6318,7 +6318,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Cashew Chicken",
+              "name": "Chicken 888",
               "posName": "",
               "guid": "b63feb8d-ff99-4c60-a701-4ea63c167957",
               "multiLocationId": "600000054095934885",
@@ -6815,7 +6815,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Phuket Fish",
+              "name": "Chilli Fish",
               "posName": "",
               "guid": "0701f7b4-2737-4773-96e8-39aefaaa39b8",
               "multiLocationId": "600000054095934899",
@@ -6939,7 +6939,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Jhol Achaar Momo",
+              "name": "Sweet Mango Momo",
               "posName": "",
               "guid": "671d1a07-32cd-4cc5-b167-fd2f9f0e1df5",
               "multiLocationId": "600000054095937903",
@@ -6999,7 +6999,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Chilli Momo",
+              "name": "Chilli Garlic Momo",
               "posName": "",
               "guid": "1b9994b1-7e96-4d2a-9fd8-dfbd86af8a65",
               "multiLocationId": "600000054095937905",

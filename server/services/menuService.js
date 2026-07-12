@@ -204,7 +204,7 @@ function startStockPolling() {
         clearInterval(stockPollingInterval);
     }
 
-    const TWO_MINUTES = 2 * 60 * 1000;
+    const TEN_MINUTES = 10 * 60 * 1000;
 
     stockPollingInterval = setInterval(async () => {
         const hour = new Date().getHours();
@@ -228,9 +228,9 @@ function startStockPolling() {
         } catch (error) {
             logger.error(`Stock polling error: ${error.message}`);
         }
-    }, TWO_MINUTES);
+    }, TEN_MINUTES);
 
-    logger.info('Westborough stock polling started (every 2 minutes)');
+    logger.info('Westborough stock polling started (every 10 minutes)');
 }
 
 // Start polling when the service is loaded
