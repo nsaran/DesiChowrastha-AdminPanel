@@ -241,6 +241,8 @@ async function sendOutOfStockNotification(outOfStockItems) {
             });
 
             logger.info(`Out-of-stock notification sent to ${phoneNumber}`);
+            // Delay between sends to avoid rate limiting
+            await new Promise(resolve => setTimeout(resolve, 2000));
         } catch (error) {
             const errorMsg = error.response?.data?.error?.message || error.message;
             logger.error(`Failed to send out-of-stock notification to ${phoneNumber}: ${errorMsg}`);
