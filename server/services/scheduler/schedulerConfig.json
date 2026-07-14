@@ -1,0 +1,107 @@
+{
+  "jobs": [
+    {
+      "id": "daily_sales_summary",
+      "name": "Daily Sales Summary",
+      "enabled": true,
+      "schedule": "daily",
+      "cronExpression": "0 22 * * *",
+      "location": "WESTBOROUGH",
+      "templateName": "daily_sales_summary",
+      "templateLanguage": "en",
+      "recipients": [],
+      "requestPayload": {
+        "endpoint": "/orders/v2/orders",
+        "method": "GET",
+        "params": {
+          "businessDate": "{{TODAY}}"
+        }
+      },
+      "responsePayload": {
+        "templateParams": ["{{totalOrders}}", "{{totalRevenue}}", "{{date}}"]
+      }
+    },
+    {
+      "id": "weekly_inventory_report",
+      "name": "Weekly Inventory Report",
+      "enabled": false,
+      "schedule": "weekly",
+      "cronExpression": "0 9 * * 1",
+      "location": "WESTBOROUGH",
+      "templateName": "weekly_inventory_report",
+      "templateLanguage": "en",
+      "recipients": [],
+      "requestPayload": {
+        "endpoint": "/stock/v1/inventory",
+        "method": "GET",
+        "params": {}
+      },
+      "responsePayload": {
+        "templateParams": ["{{lowStockItems}}", "{{outOfStockCount}}"]
+      }
+    },
+    {
+      "id": "monthly_performance",
+      "name": "Monthly Performance Report",
+      "enabled": false,
+      "schedule": "monthly",
+      "cronExpression": "0 9 1 * *",
+      "location": "WESTBOROUGH",
+      "templateName": "monthly_performance",
+      "templateLanguage": "en",
+      "recipients": [],
+      "requestPayload": {
+        "endpoint": "/reporting/v1/summary",
+        "method": "GET",
+        "params": {
+          "month": "{{LAST_MONTH}}"
+        }
+      },
+      "responsePayload": {
+        "templateParams": ["{{month}}", "{{totalRevenue}}", "{{topItems}}"]
+      }
+    },
+    {
+      "id": "yearly_review",
+      "name": "Yearly Business Review",
+      "enabled": false,
+      "schedule": "yearly",
+      "cronExpression": "0 9 1 1 *",
+      "location": "WESTBOROUGH",
+      "templateName": "yearly_review",
+      "templateLanguage": "en",
+      "recipients": [],
+      "requestPayload": {
+        "endpoint": "/reporting/v1/annual",
+        "method": "GET",
+        "params": {
+          "year": "{{LAST_YEAR}}"
+        }
+      },
+      "responsePayload": {
+        "templateParams": ["{{year}}", "{{totalRevenue}}", "{{growth}}"]
+      }
+    },
+    {
+      "id": "nashua_daily_sales_summary",
+      "name": "Nashua Daily Sales Summary",
+      "enabled": true,
+      "schedule": "daily",
+      "cronExpression": "0 22 * * *",
+      "location": "NASHUA",
+      "templateName": "daily_sales_summary",
+      "templateLanguage": "en",
+      "recipients": [],
+      "requestPayload": {
+        "endpoint": "/orders/v2/orders",
+        "method": "GET",
+        "params": {
+          "businessDate": "{{TODAY}}"
+        }
+      },
+      "responsePayload": {
+        "templateParams": ["{{totalOrders}}", "{{totalRevenue}}", "{{date}}"]
+      }
+    }
+  ]
+}

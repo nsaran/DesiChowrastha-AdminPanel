@@ -1,0 +1,219 @@
+const axios = require('axios');
+const { getAccessToken } = require('../authService');
+const { toastApiBaseUrl, locations } = require('../../config/config');
+const logger = require('../../utils/logger');
+
+/**
+ * Job Implementation Functions
+ * 
+ * Each function corresponds to a job ID in schedulerConfig.json.
+ * Add your business logic here to:
+ * 1. Fetch data from external APIs using the request payload
+ * 2. Process the data
+ * 3. Return an array of template parameter strings for WhatsApp
+ * 
+ * @param {Object} job - The job configuration from schedulerConfig.json
+ * @returns {Promise<string[]>} - Array of template parameter values
+ */
+
+/**
+ * Helper: Get authenticated request options for Toast API
+ */
+async function getToastRequestOptions(location) {
+    const { restaurantExternalId } = locations[location];
+    const accessToken = await getAccessToken(location);
+    return {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Toast-Restaurant-External-ID': restaurantExternalId
+        }
+    };
+}
+
+/**
+ * Helper: Get today's date in YYYY-MM-DD format in US Eastern time
+ */
+function getTodayEST() {
+    return new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+}
+
+/**
+ * Helper: Get formatted date string in US Eastern time
+ */
+function getFormattedDate() {
+    return new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// ============================================================
+// JOB IMPLEMENTATIONS
+// ============================================================
+
+/**
+ * Daily Sales Summary - Westborough
+ * Calls orders/v2/ordersBulk with startDate and endDate for today (6PM-10PM window)
+ * Iterates through records and sums up totalAmount under "checks"
+ */
+async function daily_sales_summary(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running daily_sales_summary for ${location}`);
+
+    try {
+        const requestOptions = await getToastRequestOptions(location);
+
+        // Build date range: today 10:00 AM to 10:00 PM EST (UTC-5 = -0500)
+        const today = getTodayEST(); // YYYY-MM-DD in EST
+        const startDate = `${today}T10:00:00.000-0500`;
+        const endDate = `${today}T22:00:00.000-0500`;
+
+        // Paginate through all orders (API returns max 100 per page)
+        let allOrders = [];
+        let page = 1;
+        let hasMore = true;
+
+        while (hasMore) {
+            const response = await axios.get(
+                `${toastApiBaseUrl}/orders/v2/ordersBulk?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&pageSize=100&page=${page}`,
+                requestOptions
+            );
+
+            const orders = response.data || [];
+            allOrders = allOrders.concat(orders);
+
+            if (orders.length < 100) {
+                hasMore = false;
+            } else {
+                page++;
+            }
+        }
+
+        const totalOrders = allOrders.length;
+
+        // Sum totalAmount from all checks across all orders
+        let totalSales = 0;
+        for (const order of allOrders) {
+            if (order.checks && Array.isArray(order.checks)) {
+                for (const check of order.checks) {
+                    totalSales += check.totalAmount || 0;
+                }
+            }
+        }
+
+        const date = getFormattedDate();
+
+        logger.info(`[Scheduler] daily_sales_summary: ${totalOrders} orders, $${totalSales.toFixed(2)} total sales`);
+
+        return [totalOrders.toString(), `$${totalSales.toFixed(2)}`];
+    } catch (error) {
+        logger.error(`[Scheduler] daily_sales_summary error: ${error.message}`);
+        return ['Error', 'N/A', getFormattedDate()];
+    }
+}
+
+/**
+ * Weekly Inventory Report - Westborough
+ * Fetches inventory and reports low/out-of-stock items
+ */
+async function weekly_inventory_report(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running weekly_inventory_report for ${location}`);
+
+    try {
+        const requestOptions = await getToastRequestOptions(location);
+
+        const response = await axios.get(
+            `${toastApiBaseUrl}/stock/v1/inventory`,
+            requestOptions
+        );
+
+        const inventory = response.data || [];
+        const outOfStock = inventory.filter(item => item.status === 'OUT_OF_STOCK');
+        const outOfStockCount = outOfStock.length.toString();
+        const lowStockItems = outOfStock.map(item => item.name || item.guid).slice(0, 10).join(', ') || 'None';
+
+        return [lowStockItems, outOfStockCount];
+    } catch (error) {
+        logger.error(`[Scheduler] weekly_inventory_report error: ${error.message}`);
+        return ['Error fetching data', '0'];
+    }
+}
+
+/**
+ * Monthly Performance Report
+ * Fetches monthly summary data
+ */
+async function monthly_performance(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running monthly_performance for ${location}`);
+
+    try {
+        // TODO: Implement actual monthly reporting API call
+        // For now, return placeholder data
+        const lastMonth = new Date();
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        const monthName = lastMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        return [monthName, 'Data pending', 'N/A'];
+    } catch (error) {
+        logger.error(`[Scheduler] monthly_performance error: ${error.message}`);
+        return ['Error', 'N/A', 'N/A'];
+    }
+}
+
+/**
+ * Yearly Business Review
+ * Fetches annual summary data
+ */
+async function yearly_review(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running yearly_review for ${location}`);
+
+    try {
+        // TODO: Implement actual yearly reporting API call
+        const lastYear = (new Date().getFullYear() - 1).toString();
+
+        return [lastYear, 'Data pending', 'N/A'];
+    } catch (error) {
+        logger.error(`[Scheduler] yearly_review error: ${error.message}`);
+        return ['Error', 'N/A', 'N/A'];
+    }
+}
+
+/**
+ * Nashua Daily Sales Summary
+ * Same logic as Westborough but for Nashua location
+ */
+async function nashua_daily_sales_summary(job) {
+    return await daily_sales_summary(job);
+}
+
+// ============================================================
+// REGISTRY - Maps job IDs to implementation functions
+// ============================================================
+
+const jobRegistry = {
+    daily_sales_summary,
+    weekly_inventory_report,
+    monthly_performance,
+    yearly_review,
+    nashua_daily_sales_summary
+};
+
+/**
+ * Execute a job's implementation function
+ * @param {string} jobId - The job ID from config
+ * @param {Object} job - The full job configuration
+ * @returns {Promise<string[]>} - Template parameters array
+ */
+async function executeJob(jobId, job) {
+    const implementation = jobRegistry[jobId];
+    if (!implementation) {
+        logger.error(`[Scheduler] No implementation found for job: ${jobId}`);
+        throw new Error(`No implementation for job: ${jobId}`);
+    }
+    return await implementation(job);
+}
+
+module.exports = {
+    executeJob,
+    jobRegistry
+};

@@ -6,6 +6,7 @@ const fs = require('fs');
 const { fetchMenu } = require('./controllers/menuController');
 const { getOrders, getOrdersBulk, getPendingOrders, getCompletedOrders, getNotification, setNotification } = require('./controllers/orderController');
 const { sendFeedbackToOwner } = require('./services/feedbackService');
+const { initializeScheduler, getJobs, upsertJob, deleteJob, triggerJob } = require('./services/scheduler/scheduler');
 const NodeCache = require("node-cache");
 const logger = require('./utils/logger');
 
@@ -138,4 +139,50 @@ app.get('/api/promos', (req, res) => {
 
 app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
+    // Initialize the scheduler after server starts
+    initializeScheduler();
+});
+
+// ============================================================
+// Scheduler API Endpoints
+// ============================================================
+
+// Get all scheduled jobs
+app.get('/api/scheduler/jobs', (req, res) => {
+    const jobs = getJobs();
+    res.json(jobs);
+});
+
+// Create or update a job
+app.post('/api/scheduler/jobs', (req, res) => {
+    try {
+        const jobData = req.body;
+        if (!jobData.id || !jobData.name || !jobData.cronExpression || !jobData.templateName || !jobData.location) {
+            return res.status(400).json({ error: 'id, name, cronExpression, templateName, and location are required' });
+        }
+        const job = upsertJob(jobData);
+        res.json({ success: true, job });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Delete a job
+app.delete('/api/scheduler/jobs/:jobId', (req, res) => {
+    try {
+        deleteJob(req.params.jobId);
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Manually trigger a job (for testing)
+app.post('/api/scheduler/jobs/:jobId/trigger', async (req, res) => {
+    try {
+        await triggerJob(req.params.jobId);
+        res.json({ success: true, message: `Job ${req.params.jobId} triggered` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
