@@ -202,10 +202,12 @@ async function sendOutOfStockNotification(outOfStockItems) {
     const WA_PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID;
     const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
     const OWNER_PHONE_NUMBERS = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+    const MANAGER_PHONE_NUMBERS = (process.env.MANAGER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+    const ALL_RECIPIENTS = [...new Set([...OWNER_PHONE_NUMBERS, ...MANAGER_PHONE_NUMBERS])];
     const WA_OUT_OF_STOCK_TEMPLATE = process.env.WA_OUT_OF_STOCK_TEMPLATE_NAME;
     const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en_US';
 
-    if (!WA_PHONE_NUMBER_ID || !WA_ACCESS_TOKEN || !WA_OUT_OF_STOCK_TEMPLATE || OWNER_PHONE_NUMBERS.length === 0) {
+    if (!WA_PHONE_NUMBER_ID || !WA_ACCESS_TOKEN || !WA_OUT_OF_STOCK_TEMPLATE || ALL_RECIPIENTS.length === 0) {
         logger.warn('Out-of-stock WhatsApp notification not configured. Skipping.');
         return;
     }
@@ -213,7 +215,7 @@ async function sendOutOfStockNotification(outOfStockItems) {
     const itemsList = outOfStockItems.map(item => item.name || item.guid).join(', ');
     const url = `https://graph.facebook.com/v21.0/${WA_PHONE_NUMBER_ID}/messages`;
 
-    for (const phoneNumber of OWNER_PHONE_NUMBERS) {
+    for (const phoneNumber of ALL_RECIPIENTS) {
         try {
             const payload = {
                 messaging_product: 'whatsapp',

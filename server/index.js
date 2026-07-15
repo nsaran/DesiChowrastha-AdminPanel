@@ -7,6 +7,7 @@ const { fetchMenu } = require('./controllers/menuController');
 const { getOrders, getOrdersBulk, getPendingOrders, getCompletedOrders, getNotification, setNotification } = require('./controllers/orderController');
 const { sendFeedbackToOwner } = require('./services/feedbackService');
 const { initializeScheduler, getJobs, upsertJob, deleteJob, triggerJob } = require('./services/scheduler/scheduler');
+const { addSubscriber } = require('./services/googleSheetsService');
 const NodeCache = require("node-cache");
 const logger = require('./utils/logger');
 
@@ -52,6 +53,9 @@ app.post('/api/feedback', async (req, res) => {
             });
             cache.set(subscribersKey, existing);
             logger.info(`New promo subscriber: ${name} (${email || phone}) for ${locationKey}`);
+
+            // Save to Google Sheets
+            addSubscriber({ name, email: email || '', phone: phone || '', location: locationKey });
         }
 
         const result = await sendFeedbackToOwner({ feedbackType, name, email, message, phone, location });

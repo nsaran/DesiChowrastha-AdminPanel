@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { getAccessToken } = require('../authService');
 const { toastApiBaseUrl, locations } = require('../../config/config');
+const { logDailySales } = require('../googleSheetsService');
 const logger = require('../../utils/logger');
 
 /**
@@ -102,6 +103,9 @@ async function daily_sales_summary(job) {
 
         logger.info(`[Scheduler] daily_sales_summary: ${totalOrders} orders, $${totalSales.toFixed(2)} total sales`);
 
+        // Log to Google Sheets
+        logDailySales(location, totalOrders, `$${totalSales.toFixed(2)}`);
+
         return [totalOrders.toString(), `$${totalSales.toFixed(2)}`];
     } catch (error) {
         logger.error(`[Scheduler] daily_sales_summary error: ${error.message}`);
@@ -139,23 +143,70 @@ async function weekly_inventory_report(job) {
 
 /**
  * Monthly Performance Report
- * Fetches monthly summary data
+ * Calls orders/v2/ordersBulk for the entire previous month (1st to last day)
+ * Sums totalAmount from all checks
  */
 async function monthly_performance(job) {
     const location = job.location;
     logger.info(`[Scheduler] Running monthly_performance for ${location}`);
 
     try {
-        // TODO: Implement actual monthly reporting API call
-        // For now, return placeholder data
-        const lastMonth = new Date();
-        lastMonth.setMonth(lastMonth.getMonth() - 1);
-        const monthName = lastMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        const requestOptions = await getToastRequestOptions(location);
 
-        return [monthName, 'Data pending', 'N/A'];
+        // Get previous month's first and last day in EST
+        const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const firstOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const lastOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+        const startYear = firstOfLastMonth.getFullYear();
+        const startMonth = String(firstOfLastMonth.getMonth() + 1).padStart(2, '0');
+        const startDay = '01';
+        const endDay = String(lastOfLastMonth.getDate()).padStart(2, '0');
+
+        const startDate = `${startYear}-${startMonth}-${startDay}T10:00:00.000-0500`;
+        const endDate = `${startYear}-${startMonth}-${endDay}T22:00:00.000-0500`;
+
+        // Paginate through all orders
+        let allOrders = [];
+        let page = 1;
+        let hasMore = true;
+
+        while (hasMore) {
+            const response = await axios.get(
+                `${toastApiBaseUrl}/orders/v2/ordersBulk?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&pageSize=100&page=${page}`,
+                requestOptions
+            );
+
+            const orders = response.data || [];
+            allOrders = allOrders.concat(orders);
+
+            if (orders.length < 100) {
+                hasMore = false;
+            } else {
+                page++;
+            }
+        }
+
+        const totalOrders = allOrders.length;
+
+        // Sum totalAmount from all checks
+        let totalSales = 0;
+        for (const order of allOrders) {
+            if (order.checks && Array.isArray(order.checks)) {
+                for (const check of order.checks) {
+                    totalSales += check.totalAmount || 0;
+                }
+            }
+        }
+
+        const monthName = firstOfLastMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        logger.info(`[Scheduler] monthly_performance: ${monthName} - ${totalOrders} orders, $${totalSales.toFixed(2)} total sales`);
+
+        return [monthName, totalOrders.toString(), `$${totalSales.toFixed(2)}`];
     } catch (error) {
         logger.error(`[Scheduler] monthly_performance error: ${error.message}`);
-        return ['Error', 'N/A', 'N/A'];
+        return ['Error', '0', '$0.00'];
     }
 }
 
