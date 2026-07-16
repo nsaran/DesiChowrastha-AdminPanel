@@ -196,7 +196,7 @@ const MenuPage1 = () => {
                             {renderMenuItemsFromArray(nonVegCombo)}
                             <div style={{ marginTop: "15px" }}>
                                 <img
-                                    src="/_images/promos/idly-combo.jpg"
+                                    src="/_images/promos/tv_screen_1.jpeg"
                                     alt="Idly Combo"
                                     style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }}
                                 />

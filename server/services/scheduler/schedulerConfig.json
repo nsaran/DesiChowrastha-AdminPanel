@@ -87,7 +87,7 @@
       "name": "Nashua Daily Sales Summary",
       "enabled": true,
       "schedule": "daily",
-      "cronExpression": "0 22 * * *",
+      "cronExpression": "5 22 * * *",
       "location": "NASHUA",
       "templateName": "daily_sales_summary",
       "templateLanguage": "en",

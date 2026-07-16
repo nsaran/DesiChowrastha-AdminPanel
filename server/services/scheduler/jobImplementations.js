@@ -106,10 +106,93 @@ async function daily_sales_summary(job) {
         // Log to Google Sheets
         logDailySales(location, totalOrders, `$${totalSales.toFixed(2)}`);
 
+        // Send today's special notification if items exist for today
+        await sendTodaysSpecialNotification(location);
+
         return [totalOrders.toString(), `$${totalSales.toFixed(2)}`];
     } catch (error) {
         logger.error(`[Scheduler] daily_sales_summary error: ${error.message}`);
         return ['Error', 'N/A', getFormattedDate()];
+    }
+}
+
+/**
+ * Send today's special items via WhatsApp if any exist for today
+ */
+async function sendTodaysSpecialNotification(location) {
+    const WA_TODAYS_SPECIAL_TEMPLATE = process.env.WA_TODAYS_SPECIAL_TEMPLATE_NAME;
+    if (!WA_TODAYS_SPECIAL_TEMPLATE) {
+        logger.info(`[Scheduler] WA_TODAYS_SPECIAL_TEMPLATE_NAME not configured, skipping`);
+        return;
+    }
+
+    const cache = global.cacheData;
+    if (!cache) return;
+
+    const cacheKey = `todaysSpecial_${location.toUpperCase()}`;
+    const items = cache.get(cacheKey);
+    if (!items || !Array.isArray(items) || items.length === 0) {
+        logger.info(`[Scheduler] No today's special items configured for ${location}`);
+        return;
+    }
+
+    // Filter items valid for today
+    const today = getTodayEST();
+    const validItems = items.filter(item => today >= item.startDate && today <= item.endDate);
+
+    if (validItems.length === 0) {
+        logger.info(`[Scheduler] No valid today's special items for ${location} on ${today}`);
+        return;
+    }
+
+    // Build the items list as a string
+    const itemsList = validItems.map(item => {
+        const price = item.price ? ` - $${parseFloat(item.price).toFixed(2)}` : '';
+        return `${item.name}${price}`;
+    }).join(', ');
+
+    // Send via WhatsApp
+    const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
+    const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en';
+    const locationKey = location.toUpperCase();
+    const phoneNumberId = locationKey === 'NASHUA'
+        ? process.env.WA_PHONE_NUMBER_ID_NASHUA
+        : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
+    const recipients = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+
+    const url = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
+
+    for (const recipient of recipients) {
+        try {
+            await axios.post(url, {
+                messaging_product: 'whatsapp',
+                to: recipient,
+                type: 'template',
+                template: {
+                    name: WA_TODAYS_SPECIAL_TEMPLATE,
+                    language: { code: WA_TEMPLATE_LANGUAGE },
+                    components: [
+                        {
+                            type: 'body',
+                            parameters: [
+                                { type: 'text', text: itemsList }
+                            ]
+                        }
+                    ]
+                }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${WA_ACCESS_TOKEN}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            logger.info(`[Scheduler] Today's special sent to ${recipient} for ${location}: ${itemsList}`);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        } catch (error) {
+            const errorMsg = error.response?.data?.error?.message || error.message;
+            logger.error(`[Scheduler] Failed to send today's special to ${recipient}: ${errorMsg}`);
+        }
     }
 }
 
