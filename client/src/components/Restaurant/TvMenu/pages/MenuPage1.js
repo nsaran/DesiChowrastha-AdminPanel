@@ -198,7 +198,7 @@ const MenuPage1 = () => {
                                 <img
                                     src="/_images/promos/tv_screen_1.jpeg"
                                     alt="Idly Combo"
-                                    style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }}
+                                    style={{ width: "100%", height: "250px", objectFit: "cover", borderRadius: "8px" }}
                                 />
                             </div>
                         </Col>
@@ -265,9 +265,9 @@ const MenuPage1 = () => {
                         {renderToastMenuItems(menu, "Non-Veg Combo")}
                         <div style={{ marginTop: "15px" }}>
                             <img
-                                src="/_images/promos/idly-combo.jpg"
+                                src="/_images/promos/tv_screen_1.jpeg"
                                 alt="Idly Combo"
-                                style={{ width: "100%", height: "120px", objectFit: "cover", borderRadius: "8px" }}
+                                style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "8px" }}
                             />
                         </div>
                     </Col>

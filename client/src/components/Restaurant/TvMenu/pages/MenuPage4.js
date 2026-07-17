@@ -256,7 +256,7 @@ const MenuPage4 = () => {
                                 <img
                                     src="/_images/promos/veg-biryani.jpg"
                                     alt="Veg Biryani"
-                                    style={{ width: "90%", maxWidth: "90%", height: "450px", borderRadius: "8px" }}
+                                    style={{ width: "100%", maxWidth: "100%", height: "100%", borderRadius: "8px" }}
                                 />
                             </div>
                         </Col>
