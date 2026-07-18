@@ -39,7 +39,6 @@ const MenuPage5 = () => {
         };
 
         const fetchData = async () => {
-            if (!isWithinOperatingHours()) return;
             try {
                 const response = await fetch(`${API_BASE_URL}/api/menu?location=${restaurantId}`);
                 const data = await response.json();
@@ -54,7 +53,9 @@ const MenuPage5 = () => {
         };
 
         fetchData();
-        const intervalId = setInterval(fetchData, 600000);
+        const intervalId = setInterval(() => {
+            if (isWithinOperatingHours()) fetchData();
+        }, 600000);
 
         return () => clearInterval(intervalId);
     }, [restaurantId]);
