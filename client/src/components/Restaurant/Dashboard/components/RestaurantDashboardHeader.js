@@ -92,6 +92,10 @@ const RestaurantDashboardHeader = ({ managerData }) => {
             <Menu.Item key="customTvMenu" icon={<AppstoreOutlined  />} onClick={() => handleNavigate('customTvMenu', managerData)}>
                 Custom TV Menu
             </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="otherServices" icon={<AppstoreOutlined />} onClick={() => handleNavigate('OtherServices', managerData)}>
+                Other Services
+            </Menu.Item>
             <Menu.Divider />           
             <Menu.Item key="orderAnalysis" icon={<ShoppingCartOutlined />} onClick={() => handleNavigate('orders', managerData)}>
                 Order Analysis

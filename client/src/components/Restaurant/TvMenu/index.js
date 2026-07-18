@@ -9,57 +9,52 @@ const TvMenu = () => {
         navigate(`/dashboard/${restaurantId}/${path}`);
     };
 
+    const isNashua = restaurantId?.toLowerCase() === 'nashua';
+
     return (
         <div className="TV-Menu">
             <Form name="TV-Menu-Page">
                 <Form.Item>
                     <img className='dc-logo-img' src='https://iili.io/HeKYJkB.png' alt="Restaurant Logo" />
                 </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/Page1')}>Page 1</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/Page2')}>Page 2</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/Page3')}>Page 3</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/Page4')}>Page 4</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/MenuPage1')}>Menu Page 1</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/MenuPage2')}>Menu Page 2</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/MenuPage3')}>Menu Page 3</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/MenuPage4')}>Menu Page 4</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/MenuPage5')}>Menu Page 5</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/FacebookPost')}>Facebook Post</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/BarMenu')}>Bar Menu</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/CustomerFeedback')}>Customer Feedback</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/TodaysSpecial')}>Today's Special</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/ManageTodaysSpecial')}>Manage Today's Special</Button>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/WhatsAppOrders')}>WhatsApp Orders</Button>
-                </Form.Item>
+                {isNashua && (
+                    <>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/Page1')}>Page 1</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/Page2')}>Page 2</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/Page3')}>Page 3</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/Page4')}>Page 4</Button>
+                        </Form.Item>
+                    </>
+                )}
+                {!isNashua && (
+                    <>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/MenuPage1')}>Menu Page 1</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('TVMenu/MenuPage2')}>Menu Page 2</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/MenuPage3')}>Menu Page 3</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('TVMenu/MenuPage4')}>Menu Page 4</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('TVMenu/MenuPage5')}>Menu Page 5</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TVMenu/BarMenu')}>Bar Menu</Button>
+                        </Form.Item>
+                    </>
+                )}
             </Form>
         </div>
     );

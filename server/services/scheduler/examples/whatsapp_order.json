@@ -10,7 +10,7 @@
     "action": {
       "name": "review_and_pay",
       "parameters": {
-        "reference_id": "ORD-1001",
+        "reference_id": "ORD-1002",
         "type": "physical-goods",
         "payment_type": "cash_on_delivery",
         "currency": "INR",
@@ -23,24 +23,33 @@
           "items": [
             {
               "retailer_id": "SKU001",
-              "name": "Cotton T-Shirt",
+              "name": "Chicken Biryani",
               "amount": {
-                "value": 120000,
+                "value": 16,
                 "offset": 100
               },
               "quantity": 2
+            },
+           {
+              "retailer_id": "SKU001",
+              "name": "Mutton Chukka",
+              "amount": {
+                "value": 19,
+                "offset": 100
+              },
+              "quantity": 1
             }
           ],
           "subtotal": {
-            "value": 120000,
+            "value": 16,
             "offset": 100
           },
           "tax": {
-            "value": 18000,
+            "value": 1.8,
             "offset": 100
           },
           "shipping": {
-            "value": 12000,
+            "value": 1.2,
             "offset": 100
           },
           "discount": {

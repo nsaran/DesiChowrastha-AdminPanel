@@ -34,6 +34,7 @@ import CustomMenu from './components/Restaurant/CustomMenu/index';
 import CustomTvMenuLanding from './components/Restaurant/CustomTvMenu/CustomTvMenuLanding';
 import CustomTvMenuPageView from './components/Restaurant/CustomTvMenu/CustomTvMenuPageView';
 import WhatsAppOrders from './components/Restaurant/TvMenu/pages/WhatsAppOrders';
+import OtherServices from './components/Restaurant/OtherServices';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
 const App = () => {
@@ -70,16 +71,17 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage3" element={<TvMenuErrorBoundary><MenuPage3 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage4" element={<TvMenuErrorBoundary><MenuPage4 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage5" element={<TvMenuErrorBoundary><MenuPage5 /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/FacebookPost" element={<TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/BarMenu" element={<TvMenuErrorBoundary><BarMenu /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/CustomerFeedback" element={<TvMenuErrorBoundary><CustomerFeedback /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/TodaysSpecial" element={<TvMenuErrorBoundary><TodaysSpecial /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/TVMenu/ManageTodaysSpecial" element={<TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/CustomerFeedback" element={<TvMenuErrorBoundary><CustomerFeedback /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/TodaysSpecial" element={<TvMenuErrorBoundary><TodaysSpecial /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/customTvMenu" element={<CustomTvMenuLanding />} />
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
           <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<ChefsKitchen />} />
           <Route path="/dashboard/:restaurantId/customMenu" element={<CustomMenu />}/>
-          <Route path="/dashboard/:restaurantId/TVMenu/WhatsAppOrders" element={<WhatsAppOrders />}/>
+          <Route path="/dashboard/:restaurantId/OtherServices" element={<OtherServices />} />
+          <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/WhatsAppOrders" element={<WhatsAppOrders />}/>
         </Routes>
       </Router>
     </AuthProvider>
