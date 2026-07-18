@@ -7,7 +7,7 @@
       "schedule": "daily",
       "cronExpression": "0 22 * * *",
       "location": "WESTBOROUGH",
-      "templateName": "daily_sales_summary",
+      "templateName": "daily_sale_summary_report",
       "templateLanguage": "en",
       "recipients": [],
       "requestPayload": {
@@ -89,7 +89,7 @@
       "schedule": "daily",
       "cronExpression": "5 22 * * *",
       "location": "NASHUA",
-      "templateName": "daily_sales_summary",
+      "templateName": "daily_sale_summary_report",
       "templateLanguage": "en",
       "recipients": [],
       "requestPayload": {

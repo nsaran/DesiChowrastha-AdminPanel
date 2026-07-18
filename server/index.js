@@ -130,6 +130,7 @@ app.post('/api/todaysSpecial', (req, res) => {
 
 // WhatsApp Orders - receive and manage orders
 const whatsappOrders = [];
+global.whatsappOrders = whatsappOrders;
 const sseClients = []; // Store SSE connections
 
 // SSE endpoint - clients subscribe for real-time order updates

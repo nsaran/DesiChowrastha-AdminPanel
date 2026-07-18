@@ -109,6 +109,12 @@ async function daily_sales_summary(job) {
         // Send today's special notification if items exist for today
         await sendTodaysSpecialNotification(location);
 
+        // Reset whatsappOrders cache at end of day
+        if (global.whatsappOrders) {
+            global.whatsappOrders.length = 0;
+            logger.info(`[Scheduler] WhatsApp orders cache reset for end of day`);
+        }
+
         return [totalOrders.toString(), `$${totalSales.toFixed(2)}`];
     } catch (error) {
         logger.error(`[Scheduler] daily_sales_summary error: ${error.message}`);
