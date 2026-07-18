@@ -1,0 +1,54 @@
+{
+  "messaging_product": "whatsapp",
+  "to": "919876543210",
+  "type": "interactive",
+  "interactive": {
+    "type": "order_details",
+    "body": {
+      "text": "Your order has been confirmed 🎉"
+    },
+    "action": {
+      "name": "review_and_pay",
+      "parameters": {
+        "reference_id": "ORD-1001",
+        "type": "physical-goods",
+        "payment_type": "cash_on_delivery",
+        "currency": "INR",
+        "total_amount": {
+          "value": 150000,
+          "offset": 100
+        },
+        "order": {
+          "status": "pending",
+          "items": [
+            {
+              "retailer_id": "SKU001",
+              "name": "Cotton T-Shirt",
+              "amount": {
+                "value": 120000,
+                "offset": 100
+              },
+              "quantity": 2
+            }
+          ],
+          "subtotal": {
+            "value": 120000,
+            "offset": 100
+          },
+          "tax": {
+            "value": 18000,
+            "offset": 100
+          },
+          "shipping": {
+            "value": 12000,
+            "offset": 100
+          },
+          "discount": {
+            "value": 0,
+            "offset": 100
+          }
+        }
+      }
+    }
+  }
+}

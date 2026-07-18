@@ -33,6 +33,7 @@ import FillerComponent from './components/Restaurant/Filler';
 import CustomMenu from './components/Restaurant/CustomMenu/index';
 import CustomTvMenuLanding from './components/Restaurant/CustomTvMenu/CustomTvMenuLanding';
 import CustomTvMenuPageView from './components/Restaurant/CustomTvMenu/CustomTvMenuPageView';
+import WhatsAppOrders from './components/Restaurant/TvMenu/pages/WhatsAppOrders';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
 const App = () => {
@@ -78,6 +79,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
           <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<ChefsKitchen />} />
           <Route path="/dashboard/:restaurantId/customMenu" element={<CustomMenu />}/>
+          <Route path="/dashboard/:restaurantId/TVMenu/WhatsAppOrders" element={<WhatsAppOrders />}/>
         </Routes>
       </Router>
     </AuthProvider>

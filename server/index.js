@@ -128,6 +128,136 @@ app.post('/api/todaysSpecial', (req, res) => {
     res.json({ success: true, items });
 });
 
+// WhatsApp Orders - receive and manage orders
+const whatsappOrders = [];
+const sseClients = []; // Store SSE connections
+
+// SSE endpoint - clients subscribe for real-time order updates
+app.get('/api/whatsappOrders/stream', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*'
+    });
+
+    // Send initial connection message
+    res.write(`data: ${JSON.stringify({ type: 'connected' })}\n\n`);
+
+    const client = { res, location };
+    sseClients.push(client);
+
+    // Remove client on disconnect
+    req.on('close', () => {
+        const index = sseClients.indexOf(client);
+        if (index > -1) sseClients.splice(index, 1);
+    });
+});
+
+// Notify SSE clients of new/updated orders
+function notifyClients(orderData, eventType) {
+    sseClients.forEach(client => {
+        if (!client.location || client.location === orderData.location) {
+            client.res.write(`data: ${JSON.stringify({ type: eventType, order: orderData })}\n\n`);
+        }
+    });
+}
+
+// Receive WhatsApp order webhook
+app.post('/api/whatsappOrders', (req, res) => {
+    try {
+        const payload = req.body;
+
+        // Extract order details from the WhatsApp payload
+        const interactive = payload.interactive || {};
+        const action = interactive.action || {};
+        const params = action.parameters || {};
+        const order = params.order || {};
+        const location = (payload.location || req.query.location || 'WESTBOROUGH').toUpperCase();
+
+        const orderData = {
+            id: params.reference_id || `ORD-${Date.now()}`,
+            customerPhone: payload.to || 'Unknown',
+            location: location,
+            status: 'pending',
+            items: (order.items || []).map(item => ({
+                name: item.name,
+                quantity: item.quantity,
+                amount: item.amount ? (item.amount.value / (item.amount.offset || 100)).toFixed(2) : '0.00',
+                retailerId: item.retailer_id
+            })),
+            subtotal: order.subtotal ? (order.subtotal.value / (order.subtotal.offset || 100)).toFixed(2) : '0.00',
+            tax: order.tax ? (order.tax.value / (order.tax.offset || 100)).toFixed(2) : '0.00',
+            shipping: order.shipping ? (order.shipping.value / (order.shipping.offset || 100)).toFixed(2) : '0.00',
+            discount: order.discount ? (order.discount.value / (order.discount.offset || 100)).toFixed(2) : '0.00',
+            totalAmount: params.total_amount ? (params.total_amount.value / (params.total_amount.offset || 100)).toFixed(2) : '0.00',
+            currency: params.currency || 'USD',
+            paymentType: params.payment_type || 'unknown',
+            receivedAt: new Date().toISOString(),
+            completedAt: null
+        };
+
+        whatsappOrders.push(orderData);
+        notifyClients(orderData, 'new_order');
+        logger.info(`WhatsApp order received for ${location}: ${orderData.id} - ${orderData.items.length} items, total: ${orderData.totalAmount}`);
+        res.json({ success: true, order: orderData });
+    } catch (error) {
+        logger.error('WhatsApp order error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get WhatsApp orders filtered by location
+app.get('/api/whatsappOrders', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    if (location) {
+        res.json(whatsappOrders.filter(o => o.location === location));
+    } else {
+        res.json(whatsappOrders);
+    }
+});
+
+// Mark an order as in preparation
+app.post('/api/whatsappOrders/:orderId/preparation', (req, res) => {
+    const order = whatsappOrders.find(o => o.id === req.params.orderId);
+    if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+    }
+    order.status = 'preparation';
+    order.preparationAt = new Date().toISOString();
+    notifyClients(order, 'order_preparation');
+    logger.info(`WhatsApp order in preparation: ${order.id}`);
+    res.json({ success: true, order });
+});
+
+// Update toast order number on an order
+app.post('/api/whatsappOrders/:orderId/toastOrder', (req, res) => {
+    const order = whatsappOrders.find(o => o.id === req.params.orderId);
+    if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+    }
+    const { toastOrderNumber } = req.body;
+    order.toastOrderNumber = toastOrderNumber || '';
+    notifyClients(order, 'order_updated');
+    logger.info(`WhatsApp order ${order.id} linked to Toast order: ${toastOrderNumber}`);
+    res.json({ success: true, order });
+});
+
+// Mark an order as completed
+app.post('/api/whatsappOrders/:orderId/complete', (req, res) => {
+    const order = whatsappOrders.find(o => o.id === req.params.orderId);
+    if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+    }
+    order.status = 'completed';
+    order.completedAt = new Date().toISOString();
+    notifyClients(order, 'order_completed');
+    logger.info(`WhatsApp order completed: ${order.id}`);
+    res.json({ success: true, order });
+});
+
 // Serve promo images list from _images/promos directory
 app.get('/api/promos', (req, res) => {
     const promosDir = path.join(__dirname, '..', 'client', 'public', '_images', 'promos');
