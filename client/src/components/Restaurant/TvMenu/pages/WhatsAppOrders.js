@@ -36,7 +36,8 @@ const WhatsAppOrders = () => {
         fetchOrders();
 
         // Subscribe to real-time updates via SSE
-        const eventSource = new EventSource(`${API_BASE_URL}/api/whatsappOrders/stream?location=${restaurantId}`);
+        const sseBaseUrl = API_BASE_URL || `http://localhost:3010`;
+        const eventSource = new EventSource(`${sseBaseUrl}/api/whatsappOrders/stream?location=${restaurantId}`);
 
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);

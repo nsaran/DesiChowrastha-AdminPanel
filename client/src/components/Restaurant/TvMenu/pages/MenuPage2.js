@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -33,6 +33,28 @@ const MenuPage2 = () => {
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    const [readyOrder, setReadyOrder] = useState(null);
+
+    // SSE: Listen for completed orders
+    useEffect(() => {
+        const sseBaseUrl = API_BASE_URL || `http://localhost:3010`;
+        const eventSource = new EventSource(`${sseBaseUrl}/api/whatsappOrders/stream?location=${restaurantId}`);
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'order_completed') {
+                const orderNum = data.order.toastOrderNumber || data.order.id;
+                setReadyOrder(orderNum);
+                setTimeout(() => setReadyOrder(null), 10000);
+            }
+        };
+
+        eventSource.onerror = () => {
+            eventSource.close();
+        };
+
+        return () => eventSource.close();
+    }, [restaurantId]);
 
     useEffect(() => {
         const isWithinOperatingHours = () => {
@@ -205,6 +227,56 @@ const MenuPage2 = () => {
                             {renderMenuItemsFromArray(tandoor)}
                         </Col>
                     </Row>
+
+                    {/* Order Ready Banner - fixed at bottom, spans columns 2 & 3 */}
+                    <div style={{
+                        position: 'fixed',
+                        bottom: '20px',
+                        left: '33.4%',
+                        right: '20px',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        height: '70px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: readyOrder ? '#fd590d' : '#f0f0f0',
+                        transition: 'background-color 0.3s ease',
+                        zIndex: 100,
+                        boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
+                    }}>
+                        {readyOrder ? (
+                            <div style={{
+                                animation: 'pulse 1s ease-in-out infinite',
+                                textAlign: 'center',
+                            }}>
+                                <span style={{
+                                    fontFamily: "'Lobster', cursive",
+                                    fontSize: '2.5rem',
+                                    color: '#fff',
+                                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                                }}>
+                                    🎉 Order #{readyOrder} is Ready!
+                                </span>
+                            </div>
+                        ) : (
+                            <video
+                                src="/_images/promos/Food_preparation.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+                            />
+                        )}
+                    </div>
+
+                    <style>{`
+                        @keyframes pulse {
+                            0% { transform: scale(1); }
+                            50% { transform: scale(1.05); }
+                            100% { transform: scale(1); }
+                        }
+                    `}</style>
                 </Container>
             </div>
         );
@@ -280,6 +352,56 @@ const MenuPage2 = () => {
                         {renderToastMenuItems(menu, "Tandoor")}
                     </Col>
                 </Row>
+
+                {/* Order Ready Banner - fixed at bottom, spans columns 2 & 3 */}
+                <div style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    left: '33.4%',
+                    right: '20px',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    height: '70px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: readyOrder ? '#fd590d' : '#f0f0f0',
+                    transition: 'background-color 0.3s ease',
+                    zIndex: 100,
+                    boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
+                }}>
+                    {readyOrder ? (
+                        <div style={{
+                            animation: 'pulse 1s ease-in-out infinite',
+                            textAlign: 'center',
+                        }}>
+                            <span style={{
+                                fontFamily: "'Lobster', cursive",
+                                fontSize: '2.5rem',
+                                color: '#fff',
+                                textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                            }}>
+                                🎉 Order #{readyOrder} is Ready!
+                            </span>
+                        </div>
+                    ) : (
+                        <video
+                            src="/_images/promos/Food_preparation.mp4"
+                            autoPlay
+                            loop
+                            muted
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+                        />
+                    )}
+                </div>
+
+                <style>{`
+                    @keyframes pulse {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(1.05); }
+                        100% { transform: scale(1); }
+                    }
+                `}</style>
             </Container>
         </div>
     );

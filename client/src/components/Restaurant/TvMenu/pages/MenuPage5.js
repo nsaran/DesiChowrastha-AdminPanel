@@ -178,9 +178,11 @@ const MenuPage5 = () => {
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
                             {renderMenuItemsFromArray(pastries)}
                             <div style={{ marginTop: "30px", textAlign: "center" }}>
-                                <img
-                                    src="/_images/promos/catering.jpg"
-                                    alt="We Do Catering Services For All Your Events"
+                                <video
+                                    src="/_images/promos/catering_promotion_2.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
                                     style={{ width: "90%", maxWidth: "400px", height: "auto", borderRadius: "8px" }}
                                 />
                             </div>
@@ -261,10 +263,12 @@ const MenuPage5 = () => {
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
                         {renderToastMenuItems(menu, "Pastries")}
                         <div style={{ marginTop: "30px", textAlign: "center" }}>
-                            <img
-                                src="/_images/promos/catering.jpg"
-                                alt="We Do Catering Services For All Your Events"
-                                style={{ width: "100%", maxWidth: "100%", height: "350px", borderRadius: "8px" }}
+                            <video
+                                src="/_images/promos/catering_promotion_2.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                style={{ width: "100%", maxWidth: "100%", height: "350px", objectFit: "cover", borderRadius: "8px" }}
                             />
                         </div>
                     </Col>
