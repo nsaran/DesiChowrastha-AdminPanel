@@ -101,80 +101,14 @@ const Page4 = () => {
             console.log('Menu fetched:', menu);
         };
 
-        const fetchPending = async () => {
-            try {
-                const res = await fetch(
-                    `${API_BASE_URL}/api/pendingOrders?location=${restaurantId}`
-                );
-                const data = await res.json();
-                setPendingOrders(data);
-                setTimers(prev => ({
-                    ...data.reduce((acc, o) => {
-                        acc[o.orderNumber] = prev[o.orderNumber] ?? 1500;
-                        return acc;
-                    }, {}),
-                }));
-            } catch (err) {
-                console.error('Error fetching pending orders:', err);
-            }
-        };
-
-        const fetchCompleted = async () => {
-            try {
-                const res = await fetch(
-                    `${API_BASE_URL}/api/completedOrders?location=${restaurantId}`
-                );
-                const data = await res.json();
-                if (JSON.stringify(data) !== JSON.stringify(completedOrders)) {
-                    const newOnes = data.filter(
-                        d => !completedOrders.some(c => c.orderNumber === d.orderNumber)
-                    );
-                    if (newOnes.length) {
-                        setOrderNum(newOnes.map(o => o.orderNumber));
-                        setTimeout(() => setOrderNum(null), 60000);
-                    }
-                    const updated = [...completedOrders, ...newOnes];
-                    setCompletedOrders(updated);
-                    localStorage.setItem('completedOrders', JSON.stringify(updated));
-                }
-            } catch (err) {
-                console.error('Error fetching completed orders:', err);
-            }
-        };
-
-        const scheduleReset = () => {
-            const now = new Date();
-            const estNow = new Date(
-                now.toLocaleString('en-US', { timeZone: 'America/New_York' })
-            );
-            const midnight = new Date(estNow);
-            midnight.setHours(24, 0, 0, 0);
-            const ms = midnight.getTime() - estNow.getTime();
-            setTimeout(() => {
-                localStorage.removeItem('completedOrders');
-                setCompletedOrders([]);
-                setInterval(() => {
-                    localStorage.removeItem('completedOrders');
-                    setCompletedOrders([]);
-                }, 24 * 60 * 60 * 1000);
-            }, ms);
-        };
-
         fetchData();
-        fetchCompleted();
-        fetchPending();
-        scheduleReset();
 
         const menuId = setInterval(fetchData, 1800000);
-        const compId = setInterval(fetchCompleted, 60000);
-        const pendId = setInterval(fetchPending, 60000);
 
         return () => {
             clearInterval(menuId);
-            clearInterval(compId);
-            clearInterval(pendId);
         };
-    }, [restaurantId, menu, previousMenu, dcLogoUrl, previousLogoUrl, completedOrders]);
+    }, [restaurantId, menu, previousMenu, dcLogoUrl, previousLogoUrl]);
 
     useEffect(() => {
         const tick = setInterval(() => {

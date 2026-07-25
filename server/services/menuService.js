@@ -10,9 +10,18 @@ const retryDelay = (retryCount) => Math.pow(2, retryCount) * 1000;
 // Cache for Westborough stock and menu data
 let westboroughStockCache = null;       // Last known stock response
 let westboroughMenuCache = null;        // Last known processed menu response
+let westboroughRawMenuCache = null;     // Raw menu response from Toast (fetched once)
 
-// Polling interval reference
-let stockPollingInterval = null;
+// Cache for Nashua menu data
+let nashuaMenuCache = null;             // Last known processed menu response
+let nashuaRawMenuCache = null;          // Raw menu response from Toast (fetched once)
+let nashuaStockCache = null;            // Last known stock response for Nashua
+
+// Webhook-based stock tracking (item GUIDs that are out of stock)
+const outOfStockByLocation = {
+    WESTBOROUGH: new Set(),
+    NASHUA: new Set()
+};
 
 function determineItemType(itemName) {
     const nonVegKeywords = ['boneless', 'non-veg', 'chicken', 'mutton', 'goat', 'fish', 'shrimp', 'beef', 'pork', 'keema', 'haleem', 'mandi'];
@@ -37,7 +46,7 @@ function determineSpiceLevel(itemTags) {
 }
 
 /**
- * Fetch stock inventory for Westborough and compare with cached version.
+ * Fetch stock inventory and compare with cached version.
  * Returns { changed: boolean, stockData: array }
  */
 async function fetchAndCompareStock(location) {
@@ -53,27 +62,101 @@ async function fetchAndCompareStock(location) {
     const stockResponse = await axios.get(`${toastApiBaseUrl}/stock/v1/inventory`, requestOptions);
     const newStockData = stockResponse.data;
 
+    // Get the correct cache based on location
+    const cachedStock = location === 'NASHUA' ? nashuaStockCache : westboroughStockCache;
+
     // Compare with cached stock
     const newStockString = JSON.stringify(newStockData);
-    const cachedStockString = JSON.stringify(westboroughStockCache);
+    const cachedStockString = JSON.stringify(cachedStock);
 
     if (newStockString === cachedStockString) {
         return { changed: false, stockData: newStockData };
     }
 
     // Stock has changed, update cache
-    westboroughStockCache = newStockData;
+    if (location === 'NASHUA') {
+        nashuaStockCache = newStockData;
+    } else {
+        westboroughStockCache = newStockData;
+    }
     return { changed: true, stockData: newStockData };
+}
+
+/**
+ * Handle stock webhook from Toast
+ * Receives out_of_stock or in_stock events and updates the local stock tracking
+ */
+function handleStockWebhook(payload) {
+    const { eventType, details } = payload;
+
+    if (!details || !details.itemGuid || !details.restaurantGuid) {
+        logger.warn('[StockWebhook] Invalid payload received');
+        return;
+    }
+
+    // Determine location from restaurantGuid
+    const { locations } = require('../config/config');
+    let location = null;
+    for (const [loc, config] of Object.entries(locations)) {
+        if (config.restaurantExternalId === details.restaurantGuid) {
+            location = loc;
+            break;
+        }
+    }
+
+    if (!location) {
+        logger.warn(`[StockWebhook] Unknown restaurant GUID: ${details.restaurantGuid}`);
+        return;
+    }
+
+    const itemGuid = details.itemGuid;
+
+    if (eventType === 'out_of_stock' || details.status === 'OUT_OF_STOCK') {
+        outOfStockByLocation[location].add(itemGuid);
+        logger.info(`[StockWebhook] ${location}: Item ${itemGuid} marked OUT_OF_STOCK`);
+    } else if (eventType === 'in_stock' || details.status === 'IN_STOCK') {
+        outOfStockByLocation[location].delete(itemGuid);
+        logger.info(`[StockWebhook] ${location}: Item ${itemGuid} marked IN_STOCK`);
+    }
+
+    // Re-process menu cache with updated stock
+    if (location === 'WESTBOROUGH' && westboroughRawMenuCache) {
+        const stockData = Array.from(outOfStockByLocation.WESTBOROUGH).map(guid => ({ guid, status: 'OUT_OF_STOCK' }));
+        westboroughMenuCache = processMenuWithStock(westboroughRawMenuCache, stockData);
+        logger.info(`[StockWebhook] Westborough menu cache updated (${outOfStockByLocation.WESTBOROUGH.size} items out of stock)`);
+    } else if (location === 'NASHUA' && nashuaRawMenuCache) {
+        const stockData = Array.from(outOfStockByLocation.NASHUA).map(guid => ({ guid, status: 'OUT_OF_STOCK' }));
+        nashuaMenuCache = processMenuWithStock(nashuaRawMenuCache, stockData);
+        logger.info(`[StockWebhook] Nashua menu cache updated (${outOfStockByLocation.NASHUA.size} items out of stock)`);
+    }
+
+    // Send WhatsApp notification for out-of-stock
+    if (eventType === 'out_of_stock' || details.status === 'OUT_OF_STOCK') {
+        // Find item name from cached menu
+        let itemName = itemGuid;
+        const rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache : nashuaRawMenuCache;
+        if (rawMenu) {
+            for (const menu of rawMenu.menus || []) {
+                for (const group of menu.menuGroups || []) {
+                    const found = (group.menuItems || []).find(item => item.guid === itemGuid);
+                    if (found) {
+                        itemName = found.name;
+                        break;
+                    }
+                }
+            }
+        }
+        sendOutOfStockNotification([{ guid: itemGuid, name: itemName }]);
+    }
 }
 
 /**
  * Process menu response with stock data to produce filtered menus
  */
 function processMenuWithStock(menuResponseData, stockData) {
-    const outOfStockItems = (stockData || []).map(item => ({
-        guid: item.guid,
-        status: item.status
-    }));
+    const outOfStockItems = (stockData || [])
+        .filter(item => item.status === 'OUT_OF_STOCK')
+        .map(item => item.guid);
 
     const filteredMenus = menuResponseData.menus.map(menu => ({
         name: menu.name,
@@ -81,7 +164,7 @@ function processMenuWithStock(menuResponseData, stockData) {
             name: group.name,
             menuItems: group.menuItems.map(item => {
                 const itemType = determineItemType(item.name);
-                const isNotAvailable = outOfStockItems.some(stockItem => stockItem.guid === item.guid);
+                const isNotAvailable = outOfStockItems.includes(item.guid);
                 const spiceLevel = determineSpiceLevel(item.itemTags);
 
                 const menuItem = {
@@ -141,22 +224,70 @@ async function fetchMenuData(location) {
     for (let retry = 0; retry < 3; retry++) {
         try {
             if (location === 'WESTBOROUGH') {
-                // Check stock and decide whether to refresh menu
-                const { changed, stockData } = await fetchAndCompareStock(location);
-
-                if (!changed && westboroughMenuCache) {
-                    // Stock hasn't changed and we have cached menu — return cached
-                    logger.info('Westborough stock unchanged, returning cached menu data');
+                // Westborough: use webhook-based stock data only (no stock API call)
+                if (westboroughMenuCache) {
+                    logger.info('Westborough returning cached menu data');
                     return westboroughMenuCache;
                 }
 
-                // Stock changed or no cached menu — fetch fresh menu
-                logger.info('Westborough stock changed or no cache, fetching fresh menu data');
-                const menuData = await fetchFullMenuData(location, stockData);
+                // Fetch raw menu from Toast only if we don't have it cached
+                if (!westboroughRawMenuCache) {
+                    logger.info('Westborough fetching menu from Toast (first time)');
+                    const { restaurantExternalId } = locations[location];
+                    const accessToken = await getAccessToken(location);
+                    const requestOptions = {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Toast-Restaurant-External-ID': restaurantExternalId
+                        }
+                    };
+                    const menuResponse = await axios.get(`${toastApiBaseUrl}/menus/v2/menus`, requestOptions);
+                    westboroughRawMenuCache = menuResponse.data;
+
+                    const debuggingDir = path.resolve(__dirname, '../debugging');
+                    if (!fs.existsSync(debuggingDir)) {
+                        fs.mkdirSync(debuggingDir, { recursive: true });
+                    }
+                    fs.writeFileSync(path.join(debuggingDir, 'response.json'), JSON.stringify(menuResponse.data, null, 2));
+                }
+
+                // Process cached raw menu with webhook stock data
+                logger.info('Westborough processing menu with webhook stock data');
+                const webhookStock = Array.from(outOfStockByLocation.WESTBOROUGH).map(guid => ({ guid, status: 'OUT_OF_STOCK' }));
+                const menuData = processMenuWithStock(westboroughRawMenuCache, webhookStock);
                 westboroughMenuCache = menuData;
                 return menuData;
             } else {
-                // Other locations: fetch directly (no stock check)
+                // Nashua: use webhook-based stock data only (no stock API call)
+                if (location === 'NASHUA') {
+                    if (nashuaMenuCache) {
+                        logger.info('Nashua returning cached menu data');
+                        return nashuaMenuCache;
+                    }
+
+                    // Fetch raw menu only if not cached
+                    if (!nashuaRawMenuCache) {
+                        logger.info('Nashua fetching menu from Toast (first time)');
+                        const { restaurantExternalId } = locations[location];
+                        const accessToken = await getAccessToken(location);
+                        const requestOptions = {
+                            headers: {
+                                'Authorization': `Bearer ${accessToken}`,
+                                'Toast-Restaurant-External-ID': restaurantExternalId
+                            }
+                        };
+                        const menuResponse = await axios.get(`${toastApiBaseUrl}/menus/v2/menus`, requestOptions);
+                        nashuaRawMenuCache = menuResponse.data;
+                    }
+
+                    logger.info('Nashua processing menu with webhook stock data');
+                    const webhookStock = Array.from(outOfStockByLocation.NASHUA).map(guid => ({ guid, status: 'OUT_OF_STOCK' }));
+                    const menuData = processMenuWithStock(nashuaRawMenuCache, webhookStock);
+                    nashuaMenuCache = menuData;
+                    return menuData;
+                }
+
+                // Other locations: fetch directly
                 const { restaurantExternalId } = locations[location];
                 const accessToken = await getAccessToken(location);
                 const requestOptions = {
@@ -167,16 +298,6 @@ async function fetchMenuData(location) {
                 };
 
                 const menuResponse = await axios.get(`${toastApiBaseUrl}/menus/v2/menus`, requestOptions);
-
-                // Save debug response
-                const debuggingDir = path.resolve(__dirname, '../debugging');
-                if (!fs.existsSync(debuggingDir)) {
-                    fs.mkdirSync(debuggingDir, { recursive: true });
-                }
-                const filePath = path.join(debuggingDir, 'response.json');
-                fs.writeFileSync(filePath, JSON.stringify(menuResponse.data, null, 2));
-                logger.info(`Menu response saved to ${filePath}`);
-
                 return processMenuWithStock(menuResponse.data, []);
             }
         } catch (error) {
@@ -252,53 +373,27 @@ async function sendOutOfStockNotification(outOfStockItems) {
     }
 }
 
+// Stock polling removed — both locations now use webhooks for stock updates
+// Webhook endpoint: POST /api/stock/webhook
+
 /**
- * Start polling Westborough stock every 10 minutes.
- * If stock changes, automatically refresh the menu cache.
+ * Clear menu caches to force a fresh reload from Toast on next request
  */
-function startStockPolling() {
-    if (stockPollingInterval) {
-        clearInterval(stockPollingInterval);
+function clearMenuCache(location) {
+    if (!location || location === 'WESTBOROUGH') {
+        westboroughRawMenuCache = null;
+        westboroughMenuCache = null;
+        logger.info('Westborough menu caches cleared');
     }
-
-    const TEN_MINUTES = 10 * 60 * 1000;
-
-    stockPollingInterval = setInterval(async () => {
-        const hour = new Date().getHours();
-        if (hour < 10 || hour >= 22) {
-            logger.info('Outside operating hours (10am-10pm), skipping stock poll');
-            return;
-        }
-
-        try {
-            logger.info('Polling Westborough stock inventory...');
-            const { changed, stockData } = await fetchAndCompareStock('WESTBOROUGH');
-
-            if (changed) {
-                logger.info('Westborough stock changed, refreshing menu cache...');
-                const menuData = await fetchFullMenuData('WESTBOROUGH', stockData);
-                westboroughMenuCache = menuData;
-                logger.info('Westborough menu cache updated successfully');
-
-                // Send out-of-stock WhatsApp notification
-                const outOfStockItems = (stockData || []).filter(item => item.status === 'OUT_OF_STOCK');
-                if (outOfStockItems.length > 0) {
-                    await sendOutOfStockNotification(outOfStockItems);
-                }
-            } else {
-                logger.info('Westborough stock unchanged, no menu refresh needed');
-            }
-        } catch (error) {
-            logger.error(`Stock polling error: ${error.message}`);
-        }
-    }, TEN_MINUTES);
-
-    logger.info('Westborough stock polling started (every 10 minutes)');
+    if (!location || location === 'NASHUA') {
+        nashuaRawMenuCache = null;
+        nashuaMenuCache = null;
+        logger.info('Nashua menu caches cleared');
+    }
 }
 
-// Start polling when the service is loaded
-startStockPolling();
-
 module.exports = {
-    fetchMenuData
+    fetchMenuData,
+    clearMenuCache,
+    handleStockWebhook
 };

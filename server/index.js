@@ -23,6 +23,29 @@ const newOrderCache = new NodeCache({ stdTTL: 0 });
 global.cacheData = cache;
 global.newOrderCacheData = newOrderCache;
 
+// Force reload menu cache (clears raw menu cache so next request fetches fresh from Toast)
+app.post('/api/menu/reload', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    const { clearMenuCache } = require('./services/menuService');
+    clearMenuCache(location || null);
+    const msg = location ? `Menu cache cleared for ${location}` : 'All menu caches cleared';
+    logger.info(msg + ' — will reload from Toast on next request');
+    res.json({ success: true, message: msg + '. Will reload on next request.' });
+});
+
+// Webhook: Receive stock updates from Toast
+app.post('/api/stock/webhook', (req, res) => {
+    try {
+        const payload = req.body;
+        const { handleStockWebhook } = require('./services/menuService');
+        handleStockWebhook(payload);
+        res.status(200).json({ success: true });
+    } catch (error) {
+        logger.error('Stock webhook error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/api/menu', fetchMenu);
 app.get('/api/orders', getOrders);
 app.get('/api/bulkOrders', getOrdersBulk);
