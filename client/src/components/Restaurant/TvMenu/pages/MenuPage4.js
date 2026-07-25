@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -34,6 +34,89 @@ const MenuPage4 = () => {
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    const [readyOrderNum, setReadyOrderNum] = useState(null);
+    const [animState, setAnimState] = useState('idle'); // idle, slideIn, display, slideOut
+    const orderQueueRef = useRef([]);
+    const knownOrdersRef = useRef(new Set());
+    const processingRef = useRef(false);
+
+    // Display orders one by one with animation
+    const showNextOrder = useCallback(() => {
+        if (orderQueueRef.current.length === 0) {
+            processingRef.current = false;
+            return;
+        }
+
+        processingRef.current = true;
+        const orderNum = orderQueueRef.current.shift();
+
+        // Slide in
+        setAnimState('slideIn');
+        setReadyOrderNum(orderNum);
+
+        // Hold for display
+        setTimeout(() => setAnimState('display'), 600);
+
+        // Slide out after 3 seconds
+        setTimeout(() => {
+            setAnimState('slideOut');
+            // Show next order after slide out completes
+            setTimeout(() => {
+                setReadyOrderNum(null);
+                setAnimState('idle');
+                showNextOrder();
+            }, 600);
+        }, 3000);
+    }, []);
+
+    // Poll /api/completedOrders every 10 minutes for Westborough
+    useEffect(() => {
+        if (restaurantId?.toLowerCase() !== 'westborough') return;
+
+        const fetchCompletedOrders = async () => {
+            const hour = new Date().getHours();
+            if (hour < 10 || hour >= 22) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/completedOrders?location=${restaurantId}`);
+                const data = await response.json();
+
+                if (Array.isArray(data)) {
+                    const newOrders = data.filter(order => !knownOrdersRef.current.has(order.orderNumber));
+
+                    newOrders.forEach(order => {
+                        knownOrdersRef.current.add(order.orderNumber);
+                        orderQueueRef.current.push(order.orderNumber);
+                    });
+
+                    if (newOrders.length > 0 && !processingRef.current) {
+                        showNextOrder();
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching completed orders:", error);
+            }
+        };
+
+        fetchCompletedOrders();
+        const intervalId = setInterval(fetchCompletedOrders, 600000); // 10 minutes
+
+        // Reset cache at 10pm
+        const resetInterval = setInterval(() => {
+            const hour = new Date().getHours();
+            if (hour === 22) {
+                knownOrdersRef.current.clear();
+                orderQueueRef.current = [];
+                setReadyOrderNum(null);
+                setAnimState('idle');
+            }
+        }, 60000);
+
+        return () => {
+            clearInterval(intervalId);
+            clearInterval(resetInterval);
+        };
+    }, [restaurantId, showNextOrder]);
 
     useEffect(() => {
         const isWithinOperatingHours = () => {
@@ -271,6 +354,65 @@ const MenuPage4 = () => {
                         </Col>
                     </Row>
                 </Container>
+
+                {/* Order Ready Animated Banner - permanent at bottom */}
+                <div style={{
+                    marginTop: '15px',
+                    width: '100%',
+                    height: '120px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    borderRadius: '8px',
+                    background: readyOrderNum ? 'linear-gradient(135deg, #fd590d 0%, #ff8c42 50%, #fd590d 100%)' : 'transparent',
+                    backgroundSize: '200% 200%',
+                    animation: readyOrderNum ? 'gradientShift 2s ease infinite' : 'none',
+                }}>
+                    {readyOrderNum ? (
+                        <div style={{
+                            transform: animState === 'slideIn' ? 'translateX(100%)' : animState === 'slideOut' ? 'translateX(-100%)' : 'translateX(0)',
+                            transition: 'transform 0.6s ease-in-out',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '20px',
+                        }}>
+                            <span style={{ fontSize: '3rem' }}>🔔</span>
+                            <span style={{
+                                fontFamily: "'Lobster', cursive",
+                                fontSize: '3.5rem',
+                                color: '#fff',
+                                textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
+                                letterSpacing: '2px',
+                                animation: 'pulseText 1s ease-in-out infinite',
+                            }}>
+                                Order #{readyOrderNum} is Ready!
+                            </span>
+                            <span style={{ fontSize: '3rem' }}>🎉</span>
+                        </div>
+                    ) : (
+                        <video
+                            src="/_images/promos/Food_preparation.mp4"
+                            autoPlay
+                            loop
+                            muted
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                    )}
+                </div>
+
+                <style>{`
+                    @keyframes gradientShift {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+                    @keyframes pulseText {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(1.05); }
+                        100% { transform: scale(1); }
+                    }
+                `}</style>
             </div>
         );
     };
