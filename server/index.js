@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
 const { fetchMenu } = require('./controllers/menuController');
@@ -257,6 +258,122 @@ app.post('/api/whatsappOrders/:orderId/complete', (req, res) => {
     notifyClients(order, 'order_completed');
     logger.info(`WhatsApp order completed: ${order.id}`);
     res.json({ success: true, order });
+});
+
+// Order Status - find status of an order by order number (looks up guid from cache, then calls Toast API)
+app.get('/api/orderStatus', async (req, res) => {
+    const orderNumber = req.query.orderNum;
+    const location = (req.query.location || 'WESTBOROUGH').toUpperCase();
+
+    if (!orderNumber) {
+        return res.status(400).json({ error: 'orderNum query parameter is required' });
+    }
+
+    // Look up guid from both caches
+    let cachedValue = global.cacheData.get(orderNumber);
+    if (!cachedValue) {
+        cachedValue = global.newOrderCacheData.get(orderNumber);
+    }
+    let guid = cachedValue?.guid || null;
+
+    // If not in cache, search today's orders
+    if (!guid) {
+        try {
+            const { getAccessToken } = require('./services/authService');
+            const { toastApiBaseUrl, locations } = require('./config/config');
+
+            const accessToken = await getAccessToken(location);
+            const { restaurantExternalId } = locations[location];
+
+            let page = 1;
+            let found = false;
+            const today = new Date();
+            const businessDate = today.toLocaleDateString('en-CA', { timeZone: 'America/New_York' }).replace(/-/g, '');
+
+            while (!found) {
+                const bulkResponse = await axios.get(`${toastApiBaseUrl}/orders/v2/ordersBulk`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Toast-Restaurant-External-ID': restaurantExternalId
+                    },
+                    params: { page, businessDate }
+                });
+
+                const orders = bulkResponse.data || [];
+                if (orders.length === 0) break;
+
+                for (const order of orders) {
+                    for (const check of (order.checks || [])) {
+                        if (check.displayNumber === orderNumber) {
+                            guid = order.guid;
+                            // Cache it for future lookups
+                            global.cacheData.set(orderNumber, { status: "FOUND", guid }, 43200);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+                page++;
+            }
+        } catch (searchError) {
+            logger.error(`Order search error: ${searchError.message}`);
+        }
+    }
+
+    if (!guid) {
+        return res.status(404).json({ error: `Order #${orderNumber} not found. It may not exist for today.` });
+    }
+
+    try {
+        const { getAccessToken } = require('./services/authService');
+        const { toastApiBaseUrl, locations } = require('./config/config');
+
+        const accessToken = await getAccessToken(location);
+        const { restaurantExternalId } = locations[location];
+
+        const response = await axios.get(`${toastApiBaseUrl}/orders/v2/orders/${guid}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Toast-Restaurant-External-ID': restaurantExternalId
+            }
+        });
+
+        const order = response.data;
+        const checks = (order.checks || []).map(check => ({
+            orderNumber: check.displayNumber,
+            status: check.paymentStatus,
+            totalAmount: check.totalAmount,
+            items: (check.selections || []).map(item => ({
+                name: item.displayName,
+                quantity: item.quantity,
+                price: item.price,
+                fulfillmentStatus: item.fulfillmentStatus
+            }))
+        }));
+
+        res.json({
+            guid: order.guid,
+            orderNumber,
+            displayNumber: order.displayNumber,
+            source: order.source,
+            status: (() => {
+                const allItems = checks.flatMap(c => c.items);
+                const allReady = allItems.length > 0 && allItems.every(item => item.fulfillmentStatus === 'READY');
+                const hasSent = allItems.some(item => item.fulfillmentStatus === 'SENT');
+                if (order.voided) return 'VOIDED';
+                if (hasSent) return 'IN PROGRESS';
+                if (allReady) return 'COMPLETED';
+                return order.closedDate ? 'CLOSED' : 'OPEN';
+            })(),
+            openedDate: order.openedDate,
+            closedDate: order.closedDate,
+            checks
+        });
+    } catch (error) {
+        logger.error(`Order status error: ${error.message}`);
+        res.status(500).json({ error: `Failed to fetch order status: ${error.message}` });
+    }
 });
 
 // Serve promo images list from _images/promos directory

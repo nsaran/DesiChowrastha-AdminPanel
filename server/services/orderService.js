@@ -102,6 +102,12 @@ async function getCompletedOrders(location, req) {
 
             orders.forEach(order => {
                 const orderNumber = order.orderNumber;
+
+                // Cache every order's GUID for OrderStatus lookups
+                if (!global.cacheData.has(orderNumber)) {
+                    global.cacheData.set(orderNumber, { status: "FOUND", guid: order.orderID }, 43200);
+                }
+
                 const completedItems = order.orderDetails.filter(item => item.fulfillmentStatus === 'READY');
 
                 if (completedItems.length > 0) {
@@ -116,7 +122,7 @@ async function getCompletedOrders(location, req) {
                     });
 
                     if (alertRequired && !global.newOrderCacheData.has(orderNumber)) {
-                        global.newOrderCacheData.set(orderNumber, "READY", 43200);
+                        global.newOrderCacheData.set(orderNumber, { status: "READY", guid: order.orderID }, 43200);
                         completedOrdersList += `, #${orderNumber}`;
                         // setTimeout(notify, 10000 * index, orderNumber); // Uncomment if notify function is defined
                         index++;
@@ -153,10 +159,12 @@ const getNotification = async (req, res) => {
 
     if (orderKeys.length > 0) {
         const orders = orderKeys.map(orderKey => {
-            global.cacheData.set(orderKey, "READY", 43200);
+            const cachedValue = global.newOrderCacheData.get(orderKey);
+            const guid = cachedValue?.guid || null;
+            global.cacheData.set(orderKey, { status: "READY", guid }, 43200);
             global.newOrderCacheData.del(orderKey);
 
-            return { orderNum: orderKey };
+            return { orderNum: orderKey, guid };
         });
 
         res.json(orders);
@@ -167,10 +175,12 @@ const getNotification = async (req, res) => {
 
 const setNotification = async (req, res) => {
     const orderNumber = req.query.orderNum || '999';
-    global.newOrderCacheData.set(orderNumber, "READY", 43200);
+    const guid = req.query.guid || null;
+    global.newOrderCacheData.set(orderNumber, { status: "READY", guid }, 43200);
 
     const responseObject = {
-        orderNum: orderNumber
+        orderNum: orderNumber,
+        guid
     };
 
     res.json([responseObject]);
