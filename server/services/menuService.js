@@ -91,7 +91,7 @@ function handleStockWebhook(payload) {
 
     if (!details || !details.itemGuid || !details.restaurantGuid) {
         logger.warn('[StockWebhook] Invalid payload received');
-        return;
+        return null;
     }
 
     // Determine location from restaurantGuid
@@ -106,7 +106,7 @@ function handleStockWebhook(payload) {
 
     if (!location) {
         logger.warn(`[StockWebhook] Unknown restaurant GUID: ${details.restaurantGuid}`);
-        return;
+        return null;
     }
 
     const itemGuid = details.itemGuid;
@@ -148,6 +148,8 @@ function handleStockWebhook(payload) {
         }
         sendOutOfStockNotification([{ guid: itemGuid, name: itemName }]);
     }
+
+    return { location, itemGuid, itemName, eventType };
 }
 
 /**

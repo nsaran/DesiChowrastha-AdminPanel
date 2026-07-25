@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
+import { useStockUpdates } from '../useStockUpdates';
 import VEG from "../assets/images/veg.png";
 import NONVEG from "../assets/images/nonveg.png";
 import EGG from "../assets/images/egg.png";
@@ -34,6 +35,28 @@ const MenuPage4 = () => {
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+
+    // Real-time stock updates via SSE
+    const handleStockUpdate = useCallback((data) => {
+        setMenu(prevMenu => {
+            if (!prevMenu || !Array.isArray(prevMenu)) return prevMenu;
+            return prevMenu.map(menuSection => ({
+                ...menuSection,
+                menuGroups: (menuSection.menuGroups || []).map(group => ({
+                    ...group,
+                    menuItems: (group.menuItems || []).map(item => {
+                        if (item.id === data.itemGuid) {
+                            return { ...item, isAvailable: data.type !== 'out_of_stock' };
+                        }
+                        return item;
+                    })
+                }))
+            }));
+        });
+    }, []);
+
+    useStockUpdates(restaurantId, handleStockUpdate);
+
     const [readyOrderNum, setReadyOrderNum] = useState(null);
     const [animState, setAnimState] = useState('idle'); // idle, slideIn, display, slideOut
     const orderQueueRef = useRef([]);

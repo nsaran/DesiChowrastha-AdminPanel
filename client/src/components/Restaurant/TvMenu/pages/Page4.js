@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -13,6 +13,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import { firestore } from '../../../../config/firebase';
 import { Tag } from 'antd';
 import API_BASE_URL from '../../../../config/api';
+import { useStockUpdates } from '../useStockUpdates';
 // import fillergif from '../../../../assets/images/filler.gif';
 import CHILLI from "../assets/images/chilli.png";
 
@@ -63,6 +64,28 @@ const Page4 = () => {
     const [menu, setMenu] = useState([]);
     const [previousMenu, setPreviousMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    // Real-time stock updates via SSE
+    const handleStockUpdate = useCallback((data) => {
+        setMenu(prevMenu => {
+            if (!prevMenu || !Array.isArray(prevMenu)) return prevMenu;
+            return prevMenu.map(menuSection => ({
+                ...menuSection,
+                menuGroups: (menuSection.menuGroups || []).map(group => ({
+                    ...group,
+                    menuItems: (group.menuItems || []).map(item => {
+                        if (item.id === data.itemGuid) {
+                            return { ...item, isAvailable: data.type !== 'out_of_stock' };
+                        }
+                        return item;
+                    })
+                }))
+            }));
+        });
+    }, []);
+
+    useStockUpdates(restaurantId, handleStockUpdate);
+
     const [dcLogoUrl, setDcLogoUrl] = useState('');
     const [previousLogoUrl, setPreviousLogoUrl] = useState('');
     const [orderNum, setOrderNum] = useState(null);

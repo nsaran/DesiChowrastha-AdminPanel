@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Card, Tag, Typography, Divider, Spin, Empty, Progress, message } from 'antd';
 import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -18,6 +18,32 @@ const OrderStatus = () => {
     const [orderData, setOrderData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const refreshIntervalRef = useRef(null);
+
+    // Clear auto-refresh when component unmounts or order completes
+    useEffect(() => {
+        return () => {
+            if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
+        };
+    }, []);
+
+    const fetchOrderStatus = async (orderNum) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/orderStatus?orderNum=${orderNum.trim()}&location=${restaurantId}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                setError(data.error || 'Failed to fetch order status');
+                return null;
+            } else {
+                setOrderData(data);
+                return data;
+            }
+        } catch (err) {
+            setError('Unable to connect to server');
+            return null;
+        }
+    };
 
     const handleSearch = async () => {
         if (!orderNumber.trim()) {
@@ -25,24 +51,29 @@ const OrderStatus = () => {
             return;
         }
 
+        // Clear any existing auto-refresh
+        if (refreshIntervalRef.current) {
+            clearInterval(refreshIntervalRef.current);
+            refreshIntervalRef.current = null;
+        }
+
         setLoading(true);
         setError('');
         setOrderData(null);
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/orderStatus?orderNum=${orderNumber.trim()}&location=${restaurantId}`);
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.error || 'Failed to fetch order status');
-            } else {
-                setOrderData(data);
-            }
-        } catch (err) {
-            setError('Unable to connect to server');
-        }
-
+        const data = await fetchOrderStatus(orderNumber);
         setLoading(false);
+
+        // Start auto-refresh every 3 minutes if order is not completed
+        if (data && data.status !== 'COMPLETED' && data.status !== 'CLOSED') {
+            refreshIntervalRef.current = setInterval(async () => {
+                const updated = await fetchOrderStatus(orderNumber);
+                if (updated && (updated.status === 'COMPLETED' || updated.status === 'CLOSED')) {
+                    clearInterval(refreshIntervalRef.current);
+                    refreshIntervalRef.current = null;
+                }
+            }, 180000); // 3 minutes
+        }
     };
 
     const getStatusTag = (status) => {

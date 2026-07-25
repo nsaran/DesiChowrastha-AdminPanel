@@ -34,11 +34,49 @@ app.post('/api/menu/reload', (req, res) => {
 });
 
 // Webhook: Receive stock updates from Toast
+const stockSSEClients = [];
+
+app.get('/api/stock/stream', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*'
+    });
+
+    res.write(`data: ${JSON.stringify({ type: 'connected' })}\n\n`);
+
+    const client = { res, location };
+    stockSSEClients.push(client);
+
+    req.on('close', () => {
+        const index = stockSSEClients.indexOf(client);
+        if (index > -1) stockSSEClients.splice(index, 1);
+    });
+});
+
 app.post('/api/stock/webhook', (req, res) => {
     try {
         const payload = req.body;
-        const { handleStockWebhook } = require('./services/menuService');
-        handleStockWebhook(payload);
+        const { handleStockWebhook, getOutOfStockLocation } = require('./services/menuService');
+        const locationInfo = handleStockWebhook(payload);
+
+        // Push stock update to connected SSE clients
+        if (locationInfo) {
+            stockSSEClients.forEach(client => {
+                if (!client.location || client.location === locationInfo.location) {
+                    client.res.write(`data: ${JSON.stringify({
+                        type: locationInfo.eventType,
+                        itemGuid: locationInfo.itemGuid,
+                        itemName: locationInfo.itemName,
+                        location: locationInfo.location
+                    })}\n\n`);
+                }
+            });
+        }
+
         res.status(200).json({ success: true });
     } catch (error) {
         logger.error('Stock webhook error:', error.message);
