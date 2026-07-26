@@ -77,11 +77,6 @@ const MenuPage1 = () => {
         };
 
         fetchData();
-        const intervalId = setInterval(() => {
-            if (isWithinOperatingHours()) fetchData();
-        }, 600000);
-
-        return () => clearInterval(intervalId);
     }, [restaurantId]);
 
     // Utility function to find menu group by name

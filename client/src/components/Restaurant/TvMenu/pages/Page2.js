@@ -57,9 +57,6 @@ const Page2 = () => {
         };
 
         fetchData();
-        const intervalId = setInterval(fetchData, 1800000);
-
-        return () => clearInterval(intervalId);
     }, [restaurantId, menu, previousMenu]);
 
     const renderHerndonMenu = () => (

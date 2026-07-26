@@ -125,12 +125,6 @@ const Page4 = () => {
         };
 
         fetchData();
-
-        const menuId = setInterval(fetchData, 1800000);
-
-        return () => {
-            clearInterval(menuId);
-        };
     }, [restaurantId, menu, previousMenu, dcLogoUrl, previousLogoUrl]);
 
     useEffect(() => {

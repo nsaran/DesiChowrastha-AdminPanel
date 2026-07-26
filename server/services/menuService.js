@@ -228,7 +228,6 @@ async function fetchMenuData(location) {
             if (location === 'WESTBOROUGH') {
                 // Westborough: use webhook-based stock data only (no stock API call)
                 if (westboroughMenuCache) {
-                    logger.info('Westborough returning cached menu data');
                     return westboroughMenuCache;
                 }
 
@@ -263,7 +262,6 @@ async function fetchMenuData(location) {
                 // Nashua: use webhook-based stock data only (no stock API call)
                 if (location === 'NASHUA') {
                     if (nashuaMenuCache) {
-                        logger.info('Nashua returning cached menu data');
                         return nashuaMenuCache;
                     }
 
