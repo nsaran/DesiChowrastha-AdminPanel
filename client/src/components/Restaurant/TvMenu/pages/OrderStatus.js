@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Card, Tag, Typography, Divider, Spin, Empty, Progress, message } from 'antd';
-import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
+import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, MessageOutlined } from '@ant-design/icons';
+import { useParams, Link } from 'react-router-dom';
 import API_BASE_URL from '../../../../config/api';
+import logo from '../../../../assets/images/dc-nashua-logo.webp';
 
 const { Title, Text } = Typography;
 
@@ -118,6 +119,11 @@ const OrderStatus = () => {
 
     return (
         <div style={{ padding: '30px', maxWidth: '800px', margin: '0 auto' }}>
+            {/* Logo */}
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <img src={logo} alt="Desi Chowrastha" style={{ width: '120px', height: 'auto', opacity: 0.9 }} />
+            </div>
+
             <Title level={2} style={{ color: '#fd590d', textAlign: 'center' }}>
                 🔍 Order Status — {restaurantId}
             </Title>
@@ -236,6 +242,15 @@ const OrderStatus = () => {
                     )}
                 </Card>
             )}
+
+            {/* Feedback link */}
+            <div style={{ textAlign: 'center', marginTop: '30px', padding: '20px', borderTop: '1px solid #f0f0f0' }}>
+                <Link to={`/dashboard/${restaurantId}/OtherServices/CustomerFeedback`}>
+                    <Button type="link" icon={<MessageOutlined />} style={{ fontSize: '1.1rem', color: '#fd590d' }}>
+                        Share your feedback with us
+                    </Button>
+                </Link>
+            </div>
         </div>
     );
 };

@@ -227,10 +227,6 @@ async function fetchMenuData(location) {
         try {
             if (location === 'WESTBOROUGH') {
                 // Westborough: use webhook-based stock data only (no stock API call)
-                if (westboroughMenuCache) {
-                    return westboroughMenuCache;
-                }
-
                 // Fetch raw menu from Toast only if we don't have it cached
                 if (!westboroughRawMenuCache) {
                     logger.info('Westborough fetching menu from Toast (first time)');
@@ -252,8 +248,7 @@ async function fetchMenuData(location) {
                     fs.writeFileSync(path.join(debuggingDir, 'response.json'), JSON.stringify(menuResponse.data, null, 2));
                 }
 
-                // Process cached raw menu with webhook stock data
-                logger.info('Westborough processing menu with webhook stock data');
+                // Always process with current webhook stock data
                 const webhookStock = Array.from(outOfStockByLocation.WESTBOROUGH).map(guid => ({ guid, status: 'OUT_OF_STOCK' }));
                 const menuData = processMenuWithStock(westboroughRawMenuCache, webhookStock);
                 westboroughMenuCache = menuData;
@@ -261,10 +256,6 @@ async function fetchMenuData(location) {
             } else {
                 // Nashua: use webhook-based stock data only (no stock API call)
                 if (location === 'NASHUA') {
-                    if (nashuaMenuCache) {
-                        return nashuaMenuCache;
-                    }
-
                     // Fetch raw menu only if not cached
                     if (!nashuaRawMenuCache) {
                         logger.info('Nashua fetching menu from Toast (first time)');
