@@ -12,7 +12,7 @@ export function useStockUpdates(restaurantId, onStockUpdate) {
     const stableCallback = useCallback(onStockUpdate, []);
 
     useEffect(() => {
-        const sseBaseUrl = API_BASE_URL || 'http://localhost:3010';
+        const sseBaseUrl = API_BASE_URL || window.location.origin;
         const eventSource = new EventSource(`${sseBaseUrl}/api/stock/stream?location=${restaurantId}`);
 
         eventSource.onmessage = (event) => {

@@ -60,7 +60,7 @@ const MenuPage2 = () => {
 
     // SSE: Listen for completed orders
     useEffect(() => {
-        const sseBaseUrl = API_BASE_URL || `http://localhost:3010`;
+        const sseBaseUrl = API_BASE_URL || window.location.origin;
         const eventSource = new EventSource(`${sseBaseUrl}/api/whatsappOrders/stream?location=${restaurantId}`);
 
         eventSource.onmessage = (event) => {
