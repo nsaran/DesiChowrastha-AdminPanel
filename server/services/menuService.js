@@ -317,7 +317,7 @@ async function sendOutOfStockNotification(outOfStockItems) {
     const MANAGER_PHONE_NUMBERS = (process.env.MANAGER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
     const ALL_RECIPIENTS = [...new Set([...OWNER_PHONE_NUMBERS, ...MANAGER_PHONE_NUMBERS])];
     const WA_OUT_OF_STOCK_TEMPLATE = process.env.WA_OUT_OF_STOCK_TEMPLATE_NAME;
-    const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en_US';
+    const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en';
 
     if (!WA_PHONE_NUMBER_ID || !WA_ACCESS_TOKEN || !WA_OUT_OF_STOCK_TEMPLATE || ALL_RECIPIENTS.length === 0) {
         logger.warn('Out-of-stock WhatsApp notification not configured. Skipping.');

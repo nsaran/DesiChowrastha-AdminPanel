@@ -19,7 +19,14 @@ const OrderStatus = () => {
     const [orderData, setOrderData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [tick, setTick] = useState(0);
     const refreshIntervalRef = useRef(null);
+
+    // Tick every minute to update elapsed time display
+    useEffect(() => {
+        const tickInterval = setInterval(() => setTick(t => t + 1), 60000);
+        return () => clearInterval(tickInterval);
+    }, []);
 
     // Clear auto-refresh when component unmounts or order completes
     useEffect(() => {
@@ -192,6 +199,7 @@ const OrderStatus = () => {
                         const isComplete = orderData.status === 'COMPLETED' || orderData.status === 'CLOSED';
                         const percent = isComplete ? 100 : Math.min(100, Math.round((elapsed / 20) * 100));
                         const isOverdue = elapsed > 20 && !isComplete;
+                        void tick; // triggers re-render every minute
 
                         return (
                             <div style={{ marginBottom: '16px' }}>
