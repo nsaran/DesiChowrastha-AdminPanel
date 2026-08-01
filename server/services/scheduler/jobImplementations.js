@@ -2,6 +2,7 @@ const axios = require('axios');
 const { getAccessToken } = require('../authService');
 const { toastApiBaseUrl, locations } = require('../../config/config');
 const { logDailySales } = require('../googleSheetsService');
+const { generateTodaysSpecialImage } = require('../todaysSpecialImage');
 const logger = require('../../utils/logger');
 
 /**
@@ -104,10 +105,13 @@ async function daily_sales_summary(job) {
         logger.info(`[Scheduler] daily_sales_summary: ${totalOrders} orders, $${totalSales.toFixed(2)} total sales`);
 
         // Log to Google Sheets
-        logDailySales(location, totalOrders, `$${totalSales.toFixed(2)}`);
+        await logDailySales(location, totalOrders, `$${totalSales.toFixed(2)}`);
 
         // Send today's special notification if items exist for today
         await sendTodaysSpecialNotification(location);
+
+        // Send tomorrow's special image via WhatsApp if items exist
+        await sendTomorrowsSpecialImage(location);
 
         // Reset whatsappOrders cache at end of day
         if (global.whatsappOrders) {
@@ -118,6 +122,12 @@ async function daily_sales_summary(job) {
         return [totalOrders.toString(), `$${totalSales.toFixed(2)}`];
     } catch (error) {
         logger.error(`[Scheduler] daily_sales_summary error: ${error.message}`);
+        // Still try to log to Google Sheets even on error
+        try {
+            await logDailySales(location, 0, 'Error');
+        } catch (sheetErr) {
+            logger.error(`[Scheduler] Google Sheets log failed: ${sheetErr.message}`);
+        }
         return ['Error', 'N/A', getFormattedDate()];
     }
 }
@@ -199,6 +209,108 @@ async function sendTodaysSpecialNotification(location) {
             const errorMsg = error.response?.data?.error?.message || error.message;
             logger.error(`[Scheduler] Failed to send today's special to ${recipient}: ${errorMsg}`);
         }
+    }
+}
+
+/**
+ * Send tomorrow's special as an image via WhatsApp
+ */
+async function sendTomorrowsSpecialImage(location) {
+    const cache = global.cacheData;
+    if (!cache) return;
+
+    const cacheKey = `todaysSpecial_${location.toUpperCase()}`;
+    const items = cache.get(cacheKey);
+    if (!items || !Array.isArray(items) || items.length === 0) return;
+
+    // Get tomorrow's date in EST
+    const tomorrow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+    // Filter items valid for tomorrow
+    const tomorrowItems = items.filter(item => tomorrowStr >= item.startDate && tomorrowStr <= item.endDate);
+
+    if (tomorrowItems.length === 0) {
+        logger.info(`[Scheduler] No tomorrow's special items for ${location}`);
+        return;
+    }
+
+    try {
+        // Generate image
+        const imageBuffer = await generateTodaysSpecialImage(tomorrowItems, location);
+
+        // Upload to a temporary hosting (using the server itself to serve it)
+        const fs = require('fs');
+        const path = require('path');
+        const imageDir = path.resolve(__dirname, '../../..', 'client', 'public', '_images', 'specials');
+        if (!fs.existsSync(imageDir)) {
+            fs.mkdirSync(imageDir, { recursive: true });
+        }
+        const fileName = `tomorrows_special_${location.toLowerCase()}.png`;
+        const filePath = path.join(imageDir, fileName);
+        fs.writeFileSync(filePath, imageBuffer);
+
+        // Send via WhatsApp media message
+        const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
+        const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en';
+        const locationKey = location.toUpperCase();
+        const phoneNumberId = locationKey === 'NASHUA'
+            ? process.env.WA_PHONE_NUMBER_ID_NASHUA
+            : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
+        const recipients = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+
+        // Use the public URL to serve the image
+        const serverUrl = process.env.SERVER_PUBLIC_URL || 'http://96.32.117.226:3000';
+        const imageUrl = `${serverUrl}/_images/specials/${fileName}`;
+
+        for (const recipient of recipients) {
+            try {
+                // Send template message with image header
+                const WA_TOMORROWS_SPECIAL_TEMPLATE = process.env.WA_TOMORROWS_SPECIAL_TEMPLATE_NAME || 'tomorrows_special';
+                const itemsList = tomorrowItems.map(i => `${i.name} - $${parseFloat(i.price).toFixed(2)}`).join(', ');
+
+                await axios.post(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
+                    messaging_product: 'whatsapp',
+                    to: recipient,
+                    type: 'template',
+                    template: {
+                        name: WA_TOMORROWS_SPECIAL_TEMPLATE,
+                        language: { code: WA_TEMPLATE_LANGUAGE },
+                        components: [
+                            {
+                                type: 'header',
+                                parameters: [
+                                    {
+                                        type: 'image',
+                                        image: { link: imageUrl }
+                                    }
+                                ]
+                            },
+                            {
+                                type: 'body',
+                                parameters: [
+                                    { type: 'text', text: itemsList }
+                                ]
+                            }
+                        ]
+                    }
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${WA_ACCESS_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                logger.info(`[Scheduler] Tomorrow's special image sent to ${recipient} for ${location}`);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            } catch (error) {
+                const errorMsg = error.response?.data?.error?.message || error.message;
+                logger.error(`[Scheduler] Failed to send tomorrow's special image to ${recipient}: ${errorMsg}`);
+            }
+        }
+    } catch (error) {
+        logger.error(`[Scheduler] Error generating/sending tomorrow's special image: ${error.message}`);
     }
 }
 
