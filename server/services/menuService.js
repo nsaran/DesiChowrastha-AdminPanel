@@ -227,7 +227,6 @@ async function fetchMenuData(location) {
     for (let retry = 0; retry < 3; retry++) {
         try {
             if (location === 'WESTBOROUGH') {
-                // Westborough: use webhook-based stock data only (no stock API call)
                 // Fetch raw menu from Toast only if we don't have it cached
                 if (!westboroughRawMenuCache) {
                     logger.info('Westborough fetching menu from Toast (first time)');
@@ -247,6 +246,16 @@ async function fetchMenuData(location) {
                         fs.mkdirSync(debuggingDir, { recursive: true });
                     }
                     fs.writeFileSync(path.join(debuggingDir, 'response.json'), JSON.stringify(menuResponse.data, null, 2));
+
+                    // Fetch inventory once to seed out-of-stock data
+                    try {
+                        const stockResponse = await axios.get(`${toastApiBaseUrl}/stock/v1/inventory`, requestOptions);
+                        const outOfStock = (stockResponse.data || []).filter(item => item.status === 'OUT_OF_STOCK');
+                        outOfStock.forEach(item => outOfStockByLocation.WESTBOROUGH.add(item.guid));
+                        logger.info(`Westborough inventory loaded: ${outOfStock.length} items out of stock`);
+                    } catch (stockErr) {
+                        logger.warn(`Westborough inventory fetch failed: ${stockErr.message}`);
+                    }
                 }
 
                 // Always process with current webhook stock data
@@ -270,6 +279,16 @@ async function fetchMenuData(location) {
                         };
                         const menuResponse = await axios.get(`${toastApiBaseUrl}/menus/v2/menus`, requestOptions);
                         nashuaRawMenuCache = menuResponse.data;
+
+                        // Fetch inventory once to seed out-of-stock data
+                        try {
+                            const stockResponse = await axios.get(`${toastApiBaseUrl}/stock/v1/inventory`, requestOptions);
+                            const outOfStock = (stockResponse.data || []).filter(item => item.status === 'OUT_OF_STOCK');
+                            outOfStock.forEach(item => outOfStockByLocation.NASHUA.add(item.guid));
+                            logger.info(`Nashua inventory loaded: ${outOfStock.length} items out of stock`);
+                        } catch (stockErr) {
+                            logger.warn(`Nashua inventory fetch failed: ${stockErr.message}`);
+                        }
                     }
 
                     logger.info('Nashua processing menu with webhook stock data');
