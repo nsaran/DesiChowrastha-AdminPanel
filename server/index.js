@@ -16,6 +16,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Prevent caching on API responses
+app.use('/api', (req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    next();
+});
+
 const PORT = process.env.PORT || 3010;
 const cache = new NodeCache({ stdTTL: 0 });
 const newOrderCache = new NodeCache({ stdTTL: 0 });
