@@ -84,7 +84,7 @@ const Page4 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate);
+    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
     const [dcLogoUrl, setDcLogoUrl] = useState('');
     const [previousLogoUrl, setPreviousLogoUrl] = useState('');

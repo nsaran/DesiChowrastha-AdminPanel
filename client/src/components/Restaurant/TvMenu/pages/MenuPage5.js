@@ -52,7 +52,7 @@ const MenuPage5 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate);
+    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
     useEffect(() => {
         const isWithinOperatingHours = () => {

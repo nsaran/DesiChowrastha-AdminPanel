@@ -112,8 +112,28 @@ function handleStockWebhook(payload) {
     const itemGuid = details.itemGuid;
 
     if (eventType === 'out_of_stock' || details.status === 'OUT_OF_STOCK') {
+        const alreadyOutOfStock = outOfStockByLocation[location].has(itemGuid);
         outOfStockByLocation[location].add(itemGuid);
-        logger.info(`[StockWebhook] ${location}: Item ${itemGuid} marked OUT_OF_STOCK`);
+        logger.info(`[StockWebhook] ${location}: Item ${itemGuid} marked OUT_OF_STOCK${alreadyOutOfStock ? ' (duplicate, skipping notification)' : ''}`);
+
+        // Only send notification if this is a NEW out-of-stock event
+        if (!alreadyOutOfStock) {
+            // Find item name from cached menu
+            let itemName = itemGuid;
+            const rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache : nashuaRawMenuCache;
+            if (rawMenu) {
+                for (const menu of rawMenu.menus || []) {
+                    for (const group of menu.menuGroups || []) {
+                        const found = (group.menuItems || []).find(item => item.guid === itemGuid);
+                        if (found) {
+                            itemName = found.name;
+                            break;
+                        }
+                    }
+                }
+            }
+            sendOutOfStockNotification([{ guid: itemGuid, name: itemName }], location);
+        }
     } else if (eventType === 'in_stock' || details.status === 'IN_STOCK') {
         outOfStockByLocation[location].delete(itemGuid);
         logger.info(`[StockWebhook] ${location}: Item ${itemGuid} marked IN_STOCK`);
@@ -130,26 +150,7 @@ function handleStockWebhook(payload) {
         logger.info(`[StockWebhook] Nashua menu cache updated (${outOfStockByLocation.NASHUA.size} items out of stock)`);
     }
 
-    // Send WhatsApp notification for out-of-stock
-    if (eventType === 'out_of_stock' || details.status === 'OUT_OF_STOCK') {
-        // Find item name from cached menu
-        let itemName = itemGuid;
-        const rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache : nashuaRawMenuCache;
-        if (rawMenu) {
-            for (const menu of rawMenu.menus || []) {
-                for (const group of menu.menuGroups || []) {
-                    const found = (group.menuItems || []).find(item => item.guid === itemGuid);
-                    if (found) {
-                        itemName = found.name;
-                        break;
-                    }
-                }
-            }
-        }
-        sendOutOfStockNotification([{ guid: itemGuid, name: itemName }]);
-    }
-
-    return { location, itemGuid, itemName, eventType };
+    return { location, itemGuid, itemName: itemGuid, eventType };
 }
 
 /**
@@ -310,8 +311,10 @@ async function fetchMenuData(location) {
 /**
  * Send out-of-stock notification to managers via WhatsApp
  */
-async function sendOutOfStockNotification(outOfStockItems) {
-    const WA_PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID;
+async function sendOutOfStockNotification(outOfStockItems, location) {
+    const WA_PHONE_NUMBER_ID = location === 'NASHUA'
+        ? process.env.WA_PHONE_NUMBER_ID_NASHUA
+        : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
     const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
     const OWNER_PHONE_NUMBERS = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
     const MANAGER_PHONE_NUMBERS = (process.env.MANAGER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);

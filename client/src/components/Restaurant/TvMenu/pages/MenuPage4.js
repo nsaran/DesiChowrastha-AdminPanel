@@ -55,7 +55,7 @@ const MenuPage4 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate);
+    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
     const [readyOrderNum, setReadyOrderNum] = useState(null);
     const [animState, setAnimState] = useState('idle'); // idle, slideIn, display, slideOut

@@ -41,7 +41,7 @@ const Page1 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate);
+    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
     useEffect(() => {
         const fetchData = async () => {

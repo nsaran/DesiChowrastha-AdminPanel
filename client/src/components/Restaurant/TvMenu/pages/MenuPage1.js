@@ -54,30 +54,26 @@ const MenuPage1 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate);
+    // Fetch menu data
+    const fetchMenuData = useCallback(async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/menu?location=${restaurantId}`);
+            const data = await response.json();
+            setMenu(data);
+            setFetchError(false);
+        } catch (error) {
+            console.error("Error fetching menu:", error);
+            setFetchError(true);
+            setTimeout(() => setFetchError(false), 10000);
+        }
+        setIsLoading(false);
+    }, [restaurantId]);
+
+    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
     useEffect(() => {
-        const isWithinOperatingHours = () => {
-            const hour = new Date().getHours();
-            return hour >= 10 && hour < 22;
-        };
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/menu?location=${restaurantId}`);
-                const data = await response.json();
-                setMenu(data);
-                setFetchError(false);
-            } catch (error) {
-                console.error("Error fetching menu:", error);
-                setFetchError(true);
-                setTimeout(() => setFetchError(false), 10000);
-            }
-            setIsLoading(false);
-        };
-
-        fetchData();
-    }, [restaurantId]);
+        fetchMenuData();
+    }, [fetchMenuData]);
 
     // Utility function to find menu group by name
     const findMenuGroupByName = (groups, groupName) => {

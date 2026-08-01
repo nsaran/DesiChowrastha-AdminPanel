@@ -41,7 +41,7 @@ const Page3 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate);
+    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
     // Utility function to find menu group by name for herndon menu
     const findMenuGroupByName = (groups, groupName) => {

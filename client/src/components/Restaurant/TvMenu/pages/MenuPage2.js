@@ -54,7 +54,7 @@ const MenuPage2 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate);
+    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
     const [readyOrder, setReadyOrder] = useState(null);
 
