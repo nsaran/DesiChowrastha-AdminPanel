@@ -131,7 +131,20 @@ const TabletMenu = () => {
     }
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: '#fafafa' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: '#fafafa' }} className="tablet-menu-page">
+            <style>{`
+                .tablet-menu-page img {
+                    width: auto !important;
+                    height: auto !important;
+                }
+                .tablet-menu-page .menu-item-icon {
+                    width: 20px !important;
+                }
+                .tablet-menu-page .tablet-logo {
+                    width: 40px !important;
+                    height: auto !important;
+                }
+            `}</style>
             <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
             {detailModal}
 
@@ -148,7 +161,7 @@ const TabletMenu = () => {
                 zIndex: 100,
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <img src={logo} alt="Desi Chowrastha" style={{ width: '50px', height: 'auto' }} />
+                    <img src={logo} alt="Desi Chowrastha" className="tablet-logo" />
                     <span style={{ fontFamily: "'Lobster', cursive", fontSize: '1.5rem', color: '#fd590d' }}>
                         Desi Chowrastha
                     </span>
