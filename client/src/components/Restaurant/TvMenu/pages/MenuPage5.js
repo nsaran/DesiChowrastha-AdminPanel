@@ -55,7 +55,7 @@ const MenuPage5 = () => {
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
-    const { setSelectedItem, DetailModal } = useMenuItemDetail();
+    const { setSelectedItem, detailModal } = useMenuItemDetail();
 
     useEffect(() => {
         const isWithinOperatingHours = () => {
@@ -299,7 +299,7 @@ const MenuPage5 = () => {
 
     return (
         <>
-            <DetailModal />
+            {detailModal}
             {fetchError && (
                 <div style={{
                     position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
@@ -322,4 +322,5 @@ const MenuPage5 = () => {
 };
 
 export default MenuPage5;
+
 

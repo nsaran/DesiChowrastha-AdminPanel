@@ -57,7 +57,7 @@ const MenuPage2 = () => {
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
-    const { setSelectedItem, DetailModal } = useMenuItemDetail();
+    const { setSelectedItem, detailModal } = useMenuItemDetail();
 
     const [readyOrder, setReadyOrder] = useState(null);
 
@@ -431,7 +431,7 @@ const MenuPage2 = () => {
 
     return (
         <>
-            <DetailModal />
+            {detailModal}
             {fetchError && (
                 <div style={{
                     position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
@@ -454,4 +454,5 @@ const MenuPage2 = () => {
 };
 
 export default MenuPage2;
+
 

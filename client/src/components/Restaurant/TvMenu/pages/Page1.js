@@ -44,7 +44,7 @@ const Page1 = () => {
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
-    const { setSelectedItem, DetailModal } = useMenuItemDetail();
+    const { setSelectedItem, detailModal } = useMenuItemDetail();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -252,7 +252,7 @@ const Page1 = () => {
 
     return (
         <>
-            <DetailModal />
+            {detailModal}
             {isLoading ? (
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />
@@ -265,4 +265,5 @@ const Page1 = () => {
 };
 
 export default Page1;
+
 

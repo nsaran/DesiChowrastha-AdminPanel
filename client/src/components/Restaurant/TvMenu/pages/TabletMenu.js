@@ -27,7 +27,7 @@ const TabletMenu = () => {
     const [chatQuestion, setChatQuestion] = useState('');
     const [chatAnswer, setChatAnswer] = useState('');
     const [chatLoading, setChatLoading] = useState(false);
-    const { setSelectedItem, DetailModal } = useMenuItemDetail();
+    const { setSelectedItem, detailModal } = useMenuItemDetail();
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -133,7 +133,7 @@ const TabletMenu = () => {
     return (
         <div style={{ minHeight: '100vh', backgroundColor: '#fafafa' }}>
             <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
-            <DetailModal />
+            {detailModal}
 
             {/* Header */}
             <div style={{
@@ -298,3 +298,4 @@ const TabletMenu = () => {
 };
 
 export default TabletMenu;
+

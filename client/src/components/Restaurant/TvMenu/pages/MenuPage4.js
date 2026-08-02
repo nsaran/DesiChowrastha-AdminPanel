@@ -58,7 +58,7 @@ const MenuPage4 = () => {
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
-    const { setSelectedItem, DetailModal } = useMenuItemDetail();
+    const { setSelectedItem, detailModal } = useMenuItemDetail();
 
     const [readyOrderNum, setReadyOrderNum] = useState(null);
     const [animState, setAnimState] = useState('idle'); // idle, slideIn, display, slideOut
@@ -185,7 +185,7 @@ const MenuPage4 = () => {
         const headerClass = key === 'pulao' ? 'pulao-table-font' : 'biryani-table-font';
         return (
             <>
-            <DetailModal />
+            {detailModal}
                 <h2 className="cat-title" style={{ fontFamily: 'Lobster' }}>{title}</h2>
                 <Table borderless size="sm" style={{ tableLayout: 'fixed', width: '100%' }}>
                     <thead>
@@ -441,7 +441,7 @@ const MenuPage4 = () => {
 
     return (
         <>
-            <DetailModal />
+            {detailModal}
             {fetchError && (
                 <div style={{
                     position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
@@ -464,4 +464,5 @@ const MenuPage4 = () => {
 };
 
 export default MenuPage4;
+
 

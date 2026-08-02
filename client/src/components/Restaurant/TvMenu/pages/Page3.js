@@ -44,7 +44,7 @@ const Page3 = () => {
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
 
-    const { setSelectedItem, DetailModal } = useMenuItemDetail();
+    const { setSelectedItem, detailModal } = useMenuItemDetail();
 
     // Utility function to find menu group by name for herndon menu
     const findMenuGroupByName = (groups, groupName) => {
@@ -265,7 +265,7 @@ const Page3 = () => {
 
     return (
         <>
-            <DetailModal />
+            {detailModal}
             {isLoading ? (
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />
@@ -278,4 +278,5 @@ const Page3 = () => {
 };
 
 export default Page3;
+
 
