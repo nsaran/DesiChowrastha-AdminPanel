@@ -59,7 +59,7 @@ async function generateDescription(itemName, itemType) {
 }
 
 /**
- * Find a food image for a menu item using Unsplash API
+ * Generate an image for a menu item using OpenAI gpt-image-1
  */
 async function generateImage(itemName, itemId) {
     const imagePath = path.join(IMAGE_DIR, `${itemId}.jpg`);
@@ -69,55 +69,27 @@ async function generateImage(itemName, itemId) {
         return `/_images/dishes/${itemId}.jpg`;
     }
 
-    const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
-    if (!unsplashAccessKey) {
-        logger.warn('[MenuAI] UNSPLASH_ACCESS_KEY not set, skipping image');
-        return null;
-    }
-
-    const axios = require('axios');
-    const searchQuery = `${itemName} indian food dish`;
-
-    const response = await axios.get('https://api.unsplash.com/search/photos', {
-        params: {
-            query: searchQuery,
-            per_page: 1,
-            orientation: 'squarish'
-        },
-        headers: {
-            'Authorization': `Client-ID ${unsplashAccessKey}`
-        }
-    });
-
-    if (response.data.results.length === 0) {
-        // Fallback: search with simpler query
-        const fallbackResponse = await axios.get('https://api.unsplash.com/search/photos', {
-            params: {
-                query: `${itemName} food`,
-                per_page: 1,
-                orientation: 'squarish'
-            },
-            headers: {
-                'Authorization': `Client-ID ${unsplashAccessKey}`
-            }
+    try {
+        const response = await openai.images.generate({
+            model: 'gpt-image-1',
+            prompt: `A professional food photography shot of "${itemName}", an Indian restaurant dish, served on a plate, top-down view, warm lighting, high quality, appetizing, no text or watermarks`,
+            n: 1,
+            size: '1024x1024'
         });
 
-        if (fallbackResponse.data.results.length === 0) {
-            return null;
-        }
-        response.data.results = fallbackResponse.data.results;
+        const imageData = response.data[0].b64_json;
+        const imageBuffer = Buffer.from(imageData, 'base64');
+
+        fs.writeFileSync(imagePath, imageBuffer);
+        // Also save to public folder for localhost dev
+        fs.writeFileSync(path.join(IMAGE_DIR_PUBLIC, `${itemId}.jpg`), imageBuffer);
+
+        logger.info(`[MenuAI] Image generated for: ${itemName}`);
+        return `/_images/dishes/${itemId}.jpg`;
+    } catch (error) {
+        logger.error(`[MenuAI] Image generation failed for ${itemName}: ${error.message}`);
+        return null;
     }
-
-    const imageUrl = response.data.results[0].urls.regular;
-
-    // Download and save the image
-    const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-    fs.writeFileSync(imagePath, imageResponse.data);
-    // Also save to public folder for localhost dev
-    fs.writeFileSync(path.join(IMAGE_DIR_PUBLIC, `${itemId}.jpg`), imageResponse.data);
-
-    logger.info(`[MenuAI] Image found for: ${itemName}`);
-    return `/_images/dishes/${itemId}.jpg`;
 }
 
 /**
