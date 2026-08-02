@@ -133,16 +133,29 @@ const TabletMenu = () => {
     return (
         <div style={{ minHeight: '100vh', backgroundColor: '#fafafa' }} className="tablet-menu-page">
             <style>{`
-                .tablet-menu-page img {
-                    width: auto !important;
-                    height: auto !important;
-                }
                 .tablet-menu-page .menu-item-icon {
                     width: 20px !important;
+                    height: auto !important;
                 }
                 .tablet-menu-page .tablet-logo {
                     width: 40px !important;
                     height: auto !important;
+                }
+                .tablet-menu-page .cat-title {
+                    font-size: 1.5rem !important;
+                    margin-bottom: 0.3rem !important;
+                }
+                .tablet-menu-page h4 {
+                    font-size: 1rem !important;
+                }
+                .tablet-menu-page h5 {
+                    font-size: 1.1rem !important;
+                }
+                .tablet-menu-page .menu-item {
+                    padding: 4px 0;
+                }
+                .tablet-menu-page .menu-item-price {
+                    font-size: 1rem !important;
                 }
             `}</style>
             <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />

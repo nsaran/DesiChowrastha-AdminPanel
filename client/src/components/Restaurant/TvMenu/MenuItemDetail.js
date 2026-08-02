@@ -38,6 +38,21 @@ const MenuItemDetail = ({ item, onClose }) => {
     return (
         <div style={overlayStyle} onClick={onClose}>
             <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+                {/* Scoped style reset for modal */}
+                <style>{`
+                    .menu-detail-modal img {
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: cover !important;
+                    }
+                    .menu-detail-modal h2 {
+                        font-size: 1.8rem !important;
+                    }
+                    .menu-detail-modal p {
+                        font-size: 1rem !important;
+                    }
+                `}</style>
+                <div className="menu-detail-modal">
                 {/* Close button */}
                 <button style={closeButtonStyle} onClick={onClose}>✕</button>
 
@@ -52,7 +67,6 @@ const MenuItemDetail = ({ item, onClose }) => {
                         <img
                             src={detail.imageUrl}
                             alt={item.name}
-                            style={imageStyle}
                         />
                     ) : (
                         <div style={placeholderStyle}>
@@ -90,6 +104,7 @@ const MenuItemDetail = ({ item, onClose }) => {
                     {!item.isAvailable && (
                         <div style={unavailableStyle}>Currently Unavailable</div>
                     )}
+                </div>
                 </div>
             </div>
         </div>
