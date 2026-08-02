@@ -11,6 +11,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 import VEG from "../assets/images/veg.png";
 import NONVEG from "../assets/images/nonveg.png";
 import EGG from "../assets/images/egg.png";
@@ -42,6 +43,8 @@ const Page3 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     // Utility function to find menu group by name for herndon menu
     const findMenuGroupByName = (groups, groupName) => {
@@ -103,6 +106,8 @@ const Page3 = () => {
                     <div
                         key={item.id || item.guid || Math.random()}
                         className="menu-item reduced-spacing"
+                        onClick={() => setSelectedItem && setSelectedItem(item)}
+                        style={{ cursor: 'pointer' }}
                     >
                         <h4 className={item.isAvailable === false ? "sold-out-menu-item-name" : ""}>
                             {itemTypeImage && (
@@ -206,7 +211,7 @@ const Page3 = () => {
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tandoor</h2>
                             {renderMenuItemsFromArray(tandoor)}
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Puffs</h2>
-                            {renderToastMenuItems(menu, "Puffs")}
+                            {renderToastMenuItems(menu, "Puffs", setSelectedItem)}
                         </Col>
                         <Col>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Curries</h2>
@@ -236,23 +241,23 @@ const Page3 = () => {
             <Row>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Curries</h2>
-                    {renderToastMenuItems(menu, "Veg  Curries")}
+                    {renderToastMenuItems(menu, "Veg  Curries", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Pulao</h2>
-                    {renderToastMenuItems(menu, "Pulao")}
+                    {renderToastMenuItems(menu, "Pulao", setSelectedItem)}
                 </Col>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Appetizers</h2>
-                    {renderToastMenuItems(menu, "Veg  Appetizers")}
+                    {renderToastMenuItems(menu, "Veg  Appetizers", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Rice Specials</h2>
-                    {renderToastMenuItems(menu, "Rice Specials")}
+                    {renderToastMenuItems(menu, "Rice Specials", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>FamilyPack Pulao</h2>
-                    {renderToastMenuItems(menu, "FamilyPack  Pulao")}
+                    {renderToastMenuItems(menu, "FamilyPack  Pulao", setSelectedItem)}
                 </Col>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Appetizers</h2>
-                    {renderToastMenuItems(menu, "Non-Veg  Appetizers")}
+                    {renderToastMenuItems(menu, "Non-Veg  Appetizers", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Sweets and Snacks - Coming Soon</h2>
-                    {renderToastMenuItems(menu, "Sweets and Snacks - Coming Soon")}
+                    {renderToastMenuItems(menu, "Sweets and Snacks - Coming Soon", setSelectedItem)}
                 </Col>
             </Row>
         </Container>
@@ -260,6 +265,7 @@ const Page3 = () => {
 
     return (
         <>
+            <DetailModal />
             {isLoading ? (
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />
@@ -272,3 +278,4 @@ const Page3 = () => {
 };
 
 export default Page3;
+

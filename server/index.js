@@ -13,8 +13,42 @@ const NodeCache = require("node-cache");
 const logger = require('./utils/logger');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://repodepo.io',
+        'http://localhost:3000'
+    ],
+    methods: ['GET', 'POST', 'DELETE'],
+    credentials: true
+}));
 app.use(express.json());
+
+// Rate limiting
+const rateLimit = require('express-rate-limit');
+
+// General API rate limit: 100 requests per minute per IP
+const generalLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 100,
+    message: { error: 'Too many requests, please try again later.' }
+});
+app.use('/api', generalLimiter);
+
+// Strict limit for feedback: 5 per 15 minutes per IP
+const feedbackLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    message: { error: 'Too many feedback submissions. Please try again later.' }
+});
+app.use('/api/feedback', feedbackLimiter);
+
+// Strict limit for order status: 20 per minute per IP
+const orderStatusLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 20,
+    message: { error: 'Too many requests. Please wait a moment.' }
+});
+app.use('/api/orderStatus', orderStatusLimiter);
 
 // Prevent caching on API responses
 app.use('/api', (req, res, next) => {
@@ -66,8 +100,25 @@ app.get('/api/stock/stream', (req, res) => {
 
 app.post('/api/stock/webhook', (req, res) => {
     try {
+        // Verify webhook signature
+        const crypto = require('crypto');
+        const webhookSecret = process.env.TOAST_WEBHOOK_SECRET;
+
+        if (webhookSecret) {
+            const signature = req.headers['toast-signature'] || req.headers['x-toast-signature'] || '';
+            const expectedSignature = crypto
+                .createHmac('sha256', webhookSecret)
+                .update(JSON.stringify(req.body))
+                .digest('hex');
+
+            if (signature !== expectedSignature) {
+                logger.warn('Stock webhook rejected: invalid signature');
+                return res.status(401).json({ error: 'Invalid signature' });
+            }
+        }
+
         const payload = req.body;
-        const { handleStockWebhook, getOutOfStockLocation } = require('./services/menuService');
+        const { handleStockWebhook } = require('./services/menuService');
         const locationInfo = handleStockWebhook(payload);
 
         // Push stock update to connected SSE clients
@@ -92,6 +143,44 @@ app.post('/api/stock/webhook', (req, res) => {
 });
 
 app.get('/api/menu', fetchMenu);
+
+// AI-powered menu item details (description + image)
+app.get('/api/menu/item/:itemId', async (req, res) => {
+    try {
+        const { getMenuItemDetail } = require('./services/menuAIService');
+        const { itemId } = req.params;
+        const itemName = req.query.name || 'Unknown Dish';
+        const itemType = req.query.type || 'dish';
+
+        const detail = await getMenuItemDetail(itemId, itemName, itemType);
+        res.json(detail);
+    } catch (error) {
+        logger.error('Menu item detail error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Batch generate AI details for all menu items
+app.post('/api/menu/generate-details', async (req, res) => {
+    try {
+        const { batchGenerateDetails } = require('./services/menuAIService');
+        const { fetchMenuData } = require('./services/menuService');
+        const location = (req.query.location || 'WESTBOROUGH').toUpperCase();
+
+        const menuData = await fetchMenuData(location);
+        const allItems = menuData.flatMap(menu =>
+            (menu.menuGroups || []).flatMap(group => group.menuItems || [])
+        );
+
+        logger.info(`[MenuAI] Starting batch generation for ${location}: ${allItems.length} items`);
+        const result = await batchGenerateDetails(allItems);
+        res.json(result);
+    } catch (error) {
+        logger.error('Batch generate error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/api/orders', getOrders);
 app.get('/api/bulkOrders', getOrdersBulk);
 app.get('/api/pendingOrders', getPendingOrders);

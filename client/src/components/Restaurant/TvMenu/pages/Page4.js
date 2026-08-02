@@ -14,6 +14,7 @@ import { firestore } from '../../../../config/firebase';
 import { Tag } from 'antd';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 // import fillergif from '../../../../assets/images/filler.gif';
 import CHILLI from "../assets/images/chilli.png";
 
@@ -85,6 +86,8 @@ const Page4 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     const [dcLogoUrl, setDcLogoUrl] = useState('');
     const [previousLogoUrl, setPreviousLogoUrl] = useState('');
@@ -181,6 +184,7 @@ const Page4 = () => {
         const headerClass = key === 'pulao' ? 'pulao-table-font' : 'biryani-table-font';
         return (
             <>
+            <DetailModal />
                 <h2 className="cat-title" style={{ fontFamily: 'Lobster' }}>
                     {title}
                 </h2>
@@ -253,6 +257,7 @@ const Page4 = () => {
         const headerClass = key === 'pulao' ? 'pulao-nashua-table-font' : 'biryani-nashua-table-font';
         return (
             <>
+            <DetailModal />
                 <h2 className="cat-title" style={{ fontFamily: 'Lobster' }}>
                     {title}
                 </h2>
@@ -587,6 +592,7 @@ const Page4 = () => {
 
     return (
         <>
+            <DetailModal />
             {isLoading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                     <img src={LoaderIcon} alt="Loading..." style={{ width: 100, height: 100 }} />
@@ -601,3 +607,4 @@ const Page4 = () => {
 };
 
 export default Page4;
+

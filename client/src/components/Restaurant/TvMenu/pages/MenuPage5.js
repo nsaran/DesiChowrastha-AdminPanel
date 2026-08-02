@@ -11,6 +11,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 import VEG from "../assets/images/veg.png";
 import NONVEG from "../assets/images/nonveg.png";
 import EGG from "../assets/images/egg.png";
@@ -53,6 +54,8 @@ const MenuPage5 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     useEffect(() => {
         const isWithinOperatingHours = () => {
@@ -114,7 +117,7 @@ const MenuPage5 = () => {
                 }
 
                 return (
-                    <div key={item.id || item.guid || Math.random()} className="menu-item reduced-spacing">
+                    <div key={item.id || item.guid || Math.random()} className="menu-item reduced-spacing" onClick={() => setSelectedItem && setSelectedItem(item)} style={{ cursor: 'pointer' }}>
                         <h4 className={item.isAvailable === false ? "sold-out-menu-item-name" : ""}>
                             {itemTypeImage && <img src={itemTypeImage} alt={item.name} className="menu-item-icon" />}
                             <span style={{ paddingLeft: !itemTypeImage ? "30px" : "0px" }}>{item.name}</span>
@@ -228,11 +231,11 @@ const MenuPage5 = () => {
                         + Freshly Baked Cakes By Pre-Order (www.desichowrastha.com) */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Fresh Bakes</h2>
-                        {renderToastMenuItems(menu, "Bakers")}
+                        {renderToastMenuItems(menu, "Bakers", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Hot Beverages</h2>
-                        {renderToastMenuItems(menu, "Chai/Coffee")}
+                        {renderToastMenuItems(menu, "Chai/Coffee", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Desserts</h2>
-                        {renderToastMenuItems(menu, "Desserts")}
+                        {renderToastMenuItems(menu, "Desserts", setSelectedItem)}
                         <div style={{ marginTop: "10px" }}>
                             <img
                                 src="/_images/promos/irani-chai.jpg"
@@ -249,14 +252,14 @@ const MenuPage5 = () => {
                         Sugar Cane Juice, Blue Berry Mojito, Fresh Lime Soda */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Drinks</h2>
-                        {renderToastMenuItems(menu, "Beverages")}
+                        {renderToastMenuItems(menu, "Beverages", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Fresh Juice</h2>
-                        {renderToastMenuItems(menu, "Fresh Juice")}
+                        {renderToastMenuItems(menu, "Fresh Juice", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Ice Cream</h2>
                         <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
                             (Vanilla | Chocolate | Butterscotch | Strawberry | Pistachio)
                         </h5>
-                        {renderToastMenuItems(menu, "Ice Cream")}
+                        {renderToastMenuItems(menu, "Ice Cream", setSelectedItem)}
                     </Col>
 
                     {/* Column 3: Desserts + Ice Cream + Pastries + Catering info
@@ -278,7 +281,7 @@ const MenuPage5 = () => {
                         </h5>
                         {renderToastMenuItems(menu, `Snack Box`)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
-                        {renderToastMenuItems(menu, "Pastries")}
+                        {renderToastMenuItems(menu, "Pastries", setSelectedItem)}
                         <div style={{ marginTop: "30px", textAlign: "center" }}>
                             <video
                                 src="/_images/promos/catering_promotion_2.mp4"
@@ -296,6 +299,7 @@ const MenuPage5 = () => {
 
     return (
         <>
+            <DetailModal />
             {fetchError && (
                 <div style={{
                     position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
@@ -318,3 +322,4 @@ const MenuPage5 = () => {
 };
 
 export default MenuPage5;
+

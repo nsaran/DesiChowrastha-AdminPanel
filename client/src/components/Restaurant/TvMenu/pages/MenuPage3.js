@@ -11,6 +11,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 import VEG from "../assets/images/veg.png";
 import NONVEG from "../assets/images/nonveg.png";
 import EGG from "../assets/images/egg.png";
@@ -53,6 +54,8 @@ const MenuPage3 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     useEffect(() => {
         const isWithinOperatingHours = () => {
@@ -114,7 +117,7 @@ const MenuPage3 = () => {
                 }
 
                 return (
-                    <div key={item.id || item.guid || Math.random()} className="menu-item reduced-spacing">
+                    <div key={item.id || item.guid || Math.random()} className="menu-item reduced-spacing" onClick={() => setSelectedItem && setSelectedItem(item)} style={{ cursor: 'pointer' }}>
                         <h4 className={item.isAvailable === false ? "sold-out-menu-item-name" : ""}>
                             {itemTypeImage && <img src={itemTypeImage} alt={item.name} className="menu-item-icon" />}
                             <span style={{ paddingLeft: !itemTypeImage ? "30px" : "0px" }}>{item.name}</span>
@@ -200,7 +203,7 @@ const MenuPage3 = () => {
                         Paneer Butter Masala, Paneer Tikka Masala, Palak Paneer, Kadai Paneer */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Curries</h2>
-                        {renderToastMenuItems(menu, "Veg Curries")}
+                        {renderToastMenuItems(menu, "Veg Curries", setSelectedItem)}
                         <div style={{ marginTop: "15px" }}>
                             <img
                                 src="/_images/promos/goat-curry.jpg"
@@ -222,7 +225,7 @@ const MenuPage3 = () => {
                         Fish Curry (Kuzhambu), Chettinad Shrimp Masala */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Curries</h2>
-                        {renderToastMenuItems(menu, "Non-Veg Curries")}
+                        {renderToastMenuItems(menu, "Non-Veg Curries", setSelectedItem)}
                     </Col>
 
                     {/* Column 3: Breads + Indian Wok
@@ -234,12 +237,12 @@ const MenuPage3 = () => {
                         Extras: Paneer +$1.99, Egg +$1.00, Chicken +$2.00, Shrimp +$3.00, Goat Keema +$4.00 */}
                     <Col style={{ flex: '0 0 33.2%', maxWidth: '33.2%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Breads</h2>
-                        {renderToastMenuItems(menu, "Breads")}
+                        {renderToastMenuItems(menu, "Breads", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Indian Wok</h2>
                         <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
                             (Fried Rice / Noodles)
                         </h5>
-                        {renderToastMenuItems(menu, "Indian Wok")}
+                        {renderToastMenuItems(menu, "Indian Wok", setSelectedItem)}
                         <p style={{ fontFamily: "Lobster", fontSize: "1.6rem", color: "black", marginTop: "10px" }}>
                             <span style={{ color: "red" }}>Extra: </span>
                             Paneer +$1.99 | Egg +$1.00 | Chicken +$2.00 | Shrimp +$3.00 | Goat Keema +$4.00
@@ -252,6 +255,7 @@ const MenuPage3 = () => {
 
     return (
         <>
+            <DetailModal />
             {fetchError && (
                 <div style={{
                     position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
@@ -274,3 +278,4 @@ const MenuPage3 = () => {
 };
 
 export default MenuPage3;
+

@@ -11,6 +11,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 
 const Page2 = () => {
     const { restaurantId } = useParams();
@@ -38,6 +39,8 @@ const Page2 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -91,16 +94,16 @@ const Page2 = () => {
                 <Row>
                     <Col>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tiffins</h2>
-                        {renderToastMenuItems(menu, "Tiffins")}
+                        {renderToastMenuItems(menu, "Tiffins", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Street Style</h2>
                         <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
                             (Frankie / Sandwich)
                         </h5>
-                        {renderToastMenuItems(menu, "Street Style(Frankie/Sandwich)")}
+                        {renderToastMenuItems(menu, "Street Style(Frankie/Sandwich)", setSelectedItem)}
                     </Col>
                     <Col>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Dosa</h2>
-                        {renderToastMenuItems(menu, "Dosa")}
+                        {renderToastMenuItems(menu, "Dosa", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Indian Wok</h2>
                         <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
                             (Fried Rice / Noodles)
@@ -108,21 +111,21 @@ const Page2 = () => {
                         <p style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", fontSize: "2rem", color: "black" }}>
                          <span style={{color: "red"}}> Extra </span> (Egg + $1, Paneer/Chicken/DoubleEgg + $2, Shrimp + $3)
                         </p>
-                        {renderToastMenuItems(menu, "Indian Wok(Fried Rice/Noodles)")}
+                        {renderToastMenuItems(menu, "Indian Wok(Fried Rice/Noodles)", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: '30px' }}>Lunch Combo - Weekdays Only(11AM-2:30)</h2>
                         <p style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", fontSize: "2rem", color: "black" }}>
                          <span style={{color: "red"}}> Extra </span> (Chicken + $2, Goat + $3)
                         </p>
-                        {renderToastMenuItems(menu, "Lunch Combo - Weekdays Only(11AM-1:30)")}
+                        {renderToastMenuItems(menu, "Lunch Combo - Weekdays Only(11AM-1:30)", setSelectedItem)}
                     </Col>
                     <Col>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Snacks</h2>
                         <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
                             (Available from 4 PM)
                         </h5>
-                        {renderToastMenuItems(menu, "Snacks (Available from 4:00 PM)")}
+                        {renderToastMenuItems(menu, "Snacks (Available from 4:00 PM)", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Chaat</h2>
-                        {renderToastMenuItems(menu, "Chaat")}
+                        {renderToastMenuItems(menu, "Chaat", setSelectedItem)}
                     </Col>
                 </Row>
             </Container>
@@ -144,17 +147,17 @@ const Page2 = () => {
             <Row>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Dosa</h2>
-                    {renderToastMenuItems(menu, "Dosa")}
+                    {renderToastMenuItems(menu, "Dosa", setSelectedItem)}
                 </Col>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tiffins</h2>
-                    {renderToastMenuItems(menu, "Tiffins")}
+                    {renderToastMenuItems(menu, "Tiffins", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Sides</h2>
-                    {renderToastMenuItems(menu, "Sides")}
+                    {renderToastMenuItems(menu, "Sides", setSelectedItem)}
                 </Col>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Curries</h2>
-                    {renderToastMenuItems(menu, "Non-Veg  Curries")}
+                    {renderToastMenuItems(menu, "Non-Veg  Curries", setSelectedItem)}
                 </Col>
             </Row>
         </Container>
@@ -162,6 +165,7 @@ const Page2 = () => {
 
     return (
         <>
+            <DetailModal />
             {isLoading ? (
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />
@@ -174,3 +178,4 @@ const Page2 = () => {
 };
 
 export default Page2;
+

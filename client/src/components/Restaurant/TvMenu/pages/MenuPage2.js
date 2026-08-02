@@ -11,6 +11,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 import VEG from "../assets/images/veg.png";
 import NONVEG from "../assets/images/nonveg.png";
 import EGG from "../assets/images/egg.png";
@@ -55,6 +56,8 @@ const MenuPage2 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     const [readyOrder, setReadyOrder] = useState(null);
 
@@ -154,6 +157,8 @@ const MenuPage2 = () => {
                     <div
                         key={item.id || item.guid || Math.random()}
                         className="menu-item reduced-spacing"
+                        onClick={() => setSelectedItem && setSelectedItem(item)}
+                        style={{ cursor: 'pointer' }}
                     >
                         <h4 className={item.isAvailable === false ? "sold-out-menu-item-name" : ""}>
                             {itemTypeImage && (
@@ -338,9 +343,9 @@ const MenuPage2 = () => {
                         Paneer Vepudu, Paneer Manchuria */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Veg Appetizers</h2>
-                        {renderToastMenuItems(menu, "Veg Appetizers")}
+                        {renderToastMenuItems(menu, "Veg Appetizers", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Egg Station</h2>
-                        {renderToastMenuItems(menu, "Egg Station")}
+                        {renderToastMenuItems(menu, "Egg Station", setSelectedItem)}
                     </Col>
 
                     {/* Column 2: Veg Appetizers (continued) + Non-Veg Appetizers
@@ -353,7 +358,7 @@ const MenuPage2 = () => {
                         Chilli Momo, Pepper Shrimp, Chilli Goat Roast, Goat Sukka */}
                     <Col style={{ flex: '0 0 33.4%', maxWidth: '33.4%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Appetizers Non-Veg</h2>
-                        {renderToastMenuItems(menu, "Non-Veg Appetizers")}
+                        {renderToastMenuItems(menu, "Non-Veg Appetizers", setSelectedItem)}
                     </Col>
 
                     {/* Column 3: Egg Station + Special Dips + Tandoori
@@ -365,9 +370,9 @@ const MenuPage2 = () => {
                         Hariyali Chicken Tikka, Tangri Kebab, Shrimp Tikka, Tandoori Pomfret */}
                     <Col style={{ flex: '0 0 33.2%', maxWidth: '33.2%' }}>
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Special Dips</h2>
-                        {renderToastMenuItems(menu, "Special Dips")}
+                        {renderToastMenuItems(menu, "Special Dips", setSelectedItem)}
                         <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tandoori</h2>
-                        {renderToastMenuItems(menu, "Tandoor")}
+                        {renderToastMenuItems(menu, "Tandoor", setSelectedItem)}
                     </Col>
                 </Row>
 
@@ -426,6 +431,7 @@ const MenuPage2 = () => {
 
     return (
         <>
+            <DetailModal />
             {fetchError && (
                 <div style={{
                     position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
@@ -448,3 +454,4 @@ const MenuPage2 = () => {
 };
 
 export default MenuPage2;
+

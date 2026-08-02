@@ -4,7 +4,7 @@ import NONVEG from "./assets/images/nonveg.png";
 import EGG from "./assets/images/egg.png";
 import CHILLI from "./assets/images/chilli.png";
 
-export const renderToastMenuItems = (menu, category) => {
+export const renderToastMenuItems = (menu, category, onItemClick) => {
   const reducedSpacingCategories = [
     "Tiffins", "Breads", "Sides", "Veg Curries", "Non-Veg Curries", "Pulao",
     "Veg Appetizers"
@@ -65,6 +65,8 @@ export const renderToastMenuItems = (menu, category) => {
         <div
           key={item.id}
           className={`menu-item ${reducedSpacingCategories.includes(category) ? "reduced-spacing" : ""} ${category === "Non-Veg  Appetizers" ? "non-veg-appetizers-item" : ""} ${category === "FamilyPack  Biryani's" ? "familypack-biryani-item" : ""} ${category === "Chowrastha Specials" ? "chowrastha-specials-item" : ""} ${category === "Desserts" ? "desserts-item" : ""}`}
+          onClick={() => onItemClick && onItemClick(item)}
+          style={{ cursor: onItemClick ? 'pointer' : 'default' }}
         >
           <h4 className={item.isAvailable === false ? "sold-out-menu-item-name" : ""}>
             {itemTypeImage && !categoryExceptions.has(category) && (

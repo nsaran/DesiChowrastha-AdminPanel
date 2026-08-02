@@ -11,6 +11,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 import VEG from "../assets/images/veg.png";
 import NONVEG from "../assets/images/nonveg.png";
 import EGG from "../assets/images/egg.png";
@@ -42,6 +43,8 @@ const Page1 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -127,6 +130,8 @@ const Page1 = () => {
                         <div
                             key={item.id || item.guid || Math.random()}
                             className="menu-item reduced-spacing"
+                            onClick={() => setSelectedItem && setSelectedItem(item)}
+                            style={{ cursor: 'pointer' }}
                         >
                             <h4 className={item.isAvailable === false ? "sold-out-menu-item-name" : ""}>
                                 {itemTypeImage && (
@@ -181,17 +186,17 @@ const Page1 = () => {
                     <Row>
                         <Col>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Pastries</h2>
-                            {renderToastMenuItems(menu, "Pastries")}
+                            {renderToastMenuItems(menu, "Pastries", setSelectedItem)}
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Desserts</h2>
-                            {renderToastMenuItems(menu, "Desserts")}
+                            {renderToastMenuItems(menu, "Desserts", setSelectedItem)}
                         </Col>
                         <Col>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Drinks</h2>
-                            {renderToastMenuItems(menu, "Drinks")}
+                            {renderToastMenuItems(menu, "Drinks", setSelectedItem)}
                         </Col>
                         <Col>
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Falooda</h2>
-                            {renderToastMenuItems(menu, "Falooda")}
+                            {renderToastMenuItems(menu, "Falooda", setSelectedItem)}
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Chowrastha Specials</h2>
                             {renderMenuItemsFromArray(chowrasthaSpecials)}
                         </Col>
@@ -221,25 +226,25 @@ const Page1 = () => {
                     </h5>
                     {renderToastMenuItems(menu, `Snacks (Available from 5 PM)`)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Tandoor</h2>
-                    {renderToastMenuItems(menu, "Tandoor")}
+                    {renderToastMenuItems(menu, "Tandoor", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Bakery</h2>
-                    {renderToastMenuItems(menu, "Bakery")}
+                    {renderToastMenuItems(menu, "Bakery", setSelectedItem)}
                 </Col>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Chaat</h2>
-                    {renderToastMenuItems(menu, "Chaat")}
+                    {renderToastMenuItems(menu, "Chaat", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Indian Wok</h2>
-                    {renderToastMenuItems(menu, "Indian Wok")}
+                    {renderToastMenuItems(menu, "Indian Wok", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Desserts</h2>
-                    {renderToastMenuItems(menu, "Desserts")}
+                    {renderToastMenuItems(menu, "Desserts", setSelectedItem)}
                 </Col>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Street Style</h2>
-                    {renderToastMenuItems(menu, "Street Style")}
+                    {renderToastMenuItems(menu, "Street Style", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Breads</h2>
-                    {renderToastMenuItems(menu, "Breads")}
+                    {renderToastMenuItems(menu, "Breads", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Drinks</h2>
-                    {renderToastMenuItems(menu, "Drinks")}
+                    {renderToastMenuItems(menu, "Drinks", setSelectedItem)}
                 </Col>
             </Row>
         </Container>
@@ -247,6 +252,7 @@ const Page1 = () => {
 
     return (
         <>
+            <DetailModal />
             {isLoading ? (
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
                     <img src={LoaderIcon} alt="Loading..." style={{ width: '100px', height: '100px' }} />
@@ -259,3 +265,4 @@ const Page1 = () => {
 };
 
 export default Page1;
+

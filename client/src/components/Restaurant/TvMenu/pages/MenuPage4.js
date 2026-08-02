@@ -12,6 +12,7 @@ import LoaderIcon from '../assets/images/loader_icon.gif';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useStockUpdates } from '../useStockUpdates';
+import { useMenuItemDetail } from '../useMenuItemDetail';
 import VEG from "../assets/images/veg.png";
 import NONVEG from "../assets/images/nonveg.png";
 import EGG from "../assets/images/egg.png";
@@ -56,6 +57,8 @@ const MenuPage4 = () => {
     }, []);
 
     useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+
+    const { setSelectedItem, DetailModal } = useMenuItemDetail();
 
     const [readyOrderNum, setReadyOrderNum] = useState(null);
     const [animState, setAnimState] = useState('idle'); // idle, slideIn, display, slideOut
@@ -182,6 +185,7 @@ const MenuPage4 = () => {
         const headerClass = key === 'pulao' ? 'pulao-table-font' : 'biryani-table-font';
         return (
             <>
+            <DetailModal />
                 <h2 className="cat-title" style={{ fontFamily: 'Lobster' }}>{title}</h2>
                 <Table borderless size="sm" style={{ tableLayout: 'fixed', width: '100%' }}>
                     <thead>
@@ -208,7 +212,7 @@ const MenuPage4 = () => {
                             const fam = families[idx];
                             const rowClass = item.isAvailable ? headerClass : `sold-out-menu-item-${key}`;
                             return (
-                                <tr key={item.id || idx}>
+                                <tr key={item.id || idx} onClick={() => setSelectedItem && setSelectedItem(item)} style={{ cursor: 'pointer' }}>
                                     <td style={HPAD} className={rowClass}>
                                         <img src={iconFor(item.itemType)} alt={item.itemType} className="menu-item-icon" />
                                         {item.name}
@@ -256,7 +260,7 @@ const MenuPage4 = () => {
                 }
 
                 return (
-                    <div key={item.id || item.guid || Math.random()} className="menu-item reduced-spacing">
+                    <div key={item.id || item.guid || Math.random()} className="menu-item reduced-spacing" onClick={() => setSelectedItem && setSelectedItem(item)} style={{ cursor: 'pointer' }}>
                         <h4 className={item.isAvailable === false ? "sold-out-menu-item-name" : ""}>
                             {itemTypeImage && <img src={itemTypeImage} alt={item.name} className="menu-item-icon" />}
                             <span style={{ paddingLeft: !itemTypeImage ? "30px" : "0px" }}>{item.name}</span>
@@ -368,7 +372,7 @@ const MenuPage4 = () => {
                         <Col style={{ flex: "0 0 33.2%", maxWidth: "33.2%", paddingLeft: "5px", overflow: "hidden" }}>
                             {renderBiryaniTable("Pulao", pulaoG?.menuItems || [], famPulaoG?.menuItems || [], "pulao")}
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Rice</h2>
-                            {renderToastMenuItems(menu, "Rice")}
+                            {renderToastMenuItems(menu, "Rice", setSelectedItem)}
                         </Col>
                     </Row>
                 </Container>
@@ -437,6 +441,7 @@ const MenuPage4 = () => {
 
     return (
         <>
+            <DetailModal />
             {fetchError && (
                 <div style={{
                     position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
@@ -459,3 +464,4 @@ const MenuPage4 = () => {
 };
 
 export default MenuPage4;
+
