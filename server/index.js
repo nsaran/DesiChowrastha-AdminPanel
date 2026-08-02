@@ -181,6 +181,46 @@ app.post('/api/menu/generate-details', async (req, res) => {
     }
 });
 
+// AI-powered menu Q&A
+app.post('/api/menu/ask', async (req, res) => {
+    try {
+        const OpenAI = require('openai');
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const { question, location } = req.body;
+
+        if (!question) {
+            return res.status(400).json({ error: 'Question is required' });
+        }
+
+        // Get menu items for context
+        const { fetchMenuData } = require('./services/menuService');
+        const menuData = await fetchMenuData((location || 'WESTBOROUGH').toUpperCase());
+        const menuItems = menuData.flatMap(menu =>
+            (menu.menuGroups || []).flatMap(group =>
+                (group.menuItems || []).map(item => `${item.name} ($${item.price}) [${item.itemType}]${item.isAvailable === false ? ' - SOLD OUT' : ''}`)
+            )
+        ).join('\n');
+
+        const response = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [
+                {
+                    role: 'system',
+                    content: `You are a helpful assistant at Desi Chowrastha Indian restaurant (${location} location). Answer questions about the menu briefly and helpfully. Here are the current menu items:\n\n${menuItems}\n\nKeep answers concise (2-3 sentences). If asked about allergens or ingredients, provide general Indian food knowledge. Be friendly and enthusiastic about the food.`
+                },
+                { role: 'user', content: question }
+            ],
+            max_tokens: 150,
+            temperature: 0.7
+        });
+
+        res.json({ answer: response.choices[0].message.content.trim() });
+    } catch (error) {
+        logger.error('Menu ask error:', error.message);
+        res.status(500).json({ error: error.message, answer: 'Sorry, I am unable to answer right now. Please ask our staff!' });
+    }
+});
+
 app.get('/api/orders', getOrders);
 app.get('/api/bulkOrders', getOrdersBulk);
 app.get('/api/pendingOrders', getPendingOrders);

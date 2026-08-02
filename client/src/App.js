@@ -34,6 +34,7 @@ import CustomMenu from './components/Restaurant/CustomMenu/index';
 import CustomTvMenuLanding from './components/Restaurant/CustomTvMenu/CustomTvMenuLanding';
 import CustomTvMenuPageView from './components/Restaurant/CustomTvMenu/CustomTvMenuPageView';
 import WhatsAppOrders from './components/Restaurant/TvMenu/pages/WhatsAppOrders';
+import TabletMenu from './components/Restaurant/TvMenu/pages/TabletMenu';
 import OrderStatus from './components/Restaurant/TvMenu/pages/OrderStatus';
 import OtherServices from './components/Restaurant/OtherServices';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
@@ -84,6 +85,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/OtherServices/WhatsAppOrders" element={<WhatsAppOrders />}/>
           <Route path="/dashboard/:restaurantId/OtherServices/OrderStatus" element={<OrderStatus />}/>
+          <Route path="/dashboard/:restaurantId/TabletMenu" element={<TabletMenu />}/>
         </Routes>
       </Router>
     </AuthProvider>

@@ -176,7 +176,8 @@ function processMenuWithStock(menuResponseData, stockData) {
                     price: item.price,
                     pricingStrategy: item.pricingStrategy,
                     itemType: itemType,
-                    isAvailable: !isNotAvailable
+                    isAvailable: !isNotAvailable,
+                    itemTags: item.itemTags || []
                 };
 
                 if (spiceLevel !== undefined) {
