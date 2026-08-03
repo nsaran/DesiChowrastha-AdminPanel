@@ -95,37 +95,79 @@ const MenuPage4 = () => {
         }, 3000);
     }, []);
 
-    // Poll /api/completedOrders every 10 minutes for Westborough
+    // SSE connection to /api/orders/stream for real-time order ready notifications
     useEffect(() => {
         if (restaurantId?.toLowerCase() !== 'westborough') return;
 
-        const fetchCompletedOrders = async () => {
-            const hour = new Date().getHours();
-            if (hour < 10 || hour >= 22) return;
+        const SSE_URL = `${API_BASE_URL || window.location.origin}/api/orders/stream?location=${restaurantId}`;
+        let eventSource = null;
+        let reconnectTimeout = null;
+        let fallbackInterval = null;
 
+        const connectSSE = () => {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/completedOrders?location=${restaurantId}`);
-                const data = await response.json();
+                eventSource = new EventSource(SSE_URL);
 
-                if (Array.isArray(data)) {
-                    const newOrders = data.filter(order => !knownOrdersRef.current.has(order.orderNumber));
-
-                    newOrders.forEach(order => {
-                        knownOrdersRef.current.add(order.orderNumber);
-                        orderQueueRef.current.push(order.orderNumber);
-                    });
-
-                    if (newOrders.length > 0 && !processingRef.current) {
-                        showNextOrder();
+                eventSource.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'order_ready' && data.orderNumber) {
+                            if (!knownOrdersRef.current.has(data.orderNumber)) {
+                                knownOrdersRef.current.add(data.orderNumber);
+                                orderQueueRef.current.push(data.orderNumber);
+                                if (!processingRef.current) {
+                                    showNextOrder();
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error parsing order stream event:', e);
                     }
-                }
-            } catch (error) {
-                console.error("Error fetching completed orders:", error);
+                };
+
+                eventSource.onerror = () => {
+                    eventSource.close();
+                    // SSE failed (likely IIS proxy issue) - fall back to polling
+                    console.warn('Order SSE failed, falling back to polling');
+                    startPolling();
+                };
+            } catch (e) {
+                // SSE not supported or failed - fall back to polling
+                startPolling();
             }
         };
 
-        fetchCompletedOrders();
-        const intervalId = setInterval(fetchCompletedOrders, 600000); // 10 minutes
+        const startPolling = () => {
+            if (fallbackInterval) return; // already polling
+
+            const fetchCompletedOrders = async () => {
+                const hour = new Date().getHours();
+                if (hour < 10 || hour >= 22) return;
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/completedOrders?location=${restaurantId}`);
+                    const data = await response.json();
+
+                    if (Array.isArray(data)) {
+                        const newOrders = data.filter(order => !knownOrdersRef.current.has(order.orderNumber));
+                        newOrders.forEach(order => {
+                            knownOrdersRef.current.add(order.orderNumber);
+                            orderQueueRef.current.push(order.orderNumber);
+                        });
+                        if (newOrders.length > 0 && !processingRef.current) {
+                            showNextOrder();
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error fetching completed orders:", error);
+                }
+            };
+
+            fetchCompletedOrders();
+            fallbackInterval = setInterval(fetchCompletedOrders, 300000); // 5 minutes
+        };
+
+        connectSSE();
 
         // Reset cache at 10pm
         const resetInterval = setInterval(() => {
@@ -139,7 +181,9 @@ const MenuPage4 = () => {
         }, 60000);
 
         return () => {
-            clearInterval(intervalId);
+            if (eventSource) eventSource.close();
+            if (reconnectTimeout) clearTimeout(reconnectTimeout);
+            if (fallbackInterval) clearInterval(fallbackInterval);
             clearInterval(resetInterval);
         };
     }, [restaurantId, showNextOrder]);

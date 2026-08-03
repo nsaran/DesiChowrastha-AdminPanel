@@ -150,6 +150,86 @@ app.post('/api/stock/webhook', (req, res) => {
     }
 });
 
+// Order webhook - receive order status updates from Toast
+const orderSSEClients = [];
+
+app.get('/api/orders/stream', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*'
+    });
+
+    res.write(`data: ${JSON.stringify({ type: 'connected' })}\n\n`);
+
+    const client = { res, location };
+    orderSSEClients.push(client);
+
+    req.on('close', () => {
+        const index = orderSSEClients.indexOf(client);
+        if (index > -1) orderSSEClients.splice(index, 1);
+    });
+});
+
+app.post('/api/orders/webhook', (req, res) => {
+    try {
+        const payload = req.body;
+        const { locations } = require('./config/config');
+
+        // Extract order info from Toast webhook
+        const orderGuid = payload.orderGuid || payload.guid || payload.details?.orderGuid;
+        const eventType = payload.eventType || '';
+        const restaurantGuid = payload.restaurantGuid || payload.details?.restaurantGuid;
+        const status = payload.status || payload.details?.status || '';
+        const displayNumber = payload.displayNumber || payload.details?.displayNumber || '';
+
+        // Determine location
+        let location = null;
+        for (const [loc, config] of Object.entries(locations)) {
+            if (config.restaurantExternalId === restaurantGuid) {
+                location = loc;
+                break;
+            }
+        }
+
+        logger.info(`[OrderWebhook] ${location || 'UNKNOWN'}: Order ${displayNumber || orderGuid} - ${eventType} (${status})`);
+
+        // Push to SSE clients if order is ready/completed
+        const isReady = status === 'READY' || status === 'COMPLETED' ||
+            eventType === 'ORDER_FULFILLMENT_UPDATE' ||
+            eventType === 'ORDER_COMPLETED';
+
+        if (isReady && location) {
+            orderSSEClients.forEach(client => {
+                if (!client.location || client.location === location) {
+                    client.res.write(`data: ${JSON.stringify({
+                        type: 'order_ready',
+                        orderGuid,
+                        orderNumber: displayNumber,
+                        location,
+                        status,
+                        eventType
+                    })}\n\n`);
+                }
+            });
+
+            // Also cache the order number for the notify endpoint
+            if (displayNumber) {
+                global.newOrderCacheData.set(displayNumber, { status: "READY", guid: orderGuid }, 43200);
+                global.cacheData.set(displayNumber, { status: "READY", guid: orderGuid }, 43200);
+            }
+        }
+
+        res.status(200).json({ success: true });
+    } catch (error) {
+        logger.error('Order webhook error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/api/menu', fetchMenu);
 
 // AI-powered menu item details (description + image)
