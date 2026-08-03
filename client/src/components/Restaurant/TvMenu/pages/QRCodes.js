@@ -17,11 +17,13 @@ const QRCodes = () => {
         nashua: {
             menu: '/_images/nashua-menu-qr-code.png',
             feedback: '/_images/nashua-feedback-qr-code.png',
+            orderTracker: '/_images/nashua-order-tracker-qr-code.png',
             locationName: 'Nashua, NH'
         },
         westborough: {
             menu: '/_images/westborough-menu-qr-code.png',
             feedback: '/_images/westborough-feedback-qr-code.png',
+            orderTracker: '/_images/westborough-order-tracker-qr-code.png',
             locationName: 'Westborough, MA'
         }
     };
@@ -60,6 +62,17 @@ const QRCodes = () => {
                     <h2 style={qrLabelStyle}>💬 Feedback Form</h2>
                     <p style={qrDescStyle}>
                         Scan to share your experience with us
+                    </p>
+                </div>
+
+                {/* Order Tracker QR */}
+                <div style={qrCardStyle}>
+                    <div style={qrImageWrapper}>
+                        <img src={config.orderTracker} alt="Order Tracker QR Code" style={qrImageStyle} />
+                    </div>
+                    <h2 style={qrLabelStyle}>📦 Order Tracker</h2>
+                    <p style={qrDescStyle}>
+                        Scan to track your order status in real-time
                     </p>
                 </div>
             </div>
