@@ -151,8 +151,9 @@ app.get('/api/menu/item/:itemId', async (req, res) => {
         const { itemId } = req.params;
         const itemName = req.query.name || 'Unknown Dish';
         const itemType = req.query.type || 'dish';
+        const category = req.query.category || '';
 
-        const detail = await getMenuItemDetail(itemId, itemName, itemType);
+        const detail = await getMenuItemDetail(itemId, itemName, itemType, category);
         res.json(detail);
     } catch (error) {
         logger.error('Menu item detail error:', error.message);
@@ -169,7 +170,9 @@ app.post('/api/menu/generate-details', async (req, res) => {
 
         const menuData = await fetchMenuData(location);
         const allItems = menuData.flatMap(menu =>
-            (menu.menuGroups || []).flatMap(group => group.menuItems || [])
+            (menu.menuGroups || []).flatMap(group => 
+                (group.menuItems || []).map(item => ({ ...item, category: group.name }))
+            )
         );
 
         logger.info(`[MenuAI] Starting batch generation for ${location}: ${allItems.length} items`);

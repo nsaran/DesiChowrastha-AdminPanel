@@ -38,17 +38,18 @@ function saveCachedDetail(itemId, detail) {
 /**
  * Generate a description for a menu item using OpenAI
  */
-async function generateDescription(itemName, itemType) {
+async function generateDescription(itemName, itemType, category) {
+    const categoryContext = category ? ` It belongs to the "${category}" section.` : '';
     const response = await openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: [
             {
                 role: 'system',
-                content: 'You are a food expert at an Indian restaurant. Generate a short, appetizing description (2-3 sentences max) for the given dish. Include key ingredients and flavor profile. Keep it under 50 words.'
+                content: `You are a food expert at an Indian restaurant. Generate a short, appetizing description (2-3 sentences max) for the given dish. Include key ingredients and flavor profile. Keep it under 50 words.`
             },
             {
                 role: 'user',
-                content: `Describe this Indian restaurant dish: "${itemName}" (${itemType})`
+                content: `Describe this Indian restaurant dish: "${itemName}" (${itemType}).${categoryContext}`
             }
         ],
         max_tokens: 100,
@@ -61,7 +62,7 @@ async function generateDescription(itemName, itemType) {
 /**
  * Generate an image for a menu item using OpenAI gpt-image-1
  */
-async function generateImage(itemName, itemId) {
+async function generateImage(itemName, itemId, category) {
     const imagePath = path.join(IMAGE_DIR, `${itemId}.jpg`);
 
     // Check if image already exists
@@ -70,9 +71,10 @@ async function generateImage(itemName, itemId) {
     }
 
     try {
+        const categoryContext = category ? `, from the "${category}" section` : '';
         const response = await openai.images.generate({
             model: 'gpt-image-1',
-            prompt: `A professional food photography shot of "${itemName}", an Indian restaurant dish, served on a plate, top-down view, warm lighting, high quality, appetizing, no text or watermarks`,
+            prompt: `A professional food photography shot of "${itemName}"${categoryContext}, an Indian restaurant dish, served on a plate, top-down view, warm lighting, high quality, appetizing, no text or watermarks`,
             n: 1,
             size: '1024x1024'
         });
@@ -96,7 +98,7 @@ async function generateImage(itemName, itemId) {
  * Get full detail for a menu item (description + image)
  * Uses cache if available, generates if not
  */
-async function getMenuItemDetail(itemId, itemName, itemType) {
+async function getMenuItemDetail(itemId, itemName, itemType, category) {
     // Check cache first
     const cached = getCachedDetail(itemId);
     if (cached && cached.description && cached.imageUrl) {
@@ -107,10 +109,10 @@ async function getMenuItemDetail(itemId, itemName, itemType) {
 
     try {
         // Generate description
-        const description = cached?.description || await generateDescription(itemName, itemType || 'dish');
+        const description = cached?.description || await generateDescription(itemName, itemType || 'dish', category);
 
         // Generate image
-        const imageUrl = cached?.imageUrl || await generateImage(itemName, itemId);
+        const imageUrl = cached?.imageUrl || await generateImage(itemName, itemId, category);
 
         const detail = {
             itemId,
@@ -156,7 +158,7 @@ async function batchGenerateDetails(menuItems) {
         }
 
         try {
-            const detail = await getMenuItemDetail(item.id, item.name, item.itemType);
+            const detail = await getMenuItemDetail(item.id, item.name, item.itemType, item.category);
             results.push(detail);
             generated++;
 
