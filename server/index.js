@@ -50,6 +50,14 @@ const orderStatusLimiter = rateLimit({
 });
 app.use('/api/orderStatus', orderStatusLimiter);
 
+// Strict limit for AI chat: 10 questions per 15 minutes per IP
+const aiChatLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { error: 'Too many questions. Please try again in a few minutes.' }
+});
+app.use('/api/menu/ask', aiChatLimiter);
+
 // Prevent caching on API responses
 app.use('/api', (req, res, next) => {
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
@@ -324,9 +332,14 @@ app.post('/api/todaysSpecial', (req, res) => {
     }
 
     const cacheKey = `todaysSpecial_${location.toUpperCase()}`;
-    cache.set(cacheKey, items);
-    logger.info(`Today's special updated for ${location}: ${items.map(i => `${i.name} (${i.startDate} to ${i.endDate})`).join(', ')}`);
-    res.json({ success: true, items });
+    // Assign IDs to items that don't have one (for image caching)
+    const itemsWithIds = items.map(item => ({
+        ...item,
+        id: item.id || `special-${item.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`
+    }));
+    cache.set(cacheKey, itemsWithIds);
+    logger.info(`Today's special updated for ${location}: ${itemsWithIds.map(i => `${i.name} (${i.startDate} to ${i.endDate})`).join(', ')}`);
+    res.json({ success: true, items: itemsWithIds });
 });
 
 // WhatsApp Orders - receive and manage orders

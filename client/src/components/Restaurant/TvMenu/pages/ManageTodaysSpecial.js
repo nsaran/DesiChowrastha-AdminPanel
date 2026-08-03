@@ -238,9 +238,9 @@ const MenuPage10 = () => {
                     block
                     size="large"
                     style={{ backgroundColor: '#fd590d', borderColor: '#fd590d', height: '50px', fontSize: '1.2rem' }}
-                    disabled={items.length === 0}
+                    disabled={false}
                 >
-                    Save Today's Specials
+                    {items.length === 0 ? 'Clear All Specials' : 'Save Today\'s Specials'}
                 </Button>
             </Space>
         </div>

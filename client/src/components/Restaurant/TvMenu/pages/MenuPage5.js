@@ -3,6 +3,7 @@ import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import TodaysSpecialSlideshow from "./TodaysSpecialSlideshow";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/tvmenu-styles.css";
 import { renderToastMenuItems } from "../renderMenuItems";
@@ -33,6 +34,21 @@ const MenuPage5 = () => {
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    const [todaysSpecials, setTodaysSpecials] = useState([]);
+
+    // Fetch today's specials
+    useEffect(() => {
+        const fetchSpecials = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/todaysSpecial?location=${restaurantId}`);
+                const data = await response.json();
+                setTodaysSpecials(data);
+            } catch (error) {
+                console.error("Error fetching specials:", error);
+            }
+        };
+        fetchSpecials();
+    }, [restaurantId]);
 
     // Real-time stock updates via SSE
     const handleStockUpdate = useCallback((data) => {
@@ -53,7 +69,14 @@ const MenuPage5 = () => {
         });
     }, []);
 
-    useStockUpdates(restaurantId, handleStockUpdate, setMenu);
+    useStockUpdates(restaurantId, handleStockUpdate, (data) => {
+        setMenu(data);
+        // Also refresh today's specials on same cycle
+        fetch(`${API_BASE_URL}/api/todaysSpecial?location=${restaurantId}`)
+            .then(res => res.json())
+            .then(specials => setTodaysSpecials(specials))
+            .catch(() => {});
+    });
 
     const { setSelectedItem, detailModal } = useMenuItemDetail();
 
@@ -198,13 +221,19 @@ const MenuPage5 = () => {
                             <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
                             {renderMenuItemsFromArray(pastries)}
                             <div style={{ marginTop: "30px", textAlign: "center" }}>
-                                <video
-                                    src="/_images/promos/catering_promotion_2.mp4"
-                                    autoPlay
-                                    loop
-                                    muted
-                                    style={{ width: "90%", maxWidth: "400px", height: "auto", borderRadius: "8px" }}
-                                />
+                                {todaysSpecials.length > 0 ? (
+                                    <div style={{ width: "90%", maxWidth: "400px", height: "300px", borderRadius: "8px", overflow: "hidden", display: "inline-block" }}>
+                                        <TodaysSpecialSlideshow items={todaysSpecials} location={restaurantId} />
+                                    </div>
+                                ) : (
+                                    <video
+                                        src="/_images/promos/catering_promotion_2.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        style={{ width: "90%", maxWidth: "400px", height: "auto", borderRadius: "8px" }}
+                                    />
+                                )}
                             </div>
                         </Col>
                     </Row>
@@ -283,13 +312,19 @@ const MenuPage5 = () => {
                         <h2 className="cat-title" style={{ fontFamily: "Lobster", marginTop: "20px" }}>Pastries</h2>
                         {renderToastMenuItems(menu, "Pastries", setSelectedItem)}
                         <div style={{ marginTop: "30px", textAlign: "center" }}>
-                            <video
-                                src="/_images/promos/catering_promotion_2.mp4"
-                                autoPlay
-                                loop
-                                muted
-                                style={{ width: "100%", maxWidth: "100%", height: "350px", objectFit: "cover", borderRadius: "8px" }}
-                            />
+                            {todaysSpecials.length > 0 ? (
+                                <div style={{ width: "100%", height: "350px", borderRadius: "8px", overflow: "hidden" }}>
+                                    <TodaysSpecialSlideshow items={todaysSpecials} location={restaurantId} />
+                                </div>
+                            ) : (
+                                <video
+                                    src="/_images/promos/catering_promotion_2.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    style={{ width: "100%", maxWidth: "100%", height: "350px", objectFit: "cover", borderRadius: "8px" }}
+                                />
+                            )}
                         </div>
                     </Col>
                 </Row>

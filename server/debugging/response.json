@@ -1,6 +1,6 @@
 {
   "restaurantGuid": "bda948cd-2639-41ce-85a0-25b01e7b6839",
-  "lastUpdated": "2026-07-26T02:30:07.043+0000",
+  "lastUpdated": "2026-08-03T19:24:47.620+0000",
   "restaurantTimeZone": "America/New_York",
   "menus": [
     {
@@ -69,6 +69,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
@@ -370,8 +374,24 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
+                },
+                {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 }
               ],
               "plu": "",
@@ -612,6 +632,22 @@
                 {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
+                },
+                {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                },
+                {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
                 }
               ],
               "plu": "",
@@ -664,6 +700,10 @@
           ],
           "itemTags": [
             {
+              "name": "GLUTON_FREE",
+              "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+            },
+            {
               "name": "Veg",
               "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
             }
@@ -695,6 +735,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -758,6 +802,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -819,6 +867,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -882,6 +934,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -943,6 +999,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -1006,6 +1066,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1067,6 +1131,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -1130,6 +1198,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1192,6 +1264,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1253,6 +1329,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -1502,6 +1582,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1563,6 +1647,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -1626,6 +1714,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1687,6 +1779,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -1750,6 +1846,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1811,6 +1911,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -1874,6 +1978,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1936,6 +2044,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
                 }
@@ -1997,6 +2109,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "415194e7-067f-4b3b-9d12-975300dcc1d7"
@@ -2999,8 +3115,16 @@
                   "guid": "220d79e7-d7d2-48b6-b40f-4579e39ff6bf"
                 },
                 {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
                 }
               ],
               "plu": "",
@@ -4806,6 +4930,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 },
@@ -4872,8 +5000,20 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 }
               ],
               "plu": "",
@@ -4934,8 +5074,20 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Medium",
@@ -5000,8 +5152,20 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 }
               ],
               "plu": "",
@@ -5062,8 +5226,20 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Medium",
@@ -5128,8 +5304,20 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Medium",
@@ -5198,6 +5386,10 @@
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 },
                 {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
@@ -5262,6 +5454,10 @@
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Medium",
@@ -5330,6 +5526,10 @@
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 },
                 {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
@@ -5392,8 +5592,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
                 },
                 {
                   "name": "Medium",
@@ -5462,6 +5670,10 @@
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 },
                 {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 }
@@ -5524,8 +5736,20 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Medium",
@@ -5590,8 +5814,20 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Medium",
@@ -5656,8 +5892,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
                 },
                 {
                   "name": "Medium",
@@ -7280,7 +7524,12 @@
             "POS",
             "KIOSK"
           ],
-          "itemTags": [],
+          "itemTags": [
+            {
+              "name": "GLUTON_FREE",
+              "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+            }
+          ],
           "menuGroups": [],
           "menuItems": [
             {
@@ -7308,6 +7557,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
@@ -7369,6 +7622,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
                 }
@@ -7428,6 +7685,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -7493,6 +7754,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 },
@@ -7556,6 +7821,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -7621,6 +7890,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 },
@@ -7685,6 +7958,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -7744,6 +8021,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -7809,6 +8090,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 },
@@ -7872,6 +8157,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -7937,6 +8226,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 },
@@ -8000,6 +8293,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -8065,6 +8362,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 },
@@ -8128,6 +8429,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -8356,6 +8661,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
                 },
@@ -8422,6 +8731,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
                 },
@@ -8483,6 +8796,10 @@
           ],
           "itemTags": [
             {
+              "name": "GLUTON_FREE",
+              "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+            },
+            {
               "name": "Veg",
               "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
             }
@@ -8515,8 +8832,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
                 }
               ],
               "plu": "",
@@ -8577,8 +8902,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
+                },
+                {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
                 }
               ],
               "plu": "",
@@ -8638,6 +8971,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -8700,6 +9037,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -8767,6 +9108,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 }
@@ -8826,6 +9171,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -8887,7 +9236,12 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -8943,6 +9297,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -9006,6 +9364,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 }
@@ -9067,6 +9429,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -9130,6 +9496,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 }
@@ -9191,6 +9561,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -9254,6 +9628,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 }
@@ -9315,6 +9693,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -9378,6 +9760,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 }
@@ -9439,6 +9825,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
@@ -9502,6 +9892,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 }
@@ -9564,6 +9958,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 },
@@ -9624,6 +10022,10 @@
           ],
           "itemTags": [
             {
+              "name": "GLUTON_FREE",
+              "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+            },
+            {
               "name": "Non-Veg",
               "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
             }
@@ -9655,6 +10057,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -9719,6 +10125,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -9786,6 +10196,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -9848,6 +10262,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -9909,6 +10327,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -9976,6 +10398,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10037,6 +10463,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
@@ -10100,6 +10530,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10161,6 +10595,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
@@ -10224,6 +10662,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10285,6 +10727,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
@@ -10348,6 +10794,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10410,6 +10860,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10471,6 +10925,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -10538,6 +10996,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10599,6 +11061,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
@@ -10662,6 +11128,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10723,6 +11193,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
@@ -10786,6 +11260,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10847,6 +11325,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
@@ -10910,6 +11392,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -10971,6 +11457,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
@@ -11037,6 +11527,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
@@ -11126,6 +11620,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
+                },
+                {
                   "name": "Veg",
                   "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
                 }
@@ -11185,6 +11683,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
+                },
                 {
                   "name": "Veg",
                   "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
@@ -11726,6 +12228,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
+                },
+                {
                   "name": "Veg",
                   "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
                 }
@@ -11785,6 +12291,18 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
+                },
                 {
                   "name": "Veg",
                   "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
@@ -17438,7 +17956,12 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "JAIN",
+                  "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
