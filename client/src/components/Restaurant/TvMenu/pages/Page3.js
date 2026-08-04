@@ -252,23 +252,13 @@ const Page3 = () => {
                     {renderToastMenuItems(menu, "Rice Specials", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>FamilyPack Pulao</h2>
                     {renderToastMenuItems(menu, "FamilyPack  Pulao", setSelectedItem)}
-                </Col>
-                <Col>
-                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Appetizers</h2>
-                    {renderToastMenuItems(menu, "Non-Veg  Appetizers", setSelectedItem)}
-                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Sweets and Snacks</h2>
-                    {renderToastMenuItems(menu, "Sweets and Snacks", setSelectedItem)}
-                </Col>
-            </Row>
 
-            {/* QR Codes - spanning columns 2 & 3 at the bottom */}
-            <Row style={{ marginTop: '0px' }}>
-                <Col style={{ flex: '0 0 33.3%', maxWidth: '33.3%' }}></Col>
-                <Col style={{ flex: '0 0 66.6%', maxWidth: '66.6%' }}>
+                    {/* QR Codes */}
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-evenly',
                         alignItems: 'center',
+                        marginTop: '15px',
                         height: '100px',
                     }}>
                         <div style={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -302,6 +292,12 @@ const Page3 = () => {
                             </span>
                         </div>
                     </div>
+                </Col>
+                <Col>
+                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Appetizers</h2>
+                    {renderToastMenuItems(menu, "Non-Veg  Appetizers", setSelectedItem)}
+                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Sweets and Snacks</h2>
+                    {renderToastMenuItems(menu, "Sweets and Snacks", setSelectedItem)}
                 </Col>
             </Row>
         </Container>
