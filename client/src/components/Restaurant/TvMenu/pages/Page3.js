@@ -262,7 +262,7 @@ const Page3 = () => {
             </Row>
 
             {/* QR Codes - spanning columns 2 & 3 at the bottom */}
-            <Row style={{ marginTop: '10px' }}>
+            <Row style={{ marginTop: '0px' }}>
                 <Col style={{ flex: '0 0 33.3%', maxWidth: '33.3%' }}></Col>
                 <Col style={{ flex: '0 0 66.6%', maxWidth: '66.6%' }}>
                     <div style={{
