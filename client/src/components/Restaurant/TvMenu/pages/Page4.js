@@ -107,31 +107,43 @@ const Page4 = () => {
     const knownOrdersRef = useRef(new Set());
     const processingRef = useRef(false);
 
-    // Most recent Facebook post image
-    const [fbPostImage, setFbPostImage] = useState(null);
+    // Facebook posts slideshow
+    const [fbPostImages, setFbPostImages] = useState([]);
+    const [fbCurrentIndex, setFbCurrentIndex] = useState(0);
 
     useEffect(() => {
-        const fetchLatestFbPost = async () => {
+        const fetchFbPosts = async () => {
             try {
-                const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=full_picture&limit=1&access_token=${FB_ACCESS_TOKEN}`;
+                const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=full_picture&limit=10&access_token=${FB_ACCESS_TOKEN}`;
                 const res = await fetch(url);
                 if (res.ok) {
                     const data = await res.json();
-                    const post = (data.data || [])[0];
-                    if (post?.full_picture) {
-                        setFbPostImage(post.full_picture);
+                    const images = (data.data || [])
+                        .filter(post => post.full_picture)
+                        .map(post => post.full_picture);
+                    if (images.length > 0) {
+                        setFbPostImages(images);
                     }
                 }
             } catch (e) {
-                console.error('Error fetching FB post for Page4:', e);
+                console.error('Error fetching FB posts for Page4:', e);
             }
         };
 
-        fetchLatestFbPost();
+        fetchFbPosts();
         // Refresh once a day
-        const dayInterval = setInterval(fetchLatestFbPost, 24 * 60 * 60 * 1000);
+        const dayInterval = setInterval(fetchFbPosts, 24 * 60 * 60 * 1000);
         return () => clearInterval(dayInterval);
     }, []);
+
+    // Auto-advance FB slideshow every 5 seconds
+    useEffect(() => {
+        if (fbPostImages.length <= 1) return;
+        const slideshowInterval = setInterval(() => {
+            setFbCurrentIndex(prev => (prev + 1) % fbPostImages.length);
+        }, 5000);
+        return () => clearInterval(slideshowInterval);
+    }, [fbPostImages.length]);
 
     const showNextOrder = useCallback(() => {
         if (orderQueueRef.current.length === 0) {
@@ -678,83 +690,70 @@ const Page4 = () => {
                     </Col>
 
                     {/* ───── Column 2 ───── */}
-                    <Col style={{ flex: "0 0 40%", maxWidth: "40%" }}>
-                        {/* <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>
-                            Favourites 🧡
-                        </h2> */}
-                        <Row>
-                            <div className="d-flex flex-column justify-content-center align-items-center" style={{ width: '100%' }}>
-                                {readyOrderNum ? (
+                    <Col style={{ flex: "0 0 40%", maxWidth: "40%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {readyOrderNum ? (
+                                <div style={{
+                                    height: '100%',
+                                    width: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderRadius: '16px',
+                                    background: 'linear-gradient(135deg, #fd590d 0%, #ff8c42 50%, #fd590d 100%)',
+                                    backgroundSize: '200% 200%',
+                                    animation: 'gradientShift 2s ease infinite',
+                                }}>
                                     <div style={{
-                                        height: '400px',
-                                        width: '100%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        borderRadius: '16px',
-                                        background: 'linear-gradient(135deg, #fd590d 0%, #ff8c42 50%, #fd590d 100%)',
-                                        backgroundSize: '200% 200%',
-                                        animation: 'gradientShift 2s ease infinite',
+                                        transform: animState === 'slideIn' ? 'translateY(50px)' : animState === 'slideOut' ? 'translateY(-50px)' : 'translateY(0)',
+                                        opacity: animState === 'slideIn' || animState === 'slideOut' ? 0 : 1,
+                                        transition: 'transform 0.6s ease-in-out, opacity 0.6s ease-in-out',
+                                        textAlign: 'center',
                                     }}>
-                                        <div style={{
-                                            transform: animState === 'slideIn' ? 'translateY(50px)' : animState === 'slideOut' ? 'translateY(-50px)' : 'translateY(0)',
-                                            opacity: animState === 'slideIn' || animState === 'slideOut' ? 0 : 1,
-                                            transition: 'transform 0.6s ease-in-out, opacity 0.6s ease-in-out',
-                                            textAlign: 'center',
+                                        <span style={{ fontSize: '3.5rem', marginRight: '15px' }}>🔔</span>
+                                        <span style={{
+                                            fontFamily: "'Lobster', cursive",
+                                            fontSize: '4rem',
+                                            color: '#fff',
+                                            textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
+                                            letterSpacing: '2px',
+                                            animation: 'pulseText 1s ease-in-out infinite',
                                         }}>
-                                            <span style={{ fontSize: '3.5rem', marginRight: '15px' }}>🔔</span>
-                                            <span style={{
-                                                fontFamily: "'Lobster', cursive",
-                                                fontSize: '4rem',
-                                                color: '#fff',
-                                                textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
-                                                letterSpacing: '2px',
-                                                animation: 'pulseText 1s ease-in-out infinite',
-                                            }}>
-                                                Order #{readyOrderNum} is Ready!
-                                            </span>
-                                            <span style={{ fontSize: '3.5rem', marginLeft: '15px' }}>🎉</span>
-                                        </div>
+                                            Order #{readyOrderNum} is Ready!
+                                        </span>
+                                        <span style={{ fontSize: '3.5rem', marginLeft: '15px' }}>🎉</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                fbPostImages.length > 0 ? (
+                                    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', borderRadius: '12px' }}>
+                                        {fbPostImages.map((img, index) => (
+                                            <img
+                                                key={index}
+                                                src={img}
+                                                alt={`FB post ${index + 1}`}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    objectFit: 'contain',
+                                                    opacity: index === fbCurrentIndex ? 1 : 0,
+                                                    transition: 'opacity 1s ease-in-out',
+                                                }}
+                                            />
+                                        ))}
                                     </div>
                                 ) : (
-                                    fbPostImage ? (
-                                        <img
-                                            src={fbPostImage}
-                                            alt="Latest post"
-                                            style={{ height: "400px", width: "100%", objectFit: "contain", borderRadius: "12px" }}
-                                        />
-                                    ) : (
-                                        <img
-                                            src={logo}
-                                            alt="logo"
-                                            style={{ height: "400px", width: "400px" }}
-                                        />
-                                    )
-                                )}
-                            </div>
-                        </Row>
-                        <Row style={{ marginTop: '20px' }}>
-                            <h2 className="cat-title" style={{ fontFamily: "Lobster", alignItems: "center", display: "flex", justifyContent: "center", marginBottom: '15px' }}>
-                                Signature Dishes
-                            </h2>
-                            <Carousel style={{ marginBottom: '15px' }}>
-                                {signatureDishesNashua.map((img, i) => (
-                                    <Carousel.Item key={i}>
-                                        <img
-                                            className="d-block carousel-image fluid"
-                                            src={img.src}
-                                            alt={`sig-${i}`}
-                                            style={{ width: 700, height: 400 }}
-                                        />
-                                        {/* <div className="carousel-badge">Signature Dish</div> */}
-                                    </Carousel.Item>
-                                ))}
-                            </Carousel>
-                            <b className="disclaimer" style={{ marginTop: "-7px", textAlign: "center", display: "block" }}>
-                                Disclaimer: Images displayed are for representational purposes only.
-                                Actual dishes may vary
-                            </b>
-                        </Row>
+                                    <img
+                                        src={logo}
+                                        alt="logo"
+                                        style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }}
+                                    />
+                                )
+                            )}
+                        </div>
                     </Col>
                 </Row>
 

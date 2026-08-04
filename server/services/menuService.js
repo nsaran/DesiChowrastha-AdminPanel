@@ -118,21 +118,37 @@ function handleStockWebhook(payload) {
 
         // Only send notification if this is a NEW out-of-stock event
         if (!alreadyOutOfStock) {
-            // Find item name from cached menu
-            let itemName = itemGuid;
-            const rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache : nashuaRawMenuCache;
-            if (rawMenu) {
-                for (const menu of rawMenu.menus || []) {
-                    for (const group of menu.menuGroups || []) {
-                        const found = (group.menuItems || []).find(item => item.guid === itemGuid);
-                        if (found) {
-                            itemName = found.name;
-                            break;
-                        }
+            // Find item name from cached menu (async fetch if cache empty)
+            const lookupAndNotify = async () => {
+                let itemName = itemGuid;
+                let rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache : nashuaRawMenuCache;
+
+                // If cache is empty, fetch menu first
+                if (!rawMenu) {
+                    logger.info(`[StockWebhook] ${location}: Menu cache empty, fetching menu to resolve item name`);
+                    try {
+                        await fetchMenuData(location);
+                        rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache : nashuaRawMenuCache;
+                    } catch (e) {
+                        logger.error(`[StockWebhook] Failed to fetch menu for name lookup: ${e.message}`);
                     }
                 }
-            }
-            sendOutOfStockNotification([{ guid: itemGuid, name: itemName }], location);
+
+                if (rawMenu) {
+                    for (const menu of rawMenu.menus || []) {
+                        for (const group of menu.menuGroups || []) {
+                            const found = (group.menuItems || []).find(item => item.guid === itemGuid);
+                            if (found) {
+                                itemName = found.name;
+                                break;
+                            }
+                        }
+                        if (itemName !== itemGuid) break;
+                    }
+                }
+                sendOutOfStockNotification([{ guid: itemGuid, name: itemName }], location);
+            };
+            lookupAndNotify();
         }
     } else if (eventType === 'in_stock' || details.status === 'IN_STOCK') {
         outOfStockByLocation[location].delete(itemGuid);
