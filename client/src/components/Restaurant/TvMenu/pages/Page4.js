@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -98,6 +98,109 @@ const Page4 = () => {
         const stored = localStorage.getItem('completedOrders');
         return stored ? JSON.parse(stored) : [];
     });
+
+    // Order Ready state for Nashua
+    const [readyOrderNum, setReadyOrderNum] = useState(null);
+    const [animState, setAnimState] = useState('idle');
+    const orderQueueRef = useRef([]);
+    const knownOrdersRef = useRef(new Set());
+    const processingRef = useRef(false);
+
+    const showNextOrder = useCallback(() => {
+        if (orderQueueRef.current.length === 0) {
+            processingRef.current = false;
+            return;
+        }
+        processingRef.current = true;
+        const orderNum = orderQueueRef.current.shift();
+        setAnimState('slideIn');
+        setReadyOrderNum(orderNum);
+        setTimeout(() => setAnimState('display'), 600);
+        setTimeout(() => {
+            setAnimState('slideOut');
+            setTimeout(() => {
+                setReadyOrderNum(null);
+                setAnimState('idle');
+                showNextOrder();
+            }, 600);
+        }, 3000);
+    }, []);
+
+    // SSE connection for order ready notifications (Nashua)
+    useEffect(() => {
+        if (restaurantId?.toLowerCase() === 'herndon') return; // Herndon uses different layout
+
+        const SSE_URL = `${API_BASE_URL || window.location.origin}/api/orders/stream?location=${restaurantId}`;
+        let eventSource = null;
+        let fallbackInterval = null;
+
+        const connectSSE = () => {
+            try {
+                eventSource = new EventSource(SSE_URL);
+                eventSource.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'order_ready' && data.orderNumber) {
+                            if (!knownOrdersRef.current.has(data.orderNumber)) {
+                                knownOrdersRef.current.add(data.orderNumber);
+                                orderQueueRef.current.push(data.orderNumber);
+                                if (!processingRef.current) showNextOrder();
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error parsing order stream:', e);
+                    }
+                };
+                eventSource.onerror = () => {
+                    eventSource.close();
+                    startPolling();
+                };
+            } catch (e) {
+                startPolling();
+            }
+        };
+
+        const startPolling = () => {
+            if (fallbackInterval) return;
+            const fetchOrders = async () => {
+                const hour = new Date().getHours();
+                if (hour < 10 || hour >= 22) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/completedOrders?location=${restaurantId}`);
+                    const data = await res.json();
+                    if (Array.isArray(data)) {
+                        const newOrders = data.filter(o => !knownOrdersRef.current.has(o.orderNumber));
+                        newOrders.forEach(o => {
+                            knownOrdersRef.current.add(o.orderNumber);
+                            orderQueueRef.current.push(o.orderNumber);
+                        });
+                        if (newOrders.length > 0 && !processingRef.current) showNextOrder();
+                    }
+                } catch (e) {
+                    console.error('Error fetching completed orders:', e);
+                }
+            };
+            fetchOrders();
+            fallbackInterval = setInterval(fetchOrders, 300000);
+        };
+
+        connectSSE();
+
+        const resetInterval = setInterval(() => {
+            if (new Date().getHours() === 22) {
+                knownOrdersRef.current.clear();
+                orderQueueRef.current = [];
+                setReadyOrderNum(null);
+                setAnimState('idle');
+            }
+        }, 60000);
+
+        return () => {
+            if (eventSource) eventSource.close();
+            if (fallbackInterval) clearInterval(fallbackInterval);
+            clearInterval(resetInterval);
+        };
+    }, [restaurantId, showNextOrder]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -554,12 +657,53 @@ const Page4 = () => {
                         </h2> */}
                         <Row>
                             <div className="d-flex flex-column justify-content-center align-items-center">
-                                <img
-                                    src={logo}
-                                    alt="logo"
-                                    style={{ height: "600px", width: "600px", marginTop: "-80px" }}
-                                />
-                                {/* <img src="https://i.ibb.co/sJWzSK3P/Friendship-Day.jpg" alt="Friendship-Day" border="0" style={{height: "500px", width: "500px", marginBottom: "40px"}}/> */}
+                                {readyOrderNum ? (
+                                    <div style={{
+                                        height: '520px',
+                                        width: '600px',
+                                        marginTop: '-80px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        borderRadius: '16px',
+                                        background: 'linear-gradient(135deg, #fd590d 0%, #ff8c42 50%, #fd590d 100%)',
+                                        backgroundSize: '200% 200%',
+                                        animation: 'gradientShift 2s ease infinite',
+                                    }}>
+                                        <div style={{
+                                            transform: animState === 'slideIn' ? 'translateY(50px)' : animState === 'slideOut' ? 'translateY(-50px)' : 'translateY(0)',
+                                            opacity: animState === 'slideIn' || animState === 'slideOut' ? 0 : 1,
+                                            transition: 'transform 0.6s ease-in-out, opacity 0.6s ease-in-out',
+                                            textAlign: 'center',
+                                        }}>
+                                            <div style={{ fontSize: '4rem', marginBottom: '10px' }}>🔔</div>
+                                            <div style={{
+                                                fontFamily: "'Lobster', cursive",
+                                                fontSize: '3.5rem',
+                                                color: '#fff',
+                                                textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
+                                                letterSpacing: '2px',
+                                                animation: 'pulseText 1s ease-in-out infinite',
+                                            }}>
+                                                Order #{readyOrderNum}
+                                            </div>
+                                            <div style={{
+                                                fontFamily: "'Bree Serif', serif",
+                                                fontSize: '2.5rem',
+                                                color: '#fff',
+                                                marginTop: '10px',
+                                            }}>
+                                                is Ready! 🎉
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <img
+                                        src={logo}
+                                        alt="logo"
+                                        style={{ height: "600px", width: "600px", marginTop: "-80px" }}
+                                    />
+                                )}
                             </div>
                         </Row>
                         <Row>
@@ -586,6 +730,19 @@ const Page4 = () => {
                         </Row>
                     </Col>
                 </Row>
+
+                <style>{`
+                    @keyframes gradientShift {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+                    @keyframes pulseText {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(1.05); }
+                        100% { transform: scale(1); }
+                    }
+                `}</style>
             </Container>
         );
     };
