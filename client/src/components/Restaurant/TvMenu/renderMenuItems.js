@@ -12,7 +12,7 @@ export const renderToastMenuItems = (menu, category, onItemClick) => {
 
   const categoryExceptions = new Set([
     "Snacks (Available from 5 PM)", "Snacks (Available from 4:00 PM)", "Drinks",
-    "Desserts", "Sweets and Snacks - Coming Soon", "Naan(Garlic/Butter/Plain)",
+    "Desserts", "Sweets and Snacks", "Naan(Garlic/Butter/Plain)",
     "Sides", "Breads", "Extra Food Items Open Kitchen", "Indian Wok(Fried Rice/Noodles)",
     "Rice Specials", "Indian Wok", "Lunch Combo - Weekdays Only(11AM-2:30)",
     "Extra Food Items Main Kitchen", "Chowrastha Specials", "Bakery",
