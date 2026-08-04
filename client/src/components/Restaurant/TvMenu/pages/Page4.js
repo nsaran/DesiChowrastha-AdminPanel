@@ -659,9 +659,10 @@ const Page4 = () => {
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 {readyOrderNum ? (
                                     <div style={{
-                                        height: '520px',
-                                        width: '600px',
-                                        marginTop: '-80px',
+                                        height: '200px',
+                                        width: '100%',
+                                        maxWidth: '700px',
+                                        marginTop: '0px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -676,25 +677,18 @@ const Page4 = () => {
                                             transition: 'transform 0.6s ease-in-out, opacity 0.6s ease-in-out',
                                             textAlign: 'center',
                                         }}>
-                                            <div style={{ fontSize: '4rem', marginBottom: '10px' }}>🔔</div>
-                                            <div style={{
+                                            <span style={{ fontSize: '2.5rem', marginRight: '15px' }}>🔔</span>
+                                            <span style={{
                                                 fontFamily: "'Lobster', cursive",
-                                                fontSize: '3.5rem',
+                                                fontSize: '2.8rem',
                                                 color: '#fff',
                                                 textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
                                                 letterSpacing: '2px',
                                                 animation: 'pulseText 1s ease-in-out infinite',
                                             }}>
-                                                Order #{readyOrderNum}
-                                            </div>
-                                            <div style={{
-                                                fontFamily: "'Bree Serif', serif",
-                                                fontSize: '2.5rem',
-                                                color: '#fff',
-                                                marginTop: '10px',
-                                            }}>
-                                                is Ready! 🎉
-                                            </div>
+                                                Order #{readyOrderNum} is Ready!
+                                            </span>
+                                            <span style={{ fontSize: '2.5rem', marginLeft: '15px' }}>🎉</span>
                                         </div>
                                     </div>
                                 ) : (
@@ -706,8 +700,8 @@ const Page4 = () => {
                                 )}
                             </div>
                         </Row>
-                        <Row>
-                            <h2 className="cat-title" style={{ fontFamily: "Lobster", alignItems: "center", display: "flex", justifyContent: "center", marginBottom: '15px', marginTop: "-20px" }}>
+                        <Row style={{ marginTop: '20px' }}>
+                            <h2 className="cat-title" style={{ fontFamily: "Lobster", alignItems: "center", display: "flex", justifyContent: "center", marginBottom: '15px' }}>
                                 Signature Dishes
                             </h2>
                             <Carousel style={{ marginBottom: '15px' }}>
