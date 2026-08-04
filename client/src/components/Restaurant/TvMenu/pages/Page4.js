@@ -123,7 +123,7 @@ const Page4 = () => {
                 setAnimState('idle');
                 showNextOrder();
             }, 600);
-        }, 3000);
+        }, 10000);
     }, []);
 
     // SSE connection for order ready notifications (Nashua)
@@ -659,7 +659,7 @@ const Page4 = () => {
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 {readyOrderNum ? (
                                     <div style={{
-                                        height: '200px',
+                                        height: '400px',
                                         width: '100%',
                                         maxWidth: '700px',
                                         marginTop: '0px',

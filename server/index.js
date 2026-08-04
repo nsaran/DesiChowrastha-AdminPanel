@@ -203,18 +203,23 @@ app.post('/api/orders/webhook', (req, res) => {
             eventType === 'ORDER_COMPLETED';
 
         if (isReady && location) {
-            orderSSEClients.forEach(client => {
-                if (!client.location || client.location === location) {
-                    client.res.write(`data: ${JSON.stringify({
-                        type: 'order_ready',
-                        orderGuid,
-                        orderNumber: displayNumber,
-                        location,
-                        status,
-                        eventType
-                    })}\n\n`);
-                }
-            });
+            // Only push if this order hasn't been notified already
+            const alreadyNotified = displayNumber && global.newOrderCacheData.has(displayNumber);
+            
+            if (!alreadyNotified) {
+                orderSSEClients.forEach(client => {
+                    if (!client.location || client.location === location) {
+                        client.res.write(`data: ${JSON.stringify({
+                            type: 'order_ready',
+                            orderGuid,
+                            orderNumber: displayNumber,
+                            location,
+                            status,
+                            eventType
+                        })}\n\n`);
+                    }
+                });
+            }
 
             // Also cache the order number for the notify endpoint
             if (displayNumber) {
