@@ -702,10 +702,10 @@ const Page4 = () => {
                                             transition: 'transform 0.6s ease-in-out, opacity 0.6s ease-in-out',
                                             textAlign: 'center',
                                         }}>
-                                            <span style={{ fontSize: '2.5rem', marginRight: '15px' }}>🔔</span>
+                                            <span style={{ fontSize: '3.5rem', marginRight: '15px' }}>🔔</span>
                                             <span style={{
                                                 fontFamily: "'Lobster', cursive",
-                                                fontSize: '2.8rem',
+                                                fontSize: '4rem',
                                                 color: '#fff',
                                                 textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
                                                 letterSpacing: '2px',
@@ -713,7 +713,7 @@ const Page4 = () => {
                                             }}>
                                                 Order #{readyOrderNum} is Ready!
                                             </span>
-                                            <span style={{ fontSize: '2.5rem', marginLeft: '15px' }}>🎉</span>
+                                            <span style={{ fontSize: '3.5rem', marginLeft: '15px' }}>🎉</span>
                                         </div>
                                     </div>
                                 ) : (
@@ -721,7 +721,7 @@ const Page4 = () => {
                                         <img
                                             src={fbPostImage}
                                             alt="Latest post"
-                                            style={{ height: "400px", width: "100%", maxWidth: "700px", objectFit: "cover", borderRadius: "12px" }}
+                                            style={{ height: "400px", width: "100%", objectFit: "contain", borderRadius: "12px" }}
                                         />
                                     ) : (
                                         <img
