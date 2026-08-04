@@ -13,6 +13,7 @@ const NodeCache = require("node-cache");
 const logger = require('./utils/logger');
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(cors({
     origin: [
         'https://repodepo.io',

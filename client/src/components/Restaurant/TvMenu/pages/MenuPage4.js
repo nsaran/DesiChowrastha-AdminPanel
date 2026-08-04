@@ -83,7 +83,7 @@ const MenuPage4 = () => {
         // Hold for display
         setTimeout(() => setAnimState('display'), 600);
 
-        // Slide out after 3 seconds
+        // Slide out after 10 seconds
         setTimeout(() => {
             setAnimState('slideOut');
             // Show next order after slide out completes
@@ -92,7 +92,7 @@ const MenuPage4 = () => {
                 setAnimState('idle');
                 showNextOrder();
             }, 600);
-        }, 3000);
+        }, 10000);
     }, []);
 
     // SSE connection to /api/orders/stream for real-time order ready notifications

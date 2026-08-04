@@ -17,6 +17,7 @@ import { useStockUpdates } from '../useStockUpdates';
 import { useMenuItemDetail } from '../useMenuItemDetail';
 // import fillergif from '../../../../assets/images/filler.gif';
 import CHILLI from "../assets/images/chilli.png";
+import { FB_ACCESS_TOKEN, FB_PAGE_ID, FB_API_VERSION } from '../../../../config/facebook';
 
 // Importing Nashua Signature Dishes
 import SamosaImg from "../assets/images/SignatureDishesNashua/Samosa-2-PCS.png";
@@ -105,6 +106,32 @@ const Page4 = () => {
     const orderQueueRef = useRef([]);
     const knownOrdersRef = useRef(new Set());
     const processingRef = useRef(false);
+
+    // Most recent Facebook post image
+    const [fbPostImage, setFbPostImage] = useState(null);
+
+    useEffect(() => {
+        const fetchLatestFbPost = async () => {
+            try {
+                const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=full_picture&limit=1&access_token=${FB_ACCESS_TOKEN}`;
+                const res = await fetch(url);
+                if (res.ok) {
+                    const data = await res.json();
+                    const post = (data.data || [])[0];
+                    if (post?.full_picture) {
+                        setFbPostImage(post.full_picture);
+                    }
+                }
+            } catch (e) {
+                console.error('Error fetching FB post for Page4:', e);
+            }
+        };
+
+        fetchLatestFbPost();
+        // Refresh once a day
+        const dayInterval = setInterval(fetchLatestFbPost, 24 * 60 * 60 * 1000);
+        return () => clearInterval(dayInterval);
+    }, []);
 
     const showNextOrder = useCallback(() => {
         if (orderQueueRef.current.length === 0) {
@@ -656,13 +683,11 @@ const Page4 = () => {
                             Favourites 🧡
                         </h2> */}
                         <Row>
-                            <div className="d-flex flex-column justify-content-center align-items-center">
+                            <div className="d-flex flex-column justify-content-center align-items-center" style={{ width: '100%' }}>
                                 {readyOrderNum ? (
                                     <div style={{
                                         height: '400px',
                                         width: '100%',
-                                        maxWidth: '700px',
-                                        marginTop: '0px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -692,11 +717,19 @@ const Page4 = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <img
-                                        src={logo}
-                                        alt="logo"
-                                        style={{ height: "600px", width: "600px", marginTop: "-80px" }}
-                                    />
+                                    fbPostImage ? (
+                                        <img
+                                            src={fbPostImage}
+                                            alt="Latest post"
+                                            style={{ height: "400px", width: "100%", maxWidth: "700px", objectFit: "cover", borderRadius: "12px" }}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={logo}
+                                            alt="logo"
+                                            style={{ height: "400px", width: "400px" }}
+                                        />
+                                    )
                                 )}
                             </div>
                         </Row>
