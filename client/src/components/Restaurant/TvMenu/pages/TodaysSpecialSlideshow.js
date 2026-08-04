@@ -15,6 +15,7 @@ import logo from '../../../../assets/images/dc-nashua-logo.webp';
 const TodaysSpecialSlideshow = ({ items, location }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [animPhase, setAnimPhase] = useState('fadeIn'); // fadeIn, display, zoomIn, fadeOut
+    const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
         if (!items || items.length === 0) return;
@@ -44,13 +45,11 @@ const TodaysSpecialSlideshow = ({ items, location }) => {
         return () => clearInterval(intervalId);
     }, [items, currentIndex]);
 
-    if (!items || items.length === 0) return null;
-
-    const item = items[currentIndex];
-    const [imageUrl, setImageUrl] = useState(null);
-
     // Fetch/generate image for current item
     useEffect(() => {
+        if (!items || items.length === 0) return;
+        const item = items[currentIndex];
+
         const fetchImage = async () => {
             // Try the cached dish image first
             const cachedUrl = `/_images/dishes/${item.id}.jpg`;
@@ -78,7 +77,11 @@ const TodaysSpecialSlideshow = ({ items, location }) => {
         };
 
         if (item) fetchImage();
-    }, [item]);
+    }, [items, currentIndex]);
+
+    if (!items || items.length === 0) return null;
+
+    const item = items[currentIndex];
 
     const getAnimStyle = () => {
         switch (animPhase) {
