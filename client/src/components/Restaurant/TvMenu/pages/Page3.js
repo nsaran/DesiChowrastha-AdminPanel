@@ -256,8 +256,52 @@ const Page3 = () => {
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Appetizers</h2>
                     {renderToastMenuItems(menu, "Non-Veg  Appetizers", setSelectedItem)}
-                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Sweets and Snacks - Coming Soon</h2>
-                    {renderToastMenuItems(menu, "Sweets and Snacks - Coming Soon", setSelectedItem)}
+                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Sweets and Snacks</h2>
+                    {renderToastMenuItems(menu, "Sweets and Snacks", setSelectedItem)}
+                </Col>
+            </Row>
+
+            {/* QR Codes - spanning columns 2 & 3 at the bottom */}
+            <Row style={{ marginTop: '30px' }}>
+                <Col style={{ flex: '0 0 33.3%', maxWidth: '33.3%' }}></Col>
+                <Col style={{ flex: '0 0 66.6%', maxWidth: '66.6%' }}>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                        padding: '15px 0',
+                    }}>
+                        <div style={{ textAlign: 'center' }}>
+                            <img
+                                src="/_images/nashua-menu-qr-code.png"
+                                alt="Menu QR Code"
+                                style={{ width: '120px', height: '120px', borderRadius: '8px' }}
+                            />
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1rem', marginTop: '8px', color: '#333' }}>
+                                Detailed Menu
+                            </p>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                            <img
+                                src="/_images/nashua-feedback-qr-code.png"
+                                alt="Feedback QR Code"
+                                style={{ width: '120px', height: '120px', borderRadius: '8px' }}
+                            />
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1rem', marginTop: '8px', color: '#333' }}>
+                                Feedback
+                            </p>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                            <img
+                                src="/_images/nashua-order-tracker-qr-code.png"
+                                alt="Order Tracker QR Code"
+                                style={{ width: '120px', height: '120px', borderRadius: '8px' }}
+                            />
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1rem', marginTop: '8px', color: '#333' }}>
+                                Order Tracker
+                            </p>
+                        </div>
+                    </div>
                 </Col>
             </Row>
         </Container>
