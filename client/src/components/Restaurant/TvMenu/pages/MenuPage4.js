@@ -402,12 +402,32 @@ const MenuPage4 = () => {
                     <Row>
                         <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%", overflow: "hidden", paddingRight: "5px" }}>
                             {renderBiryaniTable("Veg Special Biryani", biryaniG?.menuItems || [], famBiryaniG?.menuItems || [], "biryani", true)}
-                            <div style={{ marginTop: "20px", textAlign: "center" }}>
-                                <img
-                                    src="/_images/promos/veg-biryani.jpg"
-                                    alt="Veg Biryani"
-                                    style={{ width: "100%", maxWidth: "100%", height: "100%", borderRadius: "8px" }}
-                                />
+                            <div style={{ marginTop: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                <div style={{ textAlign: 'center' }}>
+                                    <img
+                                        src="/_images/westborough-order-tracker-qr-code.png"
+                                        alt="Order Tracker QR Code"
+                                        style={{ width: "240px", height: "240px", borderRadius: "8px" }}
+                                    />
+                                    <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.2rem', marginTop: '8px', color: '#333' }}>
+                                        Order Tracker
+                                    </p>
+                                </div>
+                                <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
+                                    <span style={{ fontSize: '2.5rem' }}>👈</span>
+                                    <span style={{ fontFamily: "'Bree Serif', serif", fontSize: '1rem', color: '#fd590d', fontWeight: 'bold' }}>Scan Me</span>
+                                    <span style={{ fontSize: '2.5rem' }}>👉</span>
+                                </div>
+                                <div style={{ textAlign: 'center' }}>
+                                    <img
+                                        src="/_images/westborough-menu-qr-code.png"
+                                        alt="Menu QR Code"
+                                        style={{ width: "240px", height: "240px", borderRadius: "8px" }}
+                                    />
+                                    <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.2rem', marginTop: '8px', color: '#333' }}>
+                                        Detailed Menu
+                                    </p>
+                                </div>
                             </div>
                         </Col>
                         <Col style={{ flex: "0 0 33.4%", maxWidth: "33.4%", overflow: "hidden", paddingLeft: "5px", paddingRight: "5px" }}>

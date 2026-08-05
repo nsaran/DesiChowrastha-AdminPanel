@@ -252,52 +252,49 @@ const Page3 = () => {
                     {renderToastMenuItems(menu, "Rice Specials", setSelectedItem)}
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>FamilyPack Pulao</h2>
                     {renderToastMenuItems(menu, "FamilyPack  Pulao", setSelectedItem)}
+                </Col>
+                <Col>
+                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Appetizers</h2>
+                    {renderToastMenuItems(menu, "Non-Veg  Appetizers", setSelectedItem)}
 
                     {/* QR Codes */}
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-evenly',
-                        alignItems: 'center',
-                        marginTop: '15px',
-                        height: '100px',
+                        alignItems: 'flex-start',
+                        marginTop: '80px',
                     }}>
-                        <div style={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ textAlign: 'center' }}>
                             <img
                                 src="/_images/nashua-menu-qr-code.png"
                                 alt="Menu QR Code"
-                                style={{ width: '70px', height: '70px' }}
+                                style={{ width: '170px', height: '170px' }}
                             />
-                            <span style={{ fontFamily: "'Bree Serif', serif", fontSize: '0.85rem', color: '#333' }}>
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: '#333' }}>
                                 Detailed Menu
-                            </span>
+                            </p>
                         </div>
-                        <div style={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ textAlign: 'center' }}>
                             <img
                                 src="/_images/nashua-feedback-qr-code.png"
                                 alt="Feedback QR Code"
-                                style={{ width: '70px', height: '70px' }}
+                                style={{ width: '170px', height: '170px' }}
                             />
-                            <span style={{ fontFamily: "'Bree Serif', serif", fontSize: '0.85rem', color: '#333' }}>
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: '#333' }}>
                                 Feedback
-                            </span>
+                            </p>
                         </div>
-                        <div style={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ textAlign: 'center' }}>
                             <img
                                 src="/_images/nashua-order-tracker-qr-code.png"
                                 alt="Order Tracker QR Code"
-                                style={{ width: '70px', height: '70px' }}
+                                style={{ width: '170px', height: '170px' }}
                             />
-                            <span style={{ fontFamily: "'Bree Serif', serif", fontSize: '0.85rem', color: '#333' }}>
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: '#333' }}>
                                 Order Tracker
-                            </span>
+                            </p>
                         </div>
                     </div>
-                </Col>
-                <Col>
-                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Non-Veg Appetizers</h2>
-                    {renderToastMenuItems(menu, "Non-Veg  Appetizers", setSelectedItem)}
-                    <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Sweets and Snacks</h2>
-                    {renderToastMenuItems(menu, "Sweets and Snacks", setSelectedItem)}
                 </Col>
             </Row>
         </Container>
