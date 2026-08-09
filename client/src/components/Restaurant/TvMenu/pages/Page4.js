@@ -225,6 +225,18 @@ const Page4 = () => {
 
         connectSSE();
 
+        // Mark existing completed orders as known so only new ones show
+        const markExistingOrders = async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/completedOrders?location=${restaurantId}&noAlert=true`);
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    data.forEach(o => knownOrdersRef.current.add(o.orderNumber));
+                }
+            } catch (e) {}
+        };
+        markExistingOrders();
+
         const resetInterval = setInterval(() => {
             if (new Date().getHours() === 22) {
                 knownOrdersRef.current.clear();
