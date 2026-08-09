@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { getAccessToken } = require('../authService');
 const { toastApiBaseUrl, locations } = require('../../config/config');
-const { logDailySales } = require('../googleSheetsService');
+const { logDailySales, getSubscribers } = require('../googleSheetsService');
 const { generateTodaysSpecialImage } = require('../todaysSpecialImage');
 const logger = require('../../utils/logger');
 
@@ -264,6 +264,7 @@ async function sendTomorrowsSpecialImage(location) {
         const serverUrl = process.env.SERVER_PUBLIC_URL || 'http://96.32.117.226:3000';
         const imageUrl = `${serverUrl}/_images/specials/${fileName}`;
 
+        // Send to owners/managers
         for (const recipient of recipients) {
             try {
                 // Send template message with image header
@@ -308,6 +309,58 @@ async function sendTomorrowsSpecialImage(location) {
                 const errorMsg = error.response?.data?.error?.message || error.message;
                 logger.error(`[Scheduler] Failed to send tomorrow's special image to ${recipient}: ${errorMsg}`);
             }
+        }
+
+        // Send to subscribed customers
+        const subscribers = await getSubscribers(location);
+        if (subscribers.length > 0) {
+            logger.info(`[Scheduler] Sending tomorrow's special to ${subscribers.length} subscribers for ${location}`);
+            const WA_TOMORROWS_SPECIAL_TEMPLATE = process.env.WA_TOMORROWS_SPECIAL_TEMPLATE_NAME || 'tomorrows_special';
+            const itemsList = tomorrowItems.map(i => `${i.name} - $${parseFloat(i.price).toFixed(2)}`).join(', ');
+
+            for (const subscriber of subscribers) {
+                try {
+                    await axios.post(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
+                        messaging_product: 'whatsapp',
+                        to: subscriber.phone,
+                        type: 'template',
+                        template: {
+                            name: WA_TOMORROWS_SPECIAL_TEMPLATE,
+                            language: { code: WA_TEMPLATE_LANGUAGE },
+                            components: [
+                                {
+                                    type: 'header',
+                                    parameters: [
+                                        {
+                                            type: 'image',
+                                            image: { link: imageUrl }
+                                        }
+                                    ]
+                                },
+                                {
+                                    type: 'body',
+                                    parameters: [
+                                        { type: 'text', text: itemsList }
+                                    ]
+                                }
+                            ]
+                        }
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${WA_ACCESS_TOKEN}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    logger.info(`[Scheduler] Tomorrow's special sent to subscriber ${subscriber.phone} for ${location}`);
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                } catch (error) {
+                    const errorMsg = error.response?.data?.error?.message || error.message;
+                    logger.error(`[Scheduler] Failed to send tomorrow's special to subscriber ${subscriber.phone}: ${errorMsg}`);
+                }
+            }
+        } else {
+            logger.info(`[Scheduler] No subscribers found for ${location}`);
         }
     } catch (error) {
         logger.error(`[Scheduler] Error generating/sending tomorrow's special image: ${error.message}`);

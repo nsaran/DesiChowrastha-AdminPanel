@@ -688,6 +688,84 @@ app.get('/api/promos', (req, res) => {
     });
 });
 
+// ─── Digital Signage Endpoints ───────────────────────────────────────────────
+
+const signageSSEClients = [];
+
+// Get playlist for a specific TV
+app.get('/api/signage/playlist', (req, res) => {
+    const tvId = req.query.tvId || 'default';
+    const location = (req.query.location || '').toUpperCase();
+    const cacheKey = `signage_${location}_${tvId}`;
+    const playlist = cache.get(cacheKey);
+    res.json(playlist || { tvId, location, items: [] });
+});
+
+// Save/update playlist for a specific TV
+app.post('/api/signage/playlist', (req, res) => {
+    const { tvId, location, items } = req.body;
+    if (!tvId || !location) {
+        return res.status(400).json({ error: 'tvId and location are required' });
+    }
+    const cacheKey = `signage_${location.toUpperCase()}_${tvId}`;
+    const playlist = { tvId, location: location.toUpperCase(), items: items || [] };
+    cache.set(cacheKey, playlist, 0); // No expiry
+    logger.info(`[Signage] Playlist updated for ${location}/${tvId}: ${items.length} items`);
+
+    // Notify connected SSE clients for this TV
+    signageSSEClients.forEach(client => {
+        if (client.tvId === tvId && client.location === location.toUpperCase()) {
+            client.res.write(`data: ${JSON.stringify({ type: 'playlist_update', playlist })}\n\n`);
+        }
+    });
+
+    res.json({ success: true, playlist });
+});
+
+// List all playlists for a location
+app.get('/api/signage/playlists', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    const keys = cache.keys().filter(k => k.startsWith(`signage_${location}_`));
+    const playlists = keys.map(k => cache.get(k)).filter(Boolean);
+    res.json(playlists);
+});
+
+// Delete a playlist
+app.delete('/api/signage/playlist', (req, res) => {
+    const tvId = req.query.tvId;
+    const location = (req.query.location || '').toUpperCase();
+    if (!tvId || !location) {
+        return res.status(400).json({ error: 'tvId and location are required' });
+    }
+    const cacheKey = `signage_${location}_${tvId}`;
+    cache.del(cacheKey);
+    logger.info(`[Signage] Playlist deleted for ${location}/${tvId}`);
+    res.json({ success: true });
+});
+
+// SSE stream for signage player - receives live playlist updates
+app.get('/api/signage/stream', (req, res) => {
+    const tvId = req.query.tvId || 'default';
+    const location = (req.query.location || '').toUpperCase();
+
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*'
+    });
+
+    res.write(`data: ${JSON.stringify({ type: 'connected', tvId, location })}\n\n`);
+
+    const client = { res, tvId, location };
+    signageSSEClients.push(client);
+
+    req.on('close', () => {
+        const index = signageSSEClients.indexOf(client);
+        if (index > -1) signageSSEClients.splice(index, 1);
+    });
+});
+
 app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
     // Initialize the scheduler after server starts

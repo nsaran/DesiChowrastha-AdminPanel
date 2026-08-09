@@ -39,6 +39,9 @@ const OtherServices = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('QRCodes')}>QR Codes</Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('OtherServices/ManageSignage')}>Manage Signage</Button>
+                </Form.Item>
             </Form>
         </div>
     );

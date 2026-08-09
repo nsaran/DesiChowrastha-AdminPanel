@@ -37,6 +37,8 @@ import WhatsAppOrders from './components/Restaurant/TvMenu/pages/WhatsAppOrders'
 import TabletMenu from './components/Restaurant/TvMenu/pages/TabletMenu';
 import QRCodes from './components/Restaurant/TvMenu/pages/QRCodes';
 import OrderStatus from './components/Restaurant/TvMenu/pages/OrderStatus';
+import SignagePlayer from './components/Restaurant/TvMenu/pages/SignagePlayer';
+import ManageSignage from './components/Restaurant/TvMenu/pages/ManageSignage';
 import OtherServices from './components/Restaurant/OtherServices';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
@@ -88,6 +90,8 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/OtherServices/OrderStatus" element={<OrderStatus />}/>
           <Route path="/dashboard/:restaurantId/TabletMenu" element={<TabletMenu />}/>
           <Route path="/dashboard/:restaurantId/QRCodes" element={<QRCodes />}/>
+          <Route path="/dashboard/:restaurantId/signage" element={<TvMenuErrorBoundary><SignagePlayer /></TvMenuErrorBoundary>}/>
+          <Route path="/dashboard/:restaurantId/OtherServices/ManageSignage" element={<ManageSignage />}/>
         </Routes>
       </Router>
     </AuthProvider>

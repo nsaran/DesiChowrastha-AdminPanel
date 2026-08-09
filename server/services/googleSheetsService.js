@@ -129,7 +129,47 @@ async function logDailySales(location, totalOrders, totalSales) {
     }
 }
 
+/**
+ * Get all promo subscribers from the "Subscribers" sheet
+ * Returns array of { name, email, phone, location, date }
+ * Optionally filter by location
+ */
+async function getSubscribers(location) {
+    const client = getClient();
+    if (!client) return [];
+
+    const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+
+    try {
+        const response = await client.spreadsheets.values.get({
+            spreadsheetId,
+            range: 'Subscribers!A:E',
+        });
+
+        const rows = response.data.values || [];
+        if (rows.length <= 1) return []; // Only header or empty
+
+        const subscribers = rows.slice(1).map(row => ({
+            name: row[0] || '',
+            email: row[1] || '',
+            phone: row[2] || '',
+            location: row[3] || '',
+            date: row[4] || ''
+        }));
+
+        if (location) {
+            return subscribers.filter(s => s.phone && s.location.toUpperCase() === location.toUpperCase());
+        }
+
+        return subscribers.filter(s => s.phone);
+    } catch (error) {
+        logger.error(`[GoogleSheets] Error reading subscribers: ${error.message}`);
+        return [];
+    }
+}
+
 module.exports = {
     addSubscriber,
-    logDailySales
+    logDailySales,
+    getSubscribers
 };

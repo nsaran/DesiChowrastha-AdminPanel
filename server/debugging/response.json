@@ -1,6 +1,6 @@
 {
   "restaurantGuid": "bda948cd-2639-41ce-85a0-25b01e7b6839",
-  "lastUpdated": "2026-08-03T19:24:47.620+0000",
+  "lastUpdated": "2026-08-05T21:47:17.171+0000",
   "restaurantTimeZone": "America/New_York",
   "menus": [
     {
@@ -4905,7 +4905,7 @@
           "menuGroups": [],
           "menuItems": [
             {
-              "name": "Dragon Cauliflower",
+              "name": "Cauliflower 888",
               "posName": "",
               "guid": "07b12c31-e0a6-4fb1-8169-98ed0ae3dbe9",
               "multiLocationId": "600000053915932891",
@@ -5062,7 +5062,7 @@
                 "POS",
                 "KIOSK"
               ],
-              "price": 11.99,
+              "price": 12.99,
               "pricingStrategy": "BASE_PRICE",
               "pricingRules": null,
               "isDeferred": false,
@@ -5711,7 +5711,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Crispy Corn",
+              "name": "Andhra Apollo Panner",
               "posName": "",
               "guid": "4314b5b8-91c7-4eb0-9a64-a39e6512c894",
               "multiLocationId": "600000054058032955",
@@ -5724,7 +5724,7 @@
                 "POS",
                 "KIOSK"
               ],
-              "price": 12.99,
+              "price": 13.99,
               "pricingStrategy": "BASE_PRICE",
               "pricingRules": null,
               "isDeferred": false,
@@ -5941,7 +5941,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Paneer Vepudu",
+              "name": "Paneer 888",
               "posName": "",
               "guid": "1025d540-05d7-448c-832c-39b94e1230b2",
               "multiLocationId": "600000054088086101",
@@ -6624,7 +6624,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Guntur Kodi Vepudu",
+              "name": "Chowrastha Fried Fish",
               "posName": "",
               "guid": "2939a18e-4d74-42da-8781-33c2b13300b8",
               "multiLocationId": "600000054095934887",
@@ -6637,7 +6637,7 @@
                 "POS",
                 "KIOSK"
               ],
-              "price": 13.99,
+              "price": 14.99,
               "pricingStrategy": "BASE_PRICE",
               "pricingRules": null,
               "isDeferred": false,
@@ -6748,7 +6748,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Pachimirchi Kodi Vapudu",
+              "name": "Fish 888",
               "posName": "",
               "guid": "af51e25d-816e-4e1a-872d-ad5e7c908f28",
               "multiLocationId": "600000054095934891",
@@ -6761,7 +6761,7 @@
                 "POS",
                 "KIOSK"
               ],
-              "price": 13.99,
+              "price": 14.99,
               "pricingStrategy": "BASE_PRICE",
               "pricingRules": null,
               "isDeferred": false,
@@ -6844,68 +6844,6 @@
               "unitOfMeasure": "NONE",
               "portions": [],
               "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Hong Kong Chicken",
-              "posName": "",
-              "guid": "a81aa602-5fc8-4716-bf6f-eef94bdf0587",
-              "multiLocationId": "600000054095934893",
-              "masterId": 600000054095934800,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 13.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "Non-Veg",
-                  "guid": "ece9628b-dba7-4bcb-aec0-41d2fd662742"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [
-                44
-              ],
               "kitchenName": "",
               "prepTime": null,
               "prepStations": [],
@@ -7183,7 +7121,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Sweet Mango Momo",
+              "name": "Ginger Mango Momo",
               "posName": "",
               "guid": "671d1a07-32cd-4cc5-b167-fd2f9f0e1df5",
               "multiLocationId": "600000054095937903",
@@ -7729,74 +7667,6 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Soya Kabab",
-              "posName": "",
-              "guid": "a665c0c9-c871-42b8-91c2-8b8fedbc0dc9",
-              "multiLocationId": "600000054095750847",
-              "masterId": 600000054095750800,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 13.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "GLUTON_FREE",
-                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
-                },
-                {
-                  "name": "Medium",
-                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
-                },
-                {
-                  "name": "Veg",
-                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
               "name": "Chicken Tikka",
               "posName": "",
               "guid": "cd8abb65-eff3-4732-bd8b-d7b239a824dd",
@@ -8267,210 +8137,6 @@
               "posButtonColorLight": "#f7f7f7",
               "posButtonColorDark": "#1a1c23",
               "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Veg Platter",
-              "posName": "",
-              "guid": "5e71de6a-e115-4526-8eef-fd493946701e",
-              "multiLocationId": "600000054100953031",
-              "masterId": 600000054100953100,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 34.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "GLUTON_FREE",
-                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
-                },
-                {
-                  "name": "Medium",
-                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
-                },
-                {
-                  "name": "Veg",
-                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Veg + Non-Veg Platter",
-              "posName": "",
-              "guid": "ee091544-7c5a-4f85-93b2-939bebdfcd04",
-              "multiLocationId": "600000054100953033",
-              "masterId": 600000054100953100,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 40.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "GLUTON_FREE",
-                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
-                },
-                {
-                  "name": "Medium",
-                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
-                },
-                {
-                  "name": "Non-Veg",
-                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Non-Veg Platter",
-              "posName": "",
-              "guid": "eaa3b393-8d06-467c-a87e-d324e40ff6c3",
-              "multiLocationId": "600000054100953035",
-              "masterId": 600000054100953100,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 45.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "GLUTON_FREE",
-                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
-                },
-                {
-                  "name": "Medium",
-                  "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
-                },
-                {
-                  "name": "Non-Veg",
-                  "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
             }
           ],
           "posButtonColorLight": "#f7f7f7",
@@ -8840,6 +8506,14 @@
                   "guid": "bd04ed45-0a43-45d4-932c-6fdc58af5a73"
                 },
                 {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                },
+                {
                   "name": "JAIN",
                   "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
                 }
@@ -9083,7 +8757,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Nizami Handi Veg",
+              "name": "Navarathna Korma",
               "posName": "",
               "guid": "1ab8c920-adce-4df7-997a-cec658a58ea0",
               "multiLocationId": "600000054106433569",
@@ -10637,7 +10311,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Chicken Jalfrezi",
+              "name": "Hyderabad Prawn Masala",
               "posName": "",
               "guid": "2798216c-afd8-41b1-b9fe-5103fde99f40",
               "multiLocationId": "600000054119732159",
@@ -10650,7 +10324,7 @@
                 "POS",
                 "KIOSK"
               ],
-              "price": 15.99,
+              "price": 19.99,
               "pricingStrategy": "BASE_PRICE",
               "pricingRules": null,
               "isDeferred": false,
@@ -11433,7 +11107,7 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Fish curry (kozhambu)",
+              "name": "Nellore Chepala Pulusu",
               "posName": "",
               "guid": "69e3086d-4a90-49ca-af33-10bd9ea15b61",
               "multiLocationId": "600000054119732183",
@@ -11963,246 +11637,6 @@
               "eligiblePaymentAssistancePrograms": []
             },
             {
-              "name": "Methi Paratha",
-              "posName": "",
-              "guid": "955a59db-1a11-42e9-b36d-533644c57c91",
-              "multiLocationId": "600000054120068172",
-              "masterId": 600000054120068200,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 4.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "Veg",
-                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Lachha Paratha",
-              "posName": "",
-              "guid": "e8f19a70-b5f1-4a66-8c7e-da8793347259",
-              "multiLocationId": "600000054120068174",
-              "masterId": 600000054120068200,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 4.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "Veg",
-                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Aloo Paratha",
-              "posName": "",
-              "guid": "b6c64e80-3852-4808-b83e-febbd3545918",
-              "multiLocationId": "600000054120068176",
-              "masterId": 600000054120068200,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 5.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "Veg",
-                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Panner Paratha",
-              "posName": "",
-              "guid": "addcb0d3-a9e9-4476-8caa-bb9cfc0b1a58",
-              "multiLocationId": "600000054120068178",
-              "masterId": 600000054120068200,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 6.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [
-                {
-                  "name": "Veg",
-                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
-                }
-              ],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
               "name": "Butter Roti",
               "posName": "",
               "guid": "fc2f641e-5755-4c27-843e-951ef5e76bc1",
@@ -12303,6 +11737,66 @@
                   "name": "JAIN",
                   "guid": "7d52d95a-0127-4080-b4b9-a409dfd39bc2"
                 },
+                {
+                  "name": "Veg",
+                  "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
+                }
+              ],
+              "plu": "",
+              "sku": "",
+              "calories": null,
+              "unitOfMeasure": "NONE",
+              "portions": [],
+              "modifierGroupReferences": [],
+              "kitchenName": "",
+              "prepTime": null,
+              "prepStations": [],
+              "contentAdvisories": {
+                "alcohol": {
+                  "containsAlcohol": null
+                }
+              },
+              "guestCount": null,
+              "length": null,
+              "width": null,
+              "height": null,
+              "weight": null,
+              "weightUnitOfMeasure": null,
+              "dimensionUnitOfMeasure": null,
+              "images": [],
+              "sortOrder": null,
+              "allergens": [],
+              "isComboParent": null,
+              "taxInclusion": "TAX_NOT_INCLUDED",
+              "posButtonColorLight": "#f7f7f7",
+              "posButtonColorDark": "#1a1c23",
+              "eligiblePaymentAssistancePrograms": []
+            },
+            {
+              "name": "Malabar Paratha",
+              "posName": "",
+              "guid": "0002c397-5b2c-4bfb-bb9f-63f7c0a80250",
+              "multiLocationId": "600000056865899763",
+              "masterId": 600000056865899800,
+              "description": "",
+              "image": null,
+              "visibility": [
+                "ORDERING_PARTNERS",
+                "TOAST_ONLINE_ORDERING",
+                "POS",
+                "KIOSK"
+              ],
+              "price": 4.99,
+              "pricingStrategy": "BASE_PRICE",
+              "pricingRules": null,
+              "isDeferred": false,
+              "isDiscountable": true,
+              "salesCategory": null,
+              "taxInfo": [
+                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
+                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
+              ],
+              "itemTags": [
                 {
                   "name": "Veg",
                   "guid": "7dada461-0600-4951-9981-7c72c3fd2a15"
@@ -16479,61 +15973,6 @@
               "guid": "093ecf9d-5259-4602-b355-0443e64ecae8",
               "multiLocationId": "600000053926278903",
               "masterId": 600000053926278900,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 5.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Chicken Tikka Puffs",
-              "posName": "",
-              "guid": "eaa7e772-74b2-4336-b629-85c375a18feb",
-              "multiLocationId": "600000054130771954",
-              "masterId": 600000054130772000,
               "description": "",
               "image": null,
               "visibility": [
