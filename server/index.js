@@ -691,6 +691,40 @@ app.get('/api/promos', (req, res) => {
 // ─── Digital Signage Endpoints ───────────────────────────────────────────────
 
 const signageSSEClients = [];
+const SIGNAGE_DATA_PATH = path.join(__dirname, 'data', 'signage-playlists.json');
+
+// Load playlists from disk into cache on startup
+function loadSignagePlaylists() {
+    try {
+        if (fs.existsSync(SIGNAGE_DATA_PATH)) {
+            const data = JSON.parse(fs.readFileSync(SIGNAGE_DATA_PATH, 'utf8'));
+            if (Array.isArray(data)) {
+                data.forEach(playlist => {
+                    const cacheKey = `signage_${playlist.location}_${playlist.tvId}`;
+                    cache.set(cacheKey, playlist, 0);
+                });
+                logger.info(`[Signage] Loaded ${data.length} playlists from disk`);
+            }
+        }
+    } catch (e) {
+        logger.error(`[Signage] Error loading playlists from disk: ${e.message}`);
+    }
+}
+
+// Save all playlists from cache to disk
+function saveSignagePlaylists() {
+    try {
+        const keys = cache.keys().filter(k => k.startsWith('signage_'));
+        const playlists = keys.map(k => cache.get(k)).filter(Boolean);
+        const dir = path.dirname(SIGNAGE_DATA_PATH);
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(SIGNAGE_DATA_PATH, JSON.stringify(playlists, null, 2));
+    } catch (e) {
+        logger.error(`[Signage] Error saving playlists to disk: ${e.message}`);
+    }
+}
+
+loadSignagePlaylists();
 
 // Get playlist for a specific TV
 app.get('/api/signage/playlist', (req, res) => {
@@ -711,6 +745,7 @@ app.post('/api/signage/playlist', (req, res) => {
     const playlist = { tvId, location: location.toUpperCase(), items: items || [] };
     cache.set(cacheKey, playlist, 0); // No expiry
     logger.info(`[Signage] Playlist updated for ${location}/${tvId}: ${items.length} items`);
+    saveSignagePlaylists();
 
     // Notify connected SSE clients for this TV
     signageSSEClients.forEach(client => {
@@ -740,6 +775,7 @@ app.delete('/api/signage/playlist', (req, res) => {
     const cacheKey = `signage_${location}_${tvId}`;
     cache.del(cacheKey);
     logger.info(`[Signage] Playlist deleted for ${location}/${tvId}`);
+    saveSignagePlaylists();
     res.json({ success: true });
 });
 

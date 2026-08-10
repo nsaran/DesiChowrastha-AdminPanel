@@ -5,22 +5,33 @@ import API_BASE_URL from '../../../../config/api';
 /**
  * SignagePlayer - Digital Signage Player for TVs
  * 
- * Loads a playlist from the server and cycles through items.
- * Supports: URLs (iframe), videos, images, and HTML content.
- * Listens for live playlist updates via SSE.
+ * Architecture:
+ * - Main Stream: YouTube video plays continuously in background (always on)
+ * - Interrupts: Periodic content (QR codes, promos, Today's Special) overlays the main stream
+ *   for a set duration, then returns to the main stream
+ * - Order Overlay: Order-ready banner slides in at the bottom on top of everything
  * 
- * URL: /dashboard/:restaurantId/signage?tvId=tv1
+ * Playlist structure:
+ * - mainStream: { src: 'youtube embed url' } — always playing behind everything
+ * - interrupts: [ { type, src, duration, enabled, checkApi, ... } ] — periodic overlay content
+ * 
+ * URL: /dashboard/:restaurantId/signage?tvId=tv1&orientation=landscape|portrait
  */
 const SignagePlayer = () => {
     const { restaurantId } = useParams();
     const [searchParams] = useSearchParams();
     const tvId = searchParams.get('tvId') || 'default';
-    const orientation = searchParams.get('orientation') || 'landscape'; // landscape or portrait
+    const orientation = searchParams.get('orientation') || 'landscape';
 
-    const [playlist, setPlaylist] = useState([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [mainStream, setMainStream] = useState(null);
+    const [interrupts, setInterrupts] = useState([]);
+    const [currentInterrupt, setCurrentInterrupt] = useState(-1); // -1 = showing main stream
     const [isLoading, setIsLoading] = useState(true);
-    const timerRef = useRef(null);
+    const interruptTimerRef = useRef(null);
+    const cycleTimerRef = useRef(null);
+    const interruptIndexRef = useRef(0);
+    const ytPlayerRef = useRef(null);
+    const ytContainerRef = useRef(null);
 
     // Order ready overlay state
     const [readyOrderNum, setReadyOrderNum] = useState(null);
@@ -105,7 +116,7 @@ const SignagePlayer = () => {
 
         connectOrderSSE();
 
-        // Mark existing completed orders as known so only new ones show
+        // Mark existing completed orders as known
         const markExistingOrders = async () => {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/completedOrders?location=${restaurantId}&noAlert=true`);
@@ -117,7 +128,6 @@ const SignagePlayer = () => {
         };
         markExistingOrders();
 
-        // Reset at 10pm
         const resetInterval = setInterval(() => {
             if (new Date().getHours() === 22) {
                 knownOrdersRef.current.clear();
@@ -140,7 +150,17 @@ const SignagePlayer = () => {
             const res = await fetch(`${API_BASE_URL}/api/signage/playlist?tvId=${tvId}&location=${restaurantId}`);
             const data = await res.json();
             if (data && data.items && data.items.length > 0) {
-                setPlaylist(data.items);
+                // First item marked as mainStream type OR first URL item with 'youtube' in src
+                const items = data.items.filter(i => i.enabled !== false);
+                const mainIdx = items.findIndex(i => i.role === 'main' || (i.type === 'url' && i.src?.includes('youtube')));
+                if (mainIdx >= 0) {
+                    setMainStream(items[mainIdx]);
+                    setInterrupts(items.filter((_, idx) => idx !== mainIdx));
+                } else {
+                    // No main stream found — use first item as main
+                    setMainStream(items[0]);
+                    setInterrupts(items.slice(1));
+                }
             }
         } catch (e) {
             console.error('Error fetching signage playlist:', e);
@@ -148,12 +168,79 @@ const SignagePlayer = () => {
         setIsLoading(false);
     }, [tvId, restaurantId]);
 
-    // Initial fetch
     useEffect(() => {
         fetchPlaylist();
     }, [fetchPlaylist]);
 
-    // SSE for live updates (with polling fallback)
+    // Initialize YouTube IFrame Player API
+    useEffect(() => {
+        if (!mainStream || !mainStream.src?.includes('youtube')) return;
+
+        // Extract video ID from embed URL
+        const match = mainStream.src.match(/embed\/([^?]+)/);
+        const videoId = match ? match[1] : null;
+        if (!videoId) return;
+
+        // Load the YT API script if not already loaded
+        if (!window.YT) {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(tag);
+        }
+
+        const initPlayer = () => {
+            if (ytPlayerRef.current) {
+                ytPlayerRef.current.destroy();
+            }
+            ytPlayerRef.current = new window.YT.Player(ytContainerRef.current, {
+                videoId,
+                playerVars: {
+                    autoplay: 1,
+                    mute: 1,
+                    loop: 1,
+                    playlist: videoId,
+                    controls: 0,
+                    showinfo: 0,
+                    rel: 0,
+                    modestbranding: 1,
+                    fs: 0,
+                    iv_load_policy: 3,
+                },
+                events: {
+                    onReady: (event) => {
+                        event.target.playVideo();
+                    },
+                },
+            });
+        };
+
+        if (window.YT && window.YT.Player) {
+            initPlayer();
+        } else {
+            window.onYouTubeIframeAPIReady = initPlayer;
+        }
+
+        return () => {
+            if (ytPlayerRef.current) {
+                try { ytPlayerRef.current.destroy(); } catch (e) {}
+                ytPlayerRef.current = null;
+            }
+        };
+    }, [mainStream]);
+
+    // Pause/resume YouTube when interrupt shows/hides
+    useEffect(() => {
+        if (!ytPlayerRef.current) return;
+        try {
+            if (currentInterrupt >= 0) {
+                ytPlayerRef.current.pauseVideo();
+            } else {
+                ytPlayerRef.current.playVideo();
+            }
+        } catch (e) {}
+    }, [currentInterrupt]);
+
+    // SSE for live playlist updates
     useEffect(() => {
         const isDev = window.location.hostname === 'localhost';
         const sseBase = API_BASE_URL || (isDev ? 'http://localhost:3010' : window.location.origin);
@@ -168,16 +255,21 @@ const SignagePlayer = () => {
                     try {
                         const data = JSON.parse(event.data);
                         if (data.type === 'playlist_update' && data.playlist) {
-                            setPlaylist(data.playlist.items || []);
-                            setCurrentIndex(0);
+                            const items = (data.playlist.items || []).filter(i => i.enabled !== false);
+                            const mainIdx = items.findIndex(i => i.role === 'main' || (i.type === 'url' && i.src?.includes('youtube')));
+                            if (mainIdx >= 0) {
+                                setMainStream(items[mainIdx]);
+                                setInterrupts(items.filter((_, idx) => idx !== mainIdx));
+                            } else if (items.length > 0) {
+                                setMainStream(items[0]);
+                                setInterrupts(items.slice(1));
+                            }
+                            setCurrentInterrupt(-1);
                         }
-                    } catch (e) {
-                        console.error('Error parsing signage SSE:', e);
-                    }
+                    } catch (e) {}
                 };
                 eventSource.onerror = () => {
                     eventSource.close();
-                    // Fallback to polling every 5 minutes
                     if (!fallbackInterval) {
                         fallbackInterval = setInterval(fetchPlaylist, 300000);
                     }
@@ -190,73 +282,109 @@ const SignagePlayer = () => {
         };
 
         connectSSE();
-
         return () => {
             if (eventSource) eventSource.close();
             if (fallbackInterval) clearInterval(fallbackInterval);
         };
     }, [tvId, restaurantId, fetchPlaylist]);
 
-    // Check if current item should be skipped (e.g., Today's Special with no items)
-    const [skipCurrent, setSkipCurrent] = useState(false);
-
+    // Cycle interrupts periodically
+    // Show main stream for mainStream.duration (default 300s), then show next interrupt
     useEffect(() => {
-        const enabledItems = playlist.filter(item => item.enabled !== false);
-        if (enabledItems.length === 0) return;
+        if (interrupts.length === 0) return;
 
-        const currentItem = enabledItems[currentIndex % enabledItems.length];
-        if (currentItem?.checkApi) {
-            // Check if the API returns data
-            const checkData = async () => {
-                try {
-                    const res = await fetch(`${API_BASE_URL}${currentItem.checkApi}`);
-                    const data = await res.json();
-                    if (!data || (Array.isArray(data) && data.length === 0)) {
-                        // No data — skip to next
-                        setSkipCurrent(true);
-                    } else {
-                        setSkipCurrent(false);
+        const mainDuration = (mainStream?.duration || 300) * 1000;
+
+        const startCycle = () => {
+            // Show main stream first
+            setCurrentInterrupt(-1);
+
+            cycleTimerRef.current = setTimeout(async () => {
+                // Find next enabled interrupt
+                let attempts = 0;
+                let idx = interruptIndexRef.current;
+
+                while (attempts < interrupts.length) {
+                    const item = interrupts[idx % interrupts.length];
+
+                    // Check if item should be skipped via API
+                    if (item.checkApi) {
+                        try {
+                            const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
+                            const data = await res.json();
+                            if (!data || (Array.isArray(data) && data.length === 0)) {
+                                idx++;
+                                attempts++;
+                                continue;
+                            }
+                        } catch (e) {
+                            idx++;
+                            attempts++;
+                            continue;
+                        }
                     }
-                } catch (e) {
-                    setSkipCurrent(true);
+
+                    // Show this interrupt
+                    setCurrentInterrupt(idx % interrupts.length);
+                    interruptIndexRef.current = (idx + 1) % interrupts.length;
+
+                    // After interrupt duration, go back to main stream
+                    const interruptDuration = (item.duration || 30) * 1000;
+                    interruptTimerRef.current = setTimeout(() => {
+                        startCycle();
+                    }, interruptDuration);
+                    return;
                 }
-            };
-            checkData();
-        } else {
-            setSkipCurrent(false);
-        }
-    }, [currentIndex, playlist]);
 
-    // If current item should be skipped, advance immediately
-    useEffect(() => {
-        if (skipCurrent) {
-            const enabledItems = playlist.filter(item => item.enabled !== false);
-            setCurrentIndex(prev => (prev + 1) % enabledItems.length);
-            setSkipCurrent(false);
-        }
-    }, [skipCurrent, playlist]);
+                // All interrupts skipped — restart cycle
+                startCycle();
+            }, mainDuration);
+        };
 
-    // Auto-advance based on item duration
-    useEffect(() => {
-        if (playlist.length === 0) return;
-
-        // Filter to only enabled items
-        const enabledItems = playlist.filter(item => item.enabled !== false);
-        if (enabledItems.length === 0) return;
-
-        if (timerRef.current) clearTimeout(timerRef.current);
-
-        const currentItem = enabledItems[currentIndex % enabledItems.length];
-        const duration = (currentItem?.duration || 30) * 1000;
-
-        timerRef.current = setTimeout(() => {
-            setCurrentIndex(prev => (prev + 1) % enabledItems.length);
-        }, duration);
+        startCycle();
 
         return () => {
-            if (timerRef.current) clearTimeout(timerRef.current);
+            if (cycleTimerRef.current) clearTimeout(cycleTimerRef.current);
+            if (interruptTimerRef.current) clearTimeout(interruptTimerRef.current);
         };
-    }, [currentIndex, playlist]);
+    }, [interrupts, mainStream]);
+
+    // Operating hours: stop at 10pm, reload at 10am
+    const [outsideHours, setOutsideHours] = useState(false);
+
+    useEffect(() => {
+        const checkHours = () => {
+            const hour = new Date().getHours();
+            if (hour >= 22 || hour < 10) {
+                setOutsideHours(true);
+                // Pause YouTube if playing
+                if (ytPlayerRef.current) {
+                    try { ytPlayerRef.current.pauseVideo(); } catch (e) {}
+                }
+            } else if (outsideHours) {
+                // It's now within hours and we were outside — reload the page
+                window.location.reload();
+            }
+        };
+
+        checkHours();
+        const interval = setInterval(checkHours, 60000); // check every minute
+        return () => clearInterval(interval);
+    }, [outsideHours]);
+
+    if (outsideHours) {
+        return (
+            <div style={styles.closed}>
+                <div style={styles.closedText}>
+                    🕙 We're closed
+                    <br />
+                    <span style={{ fontSize: '1.5rem', opacity: 0.7, marginTop: '10px', display: 'block' }}>
+                        See you at 10:00 AM!
+                    </span>
+                </div>
+            </div>
+        );
+    }
 
     if (isLoading) {
         return (
@@ -266,9 +394,7 @@ const SignagePlayer = () => {
         );
     }
 
-    const enabledPlaylist = playlist.filter(item => item.enabled !== false);
-
-    if (enabledPlaylist.length === 0) {
+    if (!mainStream) {
         return (
             <div style={styles.empty}>
                 <div style={styles.emptyText}>
@@ -282,8 +408,6 @@ const SignagePlayer = () => {
         );
     }
 
-    const currentItem = enabledPlaylist[currentIndex % enabledPlaylist.length];
-
     const isPortrait = orientation === 'portrait';
     const containerStyle = isPortrait ? {
         ...styles.container,
@@ -296,64 +420,62 @@ const SignagePlayer = () => {
         left: '100vw',
     } : styles.container;
 
+    const showingInterrupt = currentInterrupt >= 0 && interrupts[currentInterrupt];
+
     return (
         <div style={containerStyle}>
-            {currentItem.type === 'url' && (
-                <iframe
-                    key={currentItem.src + currentIndex}
-                    src={currentItem.src}
-                    style={styles.iframe}
-                    title={`Signage content ${currentIndex}`}
-                    frameBorder="0"
-                    allow="autoplay; fullscreen"
-                />
-            )}
-
-            {currentItem.type === 'video' && (
-                <video
-                    key={currentItem.src + currentIndex}
-                    src={currentItem.src}
-                    style={styles.video}
-                    autoPlay
-                    muted
-                    playsInline
-                    loop
-                    onLoadedData={(e) => e.target.play().catch(() => {})}
-                    onError={() => setCurrentIndex(prev => (prev + 1) % enabledPlaylist.length)}
-                />
-            )}
-
-            {currentItem.type === 'image' && (
-                <img
-                    key={currentItem.src + currentIndex}
-                    src={currentItem.src}
-                    alt={currentItem.label || 'Signage'}
-                    style={styles.image}
-                />
-            )}
-
-            {currentItem.type === 'html' && (
-                <div
-                    key={currentIndex}
-                    style={styles.htmlContent}
-                    dangerouslySetInnerHTML={{ __html: currentItem.content }}
-                />
-            )}
-
-            {/* Progress bar */}
-            <div style={styles.progressContainer}>
-                {enabledPlaylist.map((_, idx) => (
-                    <div
-                        key={idx}
-                        style={{
-                            ...styles.progressDot,
-                            backgroundColor: idx === currentIndex % enabledPlaylist.length ? '#fd590d' : 'rgba(255,255,255,0.4)',
-                        }}
-                    />
-                ))}
+            {/* Main Stream - YouTube Player API (pause/resume capable) */}
+            <div style={{ ...styles.layer, zIndex: 1 }}>
+                <div ref={ytContainerRef} style={{ width: '100%', height: '100%' }} />
             </div>
 
-            {/* Order Ready Overlay */}
+            {/* Interrupt overlay */}
+            {showingInterrupt && (
+                <div style={{
+                    ...styles.layer,
+                    zIndex: 10,
+                    animation: 'fadeIn 0.5s ease',
+                }}>
+                    {showingInterrupt.type === 'url' && (
+                        <iframe
+                            key={showingInterrupt.src}
+                            src={showingInterrupt.src}
+                            style={styles.iframe}
+                            title="Interrupt content"
+                            frameBorder="0"
+                            allow="autoplay; fullscreen"
+                        />
+                    )}
+                    {showingInterrupt.type === 'video' && (
+                        <video
+                            key={showingInterrupt.src}
+                            src={showingInterrupt.src}
+                            style={styles.video}
+                            autoPlay
+                            muted
+                            playsInline
+                            loop
+                            onLoadedData={(e) => e.target.play().catch(() => {})}
+                        />
+                    )}
+                    {showingInterrupt.type === 'image' && (
+                        <img
+                            key={showingInterrupt.src}
+                            src={showingInterrupt.src}
+                            alt={showingInterrupt.label || 'Signage'}
+                            style={styles.image}
+                        />
+                    )}
+                    {showingInterrupt.type === 'html' && (
+                        <div
+                            style={styles.htmlContent}
+                            dangerouslySetInnerHTML={{ __html: showingInterrupt.content }}
+                        />
+                    )}
+                </div>
+            )}
+
+            {/* Order Ready Overlay - always on top */}
             {readyOrderNum && (
                 <div style={{
                     position: 'absolute',
@@ -370,7 +492,7 @@ const SignagePlayer = () => {
                     transform: orderAnimState === 'slideIn' ? 'translateY(100%)' : orderAnimState === 'slideOut' ? 'translateY(100%)' : 'translateY(0)',
                     opacity: orderAnimState === 'slideIn' || orderAnimState === 'slideOut' ? 0 : 1,
                     transition: 'transform 0.6s ease-in-out, opacity 0.6s ease-in-out',
-                    zIndex: 100,
+                    zIndex: 200,
                     boxShadow: '0 -4px 20px rgba(0,0,0,0.3)',
                 }}>
                     <span style={{ fontSize: '2.5rem', marginRight: '15px' }}>🔔</span>
@@ -399,6 +521,10 @@ const SignagePlayer = () => {
                     50% { transform: scale(1.05); }
                     100% { transform: scale(1); }
                 }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
             `}</style>
         </div>
     );
@@ -411,6 +537,13 @@ const styles = {
         height: '100vh',
         overflow: 'hidden',
         backgroundColor: '#000',
+    },
+    layer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
     },
     iframe: {
         width: '100%',
@@ -437,21 +570,7 @@ const styles = {
         color: '#fff',
         fontSize: '2rem',
         fontFamily: "'Bree Serif', serif",
-    },
-    progressContainer: {
-        position: 'absolute',
-        bottom: '15px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        gap: '8px',
-        zIndex: 10,
-    },
-    progressDot: {
-        width: '10px',
-        height: '10px',
-        borderRadius: '50%',
-        transition: 'background-color 0.3s ease',
+        backgroundColor: '#000',
     },
     loading: {
         display: 'flex',
@@ -476,6 +595,19 @@ const styles = {
         color: '#888',
         fontSize: '1.5rem',
         fontFamily: 'sans-serif',
+        textAlign: 'center',
+    },
+    closed: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#000',
+    },
+    closedText: {
+        color: '#fd590d',
+        fontSize: '3rem',
+        fontFamily: "'Lobster', cursive",
         textAlign: 'center',
     },
 };

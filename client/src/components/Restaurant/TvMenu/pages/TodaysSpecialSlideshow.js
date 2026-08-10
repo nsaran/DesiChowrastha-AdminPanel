@@ -68,14 +68,15 @@ const TodaysSpecialSlideshow = ({ items, location }) => {
                 const data = await res.json();
                 if (data.imageUrl) {
                     setImageUrl(data.imageUrl);
-                } else {
-                    setImageUrl(null);
+                    return;
                 }
-            } catch (e) {
-                setImageUrl(null);
-            }
+            } catch (e) {}
+
+            // Final fallback: try the cached URL anyway (in case of race condition)
+            setImageUrl(cachedUrl);
         };
 
+        setImageUrl(null); // Reset while loading
         if (item) fetchImage();
     }, [items, currentIndex]);
 

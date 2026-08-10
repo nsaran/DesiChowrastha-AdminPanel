@@ -1,0 +1,28 @@
+[
+  {
+    "tvId": "lobby-tv",
+    "location": "NASHUA",
+    "items": [
+      { "type": "url", "src": "https://www.youtube.com/embed/T-0ZiZMtagM?autoplay=1&mute=1&loop=1&playlist=T-0ZiZMtagM", "label": "Main Stream", "duration": 300, "enabled": true, "role": "main" },
+      { "type": "video", "src": "/_images/promos/nashua-qrcode-promo.mp4", "label": "QR Code Promo", "duration": 30, "enabled": true },
+      { "type": "url", "src": "/dashboard/Nashua/QRCodes", "label": "QR Codes", "duration": 30, "enabled": true },
+      { "type": "video", "src": "/_images/promos/Catering_promotion.mp4", "label": "Catering Promo", "duration": 60, "enabled": true },
+      { "type": "url", "src": "/dashboard/Nashua/OtherServices/TodaysSpecial", "label": "Today's Special", "duration": 30, "enabled": true, "checkApi": "/api/todaysSpecial?location=Nashua" },
+      { "type": "image", "src": "/_images/promos/goat-curry.jpg", "label": "Goat Curry", "duration": 15, "enabled": true },
+      { "type": "html", "content": "<h1 style=\"color:#fd590d; font-size:4rem; font-family: Lobster, cursive;\">Happy Hour 4-6 PM &#127866;</h1>", "label": "Happy Hour", "duration": 15, "enabled": true }
+    ]
+  },
+  {
+    "tvId": "lobby-tv",
+    "location": "WESTBOROUGH",
+    "items": [
+      { "type": "url", "src": "https://www.youtube.com/embed/T-0ZiZMtagM?autoplay=1&mute=1&loop=1&playlist=T-0ZiZMtagM", "label": "Main Stream", "duration": 300, "enabled": true, "role": "main" },
+      { "type": "video", "src": "/_images/promos/westborough-qrcode-promo.mp4", "label": "QR Code Promo", "duration": 30, "enabled": true },
+      { "type": "url", "src": "/dashboard/Westborough/QRCodes", "label": "QR Codes", "duration": 30, "enabled": true },
+      { "type": "video", "src": "/_images/promos/Catering_promotion.mp4", "label": "Catering Promo", "duration": 60, "enabled": true },
+      { "type": "url", "src": "/dashboard/Westborough/OtherServices/TodaysSpecial", "label": "Today's Special", "duration": 30, "enabled": true, "checkApi": "/api/todaysSpecial?location=Westborough" },
+      { "type": "image", "src": "/_images/promos/goat-curry.jpg", "label": "Goat Curry", "duration": 15, "enabled": true },
+      { "type": "html", "content": "<h1 style=\"color:#fd590d; font-size:4rem; font-family: Lobster, cursive;\">Happy Hour 4-6 PM &#127866;</h1>", "label": "Happy Hour", "duration": 15, "enabled": true }
+    ]
+  }
+]
