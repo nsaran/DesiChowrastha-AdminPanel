@@ -58,7 +58,7 @@ const SignagePlayer = () => {
                 setOrderAnimState('idle');
                 showNextOrder();
             }, 600);
-        }, 10000);
+        }, 20000);
     }, []);
 
     // SSE for order ready notifications
