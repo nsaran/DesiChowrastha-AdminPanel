@@ -294,6 +294,13 @@ const ManageSignage = () => {
                                         addonAfter="sec"
                                         style={{ width: 130 }}
                                     />
+                                    <Switch
+                                        checked={item.chain === true}
+                                        onChange={(checked) => updateItem(index, 'chain', checked)}
+                                        checkedChildren="Chain"
+                                        unCheckedChildren="—"
+                                        size="small"
+                                    />
                                 </Space>
                             </Space>
                         </Card>

@@ -33,6 +33,7 @@ async function getOrdersBulk(location, page = 1, businessDate) {
         const orders = response.data.map(order => 
             order.checks.map(check => ({
                 orderID: check.guid,
+                orderGuid: order.guid,
                 orderNumber: check.displayNumber,
                 orderDetails: check.selections,
                 payments: check.payments
@@ -105,7 +106,7 @@ async function getCompletedOrders(location, req) {
 
                 // Cache every order's GUID for OrderStatus lookups
                 if (!global.cacheData.has(orderNumber)) {
-                    global.cacheData.set(orderNumber, { status: "FOUND", guid: order.orderID }, 43200);
+                    global.cacheData.set(orderNumber, { status: "FOUND", guid: order.orderGuid }, 43200);
                 }
 
                 const completedItems = order.orderDetails.filter(item => item.fulfillmentStatus === 'READY');
@@ -122,7 +123,7 @@ async function getCompletedOrders(location, req) {
                     });
 
                     if (alertRequired && !global.newOrderCacheData.has(orderNumber)) {
-                        global.newOrderCacheData.set(orderNumber, { status: "READY", guid: order.orderID }, 43200);
+                        global.newOrderCacheData.set(orderNumber, { status: "READY", guid: order.orderGuid }, 43200);
                         completedOrdersList += `, #${orderNumber}`;
                         // setTimeout(notify, 10000 * index, orderNumber); // Uncomment if notify function is defined
                         index++;

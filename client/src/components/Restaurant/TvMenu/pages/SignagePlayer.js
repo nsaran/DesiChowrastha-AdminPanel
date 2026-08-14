@@ -27,6 +27,7 @@ const SignagePlayer = () => {
     const [interrupts, setInterrupts] = useState([]);
     const [currentInterrupt, setCurrentInterrupt] = useState(-1); // -1 = showing main stream
     const [isLoading, setIsLoading] = useState(true);
+    const [userInteracted, setUserInteracted] = useState(false);
     const interruptTimerRef = useRef(null);
     const cycleTimerRef = useRef(null);
     const interruptIndexRef = useRef(0);
@@ -328,10 +329,15 @@ const SignagePlayer = () => {
                     setCurrentInterrupt(idx % interrupts.length);
                     interruptIndexRef.current = (idx + 1) % interrupts.length;
 
-                    // After interrupt duration, go back to main stream
+                    // After interrupt duration, check if next item is chained
                     const interruptDuration = (item.duration || 30) * 1000;
                     interruptTimerRef.current = setTimeout(() => {
-                        startCycle();
+                        // If current item has chain:true, play next interrupt immediately
+                        if (item.chain) {
+                            showNextInterrupt();
+                        } else {
+                            startCycle();
+                        }
                     }, interruptDuration);
                     return;
                 }
@@ -339,6 +345,48 @@ const SignagePlayer = () => {
                 // All interrupts skipped — restart cycle
                 startCycle();
             }, mainDuration);
+        };
+
+        // Show the next interrupt immediately (for chained items)
+        const showNextInterrupt = async () => {
+            let attempts = 0;
+            let idx = interruptIndexRef.current;
+
+            while (attempts < interrupts.length) {
+                const item = interrupts[idx % interrupts.length];
+
+                if (item.checkApi) {
+                    try {
+                        const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
+                        const data = await res.json();
+                        if (!data || (Array.isArray(data) && data.length === 0)) {
+                            idx++;
+                            attempts++;
+                            continue;
+                        }
+                    } catch (e) {
+                        idx++;
+                        attempts++;
+                        continue;
+                    }
+                }
+
+                setCurrentInterrupt(idx % interrupts.length);
+                interruptIndexRef.current = (idx + 1) % interrupts.length;
+
+                const interruptDuration = (item.duration || 30) * 1000;
+                interruptTimerRef.current = setTimeout(() => {
+                    if (item.chain) {
+                        showNextInterrupt();
+                    } else {
+                        startCycle();
+                    }
+                }, interruptDuration);
+                return;
+            }
+
+            // All remaining chained items skipped — back to main
+            startCycle();
         };
 
         startCycle();
@@ -422,8 +470,29 @@ const SignagePlayer = () => {
 
     const showingInterrupt = currentInterrupt >= 0 && interrupts[currentInterrupt];
 
+    const handleUserInteraction = () => {
+        if (!userInteracted) {
+            setUserInteracted(true);
+            if (ytPlayerRef.current) {
+                try { ytPlayerRef.current.unMute(); } catch (e) {}
+            }
+        }
+    };
+
     return (
-        <div style={containerStyle}>
+        <div style={containerStyle} onClick={handleUserInteraction}>
+            {/* Tap to start overlay */}
+            {!userInteracted && (
+                <div style={styles.tapOverlay}>
+                    <div style={styles.tapContent}>
+                        <span style={{ fontSize: '4rem' }}>🔊</span>
+                        <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.5rem', color: '#fff', marginTop: '15px' }}>
+                            Tap anywhere to enable audio
+                        </p>
+                    </div>
+                </div>
+            )}
+
             {/* Main Stream - YouTube Player API (pause/resume capable) */}
             <div style={{ ...styles.layer, zIndex: 1 }}>
                 <div ref={ytContainerRef} style={{ width: '100%', height: '100%' }} />
@@ -452,10 +521,22 @@ const SignagePlayer = () => {
                             src={showingInterrupt.src}
                             style={styles.video}
                             autoPlay
-                            muted
+                            muted={!userInteracted}
                             playsInline
-                            loop
+                            loop={false}
                             onLoadedData={(e) => e.target.play().catch(() => {})}
+                            onEnded={() => {
+                                // Clear the duration timer and advance
+                                if (interruptTimerRef.current) clearTimeout(interruptTimerRef.current);
+                                if (showingInterrupt.chain) {
+                                    // Trigger next interrupt immediately
+                                    const nextIdx = interruptIndexRef.current;
+                                    setCurrentInterrupt(nextIdx % interrupts.length);
+                                    interruptIndexRef.current = (nextIdx + 1) % interrupts.length;
+                                } else {
+                                    setCurrentInterrupt(-1);
+                                }
+                            }}
                         />
                     )}
                     {showingInterrupt.type === 'image' && (
@@ -609,6 +690,23 @@ const styles = {
         fontSize: '3rem',
         fontFamily: "'Lobster', cursive",
         textAlign: 'center',
+    },
+    tapOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 500,
+        cursor: 'pointer',
+    },
+    tapContent: {
+        textAlign: 'center',
+        animation: 'pulseText 2s ease-in-out infinite',
     },
 };
 
