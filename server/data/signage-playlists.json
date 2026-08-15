@@ -29,10 +29,11 @@
       {
         "type": "video",
         "src": "/_images/promos/Catering_promotion.mp4",
-        "label": "Catering Promo",
+        "label": "Today's Special Video",
         "duration": 60,
         "enabled": true,
-        "chain": true
+        "chain": true,
+        "checkApi": "/api/todaysSpecial?location=Nashua"
       },
       {
         "type": "url",
@@ -87,9 +88,11 @@
       {
         "type": "video",
         "src": "/_images/promos/Catering_promotion.mp4",
-        "label": "Catering Promo",
+        "label": "Today's Special Video",
         "duration": 60,
-        "enabled": true
+        "enabled": true,
+        "chain": true,
+        "checkApi": "/api/todaysSpecial?location=Westborough"
       },
       {
         "type": "url",
