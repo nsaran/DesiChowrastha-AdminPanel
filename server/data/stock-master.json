@@ -1,0 +1,86 @@
+{
+  "categories": [
+    {
+      "name": "Vegetables",
+      "items": [
+        "Bottle Guard", "Brinjal Small", "Cabbage", "Carrot", "Cauliflower",
+        "Coriander Leaves", "Cucumber", "Curry Leaves", "Garlic", "Ginger",
+        "Lemon", "Mint Leaves", "Onion Yellow", "Onion Red", "Pepper (Green)",
+        "Pepper (Red)", "Potato", "Radish White", "Spinach", "Spring Onion",
+        "Serrano Pepper", "Thai Chilli", "Tomato", "Celery", "Raw Mango"
+      ]
+    },
+    {
+      "name": "Frozen",
+      "items": [
+        "Samosa Onion", "Samosa Potato", "Noodles", "Carrot and Peas",
+        "Beans", "Spinach", "Okra (Bhindi)", "Drumstick", "Ice Cubes"
+      ]
+    },
+    {
+      "name": "Meat",
+      "items": [
+        "Chicken Leg", "Chicken Thigh", "Chicken Wings", "Whole Eggs",
+        "Liquid Egg", "Shrimps (31/40)", "Fish Tilapia", "Fish",
+        "Goat Biryani", "Goat Curry", "Goat Keema"
+      ]
+    },
+    {
+      "name": "Dairy",
+      "items": [
+        "Butter Unsalted", "Cream Heavy", "Paneer", "Mozzarella Shredded",
+        "Sour Cream", "Yogurt", "Amul Ghee", "Condensed Milk",
+        "Milk Powder", "Whole Milk"
+      ]
+    },
+    {
+      "name": "Miscellaneous",
+      "items": [
+        "Sandwich Bread", "Tortilla Sheet", "Pav Bun", "Phulka",
+        "Plain Puri", "Pani Puri", "Bhel Mix", "Fine Sev",
+        "Hyderabadi Mixture", "Lays", "Mango Pulp", "Chickoo",
+        "Ras Malai", "Gulab Jamun", "Gongura Pickle", "Boost"
+      ]
+    },
+    {
+      "name": "Canned",
+      "items": [
+        "Tomato Peeled", "Tomato Puree", "Tomato Ketchup",
+        "Coconut Milk", "Baby Corn", "Chickpeas"
+      ]
+    },
+    {
+      "name": "Dry Store",
+      "items": [
+        "Baking Powder", "Bay Leaves", "Cardamom (Black)", "Cardamom (Green)",
+        "Cashewnut", "Chana Masala", "Chat Masala", "Cinnamon Stick", "Cloves",
+        "Colour Egg Shade", "Colour Tomato", "Corn Starch", "Dal Black Urad",
+        "Dal Chana", "Dal Moong Yellow", "Dal Toor", "Dal Urad Gota",
+        "Dates Seedless", "Dry Coconut", "Flour All Purpose", "Flour Atta",
+        "Flour Besan", "Flour Raising", "Flour Rice", "Hing/Asafoetida",
+        "Hot Sauce", "Idly Rava", "Jaggery", "Javitry/Mace", "Kalpachi Dry",
+        "Kasuri Methi", "Lime Juice", "Mayonnaise Sauce", "MSG", "Mustard Sauce",
+        "Oil Frying", "Oil Salad/Cooking", "Pani Puri Masala", "Poppy Seeds",
+        "Peanut", "Pepper Powder", "Powder Cumin", "Powder Coriander",
+        "Powder Garam Masala", "Powder K Chilli", "Powder Red Chilli",
+        "Powder Turmeric", "Raisins", "Red Chilli Flakes", "Red Chilli Whole",
+        "Red Label Tea", "Rice Basmati", "Salt (Black)", "Sambal Sauce",
+        "Sambar Masala", "Seed Ajwain", "Seed Coriander", "Seed Cumin",
+        "Seed Fennel", "Seed Fenugreek", "Seed Mustard", "Seed Onion/Kalonji",
+        "Seed White Sesame", "Shahi Jeera", "Sooji Rava", "Soya Sauce (Dark)",
+        "Soya Sauce (Light)", "Sriracha Sauce", "Star Anise", "Sugar",
+        "Tamarind", "Vinegar", "White Peas Dry", "Whole Pepper Corn",
+        "Kidney Bean", "Rose Milk Syrup", "Basil Seeds"
+      ]
+    },
+    {
+      "name": "Sanitation",
+      "items": [
+        "Hand Gloves", "Rubber Gloves", "Black Apron", "Hair Net",
+        "Beard Net", "Face Mask", "Bleach", "Glitter",
+        "Oven Easy Clean Spray", "Green Scrubber", "Steel Scrubber",
+        "Garbage Cover", "Dishwash Soap", "Food Labels"
+      ]
+    }
+  ]
+}

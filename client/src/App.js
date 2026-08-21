@@ -39,6 +39,7 @@ import QRCodes from './components/Restaurant/TvMenu/pages/QRCodes';
 import OrderStatus from './components/Restaurant/TvMenu/pages/OrderStatus';
 import SignagePlayer from './components/Restaurant/TvMenu/pages/SignagePlayer';
 import ManageSignage from './components/Restaurant/TvMenu/pages/ManageSignage';
+import StockOrders from './components/Restaurant/TvMenu/pages/StockOrders';
 import OtherServices from './components/Restaurant/OtherServices';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
@@ -92,6 +93,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/QRCodes" element={<QRCodes />}/>
           <Route path="/dashboard/:restaurantId/signage" element={<TvMenuErrorBoundary><SignagePlayer /></TvMenuErrorBoundary>}/>
           <Route path="/dashboard/:restaurantId/OtherServices/ManageSignage" element={<ManageSignage />}/>
+          <Route path="/dashboard/:restaurantId/OtherServices/StockOrders" element={<StockOrders />}/>
         </Routes>
       </Router>
     </AuthProvider>

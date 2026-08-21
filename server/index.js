@@ -688,6 +688,105 @@ app.get('/api/promos', (req, res) => {
     });
 });
 
+// ─── Stock Order & Inventory Endpoints ───────────────────────────────────────
+
+const stockOrderService = require('./services/stockOrderService');
+const { sendStockOrderNotification } = require('./services/stockOrderNotification');
+
+// Master stock list
+app.get('/api/stock-orders/master', (req, res) => {
+    res.json(stockOrderService.getMasterList());
+});
+
+app.put('/api/stock-orders/master', (req, res) => {
+    stockOrderService.saveMasterList(req.body);
+    res.json({ success: true });
+});
+
+app.post('/api/stock-orders/master/item', (req, res) => {
+    const { category, itemName } = req.body;
+    if (!category || !itemName) return res.status(400).json({ error: 'category and itemName required' });
+    const master = stockOrderService.addItemToMaster(category, itemName);
+    res.json({ success: true, master });
+});
+
+app.delete('/api/stock-orders/master/item', (req, res) => {
+    const { category, itemName } = req.body;
+    if (!category || !itemName) return res.status(400).json({ error: 'category and itemName required' });
+    const master = stockOrderService.removeItemFromMaster(category, itemName);
+    res.json({ success: true, master });
+});
+
+// Purchase orders
+app.get('/api/stock-orders', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    if (!location) return res.status(400).json({ error: 'location required' });
+    res.json(stockOrderService.getOrders(location));
+});
+
+app.post('/api/stock-orders', (req, res) => {
+    const { location, orderedBy, items } = req.body;
+    if (!location) return res.status(400).json({ error: 'location required' });
+    const order = stockOrderService.createOrder(location, { orderedBy, items });
+    // Notify chef and purchaser
+    sendStockOrderNotification(location, order, 'created', 'both');
+    res.json({ success: true, order });
+});
+
+app.get('/api/stock-orders/:orderId', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    if (!location) return res.status(400).json({ error: 'location required' });
+    const order = stockOrderService.getOrderById(location, req.params.orderId);
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+    res.json(order);
+});
+
+app.put('/api/stock-orders/:orderId', (req, res) => {
+    const location = (req.query.location || req.body.location || '').toUpperCase();
+    if (!location) return res.status(400).json({ error: 'location required' });
+    const order = stockOrderService.updateOrder(location, req.params.orderId, req.body);
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+    // Notify on status change
+    if (req.body.status) {
+        const notifyRole = req.body.status === 'submitted' ? 'purchaser' :
+                           req.body.status === 'purchased' ? 'chef' :
+                           req.body.status === 'received' ? 'chef' : 'both';
+        sendStockOrderNotification(location, order, req.body.status, notifyRole);
+    }
+    res.json({ success: true, order });
+});
+
+app.post('/api/stock-orders/:orderId/close', (req, res) => {
+    const location = (req.query.location || req.body.location || '').toUpperCase();
+    if (!location) return res.status(400).json({ error: 'location required' });
+    const order = stockOrderService.closeOrder(location, req.params.orderId);
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+    // Notify both
+    sendStockOrderNotification(location, order, 'closed', 'both');
+    res.json({ success: true, order });
+});
+
+app.delete('/api/stock-orders/:orderId', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    if (!location) return res.status(400).json({ error: 'location required' });
+    stockOrderService.deleteOrder(location, req.params.orderId);
+    res.json({ success: true });
+});
+
+// Inventory
+app.get('/api/inventory', (req, res) => {
+    const location = (req.query.location || '').toUpperCase();
+    if (!location) return res.status(400).json({ error: 'location required' });
+    res.json(stockOrderService.getLocationInventory(location));
+});
+
+app.post('/api/inventory/usage', (req, res) => {
+    const { location, itemName, quantity, note } = req.body;
+    if (!location || !itemName || !quantity) return res.status(400).json({ error: 'location, itemName, quantity required' });
+    stockOrderService.logUsage(location, itemName, quantity, note);
+    res.json({ success: true });
+});
+
 // ─── Digital Signage Endpoints ───────────────────────────────────────────────
 
 const signageSSEClients = [];
