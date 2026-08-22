@@ -21,6 +21,7 @@
     "express": "^4.19.2",
     "express-rate-limit": "^7.4.1",
     "googleapis": "^144.0.0",
+    "multer": "^2.2.0",
     "node-cache": "^5.1.2",
     "node-cron": "^3.0.3",
     "nodemon": "^3.1.0",

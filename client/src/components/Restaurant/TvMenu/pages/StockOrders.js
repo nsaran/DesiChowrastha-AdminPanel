@@ -27,10 +27,13 @@ const StockOrders = () => {
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const [newOrderBy, setNewOrderBy] = useState('');
     const [selectedItems, setSelectedItems] = useState([]);
+    const [itemSortOrder, setItemSortOrder] = useState('default'); // default, asc, desc
 
     // View/Edit order modal
     const [viewModalVisible, setViewModalVisible] = useState(false);
     const [currentOrder, setCurrentOrder] = useState(null);
+    const [receipts, setReceipts] = useState([]);
+    const [uploadingReceipt, setUploadingReceipt] = useState(false);
 
     // Add item modal
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
@@ -130,6 +133,10 @@ const StockOrders = () => {
     };
 
     const handleCreateOrder = async () => {
+        if (!newOrderBy.trim()) {
+            message.warning('Please enter your name');
+            return;
+        }
         if (selectedItems.length === 0) {
             message.warning('Select at least one item');
             return;
@@ -156,6 +163,11 @@ const StockOrders = () => {
     const openOrder = (order) => {
         setCurrentOrder({ ...order, items: order.items.map(i => ({ ...i })) });
         setViewModalVisible(true);
+        // Fetch receipts for this order
+        fetch(`${API_BASE_URL}/api/stock-orders/${order.id}/receipts`)
+            .then(res => res.json())
+            .then(data => setReceipts(Array.isArray(data) ? data : []))
+            .catch(() => setReceipts([]));
     };
 
     const updateCurrentOrderItem = (index, field, value) => {
@@ -447,8 +459,19 @@ const StockOrders = () => {
                 </Form>
 
                 <Divider>Select Items</Divider>
+                <div style={{ marginBottom: '10px' }}>
+                    <Space>
+                        <Text type="secondary">Sort:</Text>
+                        <Button size="small" type={itemSortOrder === 'default' ? 'primary' : 'default'} onClick={() => setItemSortOrder('default')}>Default</Button>
+                        <Button size="small" type={itemSortOrder === 'asc' ? 'primary' : 'default'} onClick={() => setItemSortOrder('asc')}>A → Z</Button>
+                        <Button size="small" type={itemSortOrder === 'desc' ? 'primary' : 'default'} onClick={() => setItemSortOrder('desc')}>Z → A</Button>
+                    </Space>
+                </div>
                 <div style={{ maxHeight: '400px', overflow: 'auto' }}>
-                    {masterList.categories.map(cat => (
+                    {masterList.categories.map(cat => {
+                        const sortedItems = itemSortOrder === 'asc' ? [...cat.items].sort((a, b) => a.localeCompare(b)) :
+                            itemSortOrder === 'desc' ? [...cat.items].sort((a, b) => b.localeCompare(a)) : cat.items;
+                        return (
                         <div key={cat.name} style={{ marginBottom: '16px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                                 <Checkbox
@@ -459,7 +482,7 @@ const StockOrders = () => {
                                 <Text strong>{cat.name}</Text>
                             </div>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', paddingLeft: '24px' }}>
-                                {cat.items.map(item => {
+                                {sortedItems.map(item => {
                                     const selected = selectedItems.find(i => i.name === item && i.category === cat.name);
                                     return (
                                         <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '4px', width: '280px', marginBottom: '4px' }}>
@@ -482,7 +505,8 @@ const StockOrders = () => {
                                 })}
                             </div>
                         </div>
-                    ))}
+                    );
+                    })}
                 </div>
                 <Divider />
                 <Text type="secondary">{selectedItems.length} items selected</Text>
@@ -562,6 +586,80 @@ const StockOrders = () => {
                                 }
                             ]}
                         />
+
+                        {/* Receipts Section */}
+                        <Divider>📎 Receipts</Divider>
+                        <div style={{ marginBottom: '16px' }}>
+                            <input
+                                type="file"
+                                accept="image/*,.pdf"
+                                multiple
+                                onChange={async (e) => {
+                                    const files = e.target.files;
+                                    if (!files || files.length === 0) return;
+                                    setUploadingReceipt(true);
+                                    const formData = new FormData();
+                                    for (let i = 0; i < files.length; i++) {
+                                        formData.append('receipts', files[i]);
+                                    }
+                                    try {
+                                        const res = await fetch(`${API_BASE_URL}/api/stock-orders/${currentOrder.id}/receipts`, {
+                                            method: 'POST',
+                                            body: formData
+                                        });
+                                        const data = await res.json();
+                                        if (data.success) {
+                                            message.success(`${data.files.length} receipt(s) uploaded`);
+                                            // Refresh receipts list
+                                            const listRes = await fetch(`${API_BASE_URL}/api/stock-orders/${currentOrder.id}/receipts`);
+                                            const listData = await listRes.json();
+                                            setReceipts(Array.isArray(listData) ? listData : []);
+                                        }
+                                    } catch (err) {
+                                        message.error('Failed to upload receipt');
+                                    }
+                                    setUploadingReceipt(false);
+                                    e.target.value = '';
+                                }}
+                                style={{ display: 'none' }}
+                                id="receipt-upload-input"
+                            />
+                            <Button
+                                icon={<PlusOutlined />}
+                                onClick={() => document.getElementById('receipt-upload-input').click()}
+                                loading={uploadingReceipt}
+                            >
+                                Upload Receipt
+                            </Button>
+                            <Text type="secondary" style={{ marginLeft: '10px' }}>
+                                (Images or PDF, max 10MB each)
+                            </Text>
+                        </div>
+                        {receipts.length > 0 && (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                                {receipts.map((receipt, idx) => (
+                                    <Card key={idx} size="small" style={{ width: '150px' }}
+                                        cover={
+                                            receipt.filename.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                                                <img
+                                                    src={`${API_BASE_URL}${receipt.url}`}
+                                                    alt={receipt.filename}
+                                                    style={{ height: '100px', objectFit: 'cover', cursor: 'pointer' }}
+                                                    onClick={() => window.open(`${API_BASE_URL}${receipt.url}`, '_blank')}
+                                                />
+                                            ) : (
+                                                <div style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f5f5f5', cursor: 'pointer' }}
+                                                    onClick={() => window.open(`${API_BASE_URL}${receipt.url}`, '_blank')}>
+                                                    <Text>📄 PDF</Text>
+                                                </div>
+                                            )
+                                        }
+                                    >
+                                        <Text style={{ fontSize: '0.75rem' }}>{new Date(receipt.uploadedAt).toLocaleDateString()}</Text>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
                     </>
                 )}
             </Modal>

@@ -773,6 +773,68 @@ app.delete('/api/stock-orders/:orderId', (req, res) => {
     res.json({ success: true });
 });
 
+// Receipt upload
+const multer = require('multer');
+const RECEIPTS_DIR = path.join(__dirname, 'data', 'receipts');
+if (!fs.existsSync(RECEIPTS_DIR)) fs.mkdirSync(RECEIPTS_DIR, { recursive: true });
+
+const receiptStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const orderId = req.params.orderId;
+        const orderDir = path.join(RECEIPTS_DIR, orderId);
+        if (!fs.existsSync(orderDir)) fs.mkdirSync(orderDir, { recursive: true });
+        cb(null, orderDir);
+    },
+    filename: (req, file, cb) => {
+        const timestamp = Date.now();
+        const ext = path.extname(file.originalname);
+        cb(null, `receipt-${timestamp}${ext}`);
+    }
+});
+const receiptUpload = multer({ storage: receiptStorage, limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB max
+
+// Upload receipt(s) for an order
+app.post('/api/stock-orders/:orderId/receipts', receiptUpload.array('receipts', 5), (req, res) => {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ error: 'No files uploaded' });
+    }
+    const files = req.files.map(f => ({
+        filename: f.filename,
+        originalName: f.originalname,
+        size: f.size,
+        uploadedAt: new Date().toISOString()
+    }));
+    logger.info(`[Receipts] ${files.length} receipt(s) uploaded for order ${req.params.orderId}`);
+    res.json({ success: true, files });
+});
+
+// List receipts for an order
+app.get('/api/stock-orders/:orderId/receipts', (req, res) => {
+    const orderDir = path.join(RECEIPTS_DIR, req.params.orderId);
+    if (!fs.existsSync(orderDir)) {
+        return res.json([]);
+    }
+    const files = fs.readdirSync(orderDir).map(filename => {
+        const stats = fs.statSync(path.join(orderDir, filename));
+        return {
+            filename,
+            size: stats.size,
+            uploadedAt: stats.mtime.toISOString(),
+            url: `/api/stock-orders/${req.params.orderId}/receipts/${filename}`
+        };
+    });
+    res.json(files);
+});
+
+// Serve a specific receipt file
+app.get('/api/stock-orders/:orderId/receipts/:filename', (req, res) => {
+    const filePath = path.join(RECEIPTS_DIR, req.params.orderId, req.params.filename);
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'File not found' });
+    }
+    res.sendFile(filePath);
+});
+
 // Inventory
 app.get('/api/inventory', (req, res) => {
     const location = (req.query.location || '').toUpperCase();
