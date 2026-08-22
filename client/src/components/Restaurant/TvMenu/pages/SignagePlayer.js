@@ -527,20 +527,8 @@ const SignagePlayer = () => {
                             autoPlay
                             muted={!userInteracted}
                             playsInline
-                            loop={false}
+                            loop
                             onLoadedData={(e) => e.target.play().catch(() => {})}
-                            onEnded={() => {
-                                // Clear the duration timer and advance
-                                if (interruptTimerRef.current) clearTimeout(interruptTimerRef.current);
-                                if (showingInterrupt.chain) {
-                                    // Trigger next interrupt immediately
-                                    const nextIdx = interruptIndexRef.current;
-                                    setCurrentInterrupt(nextIdx % interrupts.length);
-                                    interruptIndexRef.current = (nextIdx + 1) % interrupts.length;
-                                } else {
-                                    setCurrentInterrupt(-1);
-                                }
-                            }}
                         />
                     )}
                     {showingInterrupt.type === 'image' && (
