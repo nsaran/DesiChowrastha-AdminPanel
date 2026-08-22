@@ -237,9 +237,13 @@ const SignagePlayer = () => {
                 ytPlayerRef.current.pauseVideo();
             } else {
                 ytPlayerRef.current.playVideo();
+                // Re-unmute after resume if user has interacted
+                if (userInteracted) {
+                    ytPlayerRef.current.unMute();
+                }
             }
         } catch (e) {}
-    }, [currentInterrupt]);
+    }, [currentInterrupt, userInteracted]);
 
     // SSE for live playlist updates
     useEffect(() => {
