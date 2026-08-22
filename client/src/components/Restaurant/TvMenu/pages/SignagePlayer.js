@@ -295,111 +295,71 @@ const SignagePlayer = () => {
 
     // Cycle interrupts periodically
     // Show main stream for mainStream.duration (default 300s), then show next interrupt
+    const interruptsRef = useRef(interrupts);
+    interruptsRef.current = interrupts;
+    const mainStreamRef = useRef(mainStream);
+    mainStreamRef.current = mainStream;
+
     useEffect(() => {
         if (interrupts.length === 0) return;
 
         const mainDuration = (mainStream?.duration || 300) * 1000;
 
-        const startCycle = () => {
-            // Show main stream first
-            setCurrentInterrupt(-1);
-
-            cycleTimerRef.current = setTimeout(async () => {
-                // Find next enabled interrupt
-                let attempts = 0;
-                let idx = interruptIndexRef.current;
-
-                while (attempts < interrupts.length) {
-                    const item = interrupts[idx % interrupts.length];
-
-                    // Check if item should be skipped via API
-                    if (item.checkApi) {
-                        try {
-                            const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
-                            const data = await res.json();
-                            if (!data || (Array.isArray(data) && data.length === 0)) {
-                                idx++;
-                                attempts++;
-                                continue;
-                            }
-                        } catch (e) {
-                            idx++;
-                            attempts++;
-                            continue;
-                        }
-                    }
-
-                    // Show this interrupt
-                    setCurrentInterrupt(idx % interrupts.length);
-                    interruptIndexRef.current = (idx + 1) % interrupts.length;
-
-                    // After interrupt duration, check if next item is chained
-                    const interruptDuration = (item.duration || 30) * 1000;
-                    interruptTimerRef.current = setTimeout(() => {
-                        // If current item has chain:true, play next interrupt immediately
-                        if (item.chain) {
-                            showNextInterrupt();
-                        } else {
-                            startCycle();
-                        }
-                    }, interruptDuration);
-                    return;
-                }
-
-                // All interrupts skipped — restart cycle
-                startCycle();
-            }, mainDuration);
-        };
-
-        // Show the next interrupt immediately (for chained items)
-        const showNextInterrupt = async () => {
-            let attempts = 0;
-            let idx = interruptIndexRef.current;
-
-            while (attempts < interrupts.length) {
-                const item = interrupts[idx % interrupts.length];
-
-                if (item.checkApi) {
-                    try {
-                        const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
-                        const data = await res.json();
-                        if (!data || (Array.isArray(data) && data.length === 0)) {
-                            idx++;
-                            attempts++;
-                            continue;
-                        }
-                    } catch (e) {
-                        idx++;
-                        attempts++;
-                        continue;
-                    }
-                }
-
-                setCurrentInterrupt(idx % interrupts.length);
-                interruptIndexRef.current = (idx + 1) % interrupts.length;
-
-                const interruptDuration = (item.duration || 30) * 1000;
-                interruptTimerRef.current = setTimeout(() => {
-                    if (item.chain) {
-                        showNextInterrupt();
-                    } else {
-                        startCycle();
-                    }
-                }, interruptDuration);
+        const checkAndShowInterrupt = async (idx, attempts) => {
+            const currentInterrupts = interruptsRef.current;
+            if (attempts >= currentInterrupts.length) {
+                // All skipped — go back to main
+                setCurrentInterrupt(-1);
+                cycleTimerRef.current = setTimeout(() => checkAndShowInterrupt(interruptIndexRef.current, 0), mainDuration);
                 return;
             }
 
-            // All remaining chained items skipped — back to main
-            startCycle();
+            const item = currentInterrupts[idx % currentInterrupts.length];
+
+            // Check if item should be skipped
+            if (item.checkApi) {
+                try {
+                    const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
+                    const data = await res.json();
+                    if (!data || (Array.isArray(data) && data.length === 0)) {
+                        interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
+                        checkAndShowInterrupt(interruptIndexRef.current, attempts + 1);
+                        return;
+                    }
+                } catch (e) {
+                    interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
+                    checkAndShowInterrupt(interruptIndexRef.current, attempts + 1);
+                    return;
+                }
+            }
+
+            // Show this interrupt
+            setCurrentInterrupt(idx % currentInterrupts.length);
+            interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
+
+            // Set timer for this interrupt's duration
+            const interruptDuration = (item.duration || 30) * 1000;
+            interruptTimerRef.current = setTimeout(() => {
+                if (item.chain) {
+                    // Show next interrupt immediately
+                    checkAndShowInterrupt(interruptIndexRef.current, 0);
+                } else {
+                    // Go back to main stream, then schedule next interrupt
+                    setCurrentInterrupt(-1);
+                    cycleTimerRef.current = setTimeout(() => checkAndShowInterrupt(interruptIndexRef.current, 0), mainDuration);
+                }
+            }, interruptDuration);
         };
 
-        startCycle();
+        // Start: show main for mainDuration, then first interrupt
+        setCurrentInterrupt(-1);
+        cycleTimerRef.current = setTimeout(() => checkAndShowInterrupt(interruptIndexRef.current, 0), mainDuration);
 
         return () => {
             if (cycleTimerRef.current) clearTimeout(cycleTimerRef.current);
             if (interruptTimerRef.current) clearTimeout(interruptTimerRef.current);
         };
-    }, [interrupts, mainStream]);
+    }, [interrupts.length]); // Only re-run if the number of interrupts changes
 
     // Operating hours: stop at 10pm, reload at 10am
     const [outsideHours, setOutsideHours] = useState(false);
