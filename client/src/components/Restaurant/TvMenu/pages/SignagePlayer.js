@@ -301,7 +301,7 @@ const SignagePlayer = () => {
     const phaseRef = useRef('main'); // 'main' or 'interrupt'
     const phaseStartRef = useRef(Date.now());
     const currentInterruptRef = useRef(-1);
-    const skipCheckedRef = useRef(false);
+    const tickBusyRef = useRef(false);
 
     useEffect(() => {
         if (interrupts.length === 0) return;
@@ -309,116 +309,109 @@ const SignagePlayer = () => {
         const mainDuration = (mainStream?.duration || 300) * 1000;
 
         const tick = async () => {
+            // Prevent re-entry while async work is happening
+            if (tickBusyRef.current) return;
+
             const now = Date.now();
             const elapsed = now - phaseStartRef.current;
-            const currentInterrupts = interruptsRef.current;
+            const items = interruptsRef.current;
 
             if (phaseRef.current === 'main') {
-                // In main stream phase — check if it's time to show an interrupt
-                if (elapsed >= mainDuration) {
-                    // Find next valid interrupt
+                if (elapsed < mainDuration) return; // Still showing main stream
+
+                // Time to find next interrupt
+                tickBusyRef.current = true;
+                let idx = interruptIndexRef.current;
+                let found = false;
+
+                for (let attempts = 0; attempts < items.length; attempts++) {
+                    const item = items[idx % items.length];
+                    let skip = false;
+
+                    if (item.checkApi) {
+                        try {
+                            const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
+                            const data = await res.json();
+                            if (!data || (Array.isArray(data) && data.length === 0)) skip = true;
+                        } catch (e) { skip = true; }
+                    }
+
+                    if (skip) {
+                        idx = (idx + 1) % items.length;
+                        continue;
+                    }
+
+                    // Show this interrupt
+                    currentInterruptRef.current = idx % items.length;
+                    interruptIndexRef.current = (idx + 1) % items.length;
+                    phaseRef.current = 'interrupt';
+                    phaseStartRef.current = Date.now();
+                    setCurrentInterrupt(currentInterruptRef.current);
+                    found = true;
+                    break;
+                }
+
+                if (!found) {
+                    // All skipped, reset main timer
+                    phaseStartRef.current = Date.now();
+                }
+                tickBusyRef.current = false;
+
+            } else {
+                // In interrupt phase
+                const item = items[currentInterruptRef.current];
+                const dur = (item?.duration || 30) * 1000;
+
+                if (elapsed < dur) return; // Still showing interrupt
+
+                // Time's up for this interrupt
+                if (item?.chain) {
+                    // Find next chained interrupt
+                    tickBusyRef.current = true;
                     let idx = interruptIndexRef.current;
-                    let attempts = 0;
                     let found = false;
 
-                    while (attempts < currentInterrupts.length) {
-                        const item = currentInterrupts[idx % currentInterrupts.length];
-                        let shouldSkip = false;
+                    for (let attempts = 0; attempts < items.length; attempts++) {
+                        const nextItem = items[idx % items.length];
+                        let skip = false;
 
-                        if (item.checkApi) {
+                        if (nextItem.checkApi) {
                             try {
-                                const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
+                                const res = await fetch(`${API_BASE_URL}${nextItem.checkApi}`);
                                 const data = await res.json();
-                                if (!data || (Array.isArray(data) && data.length === 0)) {
-                                    shouldSkip = true;
-                                }
-                            } catch (e) {
-                                shouldSkip = true;
-                            }
+                                if (!data || (Array.isArray(data) && data.length === 0)) skip = true;
+                            } catch (e) { skip = true; }
                         }
 
-                        if (shouldSkip) {
-                            idx = (idx + 1) % currentInterrupts.length;
-                            attempts++;
+                        if (skip) {
+                            idx = (idx + 1) % items.length;
                             continue;
                         }
 
-                        // Show this interrupt
-                        currentInterruptRef.current = idx % currentInterrupts.length;
-                        interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
-                        setCurrentInterrupt(currentInterruptRef.current);
-                        phaseRef.current = 'interrupt';
+                        currentInterruptRef.current = idx % items.length;
+                        interruptIndexRef.current = (idx + 1) % items.length;
                         phaseStartRef.current = Date.now();
+                        setCurrentInterrupt(currentInterruptRef.current);
                         found = true;
                         break;
                     }
 
                     if (!found) {
-                        // All interrupts skipped — reset main timer
-                        phaseStartRef.current = Date.now();
-                    }
-                }
-            } else {
-                // In interrupt phase — check if duration has elapsed
-                const item = currentInterrupts[currentInterruptRef.current];
-                const interruptDuration = (item?.duration || 30) * 1000;
-
-                if (elapsed >= interruptDuration) {
-                    if (item?.chain) {
-                        // Immediately show next interrupt
-                        let idx = interruptIndexRef.current;
-                        let attempts = 0;
-                        let found = false;
-
-                        while (attempts < currentInterrupts.length) {
-                            const nextItem = currentInterrupts[idx % currentInterrupts.length];
-                            let shouldSkip = false;
-
-                            if (nextItem.checkApi) {
-                                try {
-                                    const res = await fetch(`${API_BASE_URL}${nextItem.checkApi}`);
-                                    const data = await res.json();
-                                    if (!data || (Array.isArray(data) && data.length === 0)) {
-                                        shouldSkip = true;
-                                    }
-                                } catch (e) {
-                                    shouldSkip = true;
-                                }
-                            }
-
-                            if (shouldSkip) {
-                                idx = (idx + 1) % currentInterrupts.length;
-                                attempts++;
-                                continue;
-                            }
-
-                            currentInterruptRef.current = idx % currentInterrupts.length;
-                            interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
-                            setCurrentInterrupt(currentInterruptRef.current);
-                            phaseStartRef.current = Date.now();
-                            found = true;
-                            break;
-                        }
-
-                        if (!found) {
-                            // All chained items skipped — back to main
-                            phaseRef.current = 'main';
-                            phaseStartRef.current = Date.now();
-                            setCurrentInterrupt(-1);
-                        }
-                    } else {
-                        // Back to main stream
                         phaseRef.current = 'main';
                         phaseStartRef.current = Date.now();
                         setCurrentInterrupt(-1);
                     }
+                    tickBusyRef.current = false;
+                } else {
+                    // Back to main
+                    phaseRef.current = 'main';
+                    phaseStartRef.current = Date.now();
+                    setCurrentInterrupt(-1);
                 }
             }
         };
 
-        // Check every second
         const intervalId = setInterval(tick, 1000);
-
         return () => clearInterval(intervalId);
     }, [interrupts.length]);
 
