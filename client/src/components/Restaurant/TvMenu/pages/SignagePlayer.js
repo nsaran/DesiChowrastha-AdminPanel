@@ -293,73 +293,134 @@ const SignagePlayer = () => {
         };
     }, [tvId, restaurantId, fetchPlaylist]);
 
-    // Cycle interrupts periodically
-    // Show main stream for mainStream.duration (default 300s), then show next interrupt
+    // Cycle interrupts using a tick-based approach
     const interruptsRef = useRef(interrupts);
     interruptsRef.current = interrupts;
     const mainStreamRef = useRef(mainStream);
     mainStreamRef.current = mainStream;
+    const phaseRef = useRef('main'); // 'main' or 'interrupt'
+    const phaseStartRef = useRef(Date.now());
+    const currentInterruptRef = useRef(-1);
+    const skipCheckedRef = useRef(false);
 
     useEffect(() => {
         if (interrupts.length === 0) return;
 
         const mainDuration = (mainStream?.duration || 300) * 1000;
 
-        const checkAndShowInterrupt = async (idx, attempts) => {
+        const tick = async () => {
+            const now = Date.now();
+            const elapsed = now - phaseStartRef.current;
             const currentInterrupts = interruptsRef.current;
-            if (attempts >= currentInterrupts.length) {
-                // All skipped — go back to main
-                setCurrentInterrupt(-1);
-                cycleTimerRef.current = setTimeout(() => checkAndShowInterrupt(interruptIndexRef.current, 0), mainDuration);
-                return;
-            }
 
-            const item = currentInterrupts[idx % currentInterrupts.length];
+            if (phaseRef.current === 'main') {
+                // In main stream phase — check if it's time to show an interrupt
+                if (elapsed >= mainDuration) {
+                    // Find next valid interrupt
+                    let idx = interruptIndexRef.current;
+                    let attempts = 0;
+                    let found = false;
 
-            // Check if item should be skipped
-            if (item.checkApi) {
-                try {
-                    const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
-                    const data = await res.json();
-                    if (!data || (Array.isArray(data) && data.length === 0)) {
+                    while (attempts < currentInterrupts.length) {
+                        const item = currentInterrupts[idx % currentInterrupts.length];
+                        let shouldSkip = false;
+
+                        if (item.checkApi) {
+                            try {
+                                const res = await fetch(`${API_BASE_URL}${item.checkApi}`);
+                                const data = await res.json();
+                                if (!data || (Array.isArray(data) && data.length === 0)) {
+                                    shouldSkip = true;
+                                }
+                            } catch (e) {
+                                shouldSkip = true;
+                            }
+                        }
+
+                        if (shouldSkip) {
+                            idx = (idx + 1) % currentInterrupts.length;
+                            attempts++;
+                            continue;
+                        }
+
+                        // Show this interrupt
+                        currentInterruptRef.current = idx % currentInterrupts.length;
                         interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
-                        checkAndShowInterrupt(interruptIndexRef.current, attempts + 1);
-                        return;
+                        setCurrentInterrupt(currentInterruptRef.current);
+                        phaseRef.current = 'interrupt';
+                        phaseStartRef.current = Date.now();
+                        found = true;
+                        break;
                     }
-                } catch (e) {
-                    interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
-                    checkAndShowInterrupt(interruptIndexRef.current, attempts + 1);
-                    return;
+
+                    if (!found) {
+                        // All interrupts skipped — reset main timer
+                        phaseStartRef.current = Date.now();
+                    }
+                }
+            } else {
+                // In interrupt phase — check if duration has elapsed
+                const item = currentInterrupts[currentInterruptRef.current];
+                const interruptDuration = (item?.duration || 30) * 1000;
+
+                if (elapsed >= interruptDuration) {
+                    if (item?.chain) {
+                        // Immediately show next interrupt
+                        let idx = interruptIndexRef.current;
+                        let attempts = 0;
+                        let found = false;
+
+                        while (attempts < currentInterrupts.length) {
+                            const nextItem = currentInterrupts[idx % currentInterrupts.length];
+                            let shouldSkip = false;
+
+                            if (nextItem.checkApi) {
+                                try {
+                                    const res = await fetch(`${API_BASE_URL}${nextItem.checkApi}`);
+                                    const data = await res.json();
+                                    if (!data || (Array.isArray(data) && data.length === 0)) {
+                                        shouldSkip = true;
+                                    }
+                                } catch (e) {
+                                    shouldSkip = true;
+                                }
+                            }
+
+                            if (shouldSkip) {
+                                idx = (idx + 1) % currentInterrupts.length;
+                                attempts++;
+                                continue;
+                            }
+
+                            currentInterruptRef.current = idx % currentInterrupts.length;
+                            interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
+                            setCurrentInterrupt(currentInterruptRef.current);
+                            phaseStartRef.current = Date.now();
+                            found = true;
+                            break;
+                        }
+
+                        if (!found) {
+                            // All chained items skipped — back to main
+                            phaseRef.current = 'main';
+                            phaseStartRef.current = Date.now();
+                            setCurrentInterrupt(-1);
+                        }
+                    } else {
+                        // Back to main stream
+                        phaseRef.current = 'main';
+                        phaseStartRef.current = Date.now();
+                        setCurrentInterrupt(-1);
+                    }
                 }
             }
-
-            // Show this interrupt
-            setCurrentInterrupt(idx % currentInterrupts.length);
-            interruptIndexRef.current = (idx + 1) % currentInterrupts.length;
-
-            // Set timer for this interrupt's duration
-            const interruptDuration = (item.duration || 30) * 1000;
-            interruptTimerRef.current = setTimeout(() => {
-                if (item.chain) {
-                    // Show next interrupt immediately
-                    checkAndShowInterrupt(interruptIndexRef.current, 0);
-                } else {
-                    // Go back to main stream, then schedule next interrupt
-                    setCurrentInterrupt(-1);
-                    cycleTimerRef.current = setTimeout(() => checkAndShowInterrupt(interruptIndexRef.current, 0), mainDuration);
-                }
-            }, interruptDuration);
         };
 
-        // Start: show main for mainDuration, then first interrupt
-        setCurrentInterrupt(-1);
-        cycleTimerRef.current = setTimeout(() => checkAndShowInterrupt(interruptIndexRef.current, 0), mainDuration);
+        // Check every second
+        const intervalId = setInterval(tick, 1000);
 
-        return () => {
-            if (cycleTimerRef.current) clearTimeout(cycleTimerRef.current);
-            if (interruptTimerRef.current) clearTimeout(interruptTimerRef.current);
-        };
-    }, [interrupts.length]); // Only re-run if the number of interrupts changes
+        return () => clearInterval(intervalId);
+    }, [interrupts.length]);
 
     // Operating hours: stop at 10pm, reload at 10am
     const [outsideHours, setOutsideHours] = useState(false);
@@ -369,18 +430,16 @@ const SignagePlayer = () => {
             const hour = new Date().getHours();
             if (hour >= 22 || hour < 10) {
                 setOutsideHours(true);
-                // Pause YouTube if playing
                 if (ytPlayerRef.current) {
                     try { ytPlayerRef.current.pauseVideo(); } catch (e) {}
                 }
             } else if (outsideHours) {
-                // It's now within hours and we were outside — reload the page
                 window.location.reload();
             }
         };
 
         checkHours();
-        const interval = setInterval(checkHours, 60000); // check every minute
+        const interval = setInterval(checkHours, 60000);
         return () => clearInterval(interval);
     }, [outsideHours]);
 
