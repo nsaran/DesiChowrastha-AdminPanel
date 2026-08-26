@@ -963,6 +963,134 @@ app.get('/api/signage/stream', (req, res) => {
     });
 });
 
+// Send invoice PDF to customer via WhatsApp Business API
+const invoiceUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
+
+app.post('/api/send-invoice-whatsapp', invoiceUpload.single('pdf'), async (req, res) => {
+    try {
+        const { phoneNumber, customerName, invoiceNumber, location, recipient } = req.body;
+
+        if (!phoneNumber || !location || !req.file) {
+            return res.status(400).json({ error: 'phoneNumber, location, and pdf file are required' });
+        }
+
+        const locationKey = location.toUpperCase();
+        const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
+        const phoneNumberId = locationKey === 'NASHUA'
+            ? process.env.WA_PHONE_NUMBER_ID_NASHUA
+            : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
+
+        if (!WA_ACCESS_TOKEN || !phoneNumberId) {
+            logger.error(`WhatsApp API not configured for location: ${locationKey}`);
+            return res.status(500).json({ error: `WhatsApp API not configured for ${locationKey}` });
+        }
+
+        // Step 1: Upload PDF to WhatsApp Media API
+        const FormData = require('form-data');
+        const formData = new FormData();
+        formData.append('file', req.file.buffer, {
+            filename: `Invoice_${invoiceNumber || 'DC'}.pdf`,
+            contentType: 'application/pdf'
+        });
+        formData.append('messaging_product', 'whatsapp');
+        formData.append('type', 'application/pdf');
+
+        const mediaResponse = await axios.post(
+            `https://graph.facebook.com/v21.0/${phoneNumberId}/media`,
+            formData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${WA_ACCESS_TOKEN}`,
+                    ...formData.getHeaders()
+                }
+            }
+        );
+
+        const mediaId = mediaResponse.data.id;
+        if (!mediaId) {
+            return res.status(500).json({ error: 'Failed to upload PDF to WhatsApp Media API' });
+        }
+
+        logger.info(`Invoice PDF uploaded to WhatsApp Media. Media ID: ${mediaId}`);
+
+        // Step 2: Determine recipient phone number(s)
+        let recipients = [];
+        if (recipient === 'owner') {
+            const ownerNumbers = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+            if (ownerNumbers.length === 0) {
+                return res.status(400).json({ error: 'OWNER_PHONE_NUMBER not configured' });
+            }
+            recipients = ownerNumbers;
+        } else {
+            recipients = [phoneNumber];
+        }
+
+        // Step 3: Send template message with media_id
+        const messagesUrl = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
+        const results = [];
+
+        for (const recipientPhone of recipients) {
+            const payload = {
+                messaging_product: 'whatsapp',
+                to: recipientPhone,
+                type: 'template',
+                template: {
+                    name: 'party_order_invoice',
+                    language: { code: process.env.WA_TEMPLATE_LANGUAGE || 'en' },
+                    components: [
+                        {
+                            type: 'header',
+                            parameters: [
+                                {
+                                    type: 'document',
+                                    document: {
+                                        id: mediaId,
+                                        filename: `Invoice_${invoiceNumber || 'DC'}.pdf`
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type: 'body',
+                            parameters: [
+                                { type: 'text', text: customerName || 'Customer' },
+                                { type: 'text', text: invoiceNumber || '' }
+                            ]
+                        }
+                    ]
+                }
+            };
+
+            try {
+                const response = await axios.post(messagesUrl, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${WA_ACCESS_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const messageId = response.data.messages?.[0]?.id;
+                logger.info(`Invoice WhatsApp sent to ${recipientPhone} for invoice #${invoiceNumber}. Message ID: ${messageId}`);
+                results.push({ phone: recipientPhone, success: true, messageId });
+            } catch (sendError) {
+                const errorMsg = sendError.response?.data?.error?.message || sendError.message;
+                logger.error(`Failed to send invoice to ${recipientPhone}: ${errorMsg}`);
+                results.push({ phone: recipientPhone, success: false, error: errorMsg });
+            }
+        }
+
+        const successCount = results.filter(r => r.success).length;
+        if (successCount === 0) {
+            return res.status(500).json({ error: 'Failed to send invoice to all recipients' });
+        }
+
+        res.json({ success: true, results });
+    } catch (error) {
+        const errorMsg = error.response?.data?.error?.message || error.message;
+        logger.error(`Failed to send invoice via WhatsApp: ${errorMsg}`);
+        res.status(500).json({ error: errorMsg });
+    }
+});
+
 app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
     // Initialize the scheduler after server starts

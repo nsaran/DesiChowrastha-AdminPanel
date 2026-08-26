@@ -312,6 +312,7 @@ const SignagePlayer = () => {
             // Prevent re-entry while async work is happening
             if (tickBusyRef.current) return;
 
+            try {
             const now = Date.now();
             const elapsed = now - phaseStartRef.current;
             const items = interruptsRef.current;
@@ -355,7 +356,6 @@ const SignagePlayer = () => {
                     // All skipped, reset main timer
                     phaseStartRef.current = Date.now();
                 }
-                tickBusyRef.current = false;
 
             } else {
                 // In interrupt phase
@@ -401,13 +401,17 @@ const SignagePlayer = () => {
                         phaseStartRef.current = Date.now();
                         setCurrentInterrupt(-1);
                     }
-                    tickBusyRef.current = false;
                 } else {
                     // Back to main
                     phaseRef.current = 'main';
                     phaseStartRef.current = Date.now();
                     setCurrentInterrupt(-1);
                 }
+            }
+            } catch (e) {
+                console.error('[Signage tick error]', e);
+            } finally {
+                tickBusyRef.current = false;
             }
         };
 

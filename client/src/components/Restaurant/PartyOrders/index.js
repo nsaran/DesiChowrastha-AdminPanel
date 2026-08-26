@@ -90,7 +90,7 @@ const RestaurantPartyOrdersComponent = () => {
                     });
                 }
 
-                setPartyOrdersData(filteredOrders);
+                setPartyOrdersData(filteredOrders.sort((a, b) => new Date(b.cOrderDate) - new Date(a.cOrderDate)));
                 setLoading(false);
             }, error => {
                 setLoading(false);

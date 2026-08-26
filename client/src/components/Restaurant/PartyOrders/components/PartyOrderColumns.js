@@ -1,12 +1,11 @@
-//  before changes to party order columns.js
-import { EditOutlined, DeleteOutlined, MenuOutlined, InfoCircleOutlined, FilePdfOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, MenuOutlined, InfoCircleOutlined, FilePdfOutlined, WhatsAppOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Popconfirm, message } from 'antd';
 import React from 'react';
 import { calculateAmountDue } from '../utils/calculations';
 import { generateInvoicePdf } from '../utils/invoice';
-import { storage } from '../../../../config/firebase';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../../../../config/api';
 
 const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData }) => {
     const { restaurantId } = useParams();
@@ -16,46 +15,38 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
         setModalVisible(true);
     };
 
-    const handleShareInvoice = async (record) => {
+    const handleShareInvoice = async (record, recipient) => {
         try {
+            message.loading({ content: `Sending invoice to ${recipient}...`, key: 'shareInvoice' });
+
             // Step 1: Generate PDF
-            const pdfBlob = generateInvoicePdf(record, true); // Updated to return Blob
-    
-            // Step 2: Upload PDF to Firebase Storage
-            const storageRef = storage.ref();
-            const pdfRef = storageRef.child(`invoices/partyOrders/${restaurantId}/Invoice_${record.cInvoiceNumber}.pdf`);
-            await pdfRef.put(pdfBlob);
-            const pdfUrl = await pdfRef.getDownloadURL();
-    
-            // Step 3: Shorten URL with Bitly
-            let shortUrl;
+            let pdfBlob;
             try {
-                const bitlyToken = 'd2853d35c790f2ad177d533931635b1055f4f844';
-                const bitlyApi = `https://api-ssl.bitly.com/v4/shorten`;
-                const bitlyResponse = await axios.post(
-                    bitlyApi,
-                    { long_url: pdfUrl },
-                    { headers: { Authorization: `Bearer ${bitlyToken}` } }
-                );
-                shortUrl = bitlyResponse.data.link;
-                console.log(shortUrl);
-            } catch (bitlyError) {
-                console.error('Error shortening URL with Bitly:', bitlyError);
-                message.error('Failed to shorten the URL.');
+                pdfBlob = generateInvoicePdf(record, true);
+            } catch (pdfError) {
+                console.error('PDF generation failed:', pdfError);
+                message.error({ content: 'Failed to generate invoice PDF.', key: 'shareInvoice' });
                 return;
             }
     
-            // Step 4: Send URL to WhatsApp
-            const whatsappMessage = `Hello ${record.cName}, your invoice is ready. You can view it here: ${shortUrl}`;
-            console.log(whatsappMessage);
-            const whatsappUrl = `https://wa.me/${record.cPhoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+            // Step 2: Send PDF to server which uploads to WhatsApp Media API and sends the message
+            const formData = new FormData();
+            formData.append('pdf', pdfBlob, `Invoice_${record.cInvoiceNumber}.pdf`);
+            formData.append('phoneNumber', record.cPhoneNumber);
+            formData.append('customerName', record.cName);
+            formData.append('invoiceNumber', record.cInvoiceNumber);
+            formData.append('location', restaurantId);
+            formData.append('recipient', recipient);
 
-            window.open(whatsappUrl, '_blank');
-    
-            message.success('Invoice shared successfully on WhatsApp!');
+            await axios.post(`${API_BASE_URL}/api/send-invoice-whatsapp`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            message.success({ content: `Invoice sent to ${recipient}!`, key: 'shareInvoice' });
         } catch (error) {
             console.error('Error sharing invoice:', error);
-            message.error('Failed to share the invoice.');
+            const errorMsg = error.response?.data?.error || 'Failed to send invoice via WhatsApp.';
+            message.error({ content: errorMsg, key: 'shareInvoice' });
         }
     };    
 
@@ -199,8 +190,14 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
                             <Button type="link" icon={<FilePdfOutlined />}>Generate Invoice</Button>
                         </Menu.Item>
                         <Menu.Divider />
-                        <Menu.Item key="shareInvoice" onClick={() => handleShareInvoice(record)}>
-                            <Button type="link" icon={<WhatsAppOutlined />}>Share Invoice</Button>
+                        <Menu.Item key="shareInvoice" disabled style={{ padding: 0, cursor: 'default' }}>
+                            <Button type="link" icon={<WhatsAppOutlined />} style={{ cursor: 'default' }}>Share Invoice</Button>
+                        </Menu.Item>
+                        <Menu.Item key="shareCustomer" onClick={() => handleShareInvoice(record, 'customer')}>
+                            <Button type="link" icon={<UserOutlined />} style={{ paddingLeft: 24 }}>To Customer</Button>
+                        </Menu.Item>
+                        <Menu.Item key="shareOwner" onClick={() => handleShareInvoice(record, 'owner')}>
+                            <Button type="link" icon={<TeamOutlined />} style={{ paddingLeft: 24 }}>To Owner</Button>
                         </Menu.Item>
                         <Menu.Divider />
                         <Menu.Item key="edit" onClick={() => handleModalOpen(record)}>
