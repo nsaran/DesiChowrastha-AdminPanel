@@ -11,6 +11,7 @@ const { initializeScheduler, getJobs, upsertJob, deleteJob, triggerJob } = requi
 const { addSubscriber } = require('./services/googleSheetsService');
 const NodeCache = require("node-cache");
 const logger = require('./utils/logger');
+const userManagementRoutes = require('./routes/userManagement');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -34,6 +35,9 @@ const generalLimiter = rateLimit({
     message: { error: 'Too many requests, please try again later.' }
 });
 app.use('/api', generalLimiter);
+
+// User management routes (owner only, protected by Firebase Auth)
+app.use('/api/users', userManagementRoutes);
 
 // Strict limit for feedback: 5 per 15 minutes per IP
 const feedbackLimiter = rateLimit({
@@ -965,8 +969,9 @@ app.get('/api/signage/stream', (req, res) => {
 
 // Send invoice PDF to customer via WhatsApp Business API
 const invoiceUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
+const { verifyToken, requireRole } = require('./middleware/auth');
 
-app.post('/api/send-invoice-whatsapp', invoiceUpload.single('pdf'), async (req, res) => {
+app.post('/api/send-invoice-whatsapp', verifyToken, requireRole(['owner']), invoiceUpload.single('pdf'), async (req, res) => {
     try {
         const { phoneNumber, customerName, invoiceNumber, location, recipient } = req.body;
 

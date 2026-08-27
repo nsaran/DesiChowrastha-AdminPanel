@@ -187,7 +187,7 @@ const AdminDashboard = () => {
       dataIndex: 'name',
       key: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
-      render: (text, record) => <Link to={`/login/${record.id}`}>{text}</Link>,
+      render: (text, record) => <Link to={`/dashboard/${record.id}`}>{text}</Link>,
     },
     {
       title: 'Email',
@@ -221,7 +221,10 @@ const AdminDashboard = () => {
   const popoverContent = (
     <div>
       <p>{adminEmail}</p>
-      <Button onClick={handleLogout} icon={<LogoutOutlined />} danger>
+      <Button onClick={() => navigate('/dashboard/manage-users')} icon={<UserOutlined />} style={{ marginBottom: 8, width: '100%' }}>
+        Manage Users
+      </Button>
+      <Button onClick={handleLogout} icon={<LogoutOutlined />} danger style={{ width: '100%' }}>
         Logout
       </Button>
     </div>
@@ -241,7 +244,7 @@ const AdminDashboard = () => {
           <div className="responsive-table" style={{ marginTop: '48px' }}>
             {restaurants.map((restaurant) => (
               <Card key={restaurant.id} className="restaurant-card">
-                <Link to={`/login/${restaurant.id}`} className="restaurant-link">
+                <Link to={`/dashboard/${restaurant.id}`} className="restaurant-link">
                   <h3>{restaurant.name}</h3>
                 </Link>
                 <Divider />

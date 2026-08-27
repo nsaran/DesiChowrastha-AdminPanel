@@ -106,3 +106,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Firebase Service Account Key
+serviceAccountKey.json
+**/serviceAccountKey.json

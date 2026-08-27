@@ -1,6 +1,6 @@
 {
   "restaurantGuid": "bda948cd-2639-41ce-85a0-25b01e7b6839",
-  "lastUpdated": "2026-08-05T21:47:17.171+0000",
+  "lastUpdated": "2026-08-10T13:47:11.457+0000",
   "restaurantTimeZone": "America/New_York",
   "menus": [
     {
@@ -194,6 +194,10 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
                 }
@@ -313,6 +317,10 @@
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
               "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
                 {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
@@ -450,8 +458,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 }
               ],
               "plu": "",
@@ -512,6 +528,10 @@
                 {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 }
               ],
               "plu": "",
@@ -572,6 +592,14 @@
                 {
                   "name": "Veg",
                   "guid": "0eafc99f-b11e-4dcf-a8aa-ffa32587e8ef"
+                },
+                {
+                  "name": "VEGAN",
+                  "guid": "4c87863e-18f5-40c1-b0dd-80b8849f0bf9"
+                },
+                {
+                  "name": "LACTOSE_FREE",
+                  "guid": "b6cb0fb5-bb49-4d7e-91d9-faf53b7e685a"
                 }
               ],
               "plu": "",
@@ -2170,6 +2198,14 @@
           ],
           "itemTags": [
             {
+              "name": "GLUTON_FREE",
+              "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+            },
+            {
+              "name": "NUTS_FREE",
+              "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+            },
+            {
               "name": "Medium",
               "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
             },
@@ -2208,6 +2244,10 @@
                 {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Non-Veg",
@@ -2274,6 +2314,10 @@
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 },
                 {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -2338,6 +2382,10 @@
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
                 },
                 {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                },
+                {
                   "name": "Non-Veg",
                   "guid": "895d92a1-6068-463e-a6ad-df3b63c533ac"
                 }
@@ -2398,8 +2446,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Non-Veg",
@@ -2462,8 +2518,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Non-Veg",
@@ -2524,7 +2588,16 @@
                 "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
                 "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
               ],
-              "itemTags": [],
+              "itemTags": [
+                {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
+                }
+              ],
               "plu": "",
               "sku": "",
               "calories": null,
@@ -2581,8 +2654,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Non-Veg",
@@ -2645,8 +2726,16 @@
               ],
               "itemTags": [
                 {
+                  "name": "GLUTON_FREE",
+                  "guid": "8adbbc51-ec8c-416d-9699-8729a6844460"
+                },
+                {
                   "name": "Medium",
                   "guid": "0fd3fa83-8433-462a-be96-2745ca4dc654"
+                },
+                {
+                  "name": "NUTS_FREE",
+                  "guid": "9aeb2f00-bcb0-4973-92cf-27fe3fb9e597"
                 },
                 {
                   "name": "Non-Veg",
@@ -14752,63 +14841,6 @@
               "posName": "",
               "guid": "9b836653-a36e-4f96-8e8f-9658743ec8f9",
               "multiLocationId": "600000054122894437",
-              "masterId": 600000054122894500,
-              "description": "",
-              "image": null,
-              "visibility": [
-                "ORDERING_PARTNERS",
-                "TOAST_ONLINE_ORDERING",
-                "POS",
-                "KIOSK"
-              ],
-              "price": 62.99,
-              "pricingStrategy": "BASE_PRICE",
-              "pricingRules": null,
-              "isDeferred": false,
-              "isDiscountable": true,
-              "salesCategory": null,
-              "taxInfo": [
-                "02fbd90d-d9e0-4be6-9a50-c2cdd6a7f1f4",
-                "1eedd0c6-d6e4-48a6-9d17-8312d8de163a"
-              ],
-              "itemTags": [],
-              "plu": "",
-              "sku": "",
-              "calories": null,
-              "unitOfMeasure": "NONE",
-              "portions": [],
-              "modifierGroupReferences": [
-                93
-              ],
-              "kitchenName": "",
-              "prepTime": null,
-              "prepStations": [],
-              "contentAdvisories": {
-                "alcohol": {
-                  "containsAlcohol": null
-                }
-              },
-              "guestCount": null,
-              "length": null,
-              "width": null,
-              "height": null,
-              "weight": null,
-              "weightUnitOfMeasure": null,
-              "dimensionUnitOfMeasure": null,
-              "images": [],
-              "sortOrder": null,
-              "allergens": [],
-              "isComboParent": null,
-              "taxInclusion": "TAX_NOT_INCLUDED",
-              "posButtonColorLight": "#f7f7f7",
-              "posButtonColorDark": "#1a1c23",
-              "eligiblePaymentAssistancePrograms": []
-            },
-            {
-              "name": "Shrimp Biryani Family Pack",
-              "posName": "",
-              "guid": "b74fc7af-c72d-45b8-900e-95ea76d52d62",
-              "multiLocationId": "600000054122894439",
               "masterId": 600000054122894500,
               "description": "",
               "image": null,

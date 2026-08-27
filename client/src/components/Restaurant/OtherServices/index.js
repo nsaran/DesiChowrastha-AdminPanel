@@ -34,10 +34,10 @@ const OtherServices = () => {
                     <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('OtherServices/OrderStatus')}>Order Status</Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('TabletMenu')}>Tablet Menu</Button>
+                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('OtherServices/TabletMenu')}>Tablet Menu</Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('QRCodes')}>QR Codes</Button>
+                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('OtherServices/QRCodes')}>QR Codes</Button>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('OtherServices/ManageSignage')}>Manage Signage</Button>

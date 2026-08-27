@@ -1,10 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthProvider';
-import ProtectedRoute from './utils/ProtectedRoute';
+import RoleProtectedRoute from './utils/RoleProtectedRoute';
 import AdminRegister from './components/Auth/AdminRegister';
 import AdminLogin from './components/Auth/AdminLogin';
 import AdminDashboard from './components/Auth/AdminDashboard';
+import ManageUsers from './components/Auth/ManageUsers';
+import Unauthorized from './components/Auth/Unauthorized';
 import RestaurantLoginPage from './components/Restaurant/Auth';
 import RestaurantDashboard from './components/Restaurant/Dashboard';
 import RestaurantPartyOrdersComponent from './components/Restaurant/PartyOrders';
@@ -48,25 +50,21 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Routes>
+          {/* Public routes */}
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/login" element={<AdminLogin />} />
           <Route path="/register" element={<AdminRegister />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/login/:restaurantId" element={<RestaurantLoginPage />} />
-          <Route path="/dashboard/:restaurantId" element={<RestaurantDashboard />} />
-          <Route path="/dashboard/:restaurantId/partyorders" element={<RestaurantPartyOrdersComponent />} />
-          <Route path="/dashboard/:restaurantId/inventoryManagement" element={<InventoryManagementComponent />} />
-          <Route path="/dashboard/:restaurantId/inventoryApproval" element={<InventoryApprovalComponent />} />
-          <Route path="/dashboard/:restaurantId/menu" element={<MenuComponent />} />
-          <Route path="/dashboard/:restaurantId/filler" element={<FillerComponent />} />
-          <Route path="/dashboard/:restaurantId/orders" element={<OrdersComponent />} />
+
+          {/* Customer-facing routes (no auth required) */}
+          <Route path="/dashboard/:restaurantId/OtherServices/TabletMenu" element={<TabletMenu />} />
+          <Route path="/dashboard/:restaurantId/OtherServices/QRCodes" element={<QRCodes />} />
+          <Route path="/dashboard/:restaurantId/OtherServices/OrderStatus" element={<OrderStatus />} />
+          <Route path="/dashboard/:restaurantId/OtherServices/CustomerFeedback" element={<TvMenuErrorBoundary><CustomerFeedback /></TvMenuErrorBoundary>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/TodaysSpecial" element={<TvMenuErrorBoundary><TodaysSpecial /></TvMenuErrorBoundary>} />
+
+          {/* TV display routes (no auth - these run on restaurant TVs) */}
           <Route path="/dashboard/:restaurantId/TVMenu" element={<TvMenu />} />
           <Route path="/dashboard/:restaurantId/TVMenu/Page1" element={<TvMenuErrorBoundary><Page1 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/Page2" element={<TvMenuErrorBoundary><Page2 /></TvMenuErrorBoundary>} />
@@ -78,22 +76,32 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage4" element={<TvMenuErrorBoundary><MenuPage4 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/MenuPage5" element={<TvMenuErrorBoundary><MenuPage5 /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/TVMenu/BarMenu" element={<TvMenuErrorBoundary><BarMenu /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/OtherServices/CustomerFeedback" element={<TvMenuErrorBoundary><CustomerFeedback /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/OtherServices/TodaysSpecial" element={<TvMenuErrorBoundary><TodaysSpecial /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/customTvMenu" element={<CustomTvMenuLanding />} />
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
-          <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<ChefsKitchen />} />
-          <Route path="/dashboard/:restaurantId/customMenu" element={<CustomMenu />}/>
-          <Route path="/dashboard/:restaurantId/OtherServices" element={<OtherServices />} />
-          <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary>} />
-          <Route path="/dashboard/:restaurantId/OtherServices/WhatsAppOrders" element={<WhatsAppOrders />}/>
-          <Route path="/dashboard/:restaurantId/OtherServices/OrderStatus" element={<OrderStatus />}/>
-          <Route path="/dashboard/:restaurantId/TabletMenu" element={<TabletMenu />}/>
-          <Route path="/dashboard/:restaurantId/QRCodes" element={<QRCodes />}/>
-          <Route path="/dashboard/:restaurantId/signage" element={<TvMenuErrorBoundary><SignagePlayer /></TvMenuErrorBoundary>}/>
-          <Route path="/dashboard/:restaurantId/OtherServices/ManageSignage" element={<ManageSignage />}/>
-          <Route path="/dashboard/:restaurantId/OtherServices/StockOrders" element={<StockOrders />}/>
+          <Route path="/dashboard/:restaurantId/signage" element={<TvMenuErrorBoundary><SignagePlayer /></TvMenuErrorBoundary>} />
+
+          {/* Owner only routes */}
+          <Route path="/dashboard" element={<RoleProtectedRoute allowedRoles={['owner']}><AdminDashboard /></RoleProtectedRoute>} />
+          <Route path="/dashboard/manage-users" element={<RoleProtectedRoute allowedRoles={['owner']}><ManageUsers /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><RestaurantDashboard /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/partyorders" element={<RoleProtectedRoute allowedRoles={['owner']}><RestaurantPartyOrdersComponent /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/inventoryManagement" element={<RoleProtectedRoute allowedRoles={['owner']}><InventoryManagementComponent /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/inventoryApproval" element={<RoleProtectedRoute allowedRoles={['owner']}><InventoryApprovalComponent /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/orders" element={<RoleProtectedRoute allowedRoles={['owner']}><OrdersComponent /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/filler" element={<RoleProtectedRoute allowedRoles={['owner']}><FillerComponent /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<RoleProtectedRoute allowedRoles={['owner']}><ChefsKitchen /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/customMenu" element={<RoleProtectedRoute allowedRoles={['owner']}><CustomMenu /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><OtherServices /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<RoleProtectedRoute allowedRoles={['owner']}><TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/WhatsAppOrders" element={<RoleProtectedRoute allowedRoles={['owner']}><WhatsAppOrders /></RoleProtectedRoute>} />
+
+          {/* Chef routes */}
+          <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<RoleProtectedRoute allowedRoles={['owner', 'chef']}><TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/StockOrders" element={<RoleProtectedRoute allowedRoles={['owner', 'chef', 'manager']}><StockOrders /></RoleProtectedRoute>} />
+
+          {/* Manager routes */}
+          <Route path="/dashboard/:restaurantId/menu" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><MenuComponent /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/ManageSignage" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><ManageSignage /></RoleProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>

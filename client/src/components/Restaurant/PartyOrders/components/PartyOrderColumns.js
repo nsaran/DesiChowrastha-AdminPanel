@@ -4,8 +4,7 @@ import React from 'react';
 import { calculateAmountDue } from '../utils/calculations';
 import { generateInvoicePdf } from '../utils/invoice';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import API_BASE_URL from '../../../../config/api';
+import protectedApi from '../../../../utils/api';
 
 const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData }) => {
     const { restaurantId } = useParams();
@@ -38,7 +37,7 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
             formData.append('location', restaurantId);
             formData.append('recipient', recipient);
 
-            await axios.post(`${API_BASE_URL}/api/send-invoice-whatsapp`, formData, {
+            await protectedApi.post('/api/send-invoice-whatsapp', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
