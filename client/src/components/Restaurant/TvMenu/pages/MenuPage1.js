@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -32,6 +33,8 @@ import CHILLI from "../assets/images/chilli.png";
  */
 const MenuPage1 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
+    const bodyTextColor = isDark ? '#f3ede7' : 'black';
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
@@ -177,7 +180,7 @@ const MenuPage1 = () => {
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center center',
                         backgroundSize: '800px auto',
-                        opacity: 0.2,
+                        opacity: 0,
                         pointerEvents: 'none',
                         zIndex: 0,
                     }}
@@ -244,7 +247,7 @@ const MenuPage1 = () => {
     };
 
     const renderWestboroughMenu = () => (
-        <div style={{ position: 'relative', minHeight: '100vh' }}>
+        <div className={isDark ? 'tv-dark' : ''} style={{ position: 'relative', minHeight: '100vh' }}>
             {/* Background watermark logo - DC logo centered, 800px, 20% opacity */}
             <div
                 style={{
@@ -257,7 +260,7 @@ const MenuPage1 = () => {
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     backgroundSize: '800px auto',
-                    opacity: 0.2,
+                    opacity: 0,
                     pointerEvents: 'none',
                     zIndex: 0,
                 }}
@@ -305,7 +308,7 @@ const MenuPage1 = () => {
                             marginLeft: "-4px",
                             marginTop: "-8px",
                             fontSize: "1.6rem",
-                            color: "black"
+                            color: bodyTextColor
                         }}>
                             <span style={{ color: "red" }}>Add on: </span>
                             Ghee +$1.00 | Onion +$1.00 | Podi +$0.99 | Karam +$0.99 | Cheese +$2.00

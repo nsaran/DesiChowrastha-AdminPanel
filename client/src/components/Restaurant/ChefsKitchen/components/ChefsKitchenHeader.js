@@ -4,6 +4,7 @@ import { Button, Modal, Select, Input, Avatar, Popover, Menu } from 'antd';
 import { UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, TeamOutlined, LogoutOutlined, KeyOutlined } from '@ant-design/icons';
 import { firestore } from '../../../../config/firebase';
 import { useNavigate, useParams } from 'react-router-dom';
+import ThemeToggle from '../../../common/ThemeToggle';
 
 const ChefsKitchenHeader = ({ managerData }) => {
     const [invoiceNumbers, setInvoiceNumbers] = useState([]);
@@ -184,7 +185,8 @@ const ChefsKitchenHeader = ({ managerData }) => {
             <div className="header-left">
                 <img src="https://iili.io/HeKYJkB.png" alt="Logo" className="restaurant-logo" />
             </div>
-            <div className="header-right">
+            <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <ThemeToggle />
                 <Popover content={popoverContent} trigger="click" placement="bottomRight">
                 <Button onClick={fetchInvoiceNumber} type="primary" className='addIngredients'>
                 <PlusOutlined /> Add Ingredients

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -63,6 +64,8 @@ import SugarCane from "../assets/images/sugarcane-juice.png";
 
 const Page4 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
+    const bodyTextColor = isDark ? '#f3ede7' : 'black';
     const [menu, setMenu] = useState([]);
     const [previousMenu, setPreviousMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -639,6 +642,7 @@ const Page4 = () => {
         const pulaoG = groups.find(g => g.name.toLowerCase().includes('pulao') && !g.name.toLowerCase().includes('familypack'));
         const famPulaoG = groups.find(g => g.name.toLowerCase().includes('familypack') && g.name.toLowerCase().includes('pulao'));
         return (
+            <div className={isDark ? 'tv-dark' : ''}>
             <Container fluid>
                 <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
 
@@ -663,12 +667,12 @@ const Page4 = () => {
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>
                                 Average Waiting Time
                             </h2>
-                            <h4 style={{ marginBottom: 30, fontSize: '1.5rem', color: "black" }}>25 Minutes</h4>
+                            <h4 style={{ marginBottom: 30, fontSize: '1.5rem', color: bodyTextColor }}>25 Minutes</h4>
 
                             <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>
                                 We Take Party Orders
                             </h2>
-                            <h4 style={{ fontSize: '1.5rem', color: "black" }}>
+                            <h4 style={{ fontSize: '1.5rem', color: bodyTextColor }}>
                                 Host your next big event with ease! Our restaurant specializes
                                 in catering to large groups and parties, offering customizable
                                 menus to suit all your celebration needs.
@@ -750,7 +754,7 @@ const Page4 = () => {
                                                     left: 0,
                                                     width: '100%',
                                                     height: '100%',
-                                                    objectFit: 'contain',
+                                                    objectFit: 'fill',
                                                     opacity: index === fbCurrentIndex ? 1 : 0,
                                                     transition: 'opacity 1s ease-in-out',
                                                 }}
@@ -782,6 +786,7 @@ const Page4 = () => {
                     }
                 `}</style>
             </Container>
+            </div>
         );
     };
 

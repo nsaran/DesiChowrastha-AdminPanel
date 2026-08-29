@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -15,6 +16,7 @@ import { useMenuItemDetail } from '../useMenuItemDetail';
 
 const Page2 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
     const [menu, setMenu] = useState([]);
     const [previousMenu, setPreviousMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -133,6 +135,7 @@ const Page2 = () => {
     );
 
     const renderNashuaMenu = () => (
+        <div className={isDark ? 'tv-dark' : ''}>
         <Container fluid>
             <GoogleFontLoader
                 fonts={[
@@ -161,6 +164,7 @@ const Page2 = () => {
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 
     return (

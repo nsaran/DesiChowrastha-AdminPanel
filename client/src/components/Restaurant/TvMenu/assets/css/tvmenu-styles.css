@@ -145,3 +145,53 @@ img {
     font-size: 1.5rem;
     font-weight: 500;
 }
+
+/* ============================================================
+   TV MENU DARK MODE (experimental — Nashua Page1–Page4)
+   Wrap a page's content in <div className="tv-dark"> to apply.
+   ============================================================ */
+.tv-dark {
+    background: radial-gradient(1200px 600px at 80% -10%, rgba(255, 106, 31, 0.10), transparent), #16130f;
+    color: #f3ede7;
+    min-height: 100vh;
+}
+
+/* Category titles keep the warm brand orange (slightly brighter for dark bg) */
+.tv-dark .cat-title {
+    color: #ff6a1f;
+}
+
+/* Menu item names and text become light */
+.tv-dark h4,
+.tv-dark h5,
+.tv-dark h2,
+.tv-dark p,
+.tv-dark span,
+.tv-dark td,
+.tv-dark th {
+    color: #f3ede7;
+}
+
+/* Prices in warm brand orange for contrast */
+.tv-dark .menu-item-price {
+    color: #ff9455;
+}
+
+/* Sold-out items dimmed */
+.tv-dark .sold-out-menu-item-name,
+.tv-dark .sold-out-menu-item-biryani,
+.tv-dark .sold-out-menu-item-pulao {
+    opacity: 0.45;
+    color: #cbb;
+}
+
+/* Subtle divider lines under items if any tables are used */
+.tv-dark .table th,
+.tv-dark .table td {
+    border-color: #362f26 !important;
+}
+
+/* Disclaimer text lighter grey */
+.tv-dark .disclaimer {
+    color: #a89a8c;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Avatar, Popover } from 'antd';
+import ThemeToggle from '../../../common/ThemeToggle';
 
 const Header = ({ adminEmail, popoverContent }) => {
   const getRandomColor = () => {
@@ -19,7 +20,8 @@ const Header = ({ adminEmail, popoverContent }) => {
       <div className="admin-header-left">
         <img src="https://iili.io/HeKYJkB.png" alt="Logo" className="admin-logo" />
       </div>
-      <div className="admin-header-right">
+      <div className="admin-header-right" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <ThemeToggle />
         <Popover content={popoverContent} trigger="click" placement="bottomRight">
           <Button type="text" className="admin-avatar-button">
             <Avatar style={{ backgroundColor: avatarColor }}>

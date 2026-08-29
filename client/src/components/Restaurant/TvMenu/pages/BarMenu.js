@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/tvmenu-styles.css";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 
 /**
  * MenuPage7 - Bar Menu / Happy Hours
@@ -19,10 +20,12 @@ import "../assets/css/tvmenu-styles.css";
  * Static menu - no API data fetching required
  */
 const MenuPage7 = () => {
+    const { isDark } = useContext(ThemeContext);
 
     // Styles
     const pageStyle = {
-        backgroundColor: "#fff",
+        backgroundColor: isDark ? "#16130f" : "#fff",
+        color: isDark ? "#f3ede7" : "inherit",
         minHeight: "100vh",
         padding: "10px 15px",
         fontFamily: "'Bree Serif', serif",

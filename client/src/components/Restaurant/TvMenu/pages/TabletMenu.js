@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { Tabs, Input, Button, Spin, Typography } from 'antd';
 import { SendOutlined, RobotOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useMenuItemDetail } from '../useMenuItemDetail';
 import API_BASE_URL from '../../../../config/api';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import GoogleFontLoader from "react-google-font";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -22,6 +23,13 @@ const { TabPane } = Tabs;
  */
 const TabletMenu = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
+    // Theme-aware colors
+    const pageBg = isDark ? '#16130f' : '#fafafa';
+    const surfaceBg = isDark ? '#211c17' : '#fff';
+    const answerBg = isDark ? '#2a241d' : '#f9f9f9';
+    const answerText = isDark ? '#f3ede7' : '#333';
+    const mutedText = isDark ? '#a89a8c' : '#999';
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [chatQuestion, setChatQuestion] = useState('');
@@ -131,7 +139,7 @@ const TabletMenu = () => {
     }
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: '#fafafa' }} className="tablet-menu-page">
+        <div style={{ minHeight: '100vh', backgroundColor: pageBg }} className={`tablet-menu-page${isDark ? ' tv-dark' : ''}`}>
             <style>{`
                 .tablet-menu-page .menu-item-icon {
                     width: 20px !important;
@@ -167,7 +175,7 @@ const TabletMenu = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '12px 20px',
-                backgroundColor: '#fff',
+                backgroundColor: surfaceBg,
                 borderBottom: '2px solid #fd590d',
                 position: 'sticky',
                 top: 0,
@@ -185,8 +193,8 @@ const TabletMenu = () => {
             {/* AI Chat Bar */}
             <div style={{
                 padding: '12px 20px',
-                backgroundColor: '#fff',
-                borderBottom: '1px solid #eee',
+                backgroundColor: surfaceBg,
+                borderBottom: isDark ? '1px solid #362f26' : '1px solid #eee',
                 display: 'flex',
                 gap: '10px',
                 alignItems: 'flex-start',
@@ -213,11 +221,11 @@ const TabletMenu = () => {
                         <div style={{
                             marginTop: '8px',
                             padding: '10px 14px',
-                            backgroundColor: '#f9f9f9',
+                            backgroundColor: answerBg,
                             borderRadius: '12px',
                             fontSize: '0.95rem',
                             lineHeight: '1.5',
-                            color: '#333',
+                            color: answerText,
                         }}>
                             {chatAnswer}
                         </div>
@@ -304,7 +312,7 @@ const TabletMenu = () => {
                                             ));
                                         })()
                                     ) : (
-                                        <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
+                                        <div style={{ textAlign: 'center', padding: '40px', color: mutedText }}>
                                             No {tag.label} items available at this time.
                                         </div>
                                     )}
@@ -316,7 +324,7 @@ const TabletMenu = () => {
             </div>
 
             {/* Footer */}
-            <div style={{ textAlign: 'center', padding: '20px', color: '#999', fontSize: '0.85rem' }}>
+            <div style={{ textAlign: 'center', padding: '20px', color: mutedText, fontSize: '0.85rem' }}>
                 Tap any item to see details • Powered by AI
             </div>
         </div>

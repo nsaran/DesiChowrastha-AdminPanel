@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -30,6 +31,8 @@ import CHILLI from "../assets/images/chilli.png";
  */
 const MenuPage3 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
+    const bodyTextColor = isDark ? '#f3ede7' : 'black';
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
@@ -145,7 +148,7 @@ const MenuPage3 = () => {
                     position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
                     backgroundImage: `url(${logo})`, backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center', backgroundSize: '800px auto',
-                    opacity: 0.2, pointerEvents: 'none', zIndex: 0,
+                    opacity: 0, pointerEvents: 'none', zIndex: 0,
                 }} />
                 <Container fluid style={{ padding: '2rem', position: 'relative', zIndex: 1 }}>
                     <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
@@ -185,12 +188,12 @@ const MenuPage3 = () => {
     };
 
     const renderWestboroughMenu = () => (
-        <div style={{ position: 'relative', minHeight: '100vh' }}>
+        <div className={isDark ? 'tv-dark' : ''} style={{ position: 'relative', minHeight: '100vh' }}>
             <div style={{
                 position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
                 backgroundImage: `url(${logo})`, backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center center', backgroundSize: '800px auto',
-                opacity: 0.2, pointerEvents: 'none', zIndex: 0,
+                opacity: 0, pointerEvents: 'none', zIndex: 0,
             }} />
             <Container fluid style={{ padding: '2rem', position: 'relative', zIndex: 1 }}>
                 <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
@@ -243,7 +246,7 @@ const MenuPage3 = () => {
                             (Fried Rice / Noodles)
                         </h5>
                         {renderToastMenuItems(menu, "Indian Wok", setSelectedItem)}
-                        <p style={{ fontFamily: "Lobster", fontSize: "1.6rem", color: "black", marginTop: "10px" }}>
+                        <p style={{ fontFamily: "Lobster", fontSize: "1.6rem", color: bodyTextColor, marginTop: "10px" }}>
                             <span style={{ color: "red" }}>Extra: </span>
                             Paneer +$1.99 | Egg +$1.00 | Chicken +$2.00 | Shrimp +$3.00 | Goat Keema +$4.00
                         </p>

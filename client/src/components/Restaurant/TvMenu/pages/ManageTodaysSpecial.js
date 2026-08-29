@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from 'react-router-dom';
 import { Button, Input, DatePicker, Form, Card, message, Space, Typography, Divider } from 'antd';
 import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons';
 import API_BASE_URL from '../../../../config/api';
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -16,9 +17,16 @@ const { TextArea } = Input;
  */
 const MenuPage10 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
+
+    // Theme-aware colors for the native <input type="date"> elements
+    // (Ant Design components adapt automatically; native inputs do not)
+    const inputBorder = isDark ? '#362f26' : '#d9d9d9';
+    const inputBg = isDark ? '#211c17' : '#fff';
+    const inputText = isDark ? '#f3ede7' : '#333';
 
     // Fetch existing items on load
     useEffect(() => {
@@ -193,7 +201,9 @@ const MenuPage10 = () => {
                                         padding: '8px 12px',
                                         fontSize: '1rem',
                                         borderRadius: '6px',
-                                        border: '1px solid #d9d9d9',
+                                        border: `1px solid ${inputBorder}`,
+                                        backgroundColor: inputBg,
+                                        color: inputText,
                                     }}
                                 />
                             </Form.Item>
@@ -208,7 +218,9 @@ const MenuPage10 = () => {
                                         padding: '8px 12px',
                                         fontSize: '1rem',
                                         borderRadius: '6px',
-                                        border: '1px solid #d9d9d9',
+                                        border: `1px solid ${inputBorder}`,
+                                        backgroundColor: inputBg,
+                                        color: inputText,
                                     }}
                                 />
                             </Form.Item>

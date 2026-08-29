@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -19,6 +20,8 @@ import CHILLI from "../assets/images/chilli.png";
 
 const Page3 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
+    const captionColor = isDark ? '#f3ede7' : '#333';
     const [menu, setMenu] = useState([]);
     const [previousMenu, setPreviousMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -227,6 +230,7 @@ const Page3 = () => {
     };
 
     const renderNashuaMenu = () => (
+        <div className={isDark ? 'tv-dark' : ''}>
         <Container fluid>
             <GoogleFontLoader
                 fonts={[
@@ -270,7 +274,7 @@ const Page3 = () => {
                                 alt="Menu QR Code"
                                 style={{ width: '170px', height: '170px' }}
                             />
-                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: '#333' }}>
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: captionColor }}>
                                 Detailed Menu
                             </p>
                         </div>
@@ -280,7 +284,7 @@ const Page3 = () => {
                                 alt="Feedback QR Code"
                                 style={{ width: '170px', height: '170px' }}
                             />
-                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: '#333' }}>
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: captionColor }}>
                                 Feedback
                             </p>
                         </div>
@@ -290,7 +294,7 @@ const Page3 = () => {
                                 alt="Order Tracker QR Code"
                                 style={{ width: '170px', height: '170px' }}
                             />
-                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: '#333' }}>
+                            <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.1rem', marginTop: '8px', color: captionColor }}>
                                 Order Tracker
                             </p>
                         </div>
@@ -298,6 +302,7 @@ const Page3 = () => {
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 
     return (

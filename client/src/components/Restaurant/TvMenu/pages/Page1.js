@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -19,6 +20,7 @@ import CHILLI from "../assets/images/chilli.png";
 
 const Page1 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
     const [menu, setMenu] = useState([]);
     const [previousMenu, setPreviousMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -207,6 +209,7 @@ const Page1 = () => {
     };
 
     const renderNashuaMenu = () => (
+        <div className={isDark ? 'tv-dark' : ''}>
         <Container fluid>
             <GoogleFontLoader
                 fonts={[
@@ -221,7 +224,7 @@ const Page1 = () => {
             <Row>
                 <Col>
                     <h2 className="cat-title" style={{ fontFamily: "Lobster" }}>Snacks</h2>
-                    <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "rgb(1, 137, 0)" }}>
+                    <h5 style={{ fontFamily: "Lobster", marginLeft: "-4px", marginTop: "-8px", color: "#3fd070" }}>
                         ( Available from 5 PM )
                     </h5>
                     {renderToastMenuItems(menu, `Snacks (Available from 5 PM)`)}
@@ -248,6 +251,7 @@ const Page1 = () => {
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 
     return (

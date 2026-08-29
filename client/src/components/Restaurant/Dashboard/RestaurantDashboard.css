@@ -109,3 +109,29 @@
         margin-top: 20px;
     }
 }
+
+/* ============================================================
+   DARK THEME OVERRIDES (driven by body[data-theme='dark'])
+   ============================================================ */
+body[data-theme='dark'] .restaurant-dashboard {
+    background-color: #16130f;
+}
+
+body[data-theme='dark'] .admin-header {
+    background-color: #211c17;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.4);
+    border-bottom: 3px solid #ff6a1f;
+}
+
+body[data-theme='dark'] .restaurant-footer {
+    background-color: #211c17;
+    border-top: 1px solid #362f26;
+    color: #f3ede7;
+}
+
+body[data-theme='dark'] .restaurant-info,
+body[data-theme='dark'] .restaurant-info h3,
+body[data-theme='dark'] .restaurant-info h4,
+body[data-theme='dark'] .restaurant-info p {
+    color: #f3ede7;
+}

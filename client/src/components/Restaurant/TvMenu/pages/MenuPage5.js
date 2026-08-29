@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -31,6 +32,7 @@ import CHILLI from "../assets/images/chilli.png";
  */
 const MenuPage5 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
@@ -171,7 +173,7 @@ const MenuPage5 = () => {
                     position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
                     backgroundImage: `url(${logo})`, backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center', backgroundSize: '800px auto',
-                    opacity: 0.2, pointerEvents: 'none', zIndex: 0,
+                    opacity: 0, pointerEvents: 'none', zIndex: 0,
                 }} />
                 <Container fluid style={{ padding: '2rem', position: 'relative', zIndex: 1 }}>
                     <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
@@ -243,12 +245,12 @@ const MenuPage5 = () => {
     };
 
     const renderWestboroughMenu = () => (
-        <div style={{ position: 'relative', minHeight: '100vh' }}>
+        <div className={isDark ? 'tv-dark' : ''} style={{ position: 'relative', minHeight: '100vh' }}>
             <div style={{
                 position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
                 backgroundImage: `url(${logo})`, backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center center', backgroundSize: '800px auto',
-                opacity: 0.2, pointerEvents: 'none', zIndex: 0,
+                opacity: 0, pointerEvents: 'none', zIndex: 0,
             }} />
             <Container fluid style={{ padding: '2rem', position: 'relative', zIndex: 1 }}>
                 <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />

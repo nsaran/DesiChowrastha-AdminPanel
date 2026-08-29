@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Button, Card, Table, Tag, Select, Input, Modal, Form, InputNumber, message, Space, Typography, Divider, Tabs, Checkbox } from 'antd';
 import { PlusOutlined, EditOutlined, CheckOutlined, DeleteOutlined, EyeOutlined, SendOutlined, ArrowUpOutlined, ArrowDownOutlined, SaveOutlined } from '@ant-design/icons';
 import API_BASE_URL from '../../../../config/api';
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -16,8 +17,14 @@ const { TabPane } = Tabs;
  */
 const StockOrders = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
     const [searchParams] = useSearchParams();
     const orderIdFromUrl = searchParams.get('order');
+
+    // Theme-aware colors for hardcoded surfaces that Ant Design does not manage
+    const rowBg = isDark ? '#2a241d' : '#fafafa';
+    const rowBorder = isDark ? '#362f26' : '#f0f0f0';
+    const placeholderBg = isDark ? '#2a241d' : '#f5f5f5';
     const [orders, setOrders] = useState([]);
     const [masterList, setMasterList] = useState({ categories: [] });
     const [loading, setLoading] = useState(true);
@@ -373,7 +380,7 @@ const StockOrders = () => {
                             <div style={{ display: 'flex', flexDirection: editingMaster ? 'column' : 'row', flexWrap: 'wrap', gap: '6px' }}>
                                 {cat.items.map((item, itemIdx) => (
                                     editingMaster ? (
-                                        <div key={item + itemIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 8px', backgroundColor: '#fafafa', borderRadius: '4px', border: '1px solid #f0f0f0' }}>
+                                        <div key={item + itemIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 8px', backgroundColor: rowBg, borderRadius: '4px', border: `1px solid ${rowBorder}` }}>
                                             <Space size={4}>
                                                 <Button size="small" icon={<ArrowUpOutlined />} disabled={itemIdx === 0}
                                                     onClick={() => {
@@ -648,7 +655,7 @@ const StockOrders = () => {
                                                     onClick={() => window.open(`${API_BASE_URL}${receipt.url}`, '_blank')}
                                                 />
                                             ) : (
-                                                <div style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f5f5f5', cursor: 'pointer' }}
+                                                <div style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: placeholderBg, cursor: 'pointer' }}
                                                     onClick={() => window.open(`${API_BASE_URL}${receipt.url}`, '_blank')}>
                                                     <Text>📄 PDF</Text>
                                                 </div>

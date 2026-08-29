@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from 'react-router-dom';
 import GoogleFontLoader from "react-google-font";
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 
 /**
  * QRCodes Page - Displays QR codes for menu and feedback pages
@@ -11,7 +12,20 @@ import logo from '../../../../assets/images/dc-nashua-logo.webp';
  */
 const QRCodes = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
     const locationKey = restaurantId?.toLowerCase() || 'nashua';
+
+    // Theme-aware style overrides merged onto the base styles below
+    const themedPageStyle = { ...pageStyle, backgroundColor: isDark ? '#16130f' : '#fff' };
+    const themedSubtitleStyle = { ...subtitleStyle, color: isDark ? '#c9beb2' : '#555' };
+    const themedCardStyle = {
+        ...qrCardStyle,
+        backgroundColor: isDark ? '#211c17' : '#fafafa',
+        boxShadow: isDark ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.08)',
+    };
+    const themedImageWrapper = { ...qrImageWrapper, backgroundColor: '#fff' };
+    const themedDescStyle = { ...qrDescStyle, color: isDark ? '#a89a8c' : '#666' };
+    const themedFooterStyle = { ...footerStyle, color: isDark ? '#8f8478' : '#999' };
 
     const qrConfig = {
         nashua: {
@@ -31,54 +45,54 @@ const QRCodes = () => {
     const config = qrConfig[locationKey] || qrConfig.nashua;
 
     return (
-        <div style={pageStyle}>
+        <div style={themedPageStyle}>
             <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
 
             {/* Header */}
             <div style={headerStyle}>
                 <img src={logo} alt="Desi Chowrastha" style={{ width: '80px', height: 'auto' }} />
                 <h1 style={titleStyle}>Desi Chowrastha</h1>
-                <p style={subtitleStyle}>{config.locationName}</p>
+                <p style={themedSubtitleStyle}>{config.locationName}</p>
             </div>
 
             {/* QR Codes */}
             <div style={qrContainerStyle}>
                 {/* Menu QR */}
-                <div style={qrCardStyle}>
-                    <div style={qrImageWrapper}>
+                <div style={themedCardStyle}>
+                    <div style={themedImageWrapper}>
                         <img src={config.menu} alt="Menu QR Code" style={qrImageStyle} />
                     </div>
                     <h2 style={qrLabelStyle}>📋 Detailed Menu</h2>
-                    <p style={qrDescStyle}>
+                    <p style={themedDescStyle}>
                         Scan to explore our full menu with descriptions and images
                     </p>
                 </div>
 
                 {/* Feedback QR */}
-                <div style={qrCardStyle}>
-                    <div style={qrImageWrapper}>
+                <div style={themedCardStyle}>
+                    <div style={themedImageWrapper}>
                         <img src={config.feedback} alt="Feedback QR Code" style={qrImageStyle} />
                     </div>
                     <h2 style={qrLabelStyle}>💬 Feedback Form</h2>
-                    <p style={qrDescStyle}>
+                    <p style={themedDescStyle}>
                         Scan to share your experience with us
                     </p>
                 </div>
 
                 {/* Order Tracker QR */}
-                <div style={qrCardStyle}>
-                    <div style={qrImageWrapper}>
+                <div style={themedCardStyle}>
+                    <div style={themedImageWrapper}>
                         <img src={config.orderTracker} alt="Order Tracker QR Code" style={qrImageStyle} />
                     </div>
                     <h2 style={qrLabelStyle}>📦 Order Tracker</h2>
-                    <p style={qrDescStyle}>
+                    <p style={themedDescStyle}>
                         Scan to track your order status in real-time
                     </p>
                 </div>
             </div>
 
             {/* Footer */}
-            <div style={footerStyle}>
+            <div style={themedFooterStyle}>
                 <p>Point your phone camera at the QR code to open</p>
             </div>
         </div>

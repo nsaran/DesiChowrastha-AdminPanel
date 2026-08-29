@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -32,6 +33,7 @@ import CHILLI from "../assets/images/chilli.png";
  */
 const MenuPage2 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
@@ -182,7 +184,7 @@ const MenuPage2 = () => {
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center center',
                         backgroundSize: '800px auto',
-                        opacity: 0.2,
+                        opacity: 0,
                         pointerEvents: 'none',
                         zIndex: 0,
                     }}
@@ -254,7 +256,7 @@ const MenuPage2 = () => {
     };
 
     const renderWestboroughMenu = () => (
-        <div style={{ position: 'relative', minHeight: '100vh' }}>
+        <div className={isDark ? 'tv-dark' : ''} style={{ position: 'relative', minHeight: '100vh' }}>
             {/* Background watermark logo - DC logo centered, 800px, 20% opacity */}
             <div
                 style={{
@@ -267,7 +269,7 @@ const MenuPage2 = () => {
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     backgroundSize: '800px auto',
-                    opacity: 0.2,
+                    opacity: 0,
                     pointerEvents: 'none',
                     zIndex: 0,
                 }}

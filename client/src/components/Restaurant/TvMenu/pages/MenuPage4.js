@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -33,6 +34,8 @@ import CHILLI from "../assets/images/chilli.png";
  */
 const MenuPage4 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
+    const captionColor = isDark ? '#f3ede7' : '#333';
     const [menu, setMenu] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
@@ -346,7 +349,7 @@ const MenuPage4 = () => {
                     position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
                     backgroundImage: `url(${logo})`, backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center', backgroundSize: '800px auto',
-                    opacity: 0.2, pointerEvents: 'none', zIndex: 0,
+                    opacity: 0, pointerEvents: 'none', zIndex: 0,
                 }} />
                 <Container fluid style={{ padding: '2rem', position: 'relative', zIndex: 1 }}>
                     <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
@@ -389,12 +392,12 @@ const MenuPage4 = () => {
         const famPulaoG = groups.find(g => g.name.toLowerCase().includes('family pack') && g.name.toLowerCase().includes('pulao'));
         
         return (
-            <div style={{ position: 'relative', minHeight: '100vh' }}>
+            <div className={isDark ? 'tv-dark' : ''} style={{ position: 'relative', minHeight: '100vh' }}>
                 <div style={{
                     position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
                     backgroundImage: `url(${logo})`, backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center', backgroundSize: '800px auto',
-                    opacity: 0.2, pointerEvents: 'none', zIndex: 0,
+                    opacity: 0, pointerEvents: 'none', zIndex: 0,
                 }} />
                 <Container fluid style={{ padding: '2rem', position: 'relative', zIndex: 1 }}>
                     <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
@@ -421,7 +424,7 @@ const MenuPage4 = () => {
                                         alt="Order Tracker QR Code"
                                         style={{ width: "240px", height: "240px", borderRadius: "8px" }}
                                     />
-                                    <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.2rem', marginTop: '8px', color: '#333' }}>
+                                    <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.2rem', marginTop: '8px', color: captionColor }}>
                                         Order Tracker
                                     </p>
                                 </div>
@@ -436,7 +439,7 @@ const MenuPage4 = () => {
                                         alt="Menu QR Code"
                                         style={{ width: "240px", height: "240px", borderRadius: "8px" }}
                                     />
-                                    <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.2rem', marginTop: '8px', color: '#333' }}>
+                                    <p style={{ fontFamily: "'Bree Serif', serif", fontSize: '1.2rem', marginTop: '8px', color: captionColor }}>
                                         Detailed Menu
                                     </p>
                                 </div>

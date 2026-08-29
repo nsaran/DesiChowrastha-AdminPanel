@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import GoogleFontLoader from "react-google-font";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -8,6 +8,7 @@ import "../assets/css/tvmenu-styles.css";
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import API_BASE_URL from '../../../../config/api';
 import { useParams } from 'react-router-dom';
+import { ThemeContext } from '../../../../utils/ThemeProvider';
 
 /**
  * MenuPage8 - Customer Feedback Page
@@ -19,6 +20,17 @@ import { useParams } from 'react-router-dom';
  */
 const MenuPage8 = () => {
     const { restaurantId } = useParams();
+    const { isDark } = useContext(ThemeContext);
+    // Theme-aware colors
+    const pageBg = isDark ? '#16130f' : '#fff';
+    const cardBg = isDark ? '#211c17' : '#fff';
+    const inputBg = isDark ? '#2a241d' : '#fff';
+    const inputBorder = isDark ? '#3a332a' : '#ddd';
+    const textPrimary = isDark ? '#f3ede7' : '#333';
+    const textSecondary = isDark ? '#c9beb2' : '#555';
+    const textMuted = isDark ? '#a89a8c' : '#777';
+    const textFaint = isDark ? '#8f8478' : '#888';
+    const infoBoxBg = isDark ? '#2a241d' : '#f9f9f9';
     const [feedbackType, setFeedbackType] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -76,14 +88,14 @@ const MenuPage8 = () => {
     const containerStyle = {
         position: 'relative',
         minHeight: '100vh',
-        backgroundColor: '#fff',
+        backgroundColor: pageBg,
     };
 
     const cardStyle = {
-        backgroundColor: '#fff',
+        backgroundColor: cardBg,
         borderRadius: '12px',
         padding: '30px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        boxShadow: isDark ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.1)',
         border: '2px solid #fd590d',
     };
 
@@ -92,7 +104,9 @@ const MenuPage8 = () => {
         padding: '12px 16px',
         fontSize: '1.1rem',
         borderRadius: '8px',
-        border: '1px solid #ddd',
+        border: `1px solid ${inputBorder}`,
+        backgroundColor: inputBg,
+        color: textPrimary,
         marginBottom: '15px',
         fontFamily: "'Bree Serif', serif",
         outline: 'none',
@@ -182,14 +196,14 @@ const MenuPage8 = () => {
                         <p style={{
                             fontFamily: "'Bree Serif', serif",
                             fontSize: '1.3rem',
-                            color: '#555',
+                            color: textSecondary,
                         }}>
                             Your opinions help us serve you better!
                         </p>
                         <p style={{
                             fontFamily: "'Bree Serif', serif",
                             fontSize: '1.1rem',
-                            color: '#777',
+                            color: textMuted,
                         }}>
                             Your feedback will be shared directly with our management team and they will get back to you personally.
                         </p>
@@ -213,7 +227,7 @@ const MenuPage8 = () => {
                             {submitted ? (
                                 <div style={thankYouStyle}>
                                     <p>🎉 Thank You!</p>
-                                    <p style={{ fontSize: '1.2rem', color: '#555' }}>
+                                    <p style={{ fontSize: '1.2rem', color: textSecondary }}>
                                         Your feedback has been received. We appreciate your time!
                                     </p>
                                 </div>
@@ -243,7 +257,7 @@ const MenuPage8 = () => {
                                         aria-label="Your name"
                                     />
 
-                                    <p style={{ fontSize: '0.9rem', color: '#888', fontStyle: 'italic', marginBottom: '10px' }}>
+                                    <p style={{ fontSize: '0.9rem', color: textFaint, fontStyle: 'italic', marginBottom: '10px' }}>
                                         Please provide your email or phone number so we can get back to you.
                                     </p>
 
@@ -280,7 +294,7 @@ const MenuPage8 = () => {
                                         gap: '10px',
                                         fontSize: '1rem',
                                         fontFamily: "'Bree Serif', serif",
-                                        color: '#555',
+                                        color: textSecondary,
                                         marginBottom: '15px',
                                         cursor: 'pointer',
                                     }}>
@@ -321,7 +335,7 @@ const MenuPage8 = () => {
                             <p style={{
                                 fontFamily: "'Bree Serif', serif",
                                 fontSize: '1.2rem',
-                                color: '#333',
+                                color: textPrimary,
                                 marginBottom: '10px',
                             }}>
                                 Leave us a Google Review and let others know about your experience!
@@ -335,7 +349,7 @@ const MenuPage8 = () => {
                             <p style={{
                                 fontFamily: "'Bree Serif', serif",
                                 fontSize: '1rem',
-                                color: '#666',
+                                color: textMuted,
                                 marginBottom: '20px',
                             }}>
                                 Your review helps us grow and serve our community better.
@@ -350,7 +364,7 @@ const MenuPage8 = () => {
                                 ✍️ Write a Google Review
                             </a>
 
-                            <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+                            <div style={{ marginTop: '30px', padding: '20px', backgroundColor: infoBoxBg, borderRadius: '8px' }}>
                                 <h3 style={{
                                     fontFamily: "'Lobster', cursive",
                                     fontSize: '1.5rem',
@@ -362,7 +376,7 @@ const MenuPage8 = () => {
                                 <p style={{
                                     fontFamily: "'Bree Serif', serif",
                                     fontSize: '1rem',
-                                    color: '#555',
+                                    color: textSecondary,
                                 }}>
                                     We're sorry if something wasn't right. Please use the feedback form
                                     to let us know, and we'll do our best to make it right!
