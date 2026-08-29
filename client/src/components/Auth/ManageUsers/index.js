@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Table, Button, Modal, Form, Input, Select, message, Popconfirm, Tag, Space } from 'antd';
-import { UserAddOutlined, DeleteOutlined, EditOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { Table, Button, Modal, Form, Input, Select, message, Popconfirm, Tag, Dropdown, Menu } from 'antd';
+import { UserAddOutlined, DeleteOutlined, EditOutlined, StopOutlined, CheckCircleOutlined, KeyOutlined, MailOutlined, MoreOutlined } from '@ant-design/icons';
 import { AuthContext } from '../../../utils/AuthProvider';
 import API_BASE_URL from '../../../config/api';
 import axios from 'axios';
@@ -206,46 +206,45 @@ const ManageUsers = () => {
         {
             title: 'Actions',
             key: 'actions',
-            render: (_, record) => (
-                <Space>
-                    <Button
-                        type="link"
-                        icon={<EditOutlined />}
-                        onClick={() => handleEditRole(record)}
-                    >
-                        Edit Role
-                    </Button>
-                    <Button
-                        type="link"
-                        onClick={() => handleResetPassword(record)}
-                    >
-                        Reset Password
-                    </Button>
-                    <Button
-                        type="link"
-                        onClick={() => handleEditEmail(record)}
-                    >
-                        Edit Email
-                    </Button>
-                    <Button
-                        type="link"
-                        icon={record.disabled ? <CheckCircleOutlined /> : <StopOutlined />}
-                        onClick={() => handleToggleDisable(record.uid, record.disabled)}
-                    >
-                        {record.disabled ? 'Enable' : 'Disable'}
-                    </Button>
-                    <Popconfirm
-                        title="Are you sure you want to delete this user?"
-                        onConfirm={() => handleDelete(record.uid)}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button type="link" danger icon={<DeleteOutlined />}>
-                            Delete
-                        </Button>
-                    </Popconfirm>
-                </Space>
-            ),
+            render: (_, record) => {
+                const menu = (
+                    <Menu>
+                        <Menu.Item key="editRole" icon={<EditOutlined />} onClick={() => handleEditRole(record)}>
+                            Edit Role
+                        </Menu.Item>
+                        <Menu.Item key="resetPassword" icon={<KeyOutlined />} onClick={() => handleResetPassword(record)}>
+                            Reset Password
+                        </Menu.Item>
+                        <Menu.Item key="editEmail" icon={<MailOutlined />} onClick={() => handleEditEmail(record)}>
+                            Edit Email
+                        </Menu.Item>
+                        <Menu.Item
+                            key="toggleDisable"
+                            icon={record.disabled ? <CheckCircleOutlined /> : <StopOutlined />}
+                            onClick={() => handleToggleDisable(record.uid, record.disabled)}
+                        >
+                            {record.disabled ? 'Enable' : 'Disable'}
+                        </Menu.Item>
+                        <Menu.Divider />
+                        <Menu.Item key="delete" danger icon={<DeleteOutlined />}>
+                            <Popconfirm
+                                title="Are you sure you want to delete this user?"
+                                onConfirm={() => handleDelete(record.uid)}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                Delete
+                            </Popconfirm>
+                        </Menu.Item>
+                    </Menu>
+                );
+
+                return (
+                    <Dropdown overlay={menu} trigger={['click']}>
+                        <Button icon={<MoreOutlined />}>Actions</Button>
+                    </Dropdown>
+                );
+            },
         },
     ];
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthProvider';
 import RoleProtectedRoute from './utils/RoleProtectedRoute';
-import AdminRegister from './components/Auth/AdminRegister';
 import AdminLogin from './components/Auth/AdminLogin';
 import AdminDashboard from './components/Auth/AdminDashboard';
 import ManageUsers from './components/Auth/ManageUsers';
+import ChangePassword from './components/Auth/ChangePassword';
 import Unauthorized from './components/Auth/Unauthorized';
 import RestaurantLoginPage from './components/Restaurant/Auth';
 import RestaurantDashboard from './components/Restaurant/Dashboard';
@@ -53,7 +53,6 @@ const App = () => {
           {/* Public routes */}
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/login" element={<AdminLogin />} />
-          <Route path="/register" element={<AdminRegister />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/login/:restaurantId" element={<RestaurantLoginPage />} />
 
@@ -79,6 +78,10 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/customTvMenu" element={<CustomTvMenuLanding />} />
           <Route path="/dashboard/:restaurantId/customTvMenu/:pageId" element={<CustomTvMenuPageView />} />
           <Route path="/dashboard/:restaurantId/signage" element={<TvMenuErrorBoundary><SignagePlayer /></TvMenuErrorBoundary>} />
+
+          {/* Change password - accessible to all authenticated roles */}
+          <Route path="/dashboard/:restaurantId/change-password" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><ChangePassword /></RoleProtectedRoute>} />
+          <Route path="/change-password" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><ChangePassword /></RoleProtectedRoute>} />
 
           {/* Owner only routes */}
           <Route path="/dashboard" element={<RoleProtectedRoute allowedRoles={['owner']}><AdminDashboard /></RoleProtectedRoute>} />

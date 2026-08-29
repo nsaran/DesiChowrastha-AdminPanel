@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Avatar, Popover, Menu } from 'antd';
-import { MenuOutlined, UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, TeamOutlined, LogoutOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { MenuOutlined, UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, TeamOutlined, LogoutOutlined, PlusCircleOutlined, KeyOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import "../RestaurantDashboard.css";
 
@@ -103,6 +103,10 @@ const RestaurantDashboardHeader = ({ managerData }) => {
             <Menu.Divider />
             <Menu.Item key="partyOrders" icon={<TeamOutlined />} onClick={() => handleNavigate('partyorders', managerData)}>
                 Party Orders
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="changePassword" icon={<KeyOutlined />} onClick={() => handleNavigate('change-password', managerData)}>
+                Change Password
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout} danger>

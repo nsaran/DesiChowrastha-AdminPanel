@@ -6,7 +6,6 @@ import './Home.css';
 const Home = () => {
   const navigate = useNavigate();
 
-  const register = () => navigate('/register');
   const login = () => navigate('/login');
 
   return (
@@ -18,9 +17,6 @@ const Home = () => {
           </Col>
           <Col span={24} className="button-container">
             <Button type="primary" size="large" className="home-button" onClick={login}>Login</Button>
-          </Col>
-          <Col span={24} className="button-container">
-            <Button type="primary" size="large" className="home-button" onClick={register}>Register</Button>
           </Col>
         </Row>
       </Card>

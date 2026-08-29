@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PlusOutlined, MenuOutlined } from '@ant-design/icons';
 import { Button, Modal, Select, Input, Avatar, Popover, Menu } from 'antd';
-import { UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, TeamOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, TeamOutlined, LogoutOutlined, KeyOutlined } from '@ant-design/icons';
 import { firestore } from '../../../../config/firebase';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -167,6 +167,10 @@ const ChefsKitchenHeader = ({ managerData }) => {
             <Menu.Divider />
             <Menu.Item key="partyOrders" icon={<TeamOutlined />} onClick={() => handleNavigate('partyorders', managerData)}>
                 Party Orders
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="changePassword" icon={<KeyOutlined />} onClick={() => handleNavigate('change-password', managerData)}>
+                Change Password
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout} danger>
