@@ -204,22 +204,20 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
                                 Edit
                             </Button>
                         </Menu.Item>
+                        {canDelete && <Menu.Divider key="delete-divider" />}
                         {canDelete && (
-                            <>
-                                <Menu.Divider />
-                                <Menu.Item key="delete">
-                                    <Popconfirm
-                                        title="Are you sure to delete this party order?"
-                                        onConfirm={() => handleDeletePartyOrder(record)}
-                                        okText="Yes"
-                                        cancelText="No"
-                                    >
-                                        <Button type="link" danger icon={<DeleteOutlined />}>
-                                            Delete
-                                        </Button>
-                                    </Popconfirm>
-                                </Menu.Item>
-                            </>
+                            <Menu.Item key="delete">
+                                <Popconfirm
+                                    title="Are you sure to delete this party order?"
+                                    onConfirm={() => handleDeletePartyOrder(record)}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <Button type="link" danger icon={<DeleteOutlined />}>
+                                        Delete
+                                    </Button>
+                                </Popconfirm>
+                            </Menu.Item>
                         )}
                     </Menu>
                 );
