@@ -764,6 +764,50 @@ app.get('/api/facebook-posts', async (req, res) => {
     }
 });
 
+// ─── Party Order Delete (owner only, server-enforced) ────────────────────────
+// Soft-deletes a party order: copies it to `deletedPartyOrders`, then removes it
+// from `partyOrders`. Protected so ONLY authenticated users with the 'owner'
+// custom claim can perform the deletion (enforced on the server, not just the UI).
+const partyOrderAuth = require('./middleware/auth');
+const { getFirestore: getFirestoreForPartyOrders } = require('firebase-admin/firestore');
+require('./config/firebaseAdmin'); // ensure Admin SDK is initialized
+
+app.delete(
+    '/api/party-orders/:restaurantId/:orderId',
+    partyOrderAuth.verifyToken,
+    partyOrderAuth.requireRole(['owner']),
+    async (req, res) => {
+        const { restaurantId, orderId } = req.params;
+        try {
+            const db = getFirestoreForPartyOrders();
+            const orderRef = db
+                .collection('restaurants').doc(restaurantId)
+                .collection('partyOrders').doc(orderId);
+
+            const snap = await orderRef.get();
+            if (!snap.exists) {
+                return res.status(404).json({ error: 'Party order not found' });
+            }
+
+            const orderData = snap.data();
+
+            // Archive to deletedPartyOrders (soft delete), then remove the original
+            await db
+                .collection('restaurants').doc(restaurantId)
+                .collection('deletedPartyOrders').doc(orderId)
+                .set({ ...orderData, deletedAt: new Date().toISOString(), deletedBy: req.user.email || req.user.uid });
+
+            await orderRef.delete();
+
+            logger.info(`Party order ${orderId} deleted for ${restaurantId} by ${req.user.email || req.user.uid}`);
+            res.json({ success: true });
+        } catch (error) {
+            logger.error('Party order delete failed:', error.message);
+            res.status(500).json({ error: error.message });
+        }
+    }
+);
+
 // ─── Stock Order & Inventory Endpoints ───────────────────────────────────────
 
 const stockOrderService = require('./services/stockOrderService');

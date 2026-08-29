@@ -87,12 +87,12 @@ const App = () => {
           <Route path="/dashboard" element={<RoleProtectedRoute allowedRoles={['owner']}><AdminDashboard /></RoleProtectedRoute>} />
           <Route path="/dashboard/manage-users" element={<RoleProtectedRoute allowedRoles={['owner']}><ManageUsers /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><RestaurantDashboard /></RoleProtectedRoute>} />
-          <Route path="/dashboard/:restaurantId/partyorders" element={<RoleProtectedRoute allowedRoles={['owner']}><RestaurantPartyOrdersComponent /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/partyorders" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><RestaurantPartyOrdersComponent /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/inventoryManagement" element={<RoleProtectedRoute allowedRoles={['owner']}><InventoryManagementComponent /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/inventoryApproval" element={<RoleProtectedRoute allowedRoles={['owner']}><InventoryApprovalComponent /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/orders" element={<RoleProtectedRoute allowedRoles={['owner']}><OrdersComponent /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/filler" element={<RoleProtectedRoute allowedRoles={['owner']}><FillerComponent /></RoleProtectedRoute>} />
-          <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<RoleProtectedRoute allowedRoles={['owner']}><ChefsKitchen /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><ChefsKitchen /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/customMenu" element={<RoleProtectedRoute allowedRoles={['owner']}><CustomMenu /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><OtherServices /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<RoleProtectedRoute allowedRoles={['owner']}><TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary></RoleProtectedRoute>} />

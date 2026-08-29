@@ -101,32 +101,30 @@ const ChefsKitchen = () => {
                                 <p><CalendarOutlined /> {'Order Date: ' + order.cOrderDate}</p>
                                 <p><CalendarOutlined /> {'Party Date: ' + order.cPartyDate}</p>
                                 <p>Items</p>
-                                {order.cPartyOrderItems.map((item, index) => (
-                                    <table className="custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Item Name</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Spice Level</th>
-                                                <th>Tray Type</th>
-                                                <th>Comments</th>
+                                <table className="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item Name</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Spice Level</th>
+                                            <th>Tray Type</th>
+                                            <th>Comments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {order.cPartyOrderItems.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{item.itemName}</td>
+                                                <td>{item.qty}</td>
+                                                <td>{item.price}</td>
+                                                <td>{item.spiceLevel}</td>
+                                                <td>{item.trayType}</td>
+                                                <td>{item.itemComments}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {order.cPartyOrderItems.map((item, index) => (
-                                                <tr key={index}>
-                                                    <td>{item.itemName}</td>
-                                                    <td>{item.qty}</td>
-                                                    <td>{item.price}</td>
-                                                    <td>{item.spiceLevel}</td>
-                                                    <td>{item.trayType}</td>
-                                                    <td>{item.itemComments}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                ))}
+                                        ))}
+                                    </tbody>
+                                </table>
                                 <p>No ingredients added. Click on the "Add Ingredients" button to add ingredients.</p>
 
                             </Card>
@@ -145,32 +143,30 @@ const ChefsKitchen = () => {
                                 <p><CalendarOutlined /> {'Order Date: ' + order.cOrderDate}</p>
                                 <p><CalendarOutlined /> {'Party Date: ' + order.cPartyDate}</p>
                                 <p>Items</p>
-                                {order.cPartyOrderItems.map((item, index) => (
-                                    <table className="custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Item Name</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Spice Level</th>
-                                                <th>Tray Type</th>
-                                                <th>Comments</th>
+                                <table className="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item Name</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Spice Level</th>
+                                            <th>Tray Type</th>
+                                            <th>Comments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {order.cPartyOrderItems.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{item.itemName}</td>
+                                                <td>{item.qty}</td>
+                                                <td>{item.price}</td>
+                                                <td>{item.spiceLevel}</td>
+                                                <td>{item.trayType}</td>
+                                                <td>{item.itemComments}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {order.cPartyOrderItems.map((item, index) => (
-                                                <tr key={index}>
-                                                    <td>{item.itemName}</td>
-                                                    <td>{item.qty}</td>
-                                                    <td>{item.price}</td>
-                                                    <td>{item.spiceLevel}</td>
-                                                    <td>{item.trayType}</td>
-                                                    <td>{item.itemComments}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                ))}
+                                        ))}
+                                    </tbody>
+                                </table>
                                 <p>No ingredients added. Click on the "Add Ingredients" button to add ingredients.</p>
 
                             </Card>
@@ -189,32 +185,30 @@ const ChefsKitchen = () => {
                                 <p><CalendarOutlined /> {'Order Date: ' + order.cOrderDate}</p>
                                 <p><CalendarOutlined /> {'Party Date: ' + order.cPartyDate}</p>
                                 <p>Items</p>
-                                {order.cPartyOrderItems.map((item, index) => (
-                                    <table className="custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Item Name</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Spice Level</th>
-                                                <th>Tray Type</th>
-                                                <th>Comments</th>
+                                <table className="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item Name</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Spice Level</th>
+                                            <th>Tray Type</th>
+                                            <th>Comments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {order.cPartyOrderItems.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{item.itemName}</td>
+                                                <td>{item.qty}</td>
+                                                <td>{item.price}</td>
+                                                <td>{item.spiceLevel}</td>
+                                                <td>{item.trayType}</td>
+                                                <td>{item.itemComments}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {order.cPartyOrderItems.map((item, index) => (
-                                                <tr key={index}>
-                                                    <td>{item.itemName}</td>
-                                                    <td>{item.qty}</td>
-                                                    <td>{item.price}</td>
-                                                    <td>{item.spiceLevel}</td>
-                                                    <td>{item.trayType}</td>
-                                                    <td>{item.itemComments}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                ))}
+                                        ))}
+                                    </tbody>
+                                </table>
                                 <p>No ingredients added. Click on the "Add Ingredients" button to add ingredients.</p>
 
                             </Card>

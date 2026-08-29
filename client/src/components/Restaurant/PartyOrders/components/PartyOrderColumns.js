@@ -6,7 +6,7 @@ import { generateInvoicePdf } from '../utils/invoice';
 import { useParams } from 'react-router-dom';
 import protectedApi from '../../../../utils/api';
 
-const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData }) => {
+const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData, canDelete }) => {
     const { restaurantId } = useParams();
 
     const handleViewDetails = (order) => {
@@ -204,19 +204,23 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
                                 Edit
                             </Button>
                         </Menu.Item>
-                        <Menu.Divider />
-                        <Menu.Item key="delete">
-                            <Popconfirm
-                                title="Are you sure to delete this party order?"
-                                onConfirm={() => handleDeletePartyOrder(record)}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <Button type="link" danger icon={<DeleteOutlined />}>
-                                    Delete
-                                </Button>
-                            </Popconfirm>
-                        </Menu.Item>
+                        {canDelete && (
+                            <>
+                                <Menu.Divider />
+                                <Menu.Item key="delete">
+                                    <Popconfirm
+                                        title="Are you sure to delete this party order?"
+                                        onConfirm={() => handleDeletePartyOrder(record)}
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <Button type="link" danger icon={<DeleteOutlined />}>
+                                            Delete
+                                        </Button>
+                                    </Popconfirm>
+                                </Menu.Item>
+                            </>
+                        )}
                     </Menu>
                 );
 

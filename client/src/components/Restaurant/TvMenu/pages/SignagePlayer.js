@@ -33,6 +33,7 @@ const SignagePlayer = () => {
     const interruptIndexRef = useRef(0);
     const ytPlayerRef = useRef(null);
     const ytContainerRef = useRef(null);
+    const keepAliveCtxRef = useRef(null); // Web Audio context for the silent keep-alive tone
 
     // Order ready overlay state
     const [readyOrderNum, setReadyOrderNum] = useState(null);
@@ -440,9 +441,51 @@ const SignagePlayer = () => {
         return () => clearInterval(interval);
     }, [outsideHours]);
 
+    // Starts a continuous, near-silent Web Audio tone. Ongoing audio playback is
+    // the most reliable way to keep a browser tab/app (Fire Stick, Chrome) from
+    // suspending or closing when idle — including during off-hours (10pm–10am),
+    // so the page stays alive to auto-reload at 10am.
+    const startKeepAlive = () => {
+        if (keepAliveCtxRef.current) return; // already running
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            const ctx = new AudioCtx();
+            const oscillator = ctx.createOscillator();
+            const gain = ctx.createGain();
+            // Effectively inaudible volume, but enough to count as active playback
+            gain.gain.value = 0.0001;
+            oscillator.frequency.value = 20; // sub-audible low frequency
+            oscillator.connect(gain);
+            gain.connect(ctx.destination);
+            oscillator.start();
+            keepAliveCtxRef.current = ctx;
+
+            // Some browsers suspend the context when backgrounded; resume it periodically
+            setInterval(() => {
+                if (ctx.state === 'suspended') {
+                    ctx.resume().catch(() => {});
+                }
+            }, 30000);
+        } catch (e) {
+            console.warn('Keep-alive audio could not start:', e);
+        }
+    };
+
+    const handleUserInteraction = () => {
+        if (!userInteracted) {
+            setUserInteracted(true);
+            if (ytPlayerRef.current) {
+                try { ytPlayerRef.current.unMute(); } catch (e) {}
+            }
+        }
+        // Start (or resume) the silent keep-alive tone on any user gesture
+        startKeepAlive();
+    };
+
     if (outsideHours) {
         return (
-            <div style={styles.closed}>
+            <div style={styles.closed} onClick={handleUserInteraction}>
                 <div style={styles.closedText}>
                     🕙 We're closed
                     <br />
@@ -490,14 +533,7 @@ const SignagePlayer = () => {
 
     const showingInterrupt = currentInterrupt >= 0 && interrupts[currentInterrupt];
 
-    const handleUserInteraction = () => {
-        if (!userInteracted) {
-            setUserInteracted(true);
-            if (ytPlayerRef.current) {
-                try { ytPlayerRef.current.unMute(); } catch (e) {}
-            }
-        }
-    };
+
 
     return (
         <div style={containerStyle} onClick={handleUserInteraction}>

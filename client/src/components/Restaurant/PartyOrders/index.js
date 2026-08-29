@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal, message, Form, Input, DatePicker, Upload, Tooltip } from 'antd';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Button, Modal, message, Form, DatePicker, Upload, Tooltip } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { firestore } from '../../../config/firebase';
 import { useParams } from 'react-router-dom';
@@ -12,6 +12,9 @@ import { calculateAmountDue, calculateOrderTotal } from './utils/calculations';
 import Papa from 'papaparse';
 import PartyOrderColumns from './components/PartyOrderColumns';
 import PartyOrderHeader from './components/PartyOrderHeader';
+import protectedApi from '../../../utils/api';
+import { AuthContext } from '../../../utils/AuthProvider';
+import { generateInvoicePdf } from './utils/invoice';
 
 const { RangePicker } = DatePicker;
 
@@ -27,6 +30,9 @@ const RestaurantPartyOrdersComponent = () => {
     const [endDate, setEndDate] = useState(null);
     const [isCalculateTotalsClicked, setIsCalculateTotalsClicked] = useState(false);
     const [invoiceNumber, setInvoiceNumber] = useState('000000');
+    const isSavingRef = useRef(false);
+    const { role } = useContext(AuthContext);
+    const canDelete = role === 'owner'; // only owners may delete party orders
 
 
     const formatDate = (value) => {
@@ -167,6 +173,13 @@ const RestaurantPartyOrdersComponent = () => {
             return;
         }
 
+        // Guard against double submission (double-click / duplicate onFinish),
+        // which would otherwise create two identical party orders.
+        if (isSavingRef.current) {
+            return;
+        }
+        isSavingRef.current = true;
+
         try {
             setLoading(true);
 
@@ -200,58 +213,58 @@ const RestaurantPartyOrdersComponent = () => {
             setLoading(false);
             setIsCalculateTotalsClicked(false);
             handleModalClose();
+
+            // Auto-send the invoice PDF to the owner via WhatsApp (non-blocking).
+            // Uses the same flow as "Share Invoice" -> generate PDF -> server sends it.
+            sendInvoiceToOwner(partyOrderData);
         } catch (error) {
             setLoading(false);
             console.log(error);
             message.error('Failed to save the party order. Please try again.');
+        } finally {
+            isSavingRef.current = false;
+        }
+    };
+
+    // Generates the invoice PDF and sends it to the owner via the WhatsApp service.
+    // Failures here do NOT block the save — they only log/warn.
+    const sendInvoiceToOwner = async (record) => {
+        try {
+            const pdfBlob = generateInvoicePdf(record, true);
+            const formData = new FormData();
+            formData.append('pdf', pdfBlob, `Invoice_${record.cInvoiceNumber}.pdf`);
+            formData.append('phoneNumber', record.cPhoneNumber || '');
+            formData.append('customerName', record.cName || '');
+            formData.append('invoiceNumber', record.cInvoiceNumber || '');
+            formData.append('location', restaurantId);
+            formData.append('recipient', 'owner');
+
+            await protectedApi.post('/api/send-invoice-whatsapp', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+        } catch (error) {
+            console.warn('Could not send party order invoice to owner:', error.response?.data?.error || error.message);
         }
     };
 
     const handleDeletePartyOrder = async (record) => {
-        const correctPassword = "TSS@2023";
-        let enteredPassword = '';
-
-        const showPasswordModal = () => {
-            Modal.confirm({
-                title: 'Enter Password',
-                content: (
-                    <Input.Password
-                        placeholder="Password"
-                        onChange={(e) => (enteredPassword = e.target.value)}
-                    />
-                ),
-                onOk: () => {
-                    if (enteredPassword === correctPassword) {
-                        deletePartyOrder(record);
-                    } else {
-                        message.error('Incorrect password. Party order was not deleted.');
-                    }
-                },
-                onCancel: () => {
-                    message.info('Deletion canceled.');
-                },
-            });
-        };
-
-        const deletePartyOrder = async (record) => {
-            try {
-                setLoading(true);
-
-                // Save deleted order to "deletedPartyOrders"
-                await firestore.collection('restaurants').doc(restaurantId).collection('deletedPartyOrders').doc(record.id).set(record);
-
-                // Delete order from "partyOrders"
-                await firestore.collection('restaurants').doc(restaurantId).collection('partyOrders').doc(record.id).delete();
-
-                message.success('Party order deleted successfully!');
-                setLoading(false);
-            } catch (error) {
-                setLoading(false);
-                message.error('Failed to delete party order.');
+        // Deletion is enforced server-side: the endpoint requires the caller to be
+        // an authenticated user with the 'owner' role. The server does the soft
+        // delete (archive to deletedPartyOrders, then remove).
+        try {
+            setLoading(true);
+            await protectedApi.delete(`/api/party-orders/${restaurantId}/${record.id}`);
+            message.success('Party order deleted successfully!');
+        } catch (error) {
+            const status = error.response?.status;
+            if (status === 401 || status === 403) {
+                message.error('You are not authorized to delete party orders.');
+            } else {
+                message.error(error.response?.data?.error || 'Failed to delete party order.');
             }
-        };
-
-        showPasswordModal();
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCalculateTotals = () => {
@@ -266,7 +279,7 @@ const RestaurantPartyOrdersComponent = () => {
         setIsCalculateTotalsClicked(true);
     };
 
-    const columns = PartyOrderColumns({ handleModalOpen, handleDeletePartyOrder });
+    const columns = PartyOrderColumns({ handleModalOpen, handleDeletePartyOrder, canDelete });
 
     const exportToCSV = () => {
         const fields = [
@@ -316,10 +329,19 @@ const RestaurantPartyOrdersComponent = () => {
             data,
         });
 
+        // Build a filename that reflects the active date-range filter.
+        // Prefer the Party Date range; fall back to the Order Date range.
+        let fileName = "party-orders";
+        if (startDate && endDate) {
+            fileName = `party-orders_partydate_${startDate}_to_${endDate}`;
+        } else if (orderStartDate && orderEndDate) {
+            fileName = `party-orders_orderdate_${orderStartDate}_to_${orderEndDate}`;
+        }
+
         let blob = new Blob([csv], { type: "text/csv" });
         let a = window.document.createElement("a");
         a.href = window.URL.createObjectURL(blob);
-        a.download = "orders.csv";
+        a.download = `${fileName}.csv`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -591,6 +613,7 @@ const RestaurantPartyOrdersComponent = () => {
                     handleSavePartyOrder={handleSavePartyOrder}
                     handleModalClose={handleModalClose}
                     handleCalculateTotals={handleCalculateTotals}
+                    loading={loading}
                 />
             </Modal>
         </div>

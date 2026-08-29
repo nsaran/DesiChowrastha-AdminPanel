@@ -14,6 +14,7 @@ const PartyOrderForm = ({
     handleSavePartyOrder,
     handleModalClose,
     handleCalculateTotals,
+    loading,
 }) => {
     const formatDate = (value) => {
         return value ? moment(value).format('YYYY-MM-DD') : '';
@@ -288,10 +289,10 @@ const PartyOrderForm = ({
             </Button>
             <br />
             <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading} disabled={loading}>
                     {editRecord ? "Update" : "Create"}
                 </Button>
-                <Button htmlType="button" onClick={handleModalClose} style={{ marginLeft: "8px" }}>
+                <Button htmlType="button" onClick={handleModalClose} style={{ marginLeft: "8px" }} disabled={loading}>
                     Cancel
                 </Button>
             </Form.Item>
