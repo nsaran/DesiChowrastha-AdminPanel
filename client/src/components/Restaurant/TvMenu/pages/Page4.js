@@ -18,7 +18,6 @@ import { useStockUpdates } from '../useStockUpdates';
 import { useMenuItemDetail } from '../useMenuItemDetail';
 // import fillergif from '../../../../assets/images/filler.gif';
 import CHILLI from "../assets/images/chilli.png";
-import { FB_ACCESS_TOKEN, FB_PAGE_ID, FB_API_VERSION } from '../../../../config/facebook';
 
 // Importing Nashua Signature Dishes
 import SamosaImg from "../assets/images/SignatureDishesNashua/Samosa-2-PCS.png";
@@ -115,21 +114,43 @@ const Page4 = () => {
     const [fbCurrentIndex, setFbCurrentIndex] = useState(0);
 
     useEffect(() => {
-        const fetchFbPosts = async () => {
+        // Fallback: load local promo images from _images/promos/ (same source as FacebookPost page)
+        const loadLocalPromoImages = async () => {
             try {
-                const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=full_picture&limit=10&access_token=${FB_ACCESS_TOKEN}`;
-                const res = await fetch(url);
-                if (res.ok) {
-                    const data = await res.json();
-                    const images = (data.data || [])
-                        .filter(post => post.full_picture)
-                        .map(post => post.full_picture);
-                    if (images.length > 0) {
-                        setFbPostImages(images);
+                const response = await fetch(`${API_BASE_URL}/api/promos`);
+                if (response.ok) {
+                    const filenames = await response.json();
+                    const promoImages = filenames
+                        .filter(name => /\.(jpg|jpeg|png)$/i.test(name))
+                        .map(name => `/_images/promos/${name}`);
+                    if (promoImages.length > 0) {
+                        setFbPostImages(promoImages);
+                        return true;
                     }
                 }
             } catch (e) {
+                console.error('Error loading local promo images for Page4:', e);
+            }
+            return false;
+        };
+
+        const fetchFbPosts = async () => {
+            try {
+                // Fetch via the server-side proxy (keeps the FB token secret and server-cached)
+                const res = await fetch(`${API_BASE_URL}/api/facebook-posts?limit=10`);
+                if (res.ok) {
+                    const data = await res.json();
+                    const images = data.images || [];
+                    if (images.length > 0) {
+                        setFbPostImages(images);
+                        return;
+                    }
+                }
+                // No FB images (proxy error or empty) — fall back to local promos
+                await loadLocalPromoImages();
+            } catch (e) {
                 console.error('Error fetching FB posts for Page4:', e);
+                await loadLocalPromoImages();
             }
         };
 

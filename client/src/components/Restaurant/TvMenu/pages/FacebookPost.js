@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/tvmenu-styles.css";
 import LoaderIcon from '../assets/images/loader_icon.gif';
-import { FB_ACCESS_TOKEN, FB_PAGE_ID, FB_API_VERSION, FB_POSTS_LIMIT } from '../../../../config/facebook';
+import { FB_POSTS_LIMIT } from '../../../../config/facebook';
 import API_BASE_URL from '../../../../config/api';
 
 /**
@@ -63,23 +63,21 @@ const MenuPage6 = () => {
 
     const fetchImages = useCallback(async () => {
         try {
-            const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=id,message,story,created_time,full_picture,permalink_url&limit=${FB_POST_ID}&access_token=${FB_ACCESS_TOKEN}`;
-            const response = await fetch(url, { method: 'GET' });
+            // Fetch via the server-side proxy (keeps the FB token secret and server-cached)
+            const response = await fetch(`${API_BASE_URL}/api/facebook-posts?limit=${FB_POST_ID}`, { method: 'GET' });
 
             if (!response.ok) {
-                throw new Error(`Facebook API error: ${response.status}`);
+                throw new Error(`Facebook proxy error: ${response.status}`);
             }
 
             const data = await response.json();
-            const postImages = (data.data || [])
-                .filter(post => post.full_picture)
-                .map(post => ({
-                    id: post.id,
-                    imageUrl: post.full_picture,
-                    message: post.message || post.story || '',
-                    createdTime: post.created_time,
-                    permalink: post.permalink_url
-                }));
+            const postImages = (data.images || []).map((imageUrl, index) => ({
+                id: `fb-${index}`,
+                imageUrl,
+                message: '',
+                createdTime: null,
+                permalink: null
+            }));
 
             if (postImages.length > 0) {
                 setImages(postImages);
@@ -93,14 +91,14 @@ const MenuPage6 = () => {
             }
         } catch (err) {
             console.error("Error fetching Facebook posts:", err);
-            // Facebook API failed, fall back to local promo images
+            // Facebook proxy failed, fall back to local promo images
             const loaded = await loadLocalPromoImages();
             if (!loaded) {
                 setError(err.message);
             }
         }
         setIsLoading(false);
-    }, [loadLocalPromoImages]);
+    }, [loadLocalPromoImages, FB_POST_ID]);
 
     // Fetch images on mount and refresh twice a day (every 12 hours)
     // Also triggers a full page reload to pick up any code/content changes

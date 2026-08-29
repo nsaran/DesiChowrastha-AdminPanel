@@ -721,6 +721,49 @@ app.get('/api/promos', (req, res) => {
     });
 });
 
+// ─── Facebook Posts (server-side proxy) ──────────────────────────────────────
+// Fetches recent Facebook page posts using a server-side Page Access Token
+// (kept secret in server/.env). Results are cached to avoid hitting the
+// Graph API rate limits and to keep the TV displays fast.
+//
+// Required env vars:
+//   FB_ACCESS_TOKEN  - a long-lived / never-expiring Page Access Token
+//   FB_PAGE_ID       - the Facebook Page ID (default: Chowrastha Nashua)
+//   FB_API_VERSION   - Graph API version (default: v23.0)
+app.get('/api/facebook-posts', async (req, res) => {
+    const FB_ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN;
+    const FB_PAGE_ID = process.env.FB_PAGE_ID || '100541449603228';
+    const FB_API_VERSION = process.env.FB_API_VERSION || 'v23.0';
+    const limit = Math.min(parseInt(req.query.limit, 10) || 10, 25);
+
+    if (!FB_ACCESS_TOKEN) {
+        return res.status(500).json({ error: 'Facebook access token not configured on server' });
+    }
+
+    const cacheKey = `fb_posts_${FB_PAGE_ID}_${limit}`;
+    const cached = cache.get(cacheKey);
+    if (cached) {
+        return res.json({ images: cached, cached: true });
+    }
+
+    try {
+        const url = `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts?fields=full_picture&limit=${limit}&access_token=${FB_ACCESS_TOKEN}`;
+        const response = await axios.get(url);
+        const images = (response.data.data || [])
+            .filter(post => post.full_picture)
+            .map(post => post.full_picture);
+
+        // Cache for 1 hour (posts don't change often; TVs refresh periodically)
+        cache.set(cacheKey, images, 60 * 60);
+        res.json({ images, cached: false });
+    } catch (error) {
+        const fbError = error.response?.data?.error;
+        logger.error('Facebook posts fetch failed:', fbError?.message || error.message);
+        // Return empty list so the client falls back to local promos gracefully
+        res.status(200).json({ images: [], error: fbError?.message || 'Failed to fetch Facebook posts' });
+    }
+});
+
 // ─── Stock Order & Inventory Endpoints ───────────────────────────────────────
 
 const stockOrderService = require('./services/stockOrderService');
