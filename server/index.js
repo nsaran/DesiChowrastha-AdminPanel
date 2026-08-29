@@ -28,10 +28,33 @@ app.use(express.json());
 // Rate limiting
 const rateLimit = require('express-rate-limit');
 
+// Custom key generator that safely extracts the client IP, stripping any port.
+// Handles cases where req.ip may include a port (e.g. "64.223.204.235:56259")
+// or when running behind a proxy that sets X-Forwarded-For.
+const ipKeyGenerator = (req) => {
+    let ip = req.ip || req.socket?.remoteAddress || '';
+    // Take the first IP if X-Forwarded-For has a comma-separated list
+    if (ip.includes(',')) {
+        ip = ip.split(',')[0].trim();
+    }
+    // Strip IPv4 port (e.g. "1.2.3.4:5678" -> "1.2.3.4"), but leave IPv6 intact
+    const isIPv4WithPort = /^\d{1,3}(\.\d{1,3}){3}:\d+$/.test(ip);
+    if (isIPv4WithPort) {
+        ip = ip.split(':')[0];
+    }
+    // Normalize IPv6-mapped IPv4 (e.g. "::ffff:1.2.3.4")
+    if (ip.startsWith('::ffff:')) {
+        ip = ip.substring(7);
+    }
+    return ip || 'unknown';
+};
+
 // General API rate limit: 100 requests per minute per IP
 const generalLimiter = rateLimit({
     windowMs: 60 * 1000,
     max: 100,
+    keyGenerator: ipKeyGenerator,
+    validate: { ip: false, trustProxy: false },
     message: { error: 'Too many requests, please try again later.' }
 });
 app.use('/api', generalLimiter);
@@ -43,6 +66,8 @@ app.use('/api/users', userManagementRoutes);
 const feedbackLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 5,
+    keyGenerator: ipKeyGenerator,
+    validate: { ip: false, trustProxy: false },
     message: { error: 'Too many feedback submissions. Please try again later.' }
 });
 app.use('/api/feedback', feedbackLimiter);
@@ -51,6 +76,8 @@ app.use('/api/feedback', feedbackLimiter);
 const orderStatusLimiter = rateLimit({
     windowMs: 60 * 1000,
     max: 20,
+    keyGenerator: ipKeyGenerator,
+    validate: { ip: false, trustProxy: false },
     message: { error: 'Too many requests. Please wait a moment.' }
 });
 app.use('/api/orderStatus', orderStatusLimiter);
@@ -59,6 +86,8 @@ app.use('/api/orderStatus', orderStatusLimiter);
 const aiChatLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 10,
+    keyGenerator: ipKeyGenerator,
+    validate: { ip: false, trustProxy: false },
     message: { error: 'Too many questions. Please try again in a few minutes.' }
 });
 app.use('/api/menu/ask', aiChatLimiter);
