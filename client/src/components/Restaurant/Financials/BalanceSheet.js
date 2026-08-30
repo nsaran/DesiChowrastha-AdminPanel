@@ -1,0 +1,151 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { Table, Select, Typography, message, Space, Empty } from 'antd';
+import protectedApi from '../../../utils/api';
+
+const { Title, Text } = Typography;
+const { Option } = Select;
+
+/**
+ * Balance Sheet (read-only)
+ *
+ * Month-by-month (columns) view of key financial lines (rows):
+ *   Total Income, Total Expense, Profit / Loss,
+ *   Capital Withdrawal (Owner's Draw), Capital Investment.
+ * Plus a Year Total column. Aggregated server-side from monthly summaries.
+ * Capital movements are excluded from Profit / Loss (standard accounting).
+ */
+const BalanceSheet = () => {
+    const { restaurantId } = useParams();
+
+    const currentYear = new Date().getFullYear();
+    const yearOptions = [currentYear, currentYear - 1, currentYear - 2];
+
+    const [selectedYear, setSelectedYear] = useState(currentYear);
+    const [months, setMonths] = useState([]);
+    const [perMonth, setPerMonth] = useState({});
+    const [totals, setTotals] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const money = (n) => `$${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const monthLabel = (ym) => {
+        const [, m] = ym.split('-');
+        return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][Number(m) - 1] || ym;
+    };
+
+    const loadYear = useCallback(async (year) => {
+        setLoading(true);
+        try {
+            const res = await protectedApi.get('/api/bank-transactions/balance-sheet', { params: { location: restaurantId, year } });
+            setMonths(res.data.months || []);
+            setPerMonth(res.data.perMonth || {});
+            setTotals(res.data.totals || {});
+        } catch (err) {
+            message.error(err.response?.data?.error || 'Failed to load balance sheet.');
+            setMonths([]);
+            setPerMonth({});
+            setTotals({});
+        } finally {
+            setLoading(false);
+        }
+    }, [restaurantId]);
+
+    useEffect(() => {
+        loadYear(currentYear);
+    }, [loadYear, currentYear]);
+
+    const handleYearChange = (year) => {
+        setSelectedYear(year);
+        loadYear(year);
+    };
+
+    // Metric definitions -> becomes the table rows.
+    const metrics = [
+        { key: 'income', label: 'Total Income', positive: true },
+        { key: 'expense', label: 'Total Expense', positive: false },
+        { key: 'profitLoss', label: 'Profit / Loss', signed: true, bold: true },
+        { key: 'capitalWithdrawal', label: "Capital Withdrawal (Owner's Draw)", positive: false },
+        { key: 'capitalInvestment', label: 'Capital Investment', positive: true },
+    ];
+
+    // Build one dataSource row per metric, with a value per month + a year total.
+    const dataSource = metrics.map((metric) => {
+        const row = { key: metric.key, label: metric.label, meta: metric };
+        for (const m of months) {
+            row[m] = (perMonth[m] || {})[metric.key] || 0;
+        }
+        row.total = totals[metric.key] || 0;
+        return row;
+    });
+
+    const cellColor = (metric, v) => {
+        if (metric.signed) return { color: v >= 0 ? '#237804' : '#a8071a' };
+        if (metric.positive) return { color: '#237804' };
+        return { color: '#a8071a' }; // expense / withdrawal shown in red
+    };
+
+    const renderValue = (v, record) => {
+        const m = record.meta;
+        // Expenses/withdrawals are stored positive; show them as negative visually.
+        const display = m.positive || m.signed ? v : -Math.abs(v);
+        const style = { ...cellColor(m, m.signed ? v : display), ...(m.bold ? { fontWeight: 'bold' } : {}) };
+        return v ? <span style={style}>{money(display)}</span> : '';
+    };
+
+    const columns = [
+        { title: '', dataIndex: 'label', key: 'label', fixed: 'left', width: 240, render: (t, r) => (r.meta.bold ? <strong>{t}</strong> : t) },
+        ...months.map((m) => ({
+            title: monthLabel(m),
+            dataIndex: m,
+            key: m,
+            align: 'right',
+            width: 110,
+            render: renderValue,
+        })),
+        {
+            title: 'Year Total', dataIndex: 'total', key: 'total', align: 'right', fixed: 'right', width: 140,
+            render: (v, record) => {
+                const m = record.meta;
+                const display = m.positive || m.signed ? v : -Math.abs(v);
+                const style = { ...cellColor(m, m.signed ? v : display), fontWeight: 'bold' };
+                return <span style={style}>{money(display)}</span>;
+            },
+        },
+    ];
+
+    return (
+        <div style={{ margin: '16px' }}>
+            <Title level={3}>Balance Sheet</Title>
+            <Text type="secondary">
+                Month-by-month income, expense and profit/loss for the year, plus owner capital
+                movements. Read-only — capital withdrawals/investments are excluded from Profit / Loss.
+            </Text>
+
+            <div style={{ margin: '16px 0' }}>
+                <Space>
+                    <Text>Year:</Text>
+                    <Select style={{ width: 100 }} value={selectedYear} onChange={handleYearChange}>
+                        {yearOptions.map((y) => <Option key={y} value={y}>{y}</Option>)}
+                    </Select>
+                </Space>
+            </div>
+
+            {months.length === 0 && !loading ? (
+                <Empty description={`No transaction data for ${selectedYear}`} />
+            ) : (
+                <Table
+                    size="small"
+                    bordered
+                    rowKey="key"
+                    loading={loading}
+                    pagination={false}
+                    dataSource={dataSource}
+                    columns={columns}
+                    scroll={{ x: 'max-content' }}
+                />
+            )}
+        </div>
+    );
+};
+
+export default BalanceSheet;

@@ -207,6 +207,89 @@ router.get('/yearly', async (req, res) => {
 });
 
 /**
+ * GET /api/bank-transactions/balance-sheet?location=<..>&year=<YYYY>
+ * Read-only balance-sheet style roll-up per month for a year:
+ *   - income:  sum of credits across all categories EXCEPT 'Capital Investment'
+ *   - expense: sum of debits (as positive) across all categories EXCEPT 'Transfers / Owner Draws'
+ *   - profitLoss: income - expense (capital movements excluded, per accounting)
+ *   - capitalWithdrawal: debits (as positive) of 'Transfers / Owner Draws'
+ *   - capitalInvestment: credits of 'Capital Investment'
+ * Returns per-month values (keyed by YYYY-MM) plus yearly totals for each metric.
+ */
+const CAPITAL_WITHDRAWAL_CATEGORY = 'Transfers / Owner Draws';
+const CAPITAL_INVESTMENT_CATEGORY = 'Capital Investment';
+
+router.get('/balance-sheet', async (req, res) => {
+    try {
+        const location = (req.query.location || '').trim();
+        const year = (req.query.year || '').trim();
+        if (!location || !year) return res.status(400).json({ error: 'location and year are required' });
+
+        const docId = restaurantDocId(location);
+        const db = getFirestore();
+        const snap = await db.collection('restaurants').doc(docId)
+            .collection('bankTransactions').get();
+
+        const yearDocs = snap.docs
+            .filter((d) => d.id.startsWith(`${year}-`))
+            .sort((a, b) => a.id.localeCompare(b.id));
+
+        const months = yearDocs.map((d) => d.id);
+        const round = (n) => Math.round(n * 100) / 100;
+
+        // Per-month metric maps keyed by YYYY-MM.
+        const perMonth = {}; // month -> { income, expense, profitLoss, capitalWithdrawal, capitalInvestment }
+        const totals = { income: 0, expense: 0, profitLoss: 0, capitalWithdrawal: 0, capitalInvestment: 0 };
+
+        for (const d of yearDocs) {
+            const data = d.data();
+            const summary = Array.isArray(data.summary) ? data.summary : [];
+
+            let income = 0, expense = 0, capitalWithdrawal = 0, capitalInvestment = 0;
+            for (const row of summary) {
+                const cat = row.category || 'Uncategorized';
+                const credits = row.credits || 0;   // money in (>= 0)
+                const debits = row.debits || 0;      // money out (<= 0)
+
+                if (cat === CAPITAL_INVESTMENT_CATEGORY) {
+                    capitalInvestment += credits;
+                } else {
+                    income += credits;
+                }
+
+                if (cat === CAPITAL_WITHDRAWAL_CATEGORY) {
+                    capitalWithdrawal += Math.abs(debits);
+                } else {
+                    expense += Math.abs(debits);
+                }
+            }
+
+            const profitLoss = income - expense;
+            perMonth[d.id] = {
+                income: round(income),
+                expense: round(expense),
+                profitLoss: round(profitLoss),
+                capitalWithdrawal: round(capitalWithdrawal),
+                capitalInvestment: round(capitalInvestment),
+            };
+
+            totals.income += income;
+            totals.expense += expense;
+            totals.profitLoss += profitLoss;
+            totals.capitalWithdrawal += capitalWithdrawal;
+            totals.capitalInvestment += capitalInvestment;
+        }
+
+        Object.keys(totals).forEach((k) => { totals[k] = round(totals[k]); });
+
+        res.json({ location: docId, year, months, perMonth, totals });
+    } catch (error) {
+        logger.error(`[BankTxns] balance-sheet failed: ${error.message}`);
+        res.status(500).json({ error: error.message || 'Failed to build balance sheet' });
+    }
+});
+
+/**
  * GET /api/bank-transactions?location=<..>&month=<YYYY-MM>
  * Returns the stored, categorized transactions + summary for a month.
  */

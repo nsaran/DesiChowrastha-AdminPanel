@@ -33,6 +33,7 @@ const CATEGORIES = [
     'Cash Paid',
     'Catering Order',
     'Transfers / Owner Draws',
+    'Capital Investment',
     'Other Income',
     'Uncategorized',
 ];
