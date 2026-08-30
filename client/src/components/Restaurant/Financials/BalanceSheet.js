@@ -118,13 +118,15 @@ const BalanceSheet = () => {
         return { color: '#a8071a' }; // expense / withdrawal shown in red
     };
 
-    // Chart: Income / Expense / Capital columns per month, plus Profit-Loss and
-    // Opening Balance as lines. Uses the same data as the table.
-    const seriesFor = (key) => months.map((m) => Number(((perMonth[m] || {})[key] || 0).toFixed(2)));
+    // Chart: always show all 12 months (Jan–Dec) of the selected year on the
+    // X-axis, mapping each metric to its month (0 where no data exists).
+    const monthKeys = Array.from({ length: 12 }, (_, i) => `${selectedYear}-${String(i + 1).padStart(2, '0')}`);
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const seriesFor = (key) => monthKeys.map((m) => Number(((perMonth[m] || {})[key] || 0).toFixed(2)));
     const chartOptions = {
         chart: { zoomType: 'xy' },
         title: { text: `Balance Sheet ${selectedYear}` },
-        xAxis: [{ categories: months.map(monthLabel), crosshair: true }],
+        xAxis: [{ categories: monthNames, crosshair: true }],
         yAxis: [{ title: { text: 'Amount ($)' }, labels: { format: '${value:,.0f}' } }],
         tooltip: { shared: true, valuePrefix: '$' },
         legend: { align: 'center', verticalAlign: 'bottom' },
