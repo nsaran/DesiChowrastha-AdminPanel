@@ -230,54 +230,72 @@ router.get('/balance-sheet', async (req, res) => {
         const snap = await db.collection('restaurants').doc(docId)
             .collection('bankTransactions').get();
 
+        const round = (n) => Math.round(n * 100) / 100;
+
+        // Derive income/expense/profitLoss/capital metrics from a stored summary array.
+        const metricsFromSummary = (summary) => {
+            let income = 0, expense = 0, capitalWithdrawal = 0, capitalInvestment = 0;
+            for (const row of (Array.isArray(summary) ? summary : [])) {
+                const cat = row.category || 'Uncategorized';
+                const credits = row.credits || 0;   // money in (>= 0)
+                const debits = row.debits || 0;      // money out (<= 0)
+                if (cat === CAPITAL_INVESTMENT_CATEGORY) capitalInvestment += credits;
+                else income += credits;
+                if (cat === CAPITAL_WITHDRAWAL_CATEGORY) capitalWithdrawal += Math.abs(debits);
+                else expense += Math.abs(debits);
+            }
+            return { income, expense, profitLoss: income - expense, capitalWithdrawal, capitalInvestment };
+        };
+
+        // Fetch all docs once and index by month key so we can look up any month
+        // (including the previous year's December for January's opening balance).
+        const byMonth = {}; // 'YYYY-MM' -> summary array
+        snap.docs.forEach((d) => { byMonth[d.id] = d.data().summary; });
+
         const yearDocs = snap.docs
             .filter((d) => d.id.startsWith(`${year}-`))
             .sort((a, b) => a.id.localeCompare(b.id));
 
         const months = yearDocs.map((d) => d.id);
-        const round = (n) => Math.round(n * 100) / 100;
+
+        // profitLoss for a given month key (0 if that month has no data).
+        const profitLossOf = (monthKey) =>
+            byMonth[monthKey] ? metricsFromSummary(byMonth[monthKey]).profitLoss : 0;
+
+        // The calendar-previous month key for a 'YYYY-MM' (Jan -> previous Dec).
+        const prevMonthKey = (monthKey) => {
+            const [y, m] = monthKey.split('-').map(Number);
+            const d = new Date(y, m - 1, 1); // this month
+            d.setMonth(d.getMonth() - 1);    // previous month
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        };
 
         // Per-month metric maps keyed by YYYY-MM.
-        const perMonth = {}; // month -> { income, expense, profitLoss, capitalWithdrawal, capitalInvestment }
-        const totals = { income: 0, expense: 0, profitLoss: 0, capitalWithdrawal: 0, capitalInvestment: 0 };
+        const perMonth = {};
+        const totals = { openingBalance: 0, income: 0, expense: 0, profitLoss: 0, capitalWithdrawal: 0, capitalInvestment: 0 };
 
         for (const d of yearDocs) {
-            const data = d.data();
-            const summary = Array.isArray(data.summary) ? data.summary : [];
+            const monthKey = d.id;
+            const m = metricsFromSummary(d.data().summary);
+            // Opening balance = the previous (calendar) month's profit/loss.
+            // For January this reads the previous year's December automatically.
+            const openingBalance = profitLossOf(prevMonthKey(monthKey));
 
-            let income = 0, expense = 0, capitalWithdrawal = 0, capitalInvestment = 0;
-            for (const row of summary) {
-                const cat = row.category || 'Uncategorized';
-                const credits = row.credits || 0;   // money in (>= 0)
-                const debits = row.debits || 0;      // money out (<= 0)
-
-                if (cat === CAPITAL_INVESTMENT_CATEGORY) {
-                    capitalInvestment += credits;
-                } else {
-                    income += credits;
-                }
-
-                if (cat === CAPITAL_WITHDRAWAL_CATEGORY) {
-                    capitalWithdrawal += Math.abs(debits);
-                } else {
-                    expense += Math.abs(debits);
-                }
-            }
-
-            const profitLoss = income - expense;
-            perMonth[d.id] = {
-                income: round(income),
-                expense: round(expense),
-                profitLoss: round(profitLoss),
-                capitalWithdrawal: round(capitalWithdrawal),
-                capitalInvestment: round(capitalInvestment),
+            perMonth[monthKey] = {
+                openingBalance: round(openingBalance),
+                income: round(m.income),
+                expense: round(m.expense),
+                profitLoss: round(m.profitLoss),
+                capitalWithdrawal: round(m.capitalWithdrawal),
+                capitalInvestment: round(m.capitalInvestment),
             };
 
-            totals.income += income;
-            totals.expense += expense;
-            totals.profitLoss += profitLoss;
-            totals.capitalWithdrawal += capitalWithdrawal;
-            totals.capitalInvestment += capitalInvestment;
+            totals.openingBalance += openingBalance;
+            totals.income += m.income;
+            totals.expense += m.expense;
+            totals.profitLoss += m.profitLoss;
+            totals.capitalWithdrawal += m.capitalWithdrawal;
+            totals.capitalInvestment += m.capitalInvestment;
         }
 
         Object.keys(totals).forEach((k) => { totals[k] = round(totals[k]); });

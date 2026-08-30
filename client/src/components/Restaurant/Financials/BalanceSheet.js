@@ -62,6 +62,7 @@ const BalanceSheet = () => {
 
     // Metric definitions -> becomes the table rows.
     const metrics = [
+        { key: 'openingBalance', label: 'Opening Balance (prev. month P/L)', signed: true },
         { key: 'income', label: 'Total Income', positive: true },
         { key: 'expense', label: 'Total Expense', positive: false },
         { key: 'profitLoss', label: 'Profit / Loss', signed: true, bold: true },
