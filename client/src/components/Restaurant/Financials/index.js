@@ -18,6 +18,9 @@ const Financials = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('Financials/BankTransactions')}>Monthly Report</Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('Financials/YearlyReport')}>Yearly Report</Button>
+                </Form.Item>
             </Form>
         </div>
     );

@@ -126,6 +126,87 @@ router.post('/import', upload.single('file'), async (req, res) => {
 });
 
 /**
+ * GET /api/bank-transactions/yearly?location=<..>&year=<YYYY>
+ * Read-only yearly roll-up. Aggregates the stored monthly `summary` arrays across
+ * every month of the year into:
+ *   - categoryTotals: cumulative per-category { credits, debits, net, count }
+ *   - matrix: per-category net by month (category rows x 12 month columns)
+ *   - months: the month keys (YYYY-MM) that have data, sorted ascending
+ *   - grand totals for the year
+ */
+router.get('/yearly', async (req, res) => {
+    try {
+        const location = (req.query.location || '').trim();
+        const year = (req.query.year || '').trim();
+        if (!location || !year) return res.status(400).json({ error: 'location and year are required' });
+
+        const docId = restaurantDocId(location);
+        const db = getFirestore();
+        const snap = await db.collection('restaurants').doc(docId)
+            .collection('bankTransactions').get();
+
+        // Keep only docs for the requested year (doc id is YYYY-MM).
+        const yearDocs = snap.docs
+            .filter((d) => d.id.startsWith(`${year}-`))
+            .sort((a, b) => a.id.localeCompare(b.id));
+
+        const monthsWithData = yearDocs.map((d) => d.id);
+
+        // Cumulative per-category totals, and a category -> { 'YYYY-MM': net } matrix.
+        const categoryTotals = {}; // cat -> { category, credits, debits, net, count }
+        const matrix = {};         // cat -> { month -> net }
+        let grandCredits = 0, grandDebits = 0;
+
+        for (const d of yearDocs) {
+            const data = d.data();
+            const monthKey = d.id;
+            const summary = Array.isArray(data.summary) ? data.summary : [];
+            for (const row of summary) {
+                const cat = row.category || 'Uncategorized';
+                if (!categoryTotals[cat]) categoryTotals[cat] = { category: cat, credits: 0, debits: 0, net: 0, count: 0 };
+                categoryTotals[cat].credits += row.credits || 0;
+                categoryTotals[cat].debits += row.debits || 0;
+                categoryTotals[cat].net += row.net || 0;
+                categoryTotals[cat].count += row.count || 0;
+
+                if (!matrix[cat]) matrix[cat] = {};
+                matrix[cat][monthKey] = (matrix[cat][monthKey] || 0) + (row.net || 0);
+
+                grandCredits += row.credits || 0;
+                grandDebits += row.debits || 0;
+            }
+        }
+
+        const round = (n) => Math.round(n * 100) / 100;
+        const categoryTotalsArr = Object.values(categoryTotals).map((c) => ({
+            ...c,
+            credits: round(c.credits),
+            debits: round(c.debits),
+            net: round(c.net),
+        }));
+        // Build matrix rows: one per category, with a net value per month key.
+        const matrixRows = Object.keys(matrix).map((cat) => {
+            const row = { category: cat };
+            for (const m of monthsWithData) row[m] = round(matrix[cat][m] || 0);
+            row.total = round(monthsWithData.reduce((s, m) => s + (matrix[cat][m] || 0), 0));
+            return row;
+        });
+
+        res.json({
+            location: docId,
+            year,
+            months: monthsWithData,
+            categoryTotals: categoryTotalsArr,
+            matrix: matrixRows,
+            grand: { credits: round(grandCredits), debits: round(grandDebits), net: round(grandCredits + grandDebits) },
+        });
+    } catch (error) {
+        logger.error(`[BankTxns] yearly failed: ${error.message}`);
+        res.status(500).json({ error: error.message || 'Failed to build yearly report' });
+    }
+});
+
+/**
  * GET /api/bank-transactions?location=<..>&month=<YYYY-MM>
  * Returns the stored, categorized transactions + summary for a month.
  */
