@@ -22,6 +22,7 @@ const SalaryYearView = () => {
     const [selectedYear, setSelectedYear] = useState(currentYear);
     const [months, setMonths] = useState([]);
     const [perMonth, setPerMonth] = useState({});
+    const [employeeMatrix, setEmployeeMatrix] = useState([]);
     const [yearTotals, setYearTotals] = useState({});
     const [loading, setLoading] = useState(false);
 
@@ -34,10 +35,11 @@ const SalaryYearView = () => {
             const res = await protectedApi.get('/api/payroll/salary/year', { params: { location: restaurantId, year } });
             setMonths(res.data.months || []);
             setPerMonth(res.data.perMonth || {});
+            setEmployeeMatrix(res.data.employeeMatrix || []);
             setYearTotals(res.data.yearTotals || {});
         } catch (err) {
             message.error(err.response?.data?.error || 'Failed to load salary year view.');
-            setMonths([]); setPerMonth({}); setYearTotals({});
+            setMonths([]); setPerMonth({}); setEmployeeMatrix([]); setYearTotals({});
         } finally {
             setLoading(false);
         }
@@ -76,11 +78,31 @@ const SalaryYearView = () => {
         },
     ];
 
+    // Employee x month matrix columns (each cell = that employee's total for the month).
+    const employeeColumns = [
+        { title: 'Employee', dataIndex: 'name', key: 'name', fixed: 'left', width: 180 },
+        ...months.map((mo) => ({
+            title: monthLabel(mo), dataIndex: mo, key: mo, align: 'right', width: 100,
+            render: (v) => (v ? money(v) : ''),
+        })),
+        {
+            title: 'Year Total', dataIndex: 'total', key: 'total', align: 'right', fixed: 'right', width: 130,
+            render: (v) => <strong>{money(v)}</strong>,
+        },
+    ];
+
     const handleExportCSV = () => {
         const esc = (s) => { const str = s == null ? '' : String(s); return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str; };
         const num = (v) => Number(v || 0).toFixed(2);
         const header = ['', ...months.map(monthLabel), 'Year Total'];
         const lines = [header, ...dataSource.map((r) => [r.label, ...months.map((mo) => num(r[mo])), num(r.total)])];
+        // Append the per-employee matrix as a second section.
+        if (employeeMatrix.length > 0) {
+            lines.push([]);
+            lines.push(['By Employee']);
+            lines.push(['Employee', ...months.map(monthLabel), 'Year Total']);
+            employeeMatrix.forEach((r) => lines.push([r.name, ...months.map((mo) => num(r[mo])), num(r.total)]));
+        }
         const csv = lines.map((r) => r.map(esc).join(',')).join('\n');
         const blob = new Blob([csv], { type: 'text/csv' });
         const a = document.createElement('a');
@@ -122,6 +144,18 @@ const SalaryYearView = () => {
                         loading={loading}
                         dataSource={dataSource}
                         columns={columns}
+                        size="small"
+                        bordered
+                        pagination={false}
+                        scroll={{ x: 'max-content' }}
+                    />
+
+                    <Title level={5} style={{ marginTop: 24 }}>By Employee</Title>
+                    <Table
+                        rowKey="employeeId"
+                        loading={loading}
+                        dataSource={employeeMatrix}
+                        columns={employeeColumns}
                         size="small"
                         bordered
                         pagination={false}

@@ -169,6 +169,8 @@ router.get('/salary/year', async (req, res) => {
         const perMonth = {};
         // employeeId -> total for the year
         const perEmployee = {};
+        // employeeId -> { month -> total } (per-employee per-month breakdown)
+        const employeeMonth = {};
         const yearTotals = { p1Cash: 0, p1Bank: 0, p16Cash: 0, p16Bank: 0, cash: 0, bank: 0, total: 0 };
 
         for (const m of months) {
@@ -184,6 +186,8 @@ router.get('/salary/year', async (req, res) => {
                 agg.p16Bank += Number(r.p16Bank) || 0;
                 const empTotal = (Number(r.p1Cash) || 0) + (Number(r.p1Bank) || 0) + (Number(r.p16Cash) || 0) + (Number(r.p16Bank) || 0);
                 perEmployee[empId] = round((perEmployee[empId] || 0) + empTotal);
+                if (!employeeMonth[empId]) employeeMonth[empId] = {};
+                employeeMonth[empId][m] = round((employeeMonth[empId][m] || 0) + empTotal);
             });
             const cash = agg.p1Cash + agg.p16Cash;
             const bank = agg.p1Bank + agg.p16Bank;
@@ -199,7 +203,29 @@ router.get('/salary/year', async (req, res) => {
         }
         Object.keys(yearTotals).forEach((k) => { yearTotals[k] = round(yearTotals[k]); });
 
-        res.json({ location: restaurantDocId(location), year, months, perMonth, perEmployee, yearTotals });
+        // Resolve employee names for the per-employee per-month matrix.
+        const empSnap = await db.collection('restaurants').doc(restaurantDocId(location))
+            .collection('employees').get();
+        const nameById = {};
+        empSnap.docs.forEach((d) => {
+            const e = d.data();
+            nameById[d.id] = `${e.firstName || ''} ${e.lastName || ''}`.trim() || d.id;
+        });
+
+        // Build one matrix row per employee that has any salary data this year.
+        const employeeMatrix = Object.keys(employeeMonth).map((empId) => {
+            const row = { employeeId: empId, name: nameById[empId] || empId };
+            let rowTotal = 0;
+            months.forEach((m) => {
+                const v = employeeMonth[empId][m] || 0;
+                row[m] = round(v);
+                rowTotal += v;
+            });
+            row.total = round(rowTotal);
+            return row;
+        }).sort((a, b) => a.name.localeCompare(b.name));
+
+        res.json({ location: restaurantDocId(location), year, months, perMonth, perEmployee, employeeMatrix, yearTotals });
     } catch (error) {
         logger.error(`[Payroll] salary year failed: ${error.message}`);
         res.status(500).json({ error: error.message || 'Failed to build salary year view' });
