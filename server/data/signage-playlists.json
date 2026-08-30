@@ -7,7 +7,7 @@
         "type": "url",
         "src": "https://www.youtube.com/embed/T-0ZiZMtagM?autoplay=1&mute=1&loop=1&playlist=T-0ZiZMtagM",
         "label": "Main Stream",
-        "duration": 30,
+        "duration": 300,
         "enabled": true,
         "role": "main"
       },

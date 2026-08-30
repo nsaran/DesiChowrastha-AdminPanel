@@ -155,8 +155,6 @@ const SignagePlayer = () => {
                 // First item marked as mainStream type OR first URL item with 'youtube' in src
                 const items = data.items.filter(i => i.enabled !== false);
                 const mainIdx = items.findIndex(i => i.role === 'main' || (i.type === 'url' && i.src?.includes('youtube')));
-                // eslint-disable-next-line no-console
-                console.log('[Signage] playlist loaded', { itemCount: items.length, mainIdx, resolvedMain: items[mainIdx >= 0 ? mainIdx : 0], items });
                 if (mainIdx >= 0) {
                     setMainStream(items[mainIdx]);
                     setInterrupts(items.filter((_, idx) => idx !== mainIdx));
@@ -325,9 +323,6 @@ const SignagePlayer = () => {
 
             if (phaseRef.current === 'main') {
                 if (elapsed < mainDuration) return; // Still showing main stream
-
-                // eslint-disable-next-line no-console
-                console.log('[Signage] main phase ending', { mainDuration, elapsed, mainStreamDuration: mainStreamRef.current?.duration, mainSrc: mainStreamRef.current?.src });
 
                 // Time to find next interrupt
                 tickBusyRef.current = true;
