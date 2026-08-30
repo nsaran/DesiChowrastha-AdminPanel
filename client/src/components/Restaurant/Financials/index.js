@@ -24,6 +24,9 @@ const Financials = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('Financials/BalanceSheet')}>Balance Sheet</Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('Financials/ProfitLoss')}>Profit &amp; Loss</Button>
+                </Form.Item>
             </Form>
         </div>
     );

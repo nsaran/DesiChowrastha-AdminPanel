@@ -308,6 +308,107 @@ router.get('/balance-sheet', async (req, res) => {
 });
 
 /**
+ * GET /api/bank-transactions/profit-loss?location=<..>&year=<YYYY>
+ * Read-only Profit & Loss statement for a year, month-by-month.
+ * Categories are grouped into Revenue vs Expense (agreed mapping). Excluded from
+ * the P&L: Transfers / Owner Draws, Capital Investment, Uncategorized.
+ * Returns per-category lines (with per-month values + line total), section
+ * subtotals (revenue/expense) per month + total, and net profit/loss.
+ */
+const PL_REVENUE_CATEGORIES = ['Sales/Deposits', 'Other Income', 'Catering Order'];
+const PL_EXPENSE_CATEGORIES = [
+    'Food Supplies', 'Utilities', 'Rent/Lease', 'Payroll', 'Payroll Taxes',
+    'Taxes (Govt)', 'Bank & Card Fees', 'Software & Services', 'Insurance',
+    'Wages (Direct/Zelle)', 'Cash Paid', 'Credit Card / Loan Payment',
+];
+
+router.get('/profit-loss', async (req, res) => {
+    try {
+        const location = (req.query.location || '').trim();
+        const year = (req.query.year || '').trim();
+        if (!location || !year) return res.status(400).json({ error: 'location and year are required' });
+
+        const docId = restaurantDocId(location);
+        const db = getFirestore();
+        const snap = await db.collection('restaurants').doc(docId)
+            .collection('bankTransactions').get();
+
+        const yearDocs = snap.docs
+            .filter((d) => d.id.startsWith(`${year}-`))
+            .sort((a, b) => a.id.localeCompare(b.id));
+
+        const months = yearDocs.map((d) => d.id);
+        const round = (n) => Math.round(n * 100) / 100;
+
+        // Amount contributed by a category from a month's summary row.
+        // Revenue uses credits; Expense uses abs(debits).
+        const byMonthCategory = {}; // month -> { category -> {credits, debits} }
+        yearDocs.forEach((d) => {
+            const summary = Array.isArray(d.data().summary) ? d.data().summary : [];
+            const map = {};
+            summary.forEach((row) => {
+                const cat = row.category || 'Uncategorized';
+                map[cat] = { credits: row.credits || 0, debits: row.debits || 0 };
+            });
+            byMonthCategory[d.id] = map;
+        });
+
+        // Build category line rows for a section.
+        const buildLines = (categories, kind) => categories.map((cat) => {
+            const line = { category: cat };
+            let lineTotal = 0;
+            months.forEach((m) => {
+                const cell = (byMonthCategory[m] || {})[cat];
+                const val = cell ? (kind === 'revenue' ? cell.credits : Math.abs(cell.debits)) : 0;
+                line[m] = round(val);
+                lineTotal += val;
+            });
+            line.total = round(lineTotal);
+            return line;
+        }).filter((line) => line.total !== 0 || months.some((m) => line[m] !== 0));
+
+        const revenueLines = buildLines(PL_REVENUE_CATEGORIES, 'revenue');
+        const expenseLines = buildLines(PL_EXPENSE_CATEGORIES, 'expense');
+
+        // Section subtotals per month + total, and net per month + total.
+        const sumLines = (lines) => {
+            const row = {};
+            let total = 0;
+            months.forEach((m) => {
+                const v = lines.reduce((s, l) => s + (l[m] || 0), 0);
+                row[m] = round(v);
+                total += v;
+            });
+            row.total = round(total);
+            return row;
+        };
+
+        const revenueSubtotal = sumLines(revenueLines);
+        const expenseSubtotal = sumLines(expenseLines);
+        const net = {};
+        let netTotal = 0;
+        months.forEach((m) => {
+            const v = (revenueSubtotal[m] || 0) - (expenseSubtotal[m] || 0);
+            net[m] = round(v);
+            netTotal += v;
+        });
+        net.total = round(netTotal);
+
+        res.json({
+            location: docId,
+            year,
+            months,
+            revenue: { lines: revenueLines, subtotal: revenueSubtotal },
+            expense: { lines: expenseLines, subtotal: expenseSubtotal },
+            net,
+        });
+    } catch (error) {
+        logger.error(`[BankTxns] profit-loss failed: ${error.message}`);
+        res.status(500).json({ error: error.message || 'Failed to build profit & loss' });
+    }
+});
+
+/**
  * GET /api/bank-transactions?location=<..>&month=<YYYY-MM>
  * Returns the stored, categorized transactions + summary for a month.
  */

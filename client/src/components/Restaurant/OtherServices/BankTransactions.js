@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Upload, Button, Table, Select, Typography, message, Card, Row, Col, Statistic, Tag, Space, InputNumber, Input } from 'antd';
+import { Upload, Button, Table, Select, Typography, message, Card, Row, Col, Statistic, Tag, Space, InputNumber, Input, Alert } from 'antd';
 import { UploadOutlined, ReloadOutlined, CheckOutlined } from '@ant-design/icons';
 import protectedApi from '../../../utils/api';
 
@@ -240,9 +240,14 @@ const BankTransactions = () => {
 
     const totalCredits = summary.reduce((s, r) => s + (r.credits || 0), 0);
     const totalDebits = summary.reduce((s, r) => s + (r.debits || 0), 0);
+    const uncategorizedCount = transactions.filter((t) => t.category === 'Uncategorized').length;
 
     return (
         <div style={{ margin: '16px' }}>
+            <style>{`
+                .bank-txn-uncategorized > td { background-color: #fff1f0 !important; }
+                .bank-txn-uncategorized:hover > td { background-color: #ffe7e3 !important; }
+            `}</style>
             <Title level={3}>Monthly Report</Title>
             <Text type="secondary">
                 Upload a Bank of America statement CSV. Transactions are parsed and categorized automatically;
@@ -300,6 +305,16 @@ const BankTransactions = () => {
                 </Card>
             )}
 
+            {uncategorizedCount > 0 && (
+                <Alert
+                    type="warning"
+                    showIcon
+                    style={{ marginBottom: 12 }}
+                    message={`${uncategorizedCount} transaction${uncategorizedCount === 1 ? '' : 's'} still Uncategorized`}
+                    description="Please set a category for the highlighted rows below so reports (P&L, Yearly, Balance Sheet) are accurate."
+                />
+            )}
+
             <Table
                 columns={columns}
                 dataSource={transactions}
@@ -308,6 +323,7 @@ const BankTransactions = () => {
                 size="middle"
                 bordered
                 pagination={{ pageSize: 50 }}
+                rowClassName={(record) => (record.category === 'Uncategorized' ? 'bank-txn-uncategorized' : '')}
             />
         </div>
     );

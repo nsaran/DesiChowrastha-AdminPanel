@@ -46,6 +46,7 @@ import OtherServices from './components/Restaurant/OtherServices';
 import Financials from './components/Restaurant/Financials';
 import YearlyReport from './components/Restaurant/Financials/YearlyReport';
 import BalanceSheet from './components/Restaurant/Financials/BalanceSheet';
+import ProfitLoss from './components/Restaurant/Financials/ProfitLoss';
 import BankTransactions from './components/Restaurant/OtherServices/BankTransactions';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
@@ -105,6 +106,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/Financials/BankTransactions" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><BankTransactions /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/YearlyReport" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><YearlyReport /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/BalanceSheet" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><BalanceSheet /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/Financials/ProfitLoss" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><ProfitLoss /></RoleProtectedRoute>} />
 
           {/* Chef routes */}
           <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<RoleProtectedRoute allowedRoles={['owner', 'chef']}><TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary></RoleProtectedRoute>} />
