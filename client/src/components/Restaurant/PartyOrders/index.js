@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { Button, Modal, message, Form, DatePicker, Upload, Tooltip } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, ReloadOutlined } from '@ant-design/icons';
 import { firestore } from '../../../config/firebase';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
@@ -21,6 +21,7 @@ const { RangePicker } = DatePicker;
 const RestaurantPartyOrdersComponent = () => {
     const { restaurantId } = useParams();
     const [partyOrdersData, setPartyOrdersData] = useState([]);
+    const [allOrders, setAllOrders] = useState([]); // raw fetched list; filtered client-side
     const [loading, setLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [editRecord, setEditRecord] = useState(null);
@@ -66,46 +67,54 @@ const RestaurantPartyOrdersComponent = () => {
         }
     };
 
+    // One-time fetch of the party orders (replaces a live onSnapshot listener to
+    // avoid continuously consuming Firestore read quota). Re-run on demand after
+    // add/update/delete and via the Refresh button.
+    const fetchPartyOrders = useCallback(async () => {
+        setLoading(true);
+        try {
+            const snapshot = await firestore
+                .collection('restaurants')
+                .doc(restaurantId)
+                .collection('partyOrders')
+                .get();
+            const orders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            setAllOrders(orders);
+        } catch (error) {
+            message.error('Failed to fetch party orders data.');
+            console.error('Error fetching party orders:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, [restaurantId]);
+
+    // Fetch once when the restaurant changes.
     useEffect(() => {
-        const unsubscribe = firestore
-            .collection('restaurants')
-            .doc(restaurantId)
-            .collection('partyOrders')
-            .onSnapshot(snapshot => {
-                const allPartyOrders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        fetchPartyOrders();
+    }, [fetchPartyOrders]);
 
-                const todayDate = moment().format('YYYY-MM-DD');
-                const todayOrders = allPartyOrders.filter((order) => order.cPartyDate === todayDate);
-                setTodayOrders(todayOrders);
+    // Recompute today's orders and the filtered table purely from the already-fetched
+    // list whenever the data or the date filters change. No re-fetch (no extra reads).
+    useEffect(() => {
+        const todayDate = moment().format('YYYY-MM-DD');
+        setTodayOrders(allOrders.filter((order) => order.cPartyDate === todayDate));
 
-                let filteredOrders = allPartyOrders;
-
-                // Filter by Party Date
-                if (startDate && endDate) {
-                    filteredOrders = filteredOrders.filter((order) => {
-                        const partyDate = moment(order.cPartyDate);
-                        return partyDate.isBetween(startDate, endDate, null, '[]');
-                    });
-                }
-
-                // Filter by Order Date
-                if (orderStartDate && orderEndDate) {
-                    filteredOrders = filteredOrders.filter((order) => {
-                        const orderDate = moment(order.cOrderDate);
-                        return orderDate.isBetween(orderStartDate, orderEndDate, null, '[]');
-                    });
-                }
-
-                setPartyOrdersData(filteredOrders.sort((a, b) => new Date(b.cOrderDate) - new Date(a.cOrderDate)));
-                setLoading(false);
-            }, error => {
-                setLoading(false);
-                message.error('Failed to fetch party orders data.');
-                console.error('Error fetching party orders:', error);
+        let filteredOrders = allOrders;
+        if (startDate && endDate) {
+            filteredOrders = filteredOrders.filter((order) => {
+                const partyDate = moment(order.cPartyDate);
+                return partyDate.isBetween(startDate, endDate, null, '[]');
             });
+        }
+        if (orderStartDate && orderEndDate) {
+            filteredOrders = filteredOrders.filter((order) => {
+                const orderDate = moment(order.cOrderDate);
+                return orderDate.isBetween(orderStartDate, orderEndDate, null, '[]');
+            });
+        }
 
-        return () => unsubscribe();
-    }, [restaurantId, startDate, endDate, orderStartDate, orderEndDate]); // Watch both party and order date ranges
+        setPartyOrdersData([...filteredOrders].sort((a, b) => new Date(b.cOrderDate) - new Date(a.cOrderDate)));
+    }, [allOrders, startDate, endDate, orderStartDate, orderEndDate]);
 
 
 
@@ -214,6 +223,9 @@ const RestaurantPartyOrdersComponent = () => {
             setIsCalculateTotalsClicked(false);
             handleModalClose();
 
+            // Refresh the list so the new/updated order shows (no live listener now).
+            fetchPartyOrders();
+
             // Auto-send the invoice PDF to the owner via WhatsApp (non-blocking).
             // Uses the same flow as "Share Invoice" -> generate PDF -> server sends it.
             sendInvoiceToOwner(partyOrderData);
@@ -278,6 +290,7 @@ const RestaurantPartyOrdersComponent = () => {
             await restaurantRef.collection('partyOrders').doc(id).delete();
 
             message.success('Party order deleted successfully!');
+            fetchPartyOrders();
         } catch (error) {
             console.error('Failed to delete party order:', error);
             if (error.code === 'permission-denied') {
@@ -604,6 +617,9 @@ const RestaurantPartyOrdersComponent = () => {
                 <Button icon={<UploadOutlined />} style={{ float: "right", marginLeft: "16px", marginTop: "8.4px", marginBottom: "22px" }}>Import CSV</Button>
             </Upload>
             <Button onClick={exportToCSV} style={{ float: "right", marginLeft: "16px", marginTop: "8.4px", marginBottom: "22px" }}>Download CSV</Button>
+            <Tooltip title="Refresh party orders">
+                <Button icon={<ReloadOutlined />} onClick={fetchPartyOrders} loading={loading} style={{ float: "right", marginLeft: "16px", marginTop: "8.4px", marginBottom: "22px" }}>Refresh</Button>
+            </Tooltip>
 
             <Tooltip title="Filter by Party Date">
                 <DatePicker.RangePicker

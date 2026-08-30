@@ -68,11 +68,16 @@ const PartyOrderHeader = ({ managerData }) => {
     );
 
     useEffect(() => {
-        const unsubscribe = firestore
+        // One-time fetch for the notification badge (overdue, not-completed orders).
+        // Replaces a live onSnapshot listener to avoid continuous read-quota usage.
+        let cancelled = false;
+        firestore
             .collection('restaurants')
             .doc(restaurantId)
             .collection('partyOrders')
-            .onSnapshot(snapshot => {
+            .get()
+            .then(snapshot => {
+                if (cancelled) return;
                 const notificationsData = snapshot.docs
                     .map(doc => ({ id: doc.id, ...doc.data() }))
                     .filter(order => {
@@ -85,11 +90,12 @@ const PartyOrderHeader = ({ managerData }) => {
 
                 setNotifications(notificationsData);
                 setNotificationCount(notificationsData.length);
-            }, error => {
+            })
+            .catch(error => {
                 console.error('Error fetching notifications:', error);
             });
 
-        return () => unsubscribe();
+        return () => { cancelled = true; };
     }, [restaurantId]);
 
     const handleNotificationsClick = () => {
