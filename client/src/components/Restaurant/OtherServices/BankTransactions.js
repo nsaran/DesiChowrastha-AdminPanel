@@ -142,6 +142,23 @@ const BankTransactions = () => {
         }
     };
 
+    // Fetch the month's total CASH from Toast and auto-fill the row's Adjusted Amount.
+    const handleFetchToastCash = async (record) => {
+        if (!selectedMonth) return;
+        try {
+            message.loading({ content: 'Fetching cash total from Toast...', key: 'toastCash' });
+            const res = await protectedApi.get('/api/bank-transactions/toast-cash', {
+                params: { location: restaurantId, month: selectedMonth },
+            });
+            const cash = Number(res.data.cashTotal) || 0;
+            setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, adjustAmount: cash } : t)));
+            await handleFieldSave(record, 'adjustAmount', cash);
+            message.success({ content: `Toast cash for ${selectedMonth}: $${cash.toFixed(2)}`, key: 'toastCash' });
+        } catch (err) {
+            message.error({ content: err.response?.data?.error || 'Failed to fetch Toast cash.', key: 'toastCash' });
+        }
+    };
+
     // The "adjusted" value drives Income/Expense; falls back to the parsed amount.
     // Numeric adjusted value used for Income/Expense/summary math.
     const adjustedOf = (t) => (t.adjustAmount !== undefined && t.adjustAmount !== null && t.adjustAmount !== '' ? Number(t.adjustAmount) : Number(t.amount) || 0);
@@ -180,7 +197,7 @@ const BankTransactions = () => {
             ),
         },
         {
-            title: 'Adjusted Amount', key: 'adjustAmount', width: 190, align: 'right',
+            title: 'Adjusted Amount', key: 'adjustAmount', width: 250, align: 'right',
             sorter: (a, b) => adjustedOf(a) - adjustedOf(b),
             render: (_, record) => (
                 <Space size={4}>
@@ -199,6 +216,15 @@ const BankTransactions = () => {
                         title="Save adjusted amount"
                         onClick={() => handleFieldSave(record, 'adjustAmount', adjustedOf(record))}
                     />
+                    {record.description === 'Toast Cash Income' && (
+                        <Button
+                            size="small"
+                            title="Fetch cash total from Toast for this month"
+                            onClick={() => handleFetchToastCash(record)}
+                        >
+                            Toast
+                        </Button>
+                    )}
                 </Space>
             ),
         },

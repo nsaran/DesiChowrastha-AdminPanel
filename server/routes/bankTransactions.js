@@ -7,6 +7,7 @@ const { verifyToken, requireRole } = require('../middleware/auth');
 const logger = require('../utils/logger');
 const { parseBankCsv } = require('../services/bankStatements/csvParser');
 const { categorizeTransactions, summarize, CATEGORIES } = require('../services/bankStatements/categorizer');
+const { getMonthlyCashTotal } = require('../services/toastCashService');
 
 // Bank statement import/review is restricted to owners and accounts managers.
 router.use(verifyToken, requireRole(['owner', 'accountsManager']));
@@ -122,6 +123,26 @@ router.post('/import', upload.single('file'), async (req, res) => {
     } catch (error) {
         logger.error(`[BankTxns] import failed: ${error.message}`);
         res.status(500).json({ error: error.message || 'Import failed' });
+    }
+});
+
+/**
+ * GET /api/bank-transactions/toast-cash?location=<..>&month=<YYYY-MM>
+ * Returns the total CASH received for the month from the Toast Orders API
+ * (excludes refunds/voids). Used to auto-fill the "Toast Cash Income" row.
+ */
+router.get('/toast-cash', async (req, res) => {
+    try {
+        const location = (req.query.location || '').trim();
+        const month = (req.query.month || '').trim();
+        if (!location || !month) return res.status(400).json({ error: 'location and month are required' });
+        if (!/^\d{4}-\d{2}$/.test(month)) return res.status(400).json({ error: 'month must be YYYY-MM' });
+
+        const result = await getMonthlyCashTotal(location, month);
+        res.json(result);
+    } catch (error) {
+        logger.error(`[BankTxns] toast-cash failed: ${error.message}`);
+        res.status(500).json({ error: error.message || 'Failed to fetch Toast cash total' });
     }
 });
 
