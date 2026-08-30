@@ -802,8 +802,14 @@ app.delete(
             logger.info(`Party order ${orderId} deleted for ${restaurantId} by ${req.user.email || req.user.uid}`);
             res.json({ success: true });
         } catch (error) {
-            logger.error('Party order delete failed:', error.message);
-            res.status(500).json({ error: error.message });
+            logger.error('Party order delete failed:', {
+                message: error.message,
+                code: error.code,
+                name: error.name,
+                details: error.details,
+                stack: error.stack,
+            });
+            res.status(500).json({ error: error.message || 'Delete failed', code: error.code });
         }
     }
 );
