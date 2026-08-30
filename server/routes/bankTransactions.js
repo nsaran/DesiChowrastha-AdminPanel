@@ -8,8 +8,8 @@ const logger = require('../utils/logger');
 const { parseBankCsv } = require('../services/bankStatements/csvParser');
 const { categorizeTransactions, summarize, CATEGORIES } = require('../services/bankStatements/categorizer');
 
-// Bank statement import/review is owner-only (financial data).
-router.use(verifyToken, requireRole(['owner']));
+// Bank statement import/review is restricted to owners and accounts managers.
+router.use(verifyToken, requireRole(['owner', 'accountsManager']));
 
 // In-memory upload (CSV files are small).
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
