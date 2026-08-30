@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, Select, Typography, message, Space, Empty, Button } from 'antd';
+import { Table, Select, Typography, message, Space, Empty, Button, Card } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 import protectedApi from '../../../utils/api';
 
 const { Title, Text } = Typography;
@@ -116,6 +118,27 @@ const BalanceSheet = () => {
         return { color: '#a8071a' }; // expense / withdrawal shown in red
     };
 
+    // Chart: Income / Expense / Capital columns per month, plus Profit-Loss and
+    // Opening Balance as lines. Uses the same data as the table.
+    const seriesFor = (key) => months.map((m) => Number(((perMonth[m] || {})[key] || 0).toFixed(2)));
+    const chartOptions = {
+        chart: { zoomType: 'xy' },
+        title: { text: `Balance Sheet ${selectedYear}` },
+        xAxis: [{ categories: months.map(monthLabel), crosshair: true }],
+        yAxis: [{ title: { text: 'Amount ($)' }, labels: { format: '${value:,.0f}' } }],
+        tooltip: { shared: true, valuePrefix: '$' },
+        legend: { align: 'center', verticalAlign: 'bottom' },
+        credits: { enabled: false },
+        series: [
+            { name: 'Income', type: 'column', color: '#237804', data: seriesFor('income') },
+            { name: 'Expense', type: 'column', color: '#a8071a', data: seriesFor('expense') },
+            { name: 'Capital Withdrawal', type: 'column', color: '#d46b08', data: seriesFor('capitalWithdrawal') },
+            { name: 'Capital Investment', type: 'column', color: '#1677ff', data: seriesFor('capitalInvestment') },
+            { name: 'Profit / Loss', type: 'line', color: '#531dab', lineWidth: 3, data: seriesFor('profitLoss') },
+            { name: 'Opening Balance', type: 'line', color: '#8c8c8c', dashStyle: 'ShortDash', data: seriesFor('openingBalance') },
+        ],
+    };
+
     const renderValue = (v, record) => {
         const m = record.meta;
         // Expenses/withdrawals are stored positive; show them as negative visually.
@@ -168,16 +191,21 @@ const BalanceSheet = () => {
             {months.length === 0 && !loading ? (
                 <Empty description={`No transaction data for ${selectedYear}`} />
             ) : (
-                <Table
-                    size="small"
-                    bordered
-                    rowKey="key"
-                    loading={loading}
-                    pagination={false}
-                    dataSource={dataSource}
-                    columns={columns}
-                    scroll={{ x: 'max-content' }}
-                />
+                <>
+                    <Card size="small" style={{ marginBottom: 16 }}>
+                        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+                    </Card>
+                    <Table
+                        size="small"
+                        bordered
+                        rowKey="key"
+                        loading={loading}
+                        pagination={false}
+                        dataSource={dataSource}
+                        columns={columns}
+                        scroll={{ x: 'max-content' }}
+                    />
+                </>
             )}
         </div>
     );
