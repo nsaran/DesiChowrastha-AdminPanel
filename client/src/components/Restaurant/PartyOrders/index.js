@@ -31,7 +31,7 @@ const RestaurantPartyOrdersComponent = () => {
     const [isCalculateTotalsClicked, setIsCalculateTotalsClicked] = useState(false);
     const [invoiceNumber, setInvoiceNumber] = useState('000000');
     const isSavingRef = useRef(false);
-    const { role } = useContext(AuthContext);
+    const { role, currentUser } = useContext(AuthContext);
     const canDelete = role === 'owner'; // only owners may delete party orders
 
 
@@ -248,19 +248,42 @@ const RestaurantPartyOrdersComponent = () => {
     };
 
     const handleDeletePartyOrder = async (record) => {
-        // Deletion is enforced server-side: the endpoint requires the caller to be
-        // an authenticated user with the 'owner' role. The server does the soft
-        // delete (archive to deletedPartyOrders, then remove).
+        // Soft-delete via the client Firebase SDK (same path as add/update, which
+        // avoids the Admin-SDK RESOURCE_EXHAUSTED quota issue seen on the server route).
+        // Archive the order to `deletedPartyOrders`, then remove it from `partyOrders`.
+        // Owner-only is enforced defensively in the UI and authoritatively by Firestore
+        // Security Rules (managers cannot write to partyOrders/deletedPartyOrders deletes).
+        if (!canDelete) {
+            message.error('You are not authorized to delete party orders.');
+            return;
+        }
+
         try {
             setLoading(true);
-            await protectedApi.delete(`/api/party-orders/${restaurantId}/${record.id}`);
+
+            const restaurantRef = firestore.collection('restaurants').doc(restaurantId);
+            const { id, ...orderData } = record;
+
+            // Archive (soft delete)
+            await restaurantRef
+                .collection('deletedPartyOrders')
+                .doc(id)
+                .set({
+                    ...orderData,
+                    deletedAt: new Date().toISOString(),
+                    deletedBy: currentUser?.email || currentUser?.uid || 'unknown',
+                });
+
+            // Remove the original
+            await restaurantRef.collection('partyOrders').doc(id).delete();
+
             message.success('Party order deleted successfully!');
         } catch (error) {
-            const status = error.response?.status;
-            if (status === 401 || status === 403) {
+            console.error('Failed to delete party order:', error);
+            if (error.code === 'permission-denied') {
                 message.error('You are not authorized to delete party orders.');
             } else {
-                message.error(error.response?.data?.error || 'Failed to delete party order.');
+                message.error('Failed to delete party order. Please try again.');
             }
         } finally {
             setLoading(false);
