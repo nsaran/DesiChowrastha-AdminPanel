@@ -200,14 +200,21 @@ const BankTransactions = () => {
             title: 'Adjusted Amount', key: 'adjustAmount', width: 250, align: 'right',
             sorter: (a, b) => adjustedOf(a) - adjustedOf(b),
             render: (_, record) => {
-                // "Cash Payment - Employees" is derived from the Salary Ledger — read-only.
-                const isLedgerDerived = record.categorySource === 'salaryLedger'
+                // Derived / read-only rows: pulled from another source, edited elsewhere.
+                const isSalaryDerived = record.categorySource === 'salaryLedger'
                     || record.description === 'Cash Payment - Employees';
-                if (isLedgerDerived) {
+                const isPartyDerived = record.categorySource === 'partyOrders'
+                    || record.description === 'Catering Order - Payment';
+                if (isSalaryDerived || isPartyDerived) {
+                    const tip = isSalaryDerived
+                        ? 'Derived from the Salary Ledger (cash salary for this month). Edit it on the Salary Ledger page.'
+                        : 'Derived from Party Orders (amount paid this month, by party date). Edit it on the Party Orders page.';
+                    const tagLabel = isSalaryDerived ? 'Salary Ledger' : 'Party Orders';
+                    const val = adjustedOf(record);
                     return (
-                        <Tooltip title="Derived from the Salary Ledger (cash salary for this month). Edit it on the Salary Ledger page.">
-                            <span style={{ color: '#a8071a' }}>{money(adjustedOf(record))}</span>
-                            <Tag color="geekblue" style={{ marginLeft: 8 }}>Salary Ledger</Tag>
+                        <Tooltip title={tip}>
+                            <span style={{ color: val < 0 ? '#a8071a' : '#237804' }}>{money(val)}</span>
+                            <Tag color="geekblue" style={{ marginLeft: 8 }}>{tagLabel}</Tag>
                         </Tooltip>
                     );
                 }

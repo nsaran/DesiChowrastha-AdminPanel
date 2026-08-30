@@ -9,6 +9,7 @@ const { parseBankCsv } = require('../services/bankStatements/csvParser');
 const { categorizeTransactions, summarize, CATEGORIES } = require('../services/bankStatements/categorizer');
 const { getMonthlyCashTotal } = require('../services/toastCashService');
 const { getMonthlyCashSalary } = require('../services/salaryCashSync');
+const { getMonthlyPartyOrderTotal, syncPartyOrderToMonthlyReport } = require('../services/partyOrderSync');
 
 // Bank statement import/review is restricted to owners and accounts managers.
 router.use(verifyToken, requireRole(['owner', 'accountsManager']));
@@ -108,6 +109,16 @@ router.post('/import', upload.single('file'), async (req, res) => {
             }
         }
 
+        // Pre-fill "Catering Order - Payment" from party orders paid this month.
+        const cateringPaid = await getMonthlyPartyOrderTotal(location, month);
+        if (cateringPaid) {
+            const catRow = standardRows.find((r) => r.description === 'Catering Order - Payment');
+            if (catRow) {
+                catRow.adjustAmount = Math.abs(cateringPaid); // revenue (money in)
+                catRow.categorySource = 'partyOrders';
+            }
+        }
+
         const allTxns = [...categorized, ...standardRows];
 
         const summary = summarize(allTxns);
@@ -136,6 +147,27 @@ router.post('/import', upload.single('file'), async (req, res) => {
     } catch (error) {
         logger.error(`[BankTxns] import failed: ${error.message}`);
         res.status(500).json({ error: error.message || 'Import failed' });
+    }
+});
+
+/**
+ * POST /api/bank-transactions/sync-catering  body: { location, month }
+ * Recomputes the party-order paid total for the month and writes it into the
+ * Monthly Report "Catering Order - Payment" row. Called by the client after a
+ * party order is added / updated / deleted. No-op if that month's statement
+ * hasn't been imported yet.
+ */
+router.post('/sync-catering', async (req, res) => {
+    try {
+        const location = (req.body.location || '').trim();
+        const month = (req.body.month || '').trim();
+        if (!location || !month) return res.status(400).json({ error: 'location and month are required' });
+        if (!/^\d{4}-\d{2}$/.test(month)) return res.status(400).json({ error: 'month must be YYYY-MM' });
+        const synced = await syncPartyOrderToMonthlyReport(location, month);
+        res.json({ success: true, synced });
+    } catch (error) {
+        logger.error(`[BankTxns] sync-catering failed: ${error.message}`);
+        res.status(500).json({ error: error.message || 'Failed to sync catering total' });
     }
 });
 

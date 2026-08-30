@@ -226,6 +226,9 @@ const RestaurantPartyOrdersComponent = () => {
             // Refresh the list so the new/updated order shows (no live listener now).
             fetchPartyOrders();
 
+            // Keep the Monthly Report catering total in sync for this order's month.
+            syncCateringToMonthlyReport(partyOrderData.cPartyDate);
+
             // Auto-send the invoice PDF to the owner via WhatsApp (non-blocking).
             // Uses the same flow as "Share Invoice" -> generate PDF -> server sends it.
             sendInvoiceToOwner(partyOrderData);
@@ -257,6 +260,16 @@ const RestaurantPartyOrdersComponent = () => {
         } catch (error) {
             console.warn('Could not send party order invoice to owner:', error.response?.data?.error || error.message);
         }
+    };
+
+    // Notify the server to refresh the Monthly Report "Catering Order - Payment"
+    // row for the affected month. Fire-and-forget: never block or fail the party
+    // order operation (e.g. managers lack access to the finance endpoint -> ignore).
+    const syncCateringToMonthlyReport = (partyDate) => {
+        const month = (partyDate || '').slice(0, 7); // YYYY-MM
+        if (!/^\d{4}-\d{2}$/.test(month)) return;
+        protectedApi.post('/api/bank-transactions/sync-catering', { location: restaurantId, month })
+            .catch(() => { /* ignore: derived value, not critical to the party order flow */ });
     };
 
     const handleDeletePartyOrder = async (record) => {
@@ -291,6 +304,7 @@ const RestaurantPartyOrdersComponent = () => {
 
             message.success('Party order deleted successfully!');
             fetchPartyOrders();
+            syncCateringToMonthlyReport(record.cPartyDate);
         } catch (error) {
             console.error('Failed to delete party order:', error);
             if (error.code === 'permission-denied') {
