@@ -753,9 +753,28 @@ async function bank_statement_reminder(job) {
     const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
     const firstOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const monthLabel = firstOfLastMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const monthKey = `${firstOfLastMonth.getFullYear()}-${String(firstOfLastMonth.getMonth() + 1).padStart(2, '0')}`; // YYYY-MM
+
+    const restaurantId = location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
+
+    // Stop reminding once the previous month's statement has been uploaded.
+    // The Bank Transactions import stores a doc at
+    // restaurants/{location}/bankTransactions/{YYYY-MM}. If it exists, skip.
+    try {
+        const db = getFirestore();
+        const snap = await db
+            .collection('restaurants').doc(restaurantId)
+            .collection('bankTransactions').doc(monthKey).get();
+        if (snap.exists) {
+            logger.info(`[Scheduler] bank_statement_reminder: ${restaurantId} ${monthKey} already uploaded; skipping reminder`);
+            return null; // scheduler skips the send
+        }
+    } catch (error) {
+        // If the check fails, err on the side of still sending the reminder.
+        logger.error(`[Scheduler] bank_statement_reminder: upload check failed (${error.message}); sending reminder anyway`);
+    }
 
     const baseUrl = process.env.SERVER_PUBLIC_URL || 'https://repodepo.io';
-    const restaurantId = location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
     const uploadUrl = `${baseUrl}/dashboard/${restaurantId}/OtherServices/BankTransactions`;
 
     // Body params: {{1}}=month, {{2}}=upload link
