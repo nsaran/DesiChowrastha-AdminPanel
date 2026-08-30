@@ -736,6 +736,32 @@ async function sendPartyOrdersCsvToOwners(location, csv, monthLabel, orderCount,
     }
 }
 
+/**
+ * Bank Statement Upload Reminder
+ *
+ * Runs on the 1st of every month. Sends owners a WhatsApp reminder to upload the
+ * PREVIOUS month's Bank of America statement CSV into the Bank Transactions page.
+ *
+ * Uses the scheduler's normal text-template path: returns two body params
+ * [month label, upload link]. Configure `templateName` in schedulerConfig.json to
+ * an approved 2-parameter text template.
+ */
+async function bank_statement_reminder(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running bank_statement_reminder for ${location}`);
+
+    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    const firstOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const monthLabel = firstOfLastMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    const baseUrl = process.env.SERVER_PUBLIC_URL || 'https://repodepo.io';
+    const restaurantId = location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
+    const uploadUrl = `${baseUrl}/dashboard/${restaurantId}/OtherServices/BankTransactions`;
+
+    // Body params: {{1}}=month, {{2}}=upload link
+    return [monthLabel, uploadUrl];
+}
+
 // ============================================================
 // REGISTRY - Maps job IDs to implementation functions
 // ============================================================
@@ -748,7 +774,10 @@ const jobRegistry = {
     nashua_daily_sales_summary,
     party_orders_monthly_csv,
     nashua_party_orders_monthly_csv: party_orders_monthly_csv,
-    westborough_party_orders_monthly_csv: party_orders_monthly_csv
+    westborough_party_orders_monthly_csv: party_orders_monthly_csv,
+    bank_statement_reminder,
+    nashua_bank_statement_reminder: bank_statement_reminder,
+    westborough_bank_statement_reminder: bank_statement_reminder
 };
 
 /**

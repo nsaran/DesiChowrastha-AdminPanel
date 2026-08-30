@@ -124,6 +124,28 @@
       "templateName": "party_order_invoice",
       "templateLanguage": "en",
       "recipients": []
+    },
+    {
+      "id": "nashua_bank_statement_reminder",
+      "name": "Nashua Bank Statement Upload Reminder",
+      "enabled": false,
+      "schedule": "monthly",
+      "cronExpression": "0 10 1 * *",
+      "location": "NASHUA",
+      "templateName": "bank_statement_reminder",
+      "templateLanguage": "en",
+      "recipients": []
+    },
+    {
+      "id": "westborough_bank_statement_reminder",
+      "name": "Westborough Bank Statement Upload Reminder",
+      "enabled": false,
+      "schedule": "monthly",
+      "cronExpression": "0 10 1 * *",
+      "location": "WESTBOROUGH",
+      "templateName": "bank_statement_reminder",
+      "templateLanguage": "en",
+      "recipients": []
     }
   ]
 }
