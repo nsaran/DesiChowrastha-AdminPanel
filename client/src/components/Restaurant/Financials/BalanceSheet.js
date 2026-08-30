@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, Select, Typography, message, Space, Empty } from 'antd';
+import { Table, Select, Typography, message, Space, Empty, Button } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 import protectedApi from '../../../utils/api';
 
 const { Title, Text } = Typography;
@@ -68,6 +69,36 @@ const BalanceSheet = () => {
         { key: 'capitalInvestment', label: 'Capital Investment', positive: true },
     ];
 
+    // Export the balance sheet as CSV (metrics rows x month columns + Year Total),
+    // using the same sign convention as the on-screen table.
+    const handleExportCSV = () => {
+        if (months.length === 0) {
+            message.info('Nothing to export for this year.');
+            return;
+        }
+        const displayVal = (metric, v) => (metric.positive || metric.signed ? v : -Math.abs(v));
+        const esc = (s) => {
+            const str = s === undefined || s === null ? '' : String(s);
+            return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+        };
+
+        const header = ['Metric', ...months.map(monthLabel), 'Year Total'];
+        const rows = metrics.map((metric) => {
+            const cells = months.map((m) => displayVal(metric, (perMonth[m] || {})[metric.key] || 0).toFixed(2));
+            const total = displayVal(metric, totals[metric.key] || 0).toFixed(2);
+            return [metric.label, ...cells, total];
+        });
+
+        const csv = [header, ...rows].map((r) => r.map(esc).join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `balance-sheet_${restaurantId}_${selectedYear}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
     // Build one dataSource row per metric, with a value per month + a year total.
     const dataSource = metrics.map((metric) => {
         const row = { key: metric.key, label: metric.label, meta: metric };
@@ -127,6 +158,9 @@ const BalanceSheet = () => {
                     <Select style={{ width: 100 }} value={selectedYear} onChange={handleYearChange}>
                         {yearOptions.map((y) => <Option key={y} value={y}>{y}</Option>)}
                     </Select>
+                    <Button icon={<DownloadOutlined />} onClick={handleExportCSV} disabled={months.length === 0}>
+                        Download CSV
+                    </Button>
                 </Space>
             </div>
 
