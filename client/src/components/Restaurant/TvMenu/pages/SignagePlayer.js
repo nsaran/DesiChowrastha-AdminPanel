@@ -307,8 +307,6 @@ const SignagePlayer = () => {
     useEffect(() => {
         if (interrupts.length === 0) return;
 
-        const mainDuration = (mainStream?.duration || 300) * 1000;
-
         const tick = async () => {
             // Prevent re-entry while async work is happening
             if (tickBusyRef.current) return;
@@ -317,6 +315,11 @@ const SignagePlayer = () => {
             const now = Date.now();
             const elapsed = now - phaseStartRef.current;
             const items = interruptsRef.current;
+
+            // Read the main-stream duration live from the ref (not captured once), so
+            // the correct value is used even if the stream loaded/changed after this
+            // effect ran. Defaults to 300s for the lobby main video.
+            const mainDuration = (Number(mainStreamRef.current?.duration) || 300) * 1000;
 
             if (phaseRef.current === 'main') {
                 if (elapsed < mainDuration) return; // Still showing main stream
