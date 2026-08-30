@@ -1,8 +1,11 @@
-import React from 'react';
-import { Button, Avatar, Popover } from 'antd';
+import React, { useContext } from 'react';
+import { Button, Avatar, Popover, Tooltip } from 'antd';
 import ThemeToggle from '../../../common/ThemeToggle';
+import { AuthContext } from '../../../../utils/AuthProvider';
 
 const Header = ({ adminEmail, popoverContent }) => {
+  const { currentUser } = useContext(AuthContext);
+
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -13,7 +16,9 @@ const Header = ({ adminEmail, popoverContent }) => {
   };
 
   const avatarColor = getRandomColor();
-  const avatarLetter = adminEmail ? adminEmail.charAt(0).toUpperCase() : '?';
+  // Prefer the account's display name, fall back to the email
+  const displayName = currentUser?.displayName || currentUser?.email || adminEmail || 'User';
+  const avatarLetter = displayName ? displayName.charAt(0).toUpperCase() : '?';
 
   return (
     <header className="admin-header">
@@ -23,11 +28,13 @@ const Header = ({ adminEmail, popoverContent }) => {
       <div className="admin-header-right" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <ThemeToggle />
         <Popover content={popoverContent} trigger="click" placement="bottomRight">
-          <Button type="text" className="admin-avatar-button">
-            <Avatar style={{ backgroundColor: avatarColor }}>
-              {avatarLetter}
-            </Avatar>
-          </Button>
+          <Tooltip title={displayName}>
+            <Button type="text" className="admin-avatar-button">
+              <Avatar style={{ backgroundColor: avatarColor }}>
+                {avatarLetter}
+              </Avatar>
+            </Button>
+          </Tooltip>
         </Popover>
       </div>
     </header>

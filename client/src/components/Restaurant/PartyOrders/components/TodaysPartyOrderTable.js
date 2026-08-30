@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 
 const { Title } = Typography;
 
-const TodaysPartyOrderTable = ({ partyOrdersData, loading, handleModalOpen, handleDeletePartyOrder }) => {
+const TodaysPartyOrderTable = ({ partyOrdersData, loading, handleModalOpen, handleDeletePartyOrder, canDelete }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +46,7 @@ const TodaysPartyOrderTable = ({ partyOrdersData, loading, handleModalOpen, hand
                     </>
                 ) : (
                     <Table
-                        columns={PartyOrderColumns({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData })}
+                        columns={PartyOrderColumns({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData, canDelete })}
                         dataSource={partyOrdersData}
                         loading={loading}
                         rowKey="id"

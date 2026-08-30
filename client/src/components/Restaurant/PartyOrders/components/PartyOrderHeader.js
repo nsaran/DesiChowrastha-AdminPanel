@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../../../utils/AuthProvider';
 import { BellOutlined, CloseCircleOutlined, CheckCircleOutlined, MenuOutlined, UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, LogoutOutlined } from '@ant-design/icons';
 import { message, Badge, Popover, List, Typography, Card, Avatar, Tooltip, Input, Button, Menu } from 'antd';
 import { firestore, storage } from '../../../../config/firebase';
@@ -29,8 +30,10 @@ const PartyOrderHeader = ({ managerData }) => {
         return color;
     };
 
+    const { currentUser } = useContext(AuthContext);
     const avatarColor = getRandomColor();
-    const avatarLetter = managerData ? managerData.email.charAt(0).toUpperCase() : '?';
+    const displayName = currentUser?.displayName || currentUser?.email || managerData?.email || 'User';
+    const avatarLetter = displayName.charAt(0).toUpperCase();
 
     const popoverContent = (
         <Menu>
@@ -254,12 +257,14 @@ const PartyOrderHeader = ({ managerData }) => {
                     </Badge>
                 </Popover>
                 <Popover content={popoverContent} trigger="click" placement="bottomRight">
-                    <Button type="text" className="admin-avatar-button">
-                        <Avatar style={{ backgroundColor: avatarColor }}>
-                            {avatarLetter}
-                        </Avatar>
-                        <MenuOutlined style={{ fontSize: '20px', marginLeft: '10px' }} />
-                    </Button>
+                    <Tooltip title={displayName}>
+                        <Button type="text" className="admin-avatar-button">
+                            <Avatar style={{ backgroundColor: avatarColor }}>
+                                {avatarLetter}
+                            </Avatar>
+                            <MenuOutlined style={{ fontSize: '20px', marginLeft: '10px' }} />
+                        </Button>
+                    </Tooltip>
                 </Popover>
             </div>
         </header>

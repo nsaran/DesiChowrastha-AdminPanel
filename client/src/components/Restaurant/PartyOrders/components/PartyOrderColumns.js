@@ -1,5 +1,5 @@
 import { EditOutlined, DeleteOutlined, MenuOutlined, InfoCircleOutlined, FilePdfOutlined, WhatsAppOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, Popconfirm, message } from 'antd';
+import { Button, Dropdown, message } from 'antd';
 import React from 'react';
 import { calculateAmountDue } from '../utils/calculations';
 import { generateInvoicePdf } from '../utils/invoice';
@@ -183,44 +183,59 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
             dataIndex: 'actions',
             key: 'actions',
             render: (text, record) => {
-                const menu = (
-                    <Menu>
-                        <Menu.Item key="generateInvoice" onClick={() => generateInvoicePdf(record)}>
-                            <Button type="link" icon={<FilePdfOutlined />}>Generate Invoice</Button>
-                        </Menu.Item>
-                        <Menu.Divider />
-                        <Menu.Item key="shareInvoice" disabled style={{ padding: 0, cursor: 'default' }}>
-                            <Button type="link" icon={<WhatsAppOutlined />} style={{ cursor: 'default' }}>Share Invoice</Button>
-                        </Menu.Item>
-                        <Menu.Item key="shareCustomer" onClick={() => handleShareInvoice(record, 'customer')}>
-                            <Button type="link" icon={<UserOutlined />} style={{ paddingLeft: 24 }}>To Customer</Button>
-                        </Menu.Item>
-                        <Menu.Item key="shareOwner" onClick={() => handleShareInvoice(record, 'owner')}>
-                            <Button type="link" icon={<TeamOutlined />} style={{ paddingLeft: 24 }}>To Owner</Button>
-                        </Menu.Item>
-                        <Menu.Divider />
-                        <Menu.Item key="edit" onClick={() => handleModalOpen(record)}>
-                            <Button type="link" icon={<EditOutlined />}>
-                                Edit
-                            </Button>
-                        </Menu.Item>
-                        {canDelete && <Menu.Divider key="delete-divider" />}
-                        {canDelete && (
-                            <Menu.Item key="delete">
-                                <Popconfirm
-                                    title="Are you sure to delete this party order?"
-                                    onConfirm={() => handleDeletePartyOrder(record)}
-                                    okText="Yes"
-                                    cancelText="No"
-                                >
-                                    <Button type="link" danger icon={<DeleteOutlined />}>
-                                        Delete
-                                    </Button>
-                                </Popconfirm>
-                            </Menu.Item>
-                        )}
-                    </Menu>
-                );
+                // Build menu items as an array (AntD v5 `items` API). Conditionally
+                // adding the delete item via array logic avoids JSX-children quirks
+                // where conditional <Menu.Item> nodes weren't being rendered.
+                const menuItems = [
+                    {
+                        key: 'generateInvoice',
+                        icon: <FilePdfOutlined />,
+                        label: 'Generate Invoice',
+                        onClick: () => generateInvoicePdf(record),
+                    },
+                    { type: 'divider' },
+                    {
+                        key: 'shareInvoice',
+                        icon: <WhatsAppOutlined />,
+                        label: 'Share Invoice',
+                        children: [
+                            {
+                                key: 'shareCustomer',
+                                icon: <UserOutlined />,
+                                label: 'To Customer',
+                                onClick: () => handleShareInvoice(record, 'customer'),
+                            },
+                            {
+                                key: 'shareOwner',
+                                icon: <TeamOutlined />,
+                                label: 'To Owner',
+                                onClick: () => handleShareInvoice(record, 'owner'),
+                            },
+                        ],
+                    },
+                    { type: 'divider' },
+                    {
+                        key: 'edit',
+                        icon: <EditOutlined />,
+                        label: 'Edit',
+                        onClick: () => handleModalOpen(record),
+                    },
+                    // Delete — only available to owners (canDelete)
+                    ...(canDelete ? [
+                        { type: 'divider' },
+                        {
+                            key: 'delete',
+                            icon: <DeleteOutlined />,
+                            label: 'Delete',
+                            danger: true,
+                            onClick: () => {
+                                if (window.confirm('Are you sure you want to delete this party order?')) {
+                                    handleDeletePartyOrder(record);
+                                }
+                            },
+                        },
+                    ] : []),
+                ];
 
                 return (
                     <>
@@ -230,7 +245,7 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
                             style={{ marginRight: 8 }}
                             onClick={() => handleViewDetails(record)}
                         />
-                        <Dropdown overlay={menu} trigger={['click']}>
+                        <Dropdown menu={{ items: menuItems }} trigger={['click']}>
                             <Button type="dashed" icon={<MenuOutlined />} />
                         </Dropdown>
                     </>

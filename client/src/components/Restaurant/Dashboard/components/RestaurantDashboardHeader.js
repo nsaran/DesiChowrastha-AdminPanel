@@ -1,13 +1,15 @@
-import React from 'react';
-import { Button, Avatar, Popover, Menu } from 'antd';
+import React, { useContext } from 'react';
+import { Button, Avatar, Popover, Menu, Tooltip } from 'antd';
 import { MenuOutlined, UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, TeamOutlined, LogoutOutlined, PlusCircleOutlined, KeyOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import ThemeToggle from '../../../common/ThemeToggle';
+import { AuthContext } from '../../../../utils/AuthProvider';
 import "../RestaurantDashboard.css";
 
 const RestaurantDashboardHeader = ({ managerData }) => {
     const navigate = useNavigate();
     const { restaurantId } = useParams();
+    const { currentUser } = useContext(AuthContext);
 
     const handleLogout = () => {
         navigate(`/login/${restaurantId}`);
@@ -62,7 +64,8 @@ const RestaurantDashboardHeader = ({ managerData }) => {
     };
 
     const avatarColor = getRandomColor();
-    const avatarLetter = managerData ? managerData.email.charAt(0).toUpperCase() : '?';
+    const displayName = currentUser?.displayName || currentUser?.email || managerData?.email || 'User';
+    const avatarLetter = displayName.charAt(0).toUpperCase();
 
     const popoverContent = (
         <Menu>
@@ -124,12 +127,14 @@ const RestaurantDashboardHeader = ({ managerData }) => {
             <div className="admin-header-right" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <ThemeToggle />
                 <Popover content={popoverContent} trigger="click" placement="bottomRight">
-                    <Button type="text" className="admin-avatar-button">
-                        <Avatar style={{ backgroundColor: avatarColor }}>
-                            {avatarLetter}
-                        </Avatar>
-                        <MenuOutlined style={{ fontSize: '20px', marginLeft: '10px' }} />
-                    </Button>
+                    <Tooltip title={displayName}>
+                        <Button type="text" className="admin-avatar-button">
+                            <Avatar style={{ backgroundColor: avatarColor }}>
+                                {avatarLetter}
+                            </Avatar>
+                            <MenuOutlined style={{ fontSize: '20px', marginLeft: '10px' }} />
+                        </Button>
+                    </Tooltip>
                 </Popover>
             </div>
         </header>

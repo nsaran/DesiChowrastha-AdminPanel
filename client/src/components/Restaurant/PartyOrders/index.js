@@ -570,6 +570,7 @@ const RestaurantPartyOrdersComponent = () => {
                 loading={loading}
                 handleModalOpen={handleModalOpen}
                 handleDeletePartyOrder={handleDeletePartyOrder}
+                canDelete={canDelete}
             />
             <Upload
                 accept=".csv"
@@ -603,6 +604,7 @@ const RestaurantPartyOrdersComponent = () => {
                 loading={loading}
                 handleModalOpen={handleModalOpen}
                 handleDeletePartyOrder={handleDeletePartyOrder}
+                canDelete={canDelete}
             />
 
             <Modal title={editRecord ? 'Edit Party Order' : 'Add Party Order'} visible={modalVisible} onCancel={handleModalClose} footer={null}>

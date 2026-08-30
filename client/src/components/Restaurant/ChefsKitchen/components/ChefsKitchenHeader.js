@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../../../utils/AuthProvider';
 import { PlusOutlined, MenuOutlined } from '@ant-design/icons';
-import { Button, Modal, Select, Input, Avatar, Popover, Menu } from 'antd';
+import { Button, Modal, Select, Input, Avatar, Popover, Menu, Tooltip } from 'antd';
 import { UserOutlined, AppstoreOutlined, OrderedListOutlined, ShoppingCartOutlined, TeamOutlined, LogoutOutlined, KeyOutlined } from '@ant-design/icons';
 import { firestore } from '../../../../config/firebase';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -26,8 +27,10 @@ const ChefsKitchenHeader = ({ managerData }) => {
         return color;
     };
 
+    const { currentUser } = useContext(AuthContext);
     const avatarColor = getRandomColor();
-    const avatarLetter = managerData ? managerData.email.charAt(0).toUpperCase() : '?';
+    const displayName = currentUser?.displayName || currentUser?.email || managerData?.email || 'User';
+    const avatarLetter = displayName.charAt(0).toUpperCase();
 
     const handleInvoiceChange = value => {
         setSelectedInvoice(value);
@@ -191,12 +194,14 @@ const ChefsKitchenHeader = ({ managerData }) => {
                 <Button onClick={fetchInvoiceNumber} type="primary" className='addIngredients'>
                 <PlusOutlined /> Add Ingredients
             </Button>
-                    <Button type="text" className="admin-avatar-button">
-                        <Avatar style={{ backgroundColor: avatarColor }}>
-                            {avatarLetter}
-                        </Avatar>
-                        <MenuOutlined style={{ fontSize: '20px', marginLeft: '10px' }} />
-                    </Button>
+                    <Tooltip title={displayName}>
+                        <Button type="text" className="admin-avatar-button">
+                            <Avatar style={{ backgroundColor: avatarColor }}>
+                                {avatarLetter}
+                            </Avatar>
+                            <MenuOutlined style={{ fontSize: '20px', marginLeft: '10px' }} />
+                        </Button>
+                    </Tooltip>
                 </Popover>
             </div>
           

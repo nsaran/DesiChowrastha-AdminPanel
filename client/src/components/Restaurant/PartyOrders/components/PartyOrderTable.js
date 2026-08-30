@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 const { Title } = Typography;
 const { Search } = Input;
 
-const PartyOrderTable = ({ partyOrdersData, loading, handleModalOpen, handleDeletePartyOrder }) => {
+const PartyOrderTable = ({ partyOrdersData, loading, handleModalOpen, handleDeletePartyOrder, canDelete }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +88,7 @@ const PartyOrderTable = ({ partyOrdersData, loading, handleModalOpen, handleDele
                     </>
                 ) : (
                     <Table
-                        columns={PartyOrderColumns({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData })}
+                        columns={PartyOrderColumns({ handleModalOpen, handleDeletePartyOrder, setModalVisible, setModalData, canDelete })}
                         dataSource={filteredData}
                         loading={loading}
                         rowKey="id"
