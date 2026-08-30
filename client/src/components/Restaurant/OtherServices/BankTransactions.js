@@ -16,8 +16,14 @@ const { Option } = Select;
 const BankTransactions = () => {
     const { restaurantId } = useParams();
 
+    const currentYear = new Date().getFullYear();
+    // Selectable years: current year plus the previous two (dynamic — advances
+    // automatically each calendar year, and future years are supported).
+    const yearOptions = [currentYear, currentYear - 1, currentYear - 2];
+
     const [categories, setCategories] = useState([]);
     const [months, setMonths] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(currentYear);
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [transactions, setTransactions] = useState([]);
     const [summary, setSummary] = useState([]);
@@ -56,9 +62,30 @@ const BankTransactions = () => {
         }
     }, [restaurantId]);
 
+    // Months (YYYY-MM) available for the selected year, most recent first.
+    const monthsForYear = months.filter((m) => m.startsWith(`${selectedYear}-`));
+
+    // On load: fetch all month keys, then auto-open the most recent month of the
+    // default (current) year, if any exist.
     useEffect(() => {
-        loadMonths().then((ms) => { if (ms.length > 0) loadMonth(ms[0]); });
-    }, [loadMonths, loadMonth]);
+        loadMonths().then((ms) => {
+            const forYear = ms.filter((m) => m.startsWith(`${currentYear}-`));
+            if (forYear.length > 0) loadMonth(forYear[0]);
+        });
+    }, [loadMonths, loadMonth, currentYear]);
+
+    // When the user picks a different year, open its most recent month (or clear).
+    const handleYearChange = (year) => {
+        setSelectedYear(year);
+        const forYear = months.filter((m) => m.startsWith(`${year}-`));
+        if (forYear.length > 0) {
+            loadMonth(forYear[0]);
+        } else {
+            setSelectedMonth(null);
+            setTransactions([]);
+            setSummary([]);
+        }
+    };
 
     const handleUpload = async (file) => {
         setUploading(true);
@@ -228,14 +255,23 @@ const BankTransactions = () => {
                 </Upload>
 
                 <Space>
+                    <Text>Year:</Text>
+                    <Select
+                        style={{ width: 100 }}
+                        value={selectedYear}
+                        onChange={handleYearChange}
+                    >
+                        {yearOptions.map((y) => <Option key={y} value={y}>{y}</Option>)}
+                    </Select>
                     <Text>Month:</Text>
                     <Select
                         style={{ width: 160 }}
                         value={selectedMonth}
                         placeholder="Select month"
                         onChange={loadMonth}
+                        notFoundContent="No data for this year"
                     >
-                        {months.map((m) => <Option key={m} value={m}>{m}</Option>)}
+                        {monthsForYear.map((m) => <Option key={m} value={m}>{m}</Option>)}
                     </Select>
                     <Button icon={<ReloadOutlined />} onClick={() => selectedMonth && loadMonth(selectedMonth)} />
                 </Space>
