@@ -62,6 +62,10 @@ app.use('/api', generalLimiter);
 // User management routes (owner only, protected by Firebase Auth)
 app.use('/api/users', userManagementRoutes);
 
+// Bank transaction import/categorization routes (owner only)
+const bankTransactionRoutes = require('./routes/bankTransactions');
+app.use('/api/bank-transactions', bankTransactionRoutes);
+
 // Strict limit for feedback: 5 per 15 minutes per IP
 const feedbackLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,

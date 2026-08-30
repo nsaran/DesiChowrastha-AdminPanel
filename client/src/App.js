@@ -43,6 +43,7 @@ import SignagePlayer from './components/Restaurant/TvMenu/pages/SignagePlayer';
 import ManageSignage from './components/Restaurant/TvMenu/pages/ManageSignage';
 import StockOrders from './components/Restaurant/TvMenu/pages/StockOrders';
 import OtherServices from './components/Restaurant/OtherServices';
+import BankTransactions from './components/Restaurant/OtherServices/BankTransactions';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
 const App = () => {
@@ -97,6 +98,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/OtherServices" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><OtherServices /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<RoleProtectedRoute allowedRoles={['owner']}><TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices/WhatsAppOrders" element={<RoleProtectedRoute allowedRoles={['owner']}><WhatsAppOrders /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/BankTransactions" element={<RoleProtectedRoute allowedRoles={['owner']}><BankTransactions /></RoleProtectedRoute>} />
 
           {/* Chef routes */}
           <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<RoleProtectedRoute allowedRoles={['owner', 'chef']}><TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary></RoleProtectedRoute>} />
