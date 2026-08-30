@@ -128,7 +128,7 @@
     {
       "id": "nashua_bank_statement_reminder",
       "name": "Nashua Bank Statement Upload Reminder",
-      "enabled": false,
+      "enabled": true,
       "schedule": "daily-until-uploaded",
       "cronExpression": "0 10 1-10 * *",
       "location": "NASHUA",
@@ -139,7 +139,7 @@
     {
       "id": "westborough_bank_statement_reminder",
       "name": "Westborough Bank Statement Upload Reminder",
-      "enabled": false,
+      "enabled": true,
       "schedule": "daily-until-uploaded",
       "cronExpression": "0 10 1-10 * *",
       "location": "WESTBOROUGH",
