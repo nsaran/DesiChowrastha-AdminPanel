@@ -24,6 +24,38 @@ function restaurantDocId(location) {
 }
 
 /**
+ * Build the 5 standard manual-entry rows appended to every imported month.
+ * Amount is left blank (adjustAmount '') for the user to fill in later.
+ * Dated the last day of the given month (YYYY-MM).
+ */
+function buildStandardRows(month) {
+    // Last day of the month for a "YYYY-MM" key.
+    const [y, m] = month.split('-').map(Number);
+    const lastDay = new Date(y, m, 0).getDate(); // day 0 of next month = last day of this month
+    const date = `${month}-${String(lastDay).padStart(2, '0')}`;
+
+    const defs = [
+        { description: 'Cash Payment - Employees', category: 'Wages' },
+        { description: 'Cash Payment - Others', category: 'Cash Paid' },
+        { description: 'Catering Order - Payment', category: 'Catering Order' },
+        { description: 'Toast Loan Payoff', category: 'Sales/Deposits' },
+        { description: 'Toast Cash Income', category: 'Sales/Deposits' },
+    ];
+
+    return defs.map((d) => ({
+        date,
+        description: d.description,
+        amount: 0,           // no parsed amount
+        adjustAmount: '',    // blank for the user to fill
+        type: 'debit',
+        runningBalance: null,
+        category: d.category,
+        categorySource: 'standard',
+        comments: '',
+    }));
+}
+
+/**
  * GET /api/bank-transactions/categories
  * Returns the canonical category list (for the review UI dropdown).
  */
@@ -58,9 +90,17 @@ router.post('/import', upload.single('file'), async (req, res) => {
         }
 
         const categorized = await categorizeTransactions(parsed);
-        const summary = summarize(categorized);
 
-        // Persist to Firestore.
+        // Append 5 standard manual-entry rows at the end (blank amount; the user
+        // fills Adjusted Amount later). Dated the last day of the imported month.
+        const standardRows = buildStandardRows(month);
+        const allTxns = [...categorized, ...standardRows];
+
+        const summary = summarize(allTxns);
+
+        // Assign stable ids and persist to Firestore.
+        const withIds = allTxns.map((t, i) => ({ id: `${month}-${i}`, ...t }));
+
         const docId = restaurantDocId(location);
         const db = getFirestore();
         const ref = db.collection('restaurants').doc(docId)
@@ -69,16 +109,16 @@ router.post('/import', upload.single('file'), async (req, res) => {
         await ref.set({
             location: docId,
             month,
-            transactions: categorized.map((t, i) => ({ id: `${month}-${i}`, ...t })),
+            transactions: withIds,
             summary,
             importedAt: new Date().toISOString(),
             importedBy: req.user?.email || req.user?.uid || 'unknown',
-            count: categorized.length,
+            count: withIds.length,
         });
 
-        logger.info(`[BankTxns] Imported ${categorized.length} txns for ${docId} ${month} by ${req.user?.email || req.user?.uid}`);
+        logger.info(`[BankTxns] Imported ${categorized.length} txns (+${standardRows.length} standard) for ${docId} ${month} by ${req.user?.email || req.user?.uid}`);
 
-        res.json({ success: true, location: docId, month, count: categorized.length, summary, transactions: categorized });
+        res.json({ success: true, location: docId, month, count: withIds.length, summary, transactions: withIds });
     } catch (error) {
         logger.error(`[BankTxns] import failed: ${error.message}`);
         res.status(500).json({ error: error.message || 'Import failed' });

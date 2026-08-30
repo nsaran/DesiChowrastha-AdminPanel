@@ -115,12 +115,20 @@ const BankTransactions = () => {
     };
 
     // The "adjusted" value drives Income/Expense; falls back to the parsed amount.
-    const adjustedOf = (t) => (t.adjustAmount !== undefined && t.adjustAmount !== null && t.adjustAmount !== '' ? Number(t.adjustAmount) : Number(t.amount));
+    // Numeric adjusted value used for Income/Expense/summary math.
+    const adjustedOf = (t) => (t.adjustAmount !== undefined && t.adjustAmount !== null && t.adjustAmount !== '' ? Number(t.adjustAmount) : Number(t.amount) || 0);
+    // Value shown in the editable Adjusted Amount input: blank for standard rows
+    // that have no parsed amount and no manual value yet.
+    const adjustedInputValue = (t) => {
+        if (t.adjustAmount !== undefined && t.adjustAmount !== null && t.adjustAmount !== '') return Number(t.adjustAmount);
+        if (t.categorySource === 'standard' && (!t.amount || Number(t.amount) === 0)) return undefined;
+        return Number(t.amount) || 0;
+    };
 
     const money = (n) => `$${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     const sourceTag = (src) => {
-        const map = { rule: ['blue', 'Rule'], llm: ['purple', 'AI'], manual: ['green', 'Manual'], none: ['default', '—'] };
+        const map = { rule: ['blue', 'Rule'], llm: ['purple', 'AI'], manual: ['green', 'Manual'], standard: ['gold', 'Standard'], none: ['default', '—'] };
         const [color, label] = map[src] || ['default', src || '—'];
         return <Tag color={color}>{label}</Tag>;
     };
@@ -150,7 +158,8 @@ const BankTransactions = () => {
                 <InputNumber
                     size="small"
                     style={{ width: 130 }}
-                    value={adjustedOf(record)}
+                    placeholder="Enter"
+                    value={adjustedInputValue(record)}
                     onChange={(val) => setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, adjustAmount: val } : t)))}
                     onBlur={(e) => handleFieldSave(record, 'adjustAmount', Number(String(e.target.value).replace(/,/g, '')) || 0)}
                 />
