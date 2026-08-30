@@ -30,7 +30,6 @@ const CATEGORIES = [
     'Software & Services',
     'Insurance',
     'Wages (Direct/Zelle)',
-    'Wages',
     'Cash Paid',
     'Catering Order',
     'Transfers / Owner Draws',

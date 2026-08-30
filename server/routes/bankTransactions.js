@@ -35,7 +35,7 @@ function buildStandardRows(month) {
     const date = `${month}-${String(lastDay).padStart(2, '0')}`;
 
     const defs = [
-        { description: 'Cash Payment - Employees', category: 'Wages' },
+        { description: 'Cash Payment - Employees', category: 'Wages (Direct/Zelle)' },
         { description: 'Cash Payment - Others', category: 'Cash Paid' },
         { description: 'Catering Order - Payment', category: 'Catering Order' },
         { description: 'Toast Loan Payoff', category: 'Sales/Deposits' },
