@@ -157,6 +157,7 @@ const ManageUsers = () => {
         owner: 'gold',
         manager: 'blue',
         chef: 'green',
+        accountsManager: 'purple',
         none: 'default'
     };
 
@@ -308,6 +309,7 @@ const ManageUsers = () => {
                             <Option value="owner">Owner</Option>
                             <Option value="manager">Manager</Option>
                             <Option value="chef">Chef</Option>
+                            <Option value="accountsManager">Accounts Manager</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item name="restaurantId" label="Restaurant (optional)">

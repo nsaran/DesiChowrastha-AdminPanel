@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'email, password, and role are required' });
         }
 
-        const validRoles = ['owner', 'manager', 'chef'];
+        const validRoles = ['owner', 'manager', 'chef', 'accountsManager'];
         if (!validRoles.includes(role)) {
             return res.status(400).json({ error: `Invalid role. Must be one of: ${validRoles.join(', ')}` });
         }
@@ -87,7 +87,7 @@ router.put('/:uid/role', async (req, res) => {
         const { uid } = req.params;
         const { role, restaurantId } = req.body;
 
-        const validRoles = ['owner', 'manager', 'chef'];
+        const validRoles = ['owner', 'manager', 'chef', 'accountsManager'];
         if (!role || !validRoles.includes(role)) {
             return res.status(400).json({ error: `Invalid role. Must be one of: ${validRoles.join(', ')}` });
         }

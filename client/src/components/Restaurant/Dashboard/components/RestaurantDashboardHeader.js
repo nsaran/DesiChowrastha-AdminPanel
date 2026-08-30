@@ -9,7 +9,8 @@ import "../RestaurantDashboard.css";
 const RestaurantDashboardHeader = ({ managerData }) => {
     const navigate = useNavigate();
     const { restaurantId } = useParams();
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, role } = useContext(AuthContext);
+    const canViewFinancials = role === 'owner' || role === 'accountsManager';
 
     const handleLogout = () => {
         navigate(`/login/${restaurantId}`);
@@ -100,7 +101,13 @@ const RestaurantDashboardHeader = ({ managerData }) => {
             <Menu.Item key="otherServices" icon={<AppstoreOutlined />} onClick={() => handleNavigate('OtherServices', managerData)}>
                 Other Services
             </Menu.Item>
-            <Menu.Divider />           
+            <Menu.Divider />
+            {canViewFinancials && (
+                <Menu.Item key="financials" icon={<AppstoreOutlined />} onClick={() => handleNavigate('Financials', managerData)}>
+                    Financials
+                </Menu.Item>
+            )}
+            {canViewFinancials && <Menu.Divider />}           
             <Menu.Item key="orderAnalysis" icon={<ShoppingCartOutlined />} onClick={() => handleNavigate('orders', managerData)}>
                 Order Analysis
             </Menu.Item>
