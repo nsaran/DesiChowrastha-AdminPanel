@@ -16,7 +16,7 @@ const Financials = () => {
                     <img className='dc-logo-img' src='https://iili.io/HeKYJkB.png' alt="Restaurant Logo" />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('Financials/BankTransactions')}>Bank Transactions</Button>
+                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('Financials/BankTransactions')}>Monthly Report</Button>
                 </Form.Item>
             </Form>
         </div>

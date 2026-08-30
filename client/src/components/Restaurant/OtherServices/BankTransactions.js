@@ -243,7 +243,7 @@ const BankTransactions = () => {
 
     return (
         <div style={{ margin: '16px' }}>
-            <Title level={3}>Bank Transactions</Title>
+            <Title level={3}>Monthly Report</Title>
             <Text type="secondary">
                 Upload a Bank of America statement CSV. Transactions are parsed and categorized automatically;
                 adjust any category below.
