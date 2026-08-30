@@ -47,6 +47,9 @@ import Financials from './components/Restaurant/Financials';
 import YearlyReport from './components/Restaurant/Financials/YearlyReport';
 import BalanceSheet from './components/Restaurant/Financials/BalanceSheet';
 import ProfitLoss from './components/Restaurant/Financials/ProfitLoss';
+import Employees from './components/Restaurant/Financials/Employees';
+import SalaryLedger from './components/Restaurant/Financials/SalaryLedger';
+import SalaryYearView from './components/Restaurant/Financials/SalaryYearView';
 import BankTransactions from './components/Restaurant/OtherServices/BankTransactions';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
@@ -107,6 +110,9 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/Financials/YearlyReport" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><YearlyReport /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/BalanceSheet" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><BalanceSheet /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/ProfitLoss" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><ProfitLoss /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/Financials/Employees" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><Employees /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/Financials/SalaryLedger" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><SalaryLedger /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/Financials/SalaryYearView" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><SalaryYearView /></RoleProtectedRoute>} />
 
           {/* Chef routes */}
           <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<RoleProtectedRoute allowedRoles={['owner', 'chef']}><TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary></RoleProtectedRoute>} />

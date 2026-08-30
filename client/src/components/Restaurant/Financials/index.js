@@ -27,6 +27,15 @@ const Financials = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('Financials/ProfitLoss')}>Profit &amp; Loss</Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('Financials/Employees')}>Employees</Button>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu2-button" onClick={() => handleNavigate('Financials/SalaryLedger')}>Salary Ledger</Button>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu3-button" onClick={() => handleNavigate('Financials/SalaryYearView')}>Salary Ledger (Year View)</Button>
+                </Form.Item>
             </Form>
         </div>
     );
