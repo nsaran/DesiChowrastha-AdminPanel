@@ -167,4 +167,45 @@ router.put('/:month/category', async (req, res) => {
     }
 });
 
+/**
+ * PUT /api/bank-transactions/:month/field
+ * Body: { location, transactionId, field, value }
+ * Update an editable field on a stored transaction. Allowed fields:
+ *  - adjustAmount (number) — recomputes the summary using adjusted values
+ *  - comments (string)
+ */
+router.put('/:month/field', async (req, res) => {
+    try {
+        const month = req.params.month;
+        const { location, transactionId, field, value } = req.body;
+        const allowed = ['adjustAmount', 'comments'];
+        if (!location || !transactionId || !field) {
+            return res.status(400).json({ error: 'location, transactionId, and field are required' });
+        }
+        if (!allowed.includes(field)) {
+            return res.status(400).json({ error: `Invalid field. Must be one of: ${allowed.join(', ')}` });
+        }
+
+        const docId = restaurantDocId(location);
+        const db = getFirestore();
+        const ref = db.collection('restaurants').doc(docId)
+            .collection('bankTransactions').doc(month);
+        const snap = await ref.get();
+        if (!snap.exists) return res.status(404).json({ error: 'Month not found' });
+
+        const normalized = field === 'adjustAmount' ? (Number(value) || 0) : String(value ?? '');
+        const data = snap.data();
+        const transactions = (data.transactions || []).map((t) =>
+            t.id === transactionId ? { ...t, [field]: normalized } : t
+        );
+        const summary = summarize(transactions);
+
+        await ref.update({ transactions, summary });
+        res.json({ success: true, summary });
+    } catch (error) {
+        logger.error(`[BankTxns] field update failed: ${error.message}`);
+        res.status(500).json({ error: error.message || 'Failed to update field' });
+    }
+});
+
 module.exports = router;

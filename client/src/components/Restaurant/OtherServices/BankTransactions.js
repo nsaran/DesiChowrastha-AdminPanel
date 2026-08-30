@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Upload, Button, Table, Select, Typography, message, Card, Row, Col, Statistic, Tag, Space } from 'antd';
+import { Upload, Button, Table, Select, Typography, message, Card, Row, Col, Statistic, Tag, Space, InputNumber, Input } from 'antd';
 import { UploadOutlined, ReloadOutlined } from '@ant-design/icons';
 import protectedApi from '../../../utils/api';
 
@@ -97,6 +97,26 @@ const BankTransactions = () => {
         }
     };
 
+    // Persist an editable field (adjustAmount / comments) for a single transaction.
+    const handleFieldSave = async (record, field, value) => {
+        // Optimistically update local state.
+        setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, [field]: value } : t)));
+        try {
+            const res = await protectedApi.put(`/api/bank-transactions/${selectedMonth}/field`, {
+                location: restaurantId,
+                transactionId: record.id,
+                field,
+                value,
+            });
+            if (res.data.summary) setSummary(res.data.summary);
+        } catch (err) {
+            message.error(err.response?.data?.error || 'Failed to save.');
+        }
+    };
+
+    // The "adjusted" value drives Income/Expense; falls back to the parsed amount.
+    const adjustedOf = (t) => (t.adjustAmount !== undefined && t.adjustAmount !== null && t.adjustAmount !== '' ? Number(t.adjustAmount) : Number(t.amount));
+
     const money = (n) => `$${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     const sourceTag = (src) => {
@@ -124,9 +144,50 @@ const BankTransactions = () => {
             ),
         },
         {
-            title: 'Amount', dataIndex: 'amount', key: 'amount', width: 130, align: 'right',
+            title: 'Actual Amount', dataIndex: 'amount', key: 'amount', width: 130, align: 'right',
             sorter: (a, b) => a.amount - b.amount,
             render: (v) => <span style={{ color: v >= 0 ? '#237804' : '#a8071a' }}>{money(v)}</span>,
+        },
+        {
+            title: 'Adjusted Amount', key: 'adjustAmount', width: 150, align: 'right',
+            sorter: (a, b) => adjustedOf(a) - adjustedOf(b),
+            render: (_, record) => (
+                <InputNumber
+                    size="small"
+                    style={{ width: 130 }}
+                    value={adjustedOf(record)}
+                    onChange={(val) => setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, adjustAmount: val } : t)))}
+                    onBlur={(e) => handleFieldSave(record, 'adjustAmount', Number(String(e.target.value).replace(/,/g, '')) || 0)}
+                />
+            ),
+        },
+        {
+            title: 'Income Amount', key: 'incomeAmount', width: 130, align: 'right',
+            render: (_, record) => {
+                const v = adjustedOf(record);
+                return v > 0 ? <span style={{ color: '#237804' }}>{money(v)}</span> : '';
+            },
+        },
+        {
+            title: 'Expense Amount', key: 'expenseAmount', width: 130, align: 'right',
+            render: (_, record) => {
+                const v = adjustedOf(record);
+                return v < 0 ? <span style={{ color: '#a8071a' }}>{money(v)}</span> : '';
+            },
+        },
+        {
+            title: 'Comments', key: 'comments', width: 200,
+            render: (_, record) => (
+                <Input
+                    size="small"
+                    defaultValue={record.comments || ''}
+                    placeholder="Add note"
+                    onBlur={(e) => {
+                        const val = e.target.value;
+                        if (val !== (record.comments || '')) handleFieldSave(record, 'comments', val);
+                    }}
+                />
+            ),
         },
         { title: 'Source', dataIndex: 'categorySource', key: 'categorySource', width: 90, align: 'center', render: sourceTag },
     ];

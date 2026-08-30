@@ -216,7 +216,10 @@ function summarize(categorizedTxns) {
     for (const t of categorizedTxns) {
         const cat = t.category || 'Uncategorized';
         if (!summary[cat]) summary[cat] = { category: cat, credits: 0, debits: 0, net: 0, count: 0 };
-        const amt = Number(t.amount) || 0;
+        // Prefer the owner-adjusted amount when present; else the parsed amount.
+        const amt = (t.adjustAmount !== undefined && t.adjustAmount !== null && t.adjustAmount !== '')
+            ? Number(t.adjustAmount) || 0
+            : Number(t.amount) || 0;
         if (amt >= 0) summary[cat].credits += amt;
         else summary[cat].debits += amt;
         summary[cat].net += amt;
