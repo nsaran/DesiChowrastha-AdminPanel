@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, Select, Typography, message, Card, Row, Col, Statistic, Space, Empty } from 'antd';
+import { Table, Select, Typography, message, Card, Row, Col, Statistic, Space, Empty, Button } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 import protectedApi from '../../../utils/api';
 
 const { Title, Text } = Typography;
@@ -63,6 +64,43 @@ const YearlyReport = () => {
 
     const netStyle = (v) => ({ color: v >= 0 ? '#237804' : '#a8071a' });
 
+    // Export both tables (Category Totals + Month-by-Month matrix) to one CSV.
+    const handleExportCSV = () => {
+        if (months.length === 0) {
+            message.info('Nothing to export for this year.');
+            return;
+        }
+        const esc = (s) => {
+            const str = s === undefined || s === null ? '' : String(s);
+            return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+        };
+        const num = (n) => Number(n || 0).toFixed(2);
+
+        const lines = [];
+        // Section 1: Category Totals
+        lines.push(['Category Totals']);
+        lines.push(['Category', 'Count', 'Total In', 'Total Out', 'Net']);
+        [...categoryTotals]
+            .sort((a, b) => a.net - b.net)
+            .forEach((c) => lines.push([c.category, c.count, num(c.credits), num(c.debits), num(c.net)]));
+        lines.push([]); // blank separator
+        // Section 2: Month-by-Month (net by category)
+        lines.push(['Month-by-Month (Net by Category)']);
+        lines.push(['Category', ...months.map(monthLabel), 'Total']);
+        matrix.forEach((row) => {
+            lines.push([row.category, ...months.map((m) => num(row[m] || 0)), num(row.total || 0)]);
+        });
+
+        const csv = lines.map((r) => r.map(esc).join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `yearly-report_${restaurantId}_${selectedYear}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
     // Cumulative category totals table.
     const totalsColumns = [
         { title: 'Category', dataIndex: 'category', key: 'category' },
@@ -103,6 +141,9 @@ const YearlyReport = () => {
                     <Select style={{ width: 100 }} value={selectedYear} onChange={handleYearChange}>
                         {yearOptions.map((y) => <Option key={y} value={y}>{y}</Option>)}
                     </Select>
+                    <Button icon={<DownloadOutlined />} onClick={handleExportCSV} disabled={months.length === 0}>
+                        Download CSV
+                    </Button>
                 </Space>
             </div>
 
