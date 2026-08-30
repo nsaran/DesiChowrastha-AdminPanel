@@ -8,6 +8,7 @@ const logger = require('../utils/logger');
 const { parseBankCsv } = require('../services/bankStatements/csvParser');
 const { categorizeTransactions, summarize, CATEGORIES } = require('../services/bankStatements/categorizer');
 const { getMonthlyCashTotal } = require('../services/toastCashService');
+const { getMonthlyCashSalary } = require('../services/salaryCashSync');
 
 // Bank statement import/review is restricted to owners and accounts managers.
 router.use(verifyToken, requireRole(['owner', 'accountsManager']));
@@ -95,6 +96,18 @@ router.post('/import', upload.single('file'), async (req, res) => {
         // Append 5 standard manual-entry rows at the end (blank amount; the user
         // fills Adjusted Amount later). Dated the last day of the imported month.
         const standardRows = buildStandardRows(month);
+
+        // Pre-fill "Cash Payment - Employees" from the Salary Ledger cash total for
+        // this month (kept read-only on the client; synced on ledger changes too).
+        const cashSalary = await getMonthlyCashSalary(location, month);
+        if (cashSalary) {
+            const empRow = standardRows.find((r) => r.description === 'Cash Payment - Employees');
+            if (empRow) {
+                empRow.adjustAmount = -Math.abs(cashSalary); // expense (money out)
+                empRow.categorySource = 'salaryLedger';
+            }
+        }
+
         const allTxns = [...categorized, ...standardRows];
 
         const summary = summarize(allTxns);

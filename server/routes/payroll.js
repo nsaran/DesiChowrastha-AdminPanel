@@ -4,6 +4,7 @@ require('../config/firebaseAdmin'); // ensure Admin SDK is initialized
 const { getFirestore } = require('firebase-admin/firestore');
 const { verifyToken, requireRole } = require('../middleware/auth');
 const logger = require('../utils/logger');
+const { syncCashSalaryToMonthlyReport } = require('../services/salaryCashSync');
 
 // Payroll (employees + salary ledger) is owner / accounts-manager only.
 router.use(verifyToken, requireRole(['owner', 'accountsManager']));
@@ -143,7 +144,12 @@ router.put('/salary', async (req, res) => {
                 updatedAt: new Date().toISOString(),
                 updatedBy: req.user?.email || req.user?.uid || 'unknown',
             });
-        res.json({ success: true });
+
+        // Keep the Monthly Report "Cash Payment - Employees" row in sync with the
+        // ledger's cash total (no-op if that month's statement isn't imported yet).
+        const synced = await syncCashSalaryToMonthlyReport(location, month);
+
+        res.json({ success: true, monthlyReportSynced: synced });
     } catch (error) {
         logger.error(`[Payroll] save salary failed: ${error.message}`);
         res.status(500).json({ error: error.message || 'Failed to save salary ledger' });

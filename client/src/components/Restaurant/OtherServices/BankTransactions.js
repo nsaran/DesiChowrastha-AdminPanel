@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Upload, Button, Table, Select, Typography, message, Card, Row, Col, Statistic, Tag, Space, InputNumber, Input, Alert } from 'antd';
+import { Upload, Button, Table, Select, Typography, message, Card, Row, Col, Statistic, Tag, Space, InputNumber, Input, Alert, Tooltip } from 'antd';
 import { UploadOutlined, ReloadOutlined, CheckOutlined } from '@ant-design/icons';
 import protectedApi from '../../../utils/api';
 
@@ -199,34 +199,47 @@ const BankTransactions = () => {
         {
             title: 'Adjusted Amount', key: 'adjustAmount', width: 250, align: 'right',
             sorter: (a, b) => adjustedOf(a) - adjustedOf(b),
-            render: (_, record) => (
-                <Space size={4}>
-                    <InputNumber
-                        size="small"
-                        style={{ width: 120 }}
-                        placeholder="Enter"
-                        value={adjustedInputValue(record)}
-                        onChange={(val) => setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, adjustAmount: val } : t)))}
-                        onPressEnter={() => handleFieldSave(record, 'adjustAmount', adjustedOf(record))}
-                    />
-                    <Button
-                        size="small"
-                        type="primary"
-                        icon={<CheckOutlined />}
-                        title="Save adjusted amount"
-                        onClick={() => handleFieldSave(record, 'adjustAmount', adjustedOf(record))}
-                    />
-                    {record.description === 'Toast Cash Income' && (
+            render: (_, record) => {
+                // "Cash Payment - Employees" is derived from the Salary Ledger — read-only.
+                const isLedgerDerived = record.categorySource === 'salaryLedger'
+                    || record.description === 'Cash Payment - Employees';
+                if (isLedgerDerived) {
+                    return (
+                        <Tooltip title="Derived from the Salary Ledger (cash salary for this month). Edit it on the Salary Ledger page.">
+                            <span style={{ color: '#a8071a' }}>{money(adjustedOf(record))}</span>
+                            <Tag color="geekblue" style={{ marginLeft: 8 }}>Salary Ledger</Tag>
+                        </Tooltip>
+                    );
+                }
+                return (
+                    <Space size={4}>
+                        <InputNumber
+                            size="small"
+                            style={{ width: 120 }}
+                            placeholder="Enter"
+                            value={adjustedInputValue(record)}
+                            onChange={(val) => setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, adjustAmount: val } : t)))}
+                            onPressEnter={() => handleFieldSave(record, 'adjustAmount', adjustedOf(record))}
+                        />
                         <Button
                             size="small"
-                            title="Fetch cash total from Toast for this month"
-                            onClick={() => handleFetchToastCash(record)}
-                        >
-                            Toast
-                        </Button>
-                    )}
-                </Space>
-            ),
+                            type="primary"
+                            icon={<CheckOutlined />}
+                            title="Save adjusted amount"
+                            onClick={() => handleFieldSave(record, 'adjustAmount', adjustedOf(record))}
+                        />
+                        {record.description === 'Toast Cash Income' && (
+                            <Button
+                                size="small"
+                                title="Fetch cash total from Toast for this month"
+                                onClick={() => handleFetchToastCash(record)}
+                            >
+                                Toast
+                            </Button>
+                        )}
+                    </Space>
+                );
+            },
         },
         {
             title: 'Actual Amount', dataIndex: 'amount', key: 'amount', width: 130, align: 'right',
