@@ -144,11 +144,6 @@ const BankTransactions = () => {
             ),
         },
         {
-            title: 'Actual Amount', dataIndex: 'amount', key: 'amount', width: 130, align: 'right',
-            sorter: (a, b) => a.amount - b.amount,
-            render: (v) => <span style={{ color: v >= 0 ? '#237804' : '#a8071a' }}>{money(v)}</span>,
-        },
-        {
             title: 'Adjusted Amount', key: 'adjustAmount', width: 150, align: 'right',
             sorter: (a, b) => adjustedOf(a) - adjustedOf(b),
             render: (_, record) => (
@@ -160,6 +155,11 @@ const BankTransactions = () => {
                     onBlur={(e) => handleFieldSave(record, 'adjustAmount', Number(String(e.target.value).replace(/,/g, '')) || 0)}
                 />
             ),
+        },
+        {
+            title: 'Actual Amount', dataIndex: 'amount', key: 'amount', width: 130, align: 'right',
+            sorter: (a, b) => a.amount - b.amount,
+            render: (v) => <span style={{ color: v >= 0 ? '#237804' : '#a8071a' }}>{money(v)}</span>,
         },
         {
             title: 'Income Amount', key: 'incomeAmount', width: 130, align: 'right',
