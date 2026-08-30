@@ -10,6 +10,7 @@ const { categorizeTransactions, summarize, CATEGORIES } = require('../services/b
 const { getMonthlyCashTotal } = require('../services/toastCashService');
 const { getMonthlyCashSalary } = require('../services/salaryCashSync');
 const { getMonthlyPartyOrderTotal, syncPartyOrderToMonthlyReport } = require('../services/partyOrderSync');
+const { getMonthlyOtherCash } = require('../services/otherCashSync');
 
 // Bank statement import/review is restricted to owners and accounts managers.
 router.use(verifyToken, requireRole(['owner', 'accountsManager']));
@@ -116,6 +117,16 @@ router.post('/import', upload.single('file'), async (req, res) => {
             if (catRow) {
                 catRow.adjustAmount = Math.abs(cateringPaid); // revenue (money in)
                 catRow.categorySource = 'partyOrders';
+            }
+        }
+
+        // Pre-fill "Cash Payment - Others" from the month's miscellaneous cash payments.
+        const otherCash = await getMonthlyOtherCash(location, month);
+        if (otherCash) {
+            const othRow = standardRows.find((r) => r.description === 'Cash Payment - Others');
+            if (othRow) {
+                othRow.adjustAmount = -Math.abs(otherCash); // expense (money out)
+                othRow.categorySource = 'otherCash';
             }
         }
 

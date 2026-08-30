@@ -70,6 +70,10 @@ app.use('/api/bank-transactions', bankTransactionRoutes);
 const payrollRoutes = require('./routes/payroll');
 app.use('/api/payroll', payrollRoutes);
 
+// Cash payments (miscellaneous "others") ledger (owner + accountsManager)
+const cashPaymentRoutes = require('./routes/cashPayments');
+app.use('/api/cash-payments', cashPaymentRoutes);
+
 // Strict limit for feedback: 5 per 15 minutes per IP
 const feedbackLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,

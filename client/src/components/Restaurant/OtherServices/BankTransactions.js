@@ -205,11 +205,20 @@ const BankTransactions = () => {
                     || record.description === 'Cash Payment - Employees';
                 const isPartyDerived = record.categorySource === 'partyOrders'
                     || record.description === 'Catering Order - Payment';
-                if (isSalaryDerived || isPartyDerived) {
-                    const tip = isSalaryDerived
-                        ? 'Derived from the Salary Ledger (cash salary for this month). Edit it on the Salary Ledger page.'
-                        : 'Derived from Party Orders (amount paid this month, by party date). Edit it on the Party Orders page.';
-                    const tagLabel = isSalaryDerived ? 'Salary Ledger' : 'Party Orders';
+                const isOtherCashDerived = record.categorySource === 'otherCash'
+                    || record.description === 'Cash Payment - Others';
+                if (isSalaryDerived || isPartyDerived || isOtherCashDerived) {
+                    let tip; let tagLabel;
+                    if (isSalaryDerived) {
+                        tip = 'Derived from the Salary Ledger (cash salary for this month). Edit it on the Salary Ledger page.';
+                        tagLabel = 'Salary Ledger';
+                    } else if (isPartyDerived) {
+                        tip = 'Derived from Party Orders (amount paid this month, by party date). Edit it on the Party Orders page.';
+                        tagLabel = 'Party Orders';
+                    } else {
+                        tip = 'Derived from the Cash Payments page (miscellaneous cash paid this month). Edit it there.';
+                        tagLabel = 'Cash Payments';
+                    }
                     const val = adjustedOf(record);
                     return (
                         <Tooltip title={tip}>
