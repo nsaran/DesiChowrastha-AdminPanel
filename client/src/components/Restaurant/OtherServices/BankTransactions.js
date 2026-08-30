@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Upload, Button, Table, Select, Typography, message, Card, Row, Col, Statistic, Tag, Space, InputNumber, Input } from 'antd';
-import { UploadOutlined, ReloadOutlined } from '@ant-design/icons';
+import { UploadOutlined, ReloadOutlined, CheckOutlined } from '@ant-design/icons';
 import protectedApi from '../../../utils/api';
 
 const { Title, Text } = Typography;
@@ -109,6 +109,7 @@ const BankTransactions = () => {
                 value,
             });
             if (res.data.summary) setSummary(res.data.summary);
+            message.success('Saved');
         } catch (err) {
             message.error(err.response?.data?.error || 'Failed to save.');
         }
@@ -152,17 +153,26 @@ const BankTransactions = () => {
             ),
         },
         {
-            title: 'Adjusted Amount', key: 'adjustAmount', width: 150, align: 'right',
+            title: 'Adjusted Amount', key: 'adjustAmount', width: 190, align: 'right',
             sorter: (a, b) => adjustedOf(a) - adjustedOf(b),
             render: (_, record) => (
-                <InputNumber
-                    size="small"
-                    style={{ width: 130 }}
-                    placeholder="Enter"
-                    value={adjustedInputValue(record)}
-                    onChange={(val) => setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, adjustAmount: val } : t)))}
-                    onBlur={(e) => handleFieldSave(record, 'adjustAmount', Number(String(e.target.value).replace(/,/g, '')) || 0)}
-                />
+                <Space size={4}>
+                    <InputNumber
+                        size="small"
+                        style={{ width: 120 }}
+                        placeholder="Enter"
+                        value={adjustedInputValue(record)}
+                        onChange={(val) => setTransactions((prev) => prev.map((t) => (t.id === record.id ? { ...t, adjustAmount: val } : t)))}
+                        onPressEnter={() => handleFieldSave(record, 'adjustAmount', adjustedOf(record))}
+                    />
+                    <Button
+                        size="small"
+                        type="primary"
+                        icon={<CheckOutlined />}
+                        title="Save adjusted amount"
+                        onClick={() => handleFieldSave(record, 'adjustAmount', adjustedOf(record))}
+                    />
+                </Space>
             ),
         },
         {
