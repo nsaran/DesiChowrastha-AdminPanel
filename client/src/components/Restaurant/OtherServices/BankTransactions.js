@@ -109,11 +109,6 @@ const BankTransactions = () => {
         { title: 'Date', dataIndex: 'date', key: 'date', width: 110, sorter: (a, b) => (a.date || '').localeCompare(b.date || '') },
         { title: 'Description', dataIndex: 'description', key: 'description', ellipsis: true },
         {
-            title: 'Amount', dataIndex: 'amount', key: 'amount', width: 130, align: 'right',
-            sorter: (a, b) => a.amount - b.amount,
-            render: (v) => <span style={{ color: v >= 0 ? '#237804' : '#a8071a' }}>{money(v)}</span>,
-        },
-        {
             title: 'Category', dataIndex: 'category', key: 'category', width: 230,
             filters: categories.map((c) => ({ text: c, value: c })),
             onFilter: (val, rec) => rec.category === val,
@@ -127,6 +122,11 @@ const BankTransactions = () => {
                     {categories.map((c) => <Option key={c} value={c}>{c}</Option>)}
                 </Select>
             ),
+        },
+        {
+            title: 'Amount', dataIndex: 'amount', key: 'amount', width: 130, align: 'right',
+            sorter: (a, b) => a.amount - b.amount,
+            render: (v) => <span style={{ color: v >= 0 ? '#237804' : '#a8071a' }}>{money(v)}</span>,
         },
         { title: 'Source', dataIndex: 'categorySource', key: 'categorySource', width: 90, align: 'center', render: sourceTag },
     ];
