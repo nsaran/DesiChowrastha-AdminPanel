@@ -108,6 +108,13 @@ async function runJob(job) {
         // Execute the job's business logic
         const templateParams = await executeJob(job.id, job);
 
+        // A null result means the implementation already handled its own delivery
+        // (e.g. sending a document/media message) and there is no text template to send.
+        if (templateParams === null) {
+            logger.info(`[Scheduler] Job ${job.id} handled its own delivery; skipping text send`);
+            return;
+        }
+
         if (!templateParams || !Array.isArray(templateParams)) {
             logger.error(`[Scheduler] Job ${job.id} returned invalid template params`);
             return;

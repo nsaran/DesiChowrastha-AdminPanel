@@ -4,6 +4,8 @@ const { toastApiBaseUrl, locations } = require('../../config/config');
 const { logDailySales, getSubscribers } = require('../googleSheetsService');
 const { generateTodaysSpecialImage } = require('../todaysSpecialImage');
 const logger = require('../../utils/logger');
+require('../../config/firebaseAdmin'); // ensure Admin SDK is initialized
+const { getFirestore } = require('firebase-admin/firestore');
 
 /**
  * Job Implementation Functions
@@ -491,6 +493,249 @@ async function nashua_daily_sales_summary(job) {
     return await daily_sales_summary(job);
 }
 
+/**
+ * Party Orders Monthly CSV Report
+ *
+ * Runs on the 1st of every month. Pulls the PREVIOUS month's party orders from
+ * Firestore (restaurants/{location}/partyOrders, filtered by cPartyDate), builds
+ * a CSV matching the client-side export columns, and sends it to the owners via
+ * WhatsApp as a document attachment.
+ *
+ * Uses the existing approved `party_order_invoice` document-header template
+ * (Option 3): header = the CSV document, body params = [month label, order count].
+ *
+ * Returns null so the scheduler skips the default text-template send (this job
+ * sends its own WhatsApp document message).
+ */
+async function party_orders_monthly_csv(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running party_orders_monthly_csv for ${location}`);
+
+    try {
+        // ---- Previous month range (America/New_York) ----
+        const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const firstOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const lastOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        const toYmd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const startYmd = toYmd(firstOfLastMonth); // e.g. 2026-07-01
+        const endYmd = toYmd(lastOfLastMonth);    // e.g. 2026-07-31
+        const monthLabel = firstOfLastMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        // ---- Read party orders for this location from Firestore ----
+        // The `restaurants` doc id matches the location name used by the client
+        // (e.g. "Nashua", "Westborough"). Config locations are upper-cased, so
+        // try a few casings for the document id and use the first that has orders.
+        const db = getFirestore();
+        const candidateIds = [
+            location.charAt(0).toUpperCase() + location.slice(1).toLowerCase(), // Nashua
+            location,                                                            // NASHUA
+            location.toLowerCase(),                                              // nashua
+        ].filter((v, i, arr) => arr.indexOf(v) === i);
+
+        let allOrders = [];
+        let resolvedId = candidateIds[0];
+        for (const candidate of candidateIds) {
+            const snap = await db
+                .collection('restaurants').doc(candidate)
+                .collection('partyOrders').get();
+            if (!snap.empty) {
+                allOrders = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+                resolvedId = candidate;
+                break;
+            }
+        }
+        const restaurantId = resolvedId;
+
+        // Filter to the previous month by Party Date (string compare on YYYY-MM-DD is safe)
+        const orders = allOrders.filter((o) => {
+            const pd = (o.cPartyDate || '').slice(0, 10);
+            return pd && pd >= startYmd && pd <= endYmd;
+        });
+
+        logger.info(`[Scheduler] party_orders_monthly_csv: ${restaurantId} ${monthLabel} -> ${orders.length} orders`);
+
+        // ---- Build CSV (same columns as client export) ----
+        const csv = buildPartyOrdersCsv(orders);
+
+        // ---- Send CSV to owners via WhatsApp document (party_order_invoice template) ----
+        await sendPartyOrdersCsvToOwners(location, csv, monthLabel, orders.length, job);
+
+        return null; // skip the scheduler's default text send
+    } catch (error) {
+        logger.error(`[Scheduler] party_orders_monthly_csv error: ${error.message}`);
+        return null;
+    }
+}
+
+/**
+ * Build a CSV string for party orders using the same columns/format as the
+ * client-side export in client/src/components/Restaurant/PartyOrders/index.js.
+ */
+function buildPartyOrdersCsv(orders) {
+    const headers = [
+        'Invoice Number',
+        'Customer Name',
+        'Phone Number',
+        'Order Date',
+        'Party Date',
+        'Order Delivery Time',
+        'Party Order Status',
+        'Party Order Payment Status',
+        'Order Total',
+        'Discount',
+        'Payment Details',
+        'Amount Due',
+    ];
+
+    const num = (v) => (isNaN(parseFloat(v)) ? 0 : parseFloat(v));
+
+    // Party orders store cOrderTotal directly, so prefer it and fall back to items.
+    const orderTotalOf = (o) => {
+        if (o.cOrderTotal !== undefined && o.cOrderTotal !== null && o.cOrderTotal !== '') {
+            return num(o.cOrderTotal);
+        }
+        const items = Array.isArray(o.cPartyOrderItems) ? o.cPartyOrderItems : [];
+        return items.reduce((sum, it) => sum + num(it.price) * num(it.qty || it.itemQuantity), 0);
+    };
+
+    const amountDueOf = (o, total) => {
+        const discountPct = num(o.cOrderDiscount);
+        const discounted = total - (total * discountPct) / 100;
+        const paid = (Array.isArray(o.cPartyOrderPaymentDetails) ? o.cPartyOrderPaymentDetails : [])
+            .reduce((sum, p) => sum + num(p.amountPaid), 0);
+        return discounted - paid;
+    };
+
+    const esc = (val) => {
+        const s = val === undefined || val === null ? '' : String(val);
+        // Quote if it contains comma, quote, or newline; escape embedded quotes.
+        if (/[",\n]/.test(s)) {
+            return `"${s.replace(/"/g, '""')}"`;
+        }
+        return s;
+    };
+
+    const rows = orders.map((o) => {
+        const total = orderTotalOf(o);
+        const paymentDetails = (Array.isArray(o.cPartyOrderPaymentDetails) ? o.cPartyOrderPaymentDetails : [])
+            .map((p) => `${p.paymentMode}: $${p.amountPaid}`)
+            .join(', ');
+        return [
+            o.cInvoiceNumber,
+            o.cName,
+            o.cPhoneNumber,
+            o.cOrderDate,
+            o.cPartyDate,
+            o.cOrderDeliveryTime,
+            o.cPartyOrderStatus,
+            o.cPartyOrderPaymentStatus,
+            `$ ${total.toFixed(2)}`,
+            `${num(o.cOrderDiscount)}%`,
+            paymentDetails,
+            `$ ${amountDueOf(o, total).toFixed(2)}`,
+        ].map(esc).join(',');
+    });
+
+    return [headers.map(esc).join(','), ...rows].join('\n');
+}
+
+/**
+ * Upload the CSV to the WhatsApp Media API and send it to the owners as a
+ * document using the existing `party_order_invoice` template.
+ */
+async function sendPartyOrdersCsvToOwners(location, csv, monthLabel, orderCount, job) {
+    const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
+    const locationKey = location.toUpperCase();
+    const phoneNumberId = locationKey === 'NASHUA'
+        ? process.env.WA_PHONE_NUMBER_ID_NASHUA
+        : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
+
+    const recipients = (job.recipients && job.recipients.length > 0)
+        ? job.recipients
+        : (process.env.OWNER_PHONE_NUMBER || '').split(',').map((n) => n.trim()).filter(Boolean);
+
+    if (!WA_ACCESS_TOKEN || !phoneNumberId) {
+        logger.error(`[Scheduler] party_orders_monthly_csv: WhatsApp not configured for ${locationKey}`);
+        return;
+    }
+    if (recipients.length === 0) {
+        logger.error('[Scheduler] party_orders_monthly_csv: no owner recipients configured');
+        return;
+    }
+
+    const safeMonth = monthLabel.replace(/\s+/g, '_');
+    const fileName = `PartyOrders_${locationKey}_${safeMonth}.csv`;
+
+    // Step 1: upload the CSV as media
+    const FormData = require('form-data');
+    const form = new FormData();
+    form.append('file', Buffer.from(csv, 'utf8'), { filename: fileName, contentType: 'text/csv' });
+    form.append('messaging_product', 'whatsapp');
+    form.append('type', 'text/csv');
+
+    let mediaId;
+    try {
+        const mediaResponse = await axios.post(
+            `https://graph.facebook.com/v21.0/${phoneNumberId}/media`,
+            form,
+            { headers: { Authorization: `Bearer ${WA_ACCESS_TOKEN}`, ...form.getHeaders() } }
+        );
+        mediaId = mediaResponse.data.id;
+    } catch (error) {
+        const msg = error.response?.data?.error?.message || error.message;
+        logger.error(`[Scheduler] party_orders_monthly_csv: media upload failed: ${msg}`);
+        return;
+    }
+
+    if (!mediaId) {
+        logger.error('[Scheduler] party_orders_monthly_csv: media upload returned no id');
+        return;
+    }
+
+    const templateName = job.templateName || 'party_order_invoice';
+    const templateLanguage = job.templateLanguage || process.env.WA_TEMPLATE_LANGUAGE || 'en';
+    const messagesUrl = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
+
+    // Step 2: send the template to each owner with the CSV as the document header.
+    // party_order_invoice body has 2 text params; we pass [month label, order count].
+    for (const recipient of recipients) {
+        try {
+            await axios.post(messagesUrl, {
+                messaging_product: 'whatsapp',
+                to: recipient,
+                type: 'template',
+                template: {
+                    name: templateName,
+                    language: { code: templateLanguage },
+                    components: [
+                        {
+                            type: 'header',
+                            parameters: [
+                                { type: 'document', document: { id: mediaId, filename: fileName } },
+                            ],
+                        },
+                        {
+                            type: 'body',
+                            parameters: [
+                                { type: 'text', text: `${location} Party Orders - ${monthLabel}` },
+                                { type: 'text', text: `${orderCount} orders` },
+                            ],
+                        },
+                    ],
+                },
+            }, {
+                headers: { Authorization: `Bearer ${WA_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
+            });
+
+            logger.info(`[Scheduler] party_orders_monthly_csv: report sent to ${recipient} for ${location} (${monthLabel})`);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+        } catch (error) {
+            const msg = error.response?.data?.error?.message || error.message;
+            logger.error(`[Scheduler] party_orders_monthly_csv: failed to send to ${recipient}: ${msg}`);
+        }
+    }
+}
+
 // ============================================================
 // REGISTRY - Maps job IDs to implementation functions
 // ============================================================
@@ -500,7 +745,10 @@ const jobRegistry = {
     weekly_inventory_report,
     monthly_performance,
     yearly_review,
-    nashua_daily_sales_summary
+    nashua_daily_sales_summary,
+    party_orders_monthly_csv,
+    nashua_party_orders_monthly_csv: party_orders_monthly_csv,
+    westborough_party_orders_monthly_csv: party_orders_monthly_csv
 };
 
 /**
