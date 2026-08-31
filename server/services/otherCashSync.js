@@ -27,11 +27,16 @@ function docId(location) {
  */
 async function getMonthlyOtherCash(location, month) {
     const db = getFirestore();
+    const path = `restaurants/${docId(location)}/cashPayments/${month}`;
     const snap = await db.collection('restaurants').doc(docId(location))
         .collection('cashPayments').doc(month).get();
-    if (!snap.exists) return 0;
+    if (!snap.exists) {
+        logger.info(`[OtherCashSync] getMonthlyOtherCash: doc not found at ${path}`);
+        return 0;
+    }
     const items = Array.isArray(snap.data().items) ? snap.data().items : [];
     const total = items.reduce((s, it) => s + (Number(it.amount) || 0), 0);
+    logger.info(`[OtherCashSync] getMonthlyOtherCash: ${path} -> ${items.length} items, total ${total}; raw=${JSON.stringify(snap.data().items)}`);
     return Math.round(total * 100) / 100;
 }
 
