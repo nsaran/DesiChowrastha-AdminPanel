@@ -27,17 +27,27 @@ function docId(location) {
  */
 async function getMonthlyOtherCash(location, month) {
     const db = getFirestore();
-    const path = `restaurants/${docId(location)}/cashPayments/${month}`;
-    const snap = await db.collection('restaurants').doc(docId(location))
-        .collection('cashPayments').doc(month).get();
-    if (!snap.exists) {
-        logger.info(`[OtherCashSync] getMonthlyOtherCash: doc not found at ${path}`);
-        return 0;
+    // Try a few restaurant-id casings so a mismatch between where Cash Payments
+    // saved (e.g. "Nashua") and where this reads can't silently yield 0.
+    const candidates = [
+        docId(location),          // Nashua
+        location,                 // NASHUA (raw, as passed)
+        String(location).toUpperCase(),
+        String(location).toLowerCase(),
+    ].filter((v, i, arr) => v && arr.indexOf(v) === i);
+
+    for (const rid of candidates) {
+        const snap = await db.collection('restaurants').doc(rid)
+            .collection('cashPayments').doc(month).get();
+        if (snap.exists) {
+            const items = Array.isArray(snap.data().items) ? snap.data().items : [];
+            const total = items.reduce((s, it) => s + (Number(it.amount) || 0), 0);
+            logger.info(`[OtherCashSync] getMonthlyOtherCash: restaurants/${rid}/cashPayments/${month} -> ${items.length} items, total ${total}`);
+            if (items.length > 0) return Math.round(total * 100) / 100;
+        }
     }
-    const items = Array.isArray(snap.data().items) ? snap.data().items : [];
-    const total = items.reduce((s, it) => s + (Number(it.amount) || 0), 0);
-    logger.info(`[OtherCashSync] getMonthlyOtherCash: ${path} -> ${items.length} items, total ${total}; raw=${JSON.stringify(snap.data().items)}`);
-    return Math.round(total * 100) / 100;
+    logger.info(`[OtherCashSync] getMonthlyOtherCash: no cashPayments items found for ${location} ${month} (tried ${candidates.join(', ')})`);
+    return 0;
 }
 
 /**
