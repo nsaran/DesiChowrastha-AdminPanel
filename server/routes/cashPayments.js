@@ -5,14 +5,10 @@ const { getFirestore } = require('firebase-admin/firestore');
 const { verifyToken, requireRole } = require('../middleware/auth');
 const logger = require('../utils/logger');
 const { syncOtherCashToMonthlyReport } = require('../services/otherCashSync');
+const { resolveRestaurantId } = require('../services/resolveRestaurantId');
 
 // Owner / accounts-manager only.
 router.use(verifyToken, requireRole(['owner', 'accountsManager']));
-
-function restaurantDocId(location) {
-    if (!location) return location;
-    return location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
-}
 
 /** GET /api/cash-payments?location=..&month=YYYY-MM -> { month, items: [] } */
 router.get('/', async (req, res) => {
@@ -21,7 +17,8 @@ router.get('/', async (req, res) => {
         const month = (req.query.month || '').trim();
         if (!location || !month) return res.status(400).json({ error: 'location and month are required' });
         const db = getFirestore();
-        const snap = await db.collection('restaurants').doc(restaurantDocId(location))
+        const rid = await resolveRestaurantId(location);
+        const snap = await db.collection('restaurants').doc(rid)
             .collection('cashPayments').doc(month).get();
         res.json(snap.exists ? snap.data() : { month, items: [] });
     } catch (error) {
@@ -52,7 +49,8 @@ router.put('/', async (req, res) => {
         }));
 
         const db = getFirestore();
-        await db.collection('restaurants').doc(restaurantDocId(location))
+        const rid = await resolveRestaurantId(location);
+        await db.collection('restaurants').doc(rid)
             .collection('cashPayments').doc(month)
             .set({
                 month,
@@ -61,7 +59,8 @@ router.put('/', async (req, res) => {
                 updatedBy: req.user?.email || req.user?.uid || 'unknown',
             });
 
-        const synced = await syncOtherCashToMonthlyReport(location, month);
+        // Sync using the SAME resolved restaurant id so save + sync target one doc.
+        const synced = await syncOtherCashToMonthlyReport(rid, month);
         res.json({ success: true, monthlyReportSynced: synced });
     } catch (error) {
         logger.error(`[CashPayments] save failed: ${error.message}`);
