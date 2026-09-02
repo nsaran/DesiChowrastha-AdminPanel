@@ -6,10 +6,12 @@ import { useParams } from 'react-router-dom';
 import { firestore } from '../../../config/firebase';
 import moment from 'moment';
 import { CalendarOutlined } from '@ant-design/icons';
+import { useKeepAlive } from '../TvMenu/useKeepAlive';
 
 
 const ChefsKitchen = () => {
     const { restaurantId } = useParams();
+    useKeepAlive(); // keep the browser awake on always-on kitchen displays
     const [activeKey, setActiveKey] = useState('todayOrders');
     const [todayOrders, setTodayOrders] = useState([]);
     const [tomorrowOrders, setTomorrowOrders] = useState([]);

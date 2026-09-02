@@ -15,6 +15,7 @@ import PartyOrderHeader from './components/PartyOrderHeader';
 import protectedApi from '../../../utils/api';
 import { AuthContext } from '../../../utils/AuthProvider';
 import { generateInvoicePdf } from './utils/invoice';
+import { useKeepAlive } from '../TvMenu/useKeepAlive';
 
 const { RangePicker } = DatePicker;
 
@@ -34,6 +35,7 @@ const RestaurantPartyOrdersComponent = () => {
     const isSavingRef = useRef(false);
     const { role, currentUser } = useContext(AuthContext);
     const canDelete = role === 'owner'; // only owners may delete party orders
+    useKeepAlive(); // keep the browser awake on always-on displays
 
 
     const formatDate = (value) => {

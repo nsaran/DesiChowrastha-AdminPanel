@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Tabs, Input, Button, Spin, Typography } from 'antd';
 import { SendOutlined, RobotOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { renderToastMenuItems } from "../renderMenuItems";
 import { useMenuItemDetail } from '../useMenuItemDetail';
+import { useKeepAlive } from '../useKeepAlive';
 import API_BASE_URL from '../../../../config/api';
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import GoogleFontLoader from "react-google-font";
@@ -37,33 +38,8 @@ const TabletMenu = () => {
     const [chatLoading, setChatLoading] = useState(false);
     const { setSelectedItem, detailModal } = useMenuItemDetail();
 
-    // Near-silent Web Audio "keep-alive" tone. Ongoing audio playback is the most
-    // reliable way to stop an idle browser (Amazon Silk / Fire Stick, Chrome) from
-    // suspending or closing the tab when there's no activity. Browsers block audio
-    // until a user gesture, so it starts on the first tap anywhere on the page.
-    const keepAliveCtxRef = useRef(null);
-    const startKeepAlive = useCallback(() => {
-        if (keepAliveCtxRef.current) return; // already running
-        try {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if (!AudioCtx) return;
-            const ctx = new AudioCtx();
-            const oscillator = ctx.createOscillator();
-            const gain = ctx.createGain();
-            gain.gain.value = 0.0001;   // effectively inaudible, but counts as active playback
-            oscillator.frequency.value = 20; // sub-audible low frequency
-            oscillator.connect(gain);
-            gain.connect(ctx.destination);
-            oscillator.start();
-            keepAliveCtxRef.current = ctx;
-            // Some browsers suspend the context when backgrounded; resume periodically.
-            setInterval(() => {
-                if (ctx.state === 'suspended') ctx.resume().catch(() => {});
-            }, 30000);
-        } catch (e) {
-            console.warn('Keep-alive audio could not start:', e);
-        }
-    }, []);
+    // Keep the Amazon Silk / Fire Stick browser awake when idle (silent audio tone).
+    useKeepAlive();
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -78,29 +54,6 @@ const TabletMenu = () => {
         };
         fetchMenu();
     }, [restaurantId]);
-
-    // Start the keep-alive tone on the first user interaction (tap/click/key),
-    // then stop listening. Clean up the audio context on unmount.
-    useEffect(() => {
-        const onFirstInteraction = () => {
-            startKeepAlive();
-            document.removeEventListener('click', onFirstInteraction);
-            document.removeEventListener('touchstart', onFirstInteraction);
-            document.removeEventListener('keydown', onFirstInteraction);
-        };
-        document.addEventListener('click', onFirstInteraction);
-        document.addEventListener('touchstart', onFirstInteraction);
-        document.addEventListener('keydown', onFirstInteraction);
-        return () => {
-            document.removeEventListener('click', onFirstInteraction);
-            document.removeEventListener('touchstart', onFirstInteraction);
-            document.removeEventListener('keydown', onFirstInteraction);
-            if (keepAliveCtxRef.current) {
-                try { keepAliveCtxRef.current.close(); } catch (e) {}
-                keepAliveCtxRef.current = null;
-            }
-        };
-    }, [startKeepAlive]);
 
     const handleAskAI = async () => {
         if (!chatQuestion.trim()) return;
