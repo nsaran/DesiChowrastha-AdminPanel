@@ -164,19 +164,31 @@ const SignagePlayer = () => {
     }, [restaurantId, showNextOrder]);
 
     // Split a playlist into main videos (rotated randomly) and interrupts.
-    const applyPlaylist = useCallback((items) => {
+    // If liveStream is enabled, it takes precedence: it becomes the SOLE main video
+    // (no rotation) so a live broadcast takes over the screen. Interrupts still play.
+    const applyPlaylist = useCallback((playlist) => {
+        const items = playlist.items || [];
+        const live = playlist.liveStream;
         const enabled = items.filter(i => i.enabled !== false);
         const isMain = (i) => i.role === 'main' || (i.type === 'url' && i.src?.includes('youtube'));
-        const mains = enabled.filter(isMain);
         const rest = enabled.filter(i => !isMain(i));
 
+        if (live && live.enabled && live.src) {
+            // Live mode: single main = the live stream. Rotation is effectively off
+            // (a single-item main list won't rotate).
+            const liveItem = { type: 'url', src: live.src, role: 'main', label: 'Live Stream' };
+            setMainVideos([liveItem]);
+            setMainStream(liveItem);
+            setInterrupts(rest);
+            return;
+        }
+
+        const mains = enabled.filter(isMain);
         if (mains.length > 0) {
             setMainVideos(mains);
-            // Pick a random main video to start with.
             setMainStream(mains[Math.floor(Math.random() * mains.length)]);
             setInterrupts(rest);
         } else if (enabled.length > 0) {
-            // No main marked — treat the first item as the sole main.
             setMainVideos([enabled[0]]);
             setMainStream(enabled[0]);
             setInterrupts(enabled.slice(1));
@@ -189,7 +201,7 @@ const SignagePlayer = () => {
             const res = await fetch(`${API_BASE_URL}/api/signage/playlist?tvId=${tvId}&location=${restaurantId}`);
             const data = await res.json();
             if (data && data.items && data.items.length > 0) {
-                applyPlaylist(data.items);
+                applyPlaylist(data);
             }
         } catch (e) {
             console.error('Error fetching signage playlist:', e);
@@ -336,7 +348,7 @@ const SignagePlayer = () => {
                     try {
                         const data = JSON.parse(event.data);
                         if (data.type === 'playlist_update' && data.playlist) {
-                            applyPlaylist(data.playlist.items || []);
+                            applyPlaylist(data.playlist);
                             setCurrentInterrupt(-1);
                         }
                     } catch (e) {}

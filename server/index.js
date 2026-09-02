@@ -1036,17 +1036,56 @@ app.get('/api/signage/playlist', (req, res) => {
 
 // Save/update playlist for a specific TV
 app.post('/api/signage/playlist', (req, res) => {
-    const { tvId, location, items } = req.body;
+    const { tvId, location, items, liveStream } = req.body;
     if (!tvId || !location) {
         return res.status(400).json({ error: 'tvId and location are required' });
     }
     const cacheKey = `signage_${location.toUpperCase()}_${tvId}`;
-    const playlist = { tvId, location: location.toUpperCase(), items: items || [] };
+    // Preserve any existing liveStream unless the request explicitly provides one.
+    const existing = cache.get(cacheKey) || {};
+    const playlist = {
+        tvId,
+        location: location.toUpperCase(),
+        items: items || [],
+        liveStream: liveStream !== undefined ? liveStream : (existing.liveStream || { enabled: false, src: '' }),
+    };
     cache.set(cacheKey, playlist, 0); // No expiry
-    logger.info(`[Signage] Playlist updated for ${location}/${tvId}: ${items.length} items`);
+    logger.info(`[Signage] Playlist updated for ${location}/${tvId}: ${(items || []).length} items`);
     saveSignagePlaylists();
 
     // Notify connected SSE clients for this TV
+    signageSSEClients.forEach(client => {
+        if (client.tvId === tvId && client.location === location.toUpperCase()) {
+            client.res.write(`data: ${JSON.stringify({ type: 'playlist_update', playlist })}\n\n`);
+        }
+    });
+
+    res.json({ success: true, playlist });
+});
+
+/**
+ * Toggle live-stream mode for a TV without resending the whole playlist.
+ * Body: { tvId, location, enabled, src }
+ * When enabled, the signage player shows `src` (a YouTube live embed URL) as the
+ * exclusive main content and pauses the normal video rotation.
+ */
+app.post('/api/signage/live', (req, res) => {
+    const { tvId, location, enabled, src } = req.body;
+    if (!tvId || !location) {
+        return res.status(400).json({ error: 'tvId and location are required' });
+    }
+    const cacheKey = `signage_${location.toUpperCase()}_${tvId}`;
+    const existing = cache.get(cacheKey);
+    if (!existing) return res.status(404).json({ error: 'Playlist not found for this TV' });
+
+    const playlist = {
+        ...existing,
+        liveStream: { enabled: !!enabled, src: src || existing.liveStream?.src || '' },
+    };
+    cache.set(cacheKey, playlist, 0);
+    logger.info(`[Signage] Live mode ${enabled ? 'ON' : 'OFF'} for ${location}/${tvId}`);
+    saveSignagePlaylists();
+
     signageSSEClients.forEach(client => {
         if (client.tvId === tvId && client.location === location.toUpperCase()) {
             client.res.write(`data: ${JSON.stringify({ type: 'playlist_update', playlist })}\n\n`);

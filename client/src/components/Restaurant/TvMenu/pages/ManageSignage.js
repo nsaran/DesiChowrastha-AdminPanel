@@ -26,6 +26,8 @@ const ManageSignage = () => {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [liveEnabled, setLiveEnabled] = useState(false);
+    const [liveSrc, setLiveSrc] = useState('');
 
     // Fetch all playlists for this location
     useEffect(() => {
@@ -51,7 +53,35 @@ const ManageSignage = () => {
         if (!selectedTvId) return;
         const playlist = playlists.find(p => p.tvId === selectedTvId);
         setItems(playlist?.items || []);
+        setLiveEnabled(!!playlist?.liveStream?.enabled);
+        setLiveSrc(playlist?.liveStream?.src || '');
     }, [selectedTvId, playlists]);
+
+    // Toggle live-stream mode (takes precedence over the normal video rotation).
+    const handleToggleLive = async (enabled) => {
+        if (enabled && !liveSrc.trim()) {
+            message.warning('Enter the YouTube live embed URL first.');
+            return;
+        }
+        setLiveEnabled(enabled);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/signage/live`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tvId: selectedTvId, location: restaurantId.toUpperCase(), enabled, src: liveSrc.trim() }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                message.success(enabled ? 'Live stream is now ON air for this TV' : 'Live stream turned off — back to normal rotation');
+            } else {
+                message.error(data.error || 'Failed to update live mode');
+                setLiveEnabled(!enabled); // revert
+            }
+        } catch (e) {
+            message.error('Failed to update live mode');
+            setLiveEnabled(!enabled);
+        }
+    };
 
     const handleCreatePlaylist = () => {
         if (!newTvId.trim()) {
@@ -224,6 +254,32 @@ const ManageSignage = () => {
                     </div>
                 )}
             </Card>
+
+            {/* Live Stream (takes precedence over normal rotation) */}
+            {selectedTvId && (
+                <Card
+                    style={{ marginBottom: '15px', borderRadius: '10px', boxShadow: '0 2px 6px rgba(0,0,0,0.08)' }}
+                    size="small"
+                    title={<Space>📡 Live Stream <Text type="secondary" style={{ fontSize: 12 }}>(overrides videos when ON)</Text></Space>}
+                >
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                        <Input
+                            placeholder="YouTube live embed URL, e.g. https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1"
+                            value={liveSrc}
+                            onChange={(e) => setLiveSrc(e.target.value)}
+                            disabled={liveEnabled}
+                        />
+                        <Space>
+                            <Switch checked={liveEnabled} onChange={handleToggleLive} />
+                            <Text>{liveEnabled ? 'ON AIR — live stream is showing on this TV' : 'Off — showing normal video rotation'}</Text>
+                        </Space>
+                        <Text type="secondary" style={{ fontSize: 12 }}>
+                            Turn this ON when you start streaming the OBSBOT camera to YouTube. Turn it OFF
+                            when the broadcast ends to return to the normal videos. No need to edit the playlist.
+                        </Text>
+                    </Space>
+                </Card>
+            )}
 
             {/* Playlist Items */}
             {selectedTvId && (
