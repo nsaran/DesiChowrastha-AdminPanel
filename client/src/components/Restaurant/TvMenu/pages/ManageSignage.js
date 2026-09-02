@@ -358,6 +358,13 @@ const ManageSignage = () => {
                                         unCheckedChildren="—"
                                         size="small"
                                     />
+                                    <Switch
+                                        checked={item.role === 'main'}
+                                        onChange={(checked) => updateItem(index, 'role', checked ? 'main' : '')}
+                                        checkedChildren="Main"
+                                        unCheckedChildren="Interrupt"
+                                        size="small"
+                                    />
                                 </Space>
                             </Space>
                         </Card>
