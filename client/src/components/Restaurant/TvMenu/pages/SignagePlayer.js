@@ -49,6 +49,8 @@ const SignagePlayer = () => {
     const currentVideoIdRef = useRef(null); // video id the current player is playing
     const mainVideosRef = useRef([]);       // latest main-video list (avoids stale closures)
     const userInteractedRef = useRef(false); // latest userInteracted (for YT event handlers)
+    const webrtcVideoRef = useRef(null);    // <video> element for a WebRTC (WHEP) live feed
+    const pcRef = useRef(null);             // active RTCPeerConnection for the WebRTC feed
     const [mainOpacity, setMainOpacity] = useState(1); // crossfade opacity for the main player
     const keepAliveCtxRef = useRef(null); // Web Audio context for the silent keep-alive tone
 
@@ -237,12 +239,75 @@ const SignagePlayer = () => {
         setTimeout(() => setMainStream(next), 600);
     }, []);
 
-    // Derive the YouTube video id from the current main stream (stable string).
+    // A WebRTC (near-real-time) live source is a WHEP URL from MediaMTX (or an item
+    // explicitly typed 'webrtc'). Everything else with 'youtube' is a YT embed.
+    const isWebRtcSrc = (src) => !!src && (/\/whep\b/i.test(src) || /^webrtc:/i.test(src));
+    const mainIsWebRtc = mainStream?.type === 'webrtc' || isWebRtcSrc(mainStream?.src);
+
+    // Derive the YouTube video id from the current main stream (only for YT embeds).
     const mainVideoId = (() => {
+        if (mainIsWebRtc) return null;
         if (!mainStream || !mainStream.src?.includes('youtube')) return null;
         const m = mainStream.src.match(/embed\/([^?]+)/);
         return m ? m[1] : null;
     })();
+
+    // Connect to a WebRTC (WHEP) live feed via the browser's RTCPeerConnection.
+    // WHEP handshake: POST our SDP offer to the WHEP URL, apply the SDP answer.
+    // Near-real-time (sub-second to ~2s), served by MediaMTX on the local network.
+    useEffect(() => {
+        if (!mainIsWebRtc || !mainStream?.src) return;
+        let cancelled = false;
+        const whepUrl = mainStream.src.replace(/^webrtc:/i, '');
+
+        const connect = async () => {
+            try {
+                const pc = new RTCPeerConnection({
+                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+                });
+                pcRef.current = pc;
+                // We only want to receive audio+video.
+                pc.addTransceiver('video', { direction: 'recvonly' });
+                pc.addTransceiver('audio', { direction: 'recvonly' });
+
+                pc.ontrack = (event) => {
+                    if (webrtcVideoRef.current && event.streams[0]) {
+                        webrtcVideoRef.current.srcObject = event.streams[0];
+                        webrtcVideoRef.current.play().catch(() => {});
+                        setMainOpacity(1);
+                    }
+                };
+
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+
+                const res = await fetch(whepUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/sdp' },
+                    body: offer.sdp,
+                });
+                if (!res.ok) throw new Error(`WHEP request failed: ${res.status}`);
+                const answerSdp = await res.text();
+                if (cancelled) return;
+                await pc.setRemoteDescription({ type: 'answer', sdp: answerSdp });
+            } catch (e) {
+                console.error('[Signage] WebRTC connect failed:', e);
+            }
+        };
+
+        connect();
+
+        return () => {
+            cancelled = true;
+            if (pcRef.current) {
+                try { pcRef.current.close(); } catch (e) {}
+                pcRef.current = null;
+            }
+            if (webrtcVideoRef.current) {
+                webrtcVideoRef.current.srcObject = null;
+            }
+        };
+    }, [mainIsWebRtc, mainStream?.src]);
 
     // Initialize YouTube IFrame Player API.
     // IMPORTANT: depend on the video ID STRING, not the mainStream object, so this
@@ -631,9 +696,20 @@ const SignagePlayer = () => {
                 </div>
             )}
 
-            {/* Main Stream - YouTube Player API (pause/resume capable) */}
+            {/* Main Stream */}
             <div style={{ ...styles.layer, zIndex: 1, opacity: mainOpacity, transition: 'opacity 0.6s ease' }}>
-                <YouTubeContainer ref={ytContainerRef} />
+                {mainIsWebRtc ? (
+                    // Near-real-time WebRTC (WHEP) live feed — e.g. OBSBOT via MediaMTX.
+                    <video
+                        ref={webrtcVideoRef}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        autoPlay
+                        playsInline
+                        muted={!userInteracted}
+                    />
+                ) : (
+                    <YouTubeContainer ref={ytContainerRef} />
+                )}
             </div>
 
             {/* Interrupt overlay */}

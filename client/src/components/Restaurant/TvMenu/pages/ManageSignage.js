@@ -264,7 +264,7 @@ const ManageSignage = () => {
                 >
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <Input
-                            placeholder="YouTube live embed URL, e.g. https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1"
+                            placeholder="YouTube embed URL, or a WebRTC/WHEP URL for near-real-time (e.g. http://SERVER:8889/cam/whep)"
                             value={liveSrc}
                             onChange={(e) => setLiveSrc(e.target.value)}
                             disabled={liveEnabled}
@@ -274,8 +274,9 @@ const ManageSignage = () => {
                             <Text>{liveEnabled ? 'ON AIR — live stream is showing on this TV' : 'Off — showing normal video rotation'}</Text>
                         </Space>
                         <Text type="secondary" style={{ fontSize: 12 }}>
-                            Turn this ON when you start streaming the OBSBOT camera to YouTube. Turn it OFF
-                            when the broadcast ends to return to the normal videos. No need to edit the playlist.
+                            Turn ON when the OBSBOT camera is live, OFF when done — no need to edit the playlist.
+                            Use a YouTube embed URL (higher latency, works on any device) or a WebRTC/WHEP URL
+                            from MediaMTX (near-real-time; requires a Chrome device on the TV).
                         </Text>
                     </Space>
                 </Card>
