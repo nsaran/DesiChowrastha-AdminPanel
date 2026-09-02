@@ -35,7 +35,8 @@ const SignagePlayer = () => {
     const tvId = searchParams.get('tvId') || 'default';
     const orientation = searchParams.get('orientation') || 'landscape';
 
-    const [mainStream, setMainStream] = useState(null);
+    const [mainVideos, setMainVideos] = useState([]); // all items marked as main
+    const [mainStream, setMainStream] = useState(null); // the currently-playing main video
     const [interrupts, setInterrupts] = useState([]);
     const [currentInterrupt, setCurrentInterrupt] = useState(-1); // -1 = showing main stream
     const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +47,9 @@ const SignagePlayer = () => {
     const ytPlayerRef = useRef(null);
     const ytContainerRef = useRef(null);
     const currentVideoIdRef = useRef(null); // video id the current player is playing
+    const mainVideosRef = useRef([]);       // latest main-video list (avoids stale closures)
+    const userInteractedRef = useRef(false); // latest userInteracted (for YT event handlers)
+    const [mainOpacity, setMainOpacity] = useState(1); // crossfade opacity for the main player
     const keepAliveCtxRef = useRef(null); // Web Audio context for the silent keep-alive tone
 
     // Order ready overlay state
@@ -159,33 +163,67 @@ const SignagePlayer = () => {
         };
     }, [restaurantId, showNextOrder]);
 
+    // Split a playlist into main videos (rotated randomly) and interrupts.
+    const applyPlaylist = useCallback((items) => {
+        const enabled = items.filter(i => i.enabled !== false);
+        const isMain = (i) => i.role === 'main' || (i.type === 'url' && i.src?.includes('youtube'));
+        const mains = enabled.filter(isMain);
+        const rest = enabled.filter(i => !isMain(i));
+
+        if (mains.length > 0) {
+            setMainVideos(mains);
+            // Pick a random main video to start with.
+            setMainStream(mains[Math.floor(Math.random() * mains.length)]);
+            setInterrupts(rest);
+        } else if (enabled.length > 0) {
+            // No main marked — treat the first item as the sole main.
+            setMainVideos([enabled[0]]);
+            setMainStream(enabled[0]);
+            setInterrupts(enabled.slice(1));
+        }
+    }, []);
+
     // Fetch playlist from server
     const fetchPlaylist = useCallback(async () => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/signage/playlist?tvId=${tvId}&location=${restaurantId}`);
             const data = await res.json();
             if (data && data.items && data.items.length > 0) {
-                // First item marked as mainStream type OR first URL item with 'youtube' in src
-                const items = data.items.filter(i => i.enabled !== false);
-                const mainIdx = items.findIndex(i => i.role === 'main' || (i.type === 'url' && i.src?.includes('youtube')));
-                if (mainIdx >= 0) {
-                    setMainStream(items[mainIdx]);
-                    setInterrupts(items.filter((_, idx) => idx !== mainIdx));
-                } else {
-                    // No main stream found — use first item as main
-                    setMainStream(items[0]);
-                    setInterrupts(items.slice(1));
-                }
+                applyPlaylist(data.items);
             }
         } catch (e) {
             console.error('Error fetching signage playlist:', e);
         }
         setIsLoading(false);
-    }, [tvId, restaurantId]);
+    }, [tvId, restaurantId, applyPlaylist]);
 
     useEffect(() => {
         fetchPlaylist();
     }, [fetchPlaylist]);
+
+    // Keep the latest values available to the (long-lived) YT event handlers.
+    mainVideosRef.current = mainVideos;
+    userInteractedRef.current = userInteracted;
+
+    // Pick a random main video different from the current one (when possible),
+    // then crossfade to it. Called when the current main video finishes.
+    const rotateToNextMain = useCallback(() => {
+        const list = mainVideosRef.current || [];
+        if (list.length <= 1) {
+            // Only one main video: just restart it (no visible switch needed).
+            try { ytPlayerRef.current?.seekTo(0); ytPlayerRef.current?.playVideo(); } catch (e) {}
+            return;
+        }
+        const currentId = currentVideoIdRef.current;
+        const candidates = list.filter((v) => {
+            const m = v.src?.match(/embed\/([^?]+)/);
+            return (m ? m[1] : null) !== currentId;
+        });
+        const next = candidates[Math.floor(Math.random() * candidates.length)] || list[0];
+        // Crossfade: fade out, swap the main stream, fade back in.
+        setMainOpacity(0);
+        setTimeout(() => setMainStream(next), 600);
+    }, []);
 
     // Derive the YouTube video id from the current main stream (stable string).
     const mainVideoId = (() => {
@@ -218,13 +256,14 @@ const SignagePlayer = () => {
                 try { ytPlayerRef.current.destroy(); } catch (e) {}
             }
             currentVideoIdRef.current = videoId;
+            // NOTE: no `loop`/`playlist` here — we want the ENDED event to fire so we
+            // can rotate to a different random main video. If there's only one main
+            // video, the ENDED handler simply restarts it.
             ytPlayerRef.current = new window.YT.Player(ytContainerRef.current, {
                 videoId,
                 playerVars: {
                     autoplay: 1,
                     mute: 1,
-                    loop: 1,
-                    playlist: videoId,
                     controls: 0,
                     showinfo: 0,
                     rel: 0,
@@ -234,7 +273,18 @@ const SignagePlayer = () => {
                 },
                 events: {
                     onReady: (event) => {
-                        event.target.playVideo();
+                        try {
+                            event.target.playVideo();
+                            if (userInteractedRef.current) event.target.unMute();
+                        } catch (e) {}
+                        // Fade the (possibly newly-swapped) video in.
+                        setMainOpacity(1);
+                    },
+                    onStateChange: (event) => {
+                        // 0 === YT.PlayerState.ENDED -> rotate to the next random main video.
+                        if (event.data === 0) {
+                            rotateToNextMain();
+                        }
                     },
                 },
             });
@@ -253,7 +303,7 @@ const SignagePlayer = () => {
                 currentVideoIdRef.current = null;
             }
         };
-    }, [mainVideoId]);
+    }, [mainVideoId, rotateToNextMain]);
 
     // Pause/resume YouTube when interrupt shows/hides
     useEffect(() => {
@@ -286,15 +336,7 @@ const SignagePlayer = () => {
                     try {
                         const data = JSON.parse(event.data);
                         if (data.type === 'playlist_update' && data.playlist) {
-                            const items = (data.playlist.items || []).filter(i => i.enabled !== false);
-                            const mainIdx = items.findIndex(i => i.role === 'main' || (i.type === 'url' && i.src?.includes('youtube')));
-                            if (mainIdx >= 0) {
-                                setMainStream(items[mainIdx]);
-                                setInterrupts(items.filter((_, idx) => idx !== mainIdx));
-                            } else if (items.length > 0) {
-                                setMainStream(items[0]);
-                                setInterrupts(items.slice(1));
-                            }
+                            applyPlaylist(data.playlist.items || []);
                             setCurrentInterrupt(-1);
                         }
                     } catch (e) {}
@@ -317,7 +359,7 @@ const SignagePlayer = () => {
             if (eventSource) eventSource.close();
             if (fallbackInterval) clearInterval(fallbackInterval);
         };
-    }, [tvId, restaurantId, fetchPlaylist]);
+    }, [tvId, restaurantId, fetchPlaylist, applyPlaylist]);
 
     // Cycle interrupts using a tick-based approach
     const interruptsRef = useRef(interrupts);
@@ -578,7 +620,7 @@ const SignagePlayer = () => {
             )}
 
             {/* Main Stream - YouTube Player API (pause/resume capable) */}
-            <div style={{ ...styles.layer, zIndex: 1 }}>
+            <div style={{ ...styles.layer, zIndex: 1, opacity: mainOpacity, transition: 'opacity 0.6s ease' }}>
                 <YouTubeContainer ref={ytContainerRef} />
             </div>
 
