@@ -1,6 +1,18 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, forwardRef, memo } from "react";
 import { useParams, useSearchParams } from 'react-router-dom';
 import API_BASE_URL from '../../../../config/api';
+
+/**
+ * Stable container for the YouTube iframe. The YT IFrame API replaces this div's
+ * contents with an <iframe> outside of React's control. Wrapping it in React.memo
+ * with an always-equal comparator ensures React NEVER re-renders/reconciles this
+ * node after mount — so parent re-renders (e.g. an order-ready overlay popping up)
+ * can't wipe or reset the video/audio.
+ */
+const YouTubeContainer = memo(
+    forwardRef((props, ref) => <div ref={ref} style={{ width: '100%', height: '100%' }} />),
+    () => true // never re-render
+);
 
 /**
  * SignagePlayer - Digital Signage Player for TVs
@@ -33,6 +45,7 @@ const SignagePlayer = () => {
     const interruptIndexRef = useRef(0);
     const ytPlayerRef = useRef(null);
     const ytContainerRef = useRef(null);
+    const currentVideoIdRef = useRef(null); // video id the current player is playing
     const keepAliveCtxRef = useRef(null); // Web Audio context for the silent keep-alive tone
 
     // Order ready overlay state
@@ -174,14 +187,24 @@ const SignagePlayer = () => {
         fetchPlaylist();
     }, [fetchPlaylist]);
 
-    // Initialize YouTube IFrame Player API
-    useEffect(() => {
-        if (!mainStream || !mainStream.src?.includes('youtube')) return;
+    // Derive the YouTube video id from the current main stream (stable string).
+    const mainVideoId = (() => {
+        if (!mainStream || !mainStream.src?.includes('youtube')) return null;
+        const m = mainStream.src.match(/embed\/([^?]+)/);
+        return m ? m[1] : null;
+    })();
 
-        // Extract video ID from embed URL
-        const match = mainStream.src.match(/embed\/([^?]+)/);
-        const videoId = match ? match[1] : null;
+    // Initialize YouTube IFrame Player API.
+    // IMPORTANT: depend on the video ID STRING, not the mainStream object, so this
+    // effect (and its player-destroying cleanup) only runs when the video actually
+    // changes — not on every re-render or equal playlist update. That prevents the
+    // video from resetting / re-muting when an order-ready overlay pops up.
+    useEffect(() => {
+        const videoId = mainVideoId;
         if (!videoId) return;
+
+        // If a player already exists for this same video, do NOT recreate it.
+        if (ytPlayerRef.current && currentVideoIdRef.current === videoId) return;
 
         // Load the YT API script if not already loaded
         if (!window.YT) {
@@ -192,8 +215,9 @@ const SignagePlayer = () => {
 
         const initPlayer = () => {
             if (ytPlayerRef.current) {
-                ytPlayerRef.current.destroy();
+                try { ytPlayerRef.current.destroy(); } catch (e) {}
             }
+            currentVideoIdRef.current = videoId;
             ytPlayerRef.current = new window.YT.Player(ytContainerRef.current, {
                 videoId,
                 playerVars: {
@@ -226,9 +250,10 @@ const SignagePlayer = () => {
             if (ytPlayerRef.current) {
                 try { ytPlayerRef.current.destroy(); } catch (e) {}
                 ytPlayerRef.current = null;
+                currentVideoIdRef.current = null;
             }
         };
-    }, [mainStream]);
+    }, [mainVideoId]);
 
     // Pause/resume YouTube when interrupt shows/hides
     useEffect(() => {
@@ -554,7 +579,7 @@ const SignagePlayer = () => {
 
             {/* Main Stream - YouTube Player API (pause/resume capable) */}
             <div style={{ ...styles.layer, zIndex: 1 }}>
-                <div ref={ytContainerRef} style={{ width: '100%', height: '100%' }} />
+                <YouTubeContainer ref={ytContainerRef} />
             </div>
 
             {/* Interrupt overlay */}
