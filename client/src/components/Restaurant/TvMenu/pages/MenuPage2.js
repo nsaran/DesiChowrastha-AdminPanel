@@ -326,15 +326,17 @@ const MenuPage2 = () => {
                     </Col>
                 </Row>
 
-                {/* Promo Banner - fixed at bottom, spans columns 2 & 3 */}
+                {/* Promo Banner - moved up into the empty space below the appetizer
+                    list (which ends with Goat Sukka) and doubled in height. Spans
+                    columns 2 & 3. */}
                 <div style={{
                     position: 'fixed',
-                    bottom: '20px',
+                    bottom: '180px',
                     left: '33.4%',
                     right: '20px',
                     borderRadius: '12px',
                     overflow: 'hidden',
-                    height: '70px',
+                    height: '160px',
                     zIndex: 100,
                     boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
                 }}>

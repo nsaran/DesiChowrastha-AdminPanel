@@ -271,7 +271,7 @@ const MenuPage5 = () => {
                             <img
                                 src="/_images/promos/irani-chai.jpg"
                                 alt="Irani Chai"
-                                style={{ width: "100%", height: "100px", objectFit: "cover", borderRadius: "8px" }}
+                                style={{ width: "100%", height: "105px", objectFit: "cover", borderRadius: "8px" }}
                             />
                         </div>
                     </Col>

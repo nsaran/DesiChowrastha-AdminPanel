@@ -458,9 +458,9 @@ const MenuPage4 = () => {
 
                 {/* Order Ready Animated Banner - permanent at bottom */}
                 <div style={{
-                    marginTop: '15px',
+                    marginTop: '-20px',
                     width: '100%',
-                    height: '120px',
+                    height: '140px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
