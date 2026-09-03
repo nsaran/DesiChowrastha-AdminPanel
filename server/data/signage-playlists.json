@@ -60,8 +60,8 @@
         "checkApi": "/api/todaysSpecial?location=Nashua"
       },
       {
-        "type": "image",
-        "src": "/_images/promos/goat-curry.jpg",
+        "type": "video",
+        "src": "/_images/promos/Catering_promotion.mp4",
         "label": "Goat Curry",
         "duration": 15,
         "enabled": true
@@ -73,7 +73,11 @@
         "duration": 15,
         "enabled": true
       }
-    ]
+    ],
+    "liveStream": {
+      "enabled": false,
+      "src": ""
+    }
   },
   {
     "tvId": "lobby-tv",
@@ -135,8 +139,8 @@
         "checkApi": "/api/todaysSpecial?location=Westborough"
       },
       {
-        "type": "image",
-        "src": "/_images/promos/goat-curry.jpg",
+        "type": "video",
+        "src": "/_images/promos/Catering_promotion.mp4",
         "label": "Goat Curry",
         "duration": 15,
         "enabled": true
@@ -148,6 +152,10 @@
         "duration": 15,
         "enabled": true
       }
-    ]
+    ],
+    "liveStream": {
+      "enabled": false,
+      "src": ""
+    }
   }
 ]
