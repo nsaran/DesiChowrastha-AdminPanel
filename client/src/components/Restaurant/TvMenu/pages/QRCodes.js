@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import GoogleFontLoader from "react-google-font";
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import { ThemeContext } from '../../../../utils/ThemeProvider';
+import { useKeepAlive } from '../useKeepAlive';
 
 /**
  * QRCodes Page - Displays QR codes for menu and feedback pages
@@ -14,6 +15,7 @@ const QRCodes = () => {
     const { restaurantId } = useParams();
     const { isDark } = useContext(ThemeContext);
     const locationKey = restaurantId?.toLowerCase() || 'nashua';
+    useKeepAlive(); // keep the browser awake on always-on QR display
 
     // Theme-aware style overrides merged onto the base styles below
     const themedPageStyle = { ...pageStyle, backgroundColor: isDark ? '#16130f' : '#fff' };
