@@ -104,7 +104,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/ChefsKitchen" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><ChefsKitchen /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/customMenu" element={<RoleProtectedRoute allowedRoles={['owner']}><CustomMenu /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><OtherServices /></RoleProtectedRoute>} />
-          <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<RoleProtectedRoute allowedRoles={['owner']}><TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices/WhatsAppOrders" element={<RoleProtectedRoute allowedRoles={['owner']}><WhatsAppOrders /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><Financials /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/BankTransactions" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><BankTransactions /></RoleProtectedRoute>} />
