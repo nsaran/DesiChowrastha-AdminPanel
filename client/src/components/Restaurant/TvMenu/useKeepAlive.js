@@ -18,12 +18,18 @@ import { useEffect, useRef, useCallback } from 'react';
  * Browsers block audio/media until a user gesture, so playback starts on the
  * first tap/click/keypress anywhere on the page.
  */
-export function useKeepAlive() {
+export function useKeepAlive(options = {}) {
+    // reloadMinutes: if set (> 0), reload the page after that many minutes of
+    // inactivity as a safety net (recovers even if Silk suspended the tab).
+    const { reloadMinutes = 0 } = options;
+
     const ctxRef = useRef(null);
     const videoRef = useRef(null);
     const wakeLockRef = useRef(null);
     const tickRef = useRef(null);
     const startedRef = useRef(false);
+    const lastActivityRef = useRef(Date.now());
+    const reloadTimerRef = useRef(null);
 
     // A 1x1 silent looping video (base64 mp4) — playing media keeps Silk awake.
     const SILENT_VIDEO =
@@ -90,6 +96,26 @@ export function useKeepAlive() {
         document.addEventListener('touchstart', onFirstInteraction);
         document.addEventListener('keydown', onFirstInteraction);
 
+        // Track user activity so the idle-reload doesn't reload while someone is
+        // actively using the page.
+        const markActivity = () => { lastActivityRef.current = Date.now(); };
+        document.addEventListener('click', markActivity);
+        document.addEventListener('touchstart', markActivity);
+        document.addEventListener('keydown', markActivity);
+        document.addEventListener('mousemove', markActivity);
+
+        // Idle auto-reload safety net: if enabled, reload the page once it has been
+        // idle (no real user activity) for `reloadMinutes`. This recovers the page
+        // even if the browser suspended it.
+        if (reloadMinutes > 0) {
+            const idleMs = reloadMinutes * 60 * 1000;
+            reloadTimerRef.current = setInterval(() => {
+                if (Date.now() - lastActivityRef.current >= idleMs) {
+                    window.location.reload();
+                }
+            }, 60000); // check every minute
+        }
+
         // 4) Periodic keep-alive tick: resume audio, restart video, re-acquire wake
         //    lock, and nudge the page so idle timers reset. Runs every 20s.
         tickRef.current = setInterval(() => {
@@ -114,8 +140,13 @@ export function useKeepAlive() {
             document.removeEventListener('click', onFirstInteraction);
             document.removeEventListener('touchstart', onFirstInteraction);
             document.removeEventListener('keydown', onFirstInteraction);
+            document.removeEventListener('click', markActivity);
+            document.removeEventListener('touchstart', markActivity);
+            document.removeEventListener('keydown', markActivity);
+            document.removeEventListener('mousemove', markActivity);
             document.removeEventListener('visibilitychange', onVisibility);
             if (tickRef.current) clearInterval(tickRef.current);
+            if (reloadTimerRef.current) clearInterval(reloadTimerRef.current);
             if (ctxRef.current) { try { ctxRef.current.close(); } catch (e) {} ctxRef.current = null; }
             if (videoRef.current) {
                 try { videoRef.current.pause(); videoRef.current.remove(); } catch (e) {}
@@ -127,7 +158,7 @@ export function useKeepAlive() {
             }
             startedRef.current = false;
         };
-    }, [start, acquireWakeLock]);
+    }, [start, acquireWakeLock, reloadMinutes]);
 }
 
 export default useKeepAlive;

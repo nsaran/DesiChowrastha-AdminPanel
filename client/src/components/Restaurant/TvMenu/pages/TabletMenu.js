@@ -38,8 +38,9 @@ const TabletMenu = () => {
     const [chatLoading, setChatLoading] = useState(false);
     const { setSelectedItem, detailModal } = useMenuItemDetail();
 
-    // Keep the Amazon Silk / Fire Stick browser awake when idle (silent audio tone).
-    useKeepAlive();
+    // Keep the Amazon Silk / Fire Stick browser awake, plus reload after 30 min of
+    // inactivity as a safety net so the page self-recovers if the browser suspended it.
+    useKeepAlive({ reloadMinutes: 30 });
 
     useEffect(() => {
         const fetchMenu = async () => {
