@@ -66,6 +66,8 @@ const App = () => {
           <Route path="/login/:restaurantId" element={<RestaurantLoginPage />} />
 
           {/* Customer-facing routes (no auth required) */}
+          {/* TabletMenu directly under the location (matches the printed QR code URL) */}
+          <Route path="/dashboard/:restaurantId/TabletMenu" element={<TabletMenu />} />
           <Route path="/dashboard/:restaurantId/OtherServices/TabletMenu" element={<TabletMenu />} />
           <Route path="/dashboard/:restaurantId/OtherServices/QRCodes" element={<QRCodes />} />
           <Route path="/dashboard/:restaurantId/OtherServices/OrderStatus" element={<OrderStatus />} />
