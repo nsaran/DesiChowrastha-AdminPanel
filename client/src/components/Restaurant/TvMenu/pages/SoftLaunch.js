@@ -91,7 +91,9 @@ const SoftLaunch = () => {
                     lineHeight: '1.6',
                     margin: '0 0 32px',
                 }}>
-                    During our soft launch, we're offering a limited menu &mdash; thank you for your patience and support.
+                    During our soft launch, only the items listed below are currently available
+                    within each category. We appreciate your patience and look forward to serving
+                    our full menu soon.
                 </p>
 
                 <div style={{ textAlign: 'left' }}>
