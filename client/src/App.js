@@ -37,6 +37,7 @@ import CustomTvMenuLanding from './components/Restaurant/CustomTvMenu/CustomTvMe
 import CustomTvMenuPageView from './components/Restaurant/CustomTvMenu/CustomTvMenuPageView';
 import WhatsAppOrders from './components/Restaurant/TvMenu/pages/WhatsAppOrders';
 import TabletMenu from './components/Restaurant/TvMenu/pages/TabletMenu';
+import SoftLaunch from './components/Restaurant/TvMenu/pages/SoftLaunch';
 import QRCodes from './components/Restaurant/TvMenu/pages/QRCodes';
 import OrderStatus from './components/Restaurant/TvMenu/pages/OrderStatus';
 import SignagePlayer from './components/Restaurant/TvMenu/pages/SignagePlayer';
@@ -66,6 +67,8 @@ const App = () => {
           <Route path="/login/:restaurantId" element={<RestaurantLoginPage />} />
 
           {/* Customer-facing routes (no auth required) */}
+          {/* Temporary soft-launch notice (limited menu) */}
+          <Route path="/dashboard/:restaurantId/SoftLaunch" element={<SoftLaunch />} />
           {/* TabletMenu directly under the location (matches the printed QR code URL) */}
           <Route path="/dashboard/:restaurantId/TabletMenu" element={<TabletMenu />} />
           <Route path="/dashboard/:restaurantId/OtherServices/TabletMenu" element={<TabletMenu />} />
