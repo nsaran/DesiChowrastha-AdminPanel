@@ -77,7 +77,7 @@ const SoftLaunch = () => {
         }}>
             <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
             <div style={{
-                maxWidth: isTable ? '900px' : '720px',
+                maxWidth: isTable ? '1200px' : '720px',
                 width: '100%',
                 backgroundColor: cardBg,
                 borderRadius: '18px',
@@ -101,56 +101,36 @@ const SoftLaunch = () => {
                 </p>
 
                 {isTable ? (
-                    <table style={{
-                        width: '100%',
-                        borderCollapse: 'collapse',
-                        fontFamily: "'Bree Serif', serif",
-                        color: body,
-                        fontSize: '1.15rem',
-                    }}>
-                        <thead>
-                            <tr>
-                                <th style={{
-                                    textAlign: 'left',
+                    <div style={{ textAlign: 'left' }}>
+                        {MENU.map((section) => (
+                            <div key={section.category} style={{ marginBottom: '32px' }}>
+                                <h2 style={{
                                     fontFamily: "'Lobster', cursive",
                                     color: heading,
-                                    fontSize: '1.5rem',
-                                    padding: '10px 12px',
-                                    borderBottom: `2px solid ${heading}`,
-                                    width: '38%',
-                                }}>Category</th>
-                                <th style={{
-                                    textAlign: 'left',
-                                    fontFamily: "'Lobster', cursive",
-                                    color: heading,
-                                    fontSize: '1.5rem',
-                                    padding: '10px 12px',
-                                    borderBottom: `2px solid ${heading}`,
-                                }}>Available Items</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {MENU.map((section) => (
-                                <tr key={section.category}>
-                                    <td style={{
-                                        verticalAlign: 'top',
-                                        padding: '12px',
-                                        borderBottom: `1px solid ${divider}`,
-                                        fontWeight: 'bold',
-                                    }}>
-                                        {section.category}
-                                    </td>
-                                    <td style={{
-                                        padding: '12px',
-                                        borderBottom: `1px solid ${divider}`,
-                                        lineHeight: '1.9',
-                                    }}>
-                                        {section.items.join(', ')}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                    fontSize: '2.2rem',
+                                    margin: '0 0 14px',
+                                    borderBottom: `2px solid ${divider}`,
+                                    paddingBottom: '8px',
+                                }}>
+                                    {section.category}
+                                </h2>
+                                {/* Items in 3 columns for wide TV screens */}
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(3, 1fr)',
+                                    columnGap: '24px',
+                                    rowGap: '10px',
+                                    fontFamily: "'Bree Serif', serif",
+                                    color: body,
+                                    fontSize: '1.4rem',
+                                }}>
+                                    {section.items.map((item) => (
+                                        <div key={item}>&bull; {item}</div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <div style={{ textAlign: 'left' }}>
                         {MENU.map((section) => (
