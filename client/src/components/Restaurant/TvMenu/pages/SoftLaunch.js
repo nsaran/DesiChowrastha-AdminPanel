@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useSearchParams } from 'react-router-dom';
 import GoogleFontLoader from "react-google-font";
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import { ThemeContext } from '../../../../utils/ThemeProvider';
@@ -55,6 +56,9 @@ const MENU = [
 
 const SoftLaunch = () => {
     const { isDark } = useContext(ThemeContext);
+    const [searchParams] = useSearchParams();
+    // ?view=table renders the same menu in a tabular layout.
+    const isTable = (searchParams.get('view') || '').toLowerCase() === 'table';
 
     const bg = isDark ? '#16130f' : '#fffaf5';
     const cardBg = isDark ? '#211c17' : '#ffffff';
@@ -73,7 +77,7 @@ const SoftLaunch = () => {
         }}>
             <GoogleFontLoader fonts={[{ font: "Lobster" }, { font: "Bree Serif" }]} />
             <div style={{
-                maxWidth: '720px',
+                maxWidth: isTable ? '900px' : '720px',
                 width: '100%',
                 backgroundColor: cardBg,
                 borderRadius: '18px',
@@ -96,35 +100,88 @@ const SoftLaunch = () => {
                     our full menu soon.
                 </p>
 
-                <div style={{ textAlign: 'left' }}>
-                    {MENU.map((section) => (
-                        <div key={section.category} style={{ marginBottom: '28px' }}>
-                            <h2 style={{
-                                fontFamily: "'Lobster', cursive",
-                                color: heading,
-                                fontSize: '2rem',
-                                margin: '0 0 12px',
-                                borderBottom: `2px solid ${divider}`,
-                                paddingBottom: '6px',
-                            }}>
-                                {section.category}
-                            </h2>
-                            <ul style={{
-                                listStyle: 'none',
-                                padding: 0,
-                                margin: 0,
-                                fontFamily: "'Bree Serif', serif",
-                                color: body,
-                                fontSize: '1.2rem',
-                                lineHeight: '2',
-                            }}>
-                                {section.items.map((item) => (
-                                    <li key={item}>{item}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
+                {isTable ? (
+                    <table style={{
+                        width: '100%',
+                        borderCollapse: 'collapse',
+                        fontFamily: "'Bree Serif', serif",
+                        color: body,
+                        fontSize: '1.15rem',
+                    }}>
+                        <thead>
+                            <tr>
+                                <th style={{
+                                    textAlign: 'left',
+                                    fontFamily: "'Lobster', cursive",
+                                    color: heading,
+                                    fontSize: '1.5rem',
+                                    padding: '10px 12px',
+                                    borderBottom: `2px solid ${heading}`,
+                                    width: '38%',
+                                }}>Category</th>
+                                <th style={{
+                                    textAlign: 'left',
+                                    fontFamily: "'Lobster', cursive",
+                                    color: heading,
+                                    fontSize: '1.5rem',
+                                    padding: '10px 12px',
+                                    borderBottom: `2px solid ${heading}`,
+                                }}>Available Items</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {MENU.map((section) => (
+                                <tr key={section.category}>
+                                    <td style={{
+                                        verticalAlign: 'top',
+                                        padding: '12px',
+                                        borderBottom: `1px solid ${divider}`,
+                                        fontWeight: 'bold',
+                                    }}>
+                                        {section.category}
+                                    </td>
+                                    <td style={{
+                                        padding: '12px',
+                                        borderBottom: `1px solid ${divider}`,
+                                        lineHeight: '1.9',
+                                    }}>
+                                        {section.items.join(', ')}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <div style={{ textAlign: 'left' }}>
+                        {MENU.map((section) => (
+                            <div key={section.category} style={{ marginBottom: '28px' }}>
+                                <h2 style={{
+                                    fontFamily: "'Lobster', cursive",
+                                    color: heading,
+                                    fontSize: '2rem',
+                                    margin: '0 0 12px',
+                                    borderBottom: `2px solid ${divider}`,
+                                    paddingBottom: '6px',
+                                }}>
+                                    {section.category}
+                                </h2>
+                                <ul style={{
+                                    listStyle: 'none',
+                                    padding: 0,
+                                    margin: 0,
+                                    fontFamily: "'Bree Serif', serif",
+                                    color: body,
+                                    fontSize: '1.2rem',
+                                    lineHeight: '2',
+                                }}>
+                                    {section.items.map((item) => (
+                                        <li key={item}>{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
