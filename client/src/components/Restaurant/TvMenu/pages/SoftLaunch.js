@@ -1,64 +1,31 @@
-import React, { useContext } from "react";
-import { useSearchParams } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from "react";
+import { useSearchParams, useParams } from 'react-router-dom';
 import GoogleFontLoader from "react-google-font";
 import logo from '../../../../assets/images/dc-nashua-logo.webp';
 import { ThemeContext } from '../../../../utils/ThemeProvider';
+import API_BASE_URL from '../../../../config/api';
 
 /**
  * SoftLaunch - Temporary notice + limited menu shown during the soft launch.
+ * The menu is managed server-side and fetched per location.
  *
- * Route: /dashboard/:restaurantId/SoftLaunch
+ * Route: /dashboard/:restaurantId/SoftLaunch  (add ?view=table for tabular layout)
  */
-const MENU = [
-    {
-        category: 'Veg Appetizers',
-        items: [
-            'Pepper Corn Masala',
-            'Baby Corn Manchuria',
-            'Gobi 65',
-            'Chili Garlic Paneer',
-            'Chowrastha Fried Paneer',
-        ],
-    },
-    {
-        category: 'Non-Veg Appetizers',
-        items: [
-            'Pepper Chicken',
-            'Jalapeno Chicken',
-            'Karam Podi Chicken',
-            'Chicken 65',
-        ],
-    },
-    {
-        category: 'Indo-Chinese',
-        items: [
-            'Veg Fried Rice',
-            'Chicken Fried Rice',
-            'Veg Noodles',
-            'Chicken Noodles',
-        ],
-    },
-    {
-        category: "Biryani's",
-        items: [
-            'Chicken Dum Biryani',
-            'Goat Dum Biryani',
-            'Guttivankaya Biryani',
-            'Paneer Biryani',
-            'Vijayawada Boneless Chicken Biryani',
-            'Konaseema Chicken Biryani',
-            'Kaju Goat Keema Biryani',
-            'Veg Biryani',
-            'Pulao',
-        ],
-    },
-];
-
 const SoftLaunch = () => {
     const { isDark } = useContext(ThemeContext);
+    const { restaurantId } = useParams();
     const [searchParams] = useSearchParams();
     // ?view=table renders the same menu in a tabular layout.
     const isTable = (searchParams.get('view') || '').toLowerCase() === 'table';
+
+    const [menu, setMenu] = useState([]);
+
+    useEffect(() => {
+        fetch(`${API_BASE_URL}/api/soft-launch?location=${restaurantId}`)
+            .then((res) => res.json())
+            .then((data) => setMenu(Array.isArray(data.menu) ? data.menu : []))
+            .catch(() => setMenu([]));
+    }, [restaurantId]);
 
     const bg = isDark ? '#16130f' : '#fffaf5';
     const cardBg = isDark ? '#211c17' : '#ffffff';
@@ -102,7 +69,7 @@ const SoftLaunch = () => {
 
                 {isTable ? (
                     <div style={{ textAlign: 'left' }}>
-                        {MENU.map((section) => (
+                        {menu.map((section) => (
                             <div key={section.category} style={{ marginBottom: '32px' }}>
                                 <h2 style={{
                                     fontFamily: "'Lobster', cursive",
@@ -133,7 +100,7 @@ const SoftLaunch = () => {
                     </div>
                 ) : (
                     <div style={{ textAlign: 'left' }}>
-                        {MENU.map((section) => (
+                        {menu.map((section) => (
                             <div key={section.category} style={{ marginBottom: '28px' }}>
                                 <h2 style={{
                                     fontFamily: "'Lobster', cursive",
