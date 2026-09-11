@@ -18,6 +18,7 @@
 .sold-out-menu-item-name {
     font-family: "Rockwell";
     opacity: 0.6;
+    text-decoration: line-through;
 }
 
 .sold-out-menu-item-price-txt {
@@ -123,6 +124,7 @@ img {
     font-family: "Rockwell";
     opacity: 0.6;
     font-size: 1.8rem;
+    text-decoration: line-through;
 }
 
 .pulao-table-font{
@@ -134,6 +136,7 @@ img {
     font-family: "Rockwell";
     opacity: 0.6;
     font-size: 1.8rem;
+    text-decoration: line-through;
 }
 
 .biryani-nashua-table-font{

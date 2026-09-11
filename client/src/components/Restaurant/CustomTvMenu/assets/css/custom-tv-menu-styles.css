@@ -22,6 +22,7 @@
 .sold-out-menu-item-name {
     font-family: "Rockwell";
     opacity: 0.6;
+    text-decoration: line-through;
 }
 
 .sold-out-menu-item-price-txt {
