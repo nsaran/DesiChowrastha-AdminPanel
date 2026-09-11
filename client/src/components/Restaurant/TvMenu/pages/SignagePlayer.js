@@ -231,8 +231,14 @@ const SignagePlayer = () => {
     const rotateToNextMain = useCallback(() => {
         const list = mainVideosRef.current || [];
         if (list.length <= 1) {
-            // Only one main video: just restart it (no visible switch needed).
-            try { ytPlayerRef.current?.seekTo(0); ytPlayerRef.current?.playVideo(); } catch (e) {}
+            // Only one main video: restart it at a random position (no visible switch).
+            try {
+                const p = ytPlayerRef.current;
+                const dur = p?.getDuration?.() || 0;
+                const start = dur > 30 ? Math.floor(Math.random() * Math.floor(dur * 0.6)) : 0;
+                p?.seekTo(start, true);
+                p?.playVideo();
+            } catch (e) {}
             return;
         }
         const currentId = currentVideoIdRef.current;
@@ -358,6 +364,15 @@ const SignagePlayer = () => {
                 events: {
                     onReady: (event) => {
                         try {
+                            // Start at a random position so the lobby doesn't always
+                            // see the same intro. Seek within the first ~60% of the
+                            // video so a meaningful chunk still plays before it ends.
+                            const dur = event.target.getDuration?.() || 0;
+                            if (dur > 30) {
+                                const maxStart = Math.floor(dur * 0.6);
+                                const randomStart = Math.floor(Math.random() * maxStart);
+                                event.target.seekTo(randomStart, true);
+                            }
                             event.target.playVideo();
                             if (userInteractedRef.current) event.target.unMute();
                         } catch (e) {}
@@ -404,6 +419,31 @@ const SignagePlayer = () => {
             }
         } catch (e) {}
     }, [currentInterrupt, userInteracted]);
+
+    // Randomized main-video rotation timer.
+    // In addition to rotating when a video naturally ENDs, switch to a different
+    // random main video every random interval (3-7 min). This keeps the lobby
+    // fresh even for long videos that would otherwise play for many minutes before
+    // ending. Rotation is paused while an interrupt overlay is showing, and only
+    // runs when there is more than one main video (and not for WebRTC/live).
+    useEffect(() => {
+        if (mainVideos.length <= 1) return;   // nothing to rotate between
+        if (mainIsWebRtc) return;             // don't rotate a live feed
+        if (currentInterrupt >= 0) return;    // paused during interrupts
+
+        // Random interval between 3 and 7 minutes.
+        const minMs = 3 * 60 * 1000;
+        const maxMs = 7 * 60 * 1000;
+        const delay = minMs + Math.floor(Math.random() * (maxMs - minMs));
+
+        const timer = setTimeout(() => {
+            rotateToNextMain();
+        }, delay);
+
+        return () => clearTimeout(timer);
+        // Re-arm whenever the current main changes (mainStream?.src), an interrupt
+        // starts/ends, or the main list changes — each gives a fresh random delay.
+    }, [mainStream?.src, currentInterrupt, mainVideos.length, mainIsWebRtc, rotateToNextMain]);
 
     // SSE for live playlist updates
     useEffect(() => {
