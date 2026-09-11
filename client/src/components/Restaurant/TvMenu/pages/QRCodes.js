@@ -15,7 +15,9 @@ const QRCodes = () => {
     const { restaurantId } = useParams();
     const { isDark } = useContext(ThemeContext);
     const locationKey = restaurantId?.toLowerCase() || 'nashua';
-    useKeepAlive(); // keep the browser awake on always-on QR display
+    // Keep the always-on Amazon (Silk/Fire) QR display browser from closing: play
+    // real, low-volume looping audio in the background (strongest keep-alive signal).
+    useKeepAlive({ audio: true });
 
     // Theme-aware style overrides merged onto the base styles below
     const themedPageStyle = { ...pageStyle, backgroundColor: isDark ? '#16130f' : '#fff' };
