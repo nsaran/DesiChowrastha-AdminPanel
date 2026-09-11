@@ -21,15 +21,27 @@ import { useEffect, useRef, useCallback } from 'react';
 export function useKeepAlive(options = {}) {
     // reloadMinutes: if set (> 0), reload the page after that many minutes of
     // inactivity as a safety net (recovers even if Silk suspended the tab).
-    const { reloadMinutes = 0 } = options;
+    // audio: if true, play a REAL looping <audio> element (not muted) at low
+    //   volume. Unmuted media playback is the strongest signal to Amazon Silk /
+    //   Fire devices that the tab is active, and reliably prevents the browser
+    //   from suspending or closing it. Use on always-on operational pages.
+    const { reloadMinutes = 0, audio = false } = options;
 
     const ctxRef = useRef(null);
     const videoRef = useRef(null);
+    const audioRef = useRef(null);
     const wakeLockRef = useRef(null);
     const tickRef = useRef(null);
     const startedRef = useRef(false);
     const lastActivityRef = useRef(Date.now());
     const reloadTimerRef = useRef(null);
+
+    // A short looping WAV tone (base64). Unlike the muted video / near-silent
+    // Web Audio tone, this plays through a REAL <audio> element so the device
+    // registers genuine audio playback. Kept very low (near-inaudible) volume.
+    // ~0.2s of a quiet low-frequency sine wave, mono, 8kHz.
+    const KEEPALIVE_AUDIO =
+        'data:audio/wav;base64,UklGR-QDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YcADAACAgIGBgoKDg4SEhYWGhoeHiIiJiYqKi4uMjI2Njo6Pj5CQkZGSkpOTlJSVlZaWl5eYmJmZmpqbm5ycnZ2enp+foKChoaKio6OkpKWlpqanp6ioqamqqqurrKytra6ur6+wsLGxsrKzs7S0tba2tre3uLi5ubq6u7u8vL2+vr/AwMHBwsLDw8TExcXGxsfHyMjJycrKy8vMzM3Nzs7Pz9DQ0dHS0tPT1NTV1dbW19fY2NnZ2trb29zc3d3e3t/f4ODh4eLi4+Pk5OXl5ubn5+jo6enq6uvr7Ozt7e7u7+/w8PHx8vLz8/T09fX29vf3+Pj5+fr6+/v8/P39/v7//v79/fz8+/v6+vn5+Pj39/b29fX09PPz8vLx8fDw7+/u7u3t7Ozr6+rq6ejo5+fm5uXl5OTj4+Li4eHg4N/f3t7d3dzc29va2tnZ2NjX19bW1dXU1NPT0tLR0dDQz8/Ozs3NzMzLy8rKycnIyMfHxsbFxcTEw8PCwsHBwMC/v76+vb28vLu7urq5ubi4t7e2trW1tLSzs7KysbGwsK+vrq6trK2sq6uqqqmppqampaWkpKOjoqKhoaCgn5+enp2dnJybm5qamZmYmJeXlpaVlZSUk5OSkpGRkJCPj46OjY2MjIuLioqJiYiIh4eGhoWFhISDg4KCgYGAgH9/fn59fXx8e3t6enl5eHh3d3Z2dXV0dHNzcnJxcXBwb29ubm1tbGxrq6qqpqalpaSko6Oiop+fmpqVlZGRjY2JiYWFgYF9fXl5dXVxcW1taWllZWFhXV1ZWVVVUVFNTUlJRUVBQT09OTk1NTExLS0hIRUVCQj8/PDw5OTY2MzMwMC0tKionJyQkISEeHhsbGBgVFRISDw8MDAkJBgYDA';
 
     // A 1x1 silent looping video (base64 mp4) — playing media keeps Silk awake.
     const SILENT_VIDEO =
@@ -81,9 +93,26 @@ export function useKeepAlive(options = {}) {
             videoRef.current = v;
         } catch (e) { /* ignore */ }
 
+        // 2b) Real, unmuted looping audio (opt-in). This is the strongest signal
+        //     to Amazon Silk / Fire devices that the tab is active, so it won't be
+        //     suspended or closed. Volume is kept very low (near-inaudible).
+        if (audio) {
+            try {
+                const a = document.createElement('audio');
+                a.src = KEEPALIVE_AUDIO;
+                a.loop = true;
+                a.volume = 0.02; // low but non-zero; NOT muted
+                a.setAttribute('playsinline', '');
+                a.style.cssText = 'position:fixed;width:0;height:0;opacity:0;pointer-events:none;z-index:-1;';
+                document.body.appendChild(a);
+                a.play().catch(() => {});
+                audioRef.current = a;
+            } catch (e) { /* ignore */ }
+        }
+
         // 3) Screen wake lock (best-effort).
         acquireWakeLock();
-    }, [acquireWakeLock]);
+    }, [acquireWakeLock, audio]);
 
     useEffect(() => {
         const onFirstInteraction = () => {
@@ -126,6 +155,9 @@ export function useKeepAlive(options = {}) {
                 if (videoRef.current && videoRef.current.paused) {
                     videoRef.current.play().catch(() => {});
                 }
+                if (audioRef.current && audioRef.current.paused) {
+                    audioRef.current.play().catch(() => {});
+                }
                 if (!wakeLockRef.current) acquireWakeLock();
                 // Tiny DOM nudge to look "active".
                 window.dispatchEvent(new Event('mousemove'));
@@ -151,6 +183,10 @@ export function useKeepAlive(options = {}) {
             if (videoRef.current) {
                 try { videoRef.current.pause(); videoRef.current.remove(); } catch (e) {}
                 videoRef.current = null;
+            }
+            if (audioRef.current) {
+                try { audioRef.current.pause(); audioRef.current.remove(); } catch (e) {}
+                audioRef.current = null;
             }
             if (wakeLockRef.current) {
                 try { wakeLockRef.current.release(); } catch (e) {}

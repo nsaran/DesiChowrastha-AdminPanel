@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, forwardRef, memo } from "react";
 import { useParams, useSearchParams } from 'react-router-dom';
 import API_BASE_URL from '../../../../config/api';
+import { useKeepAlive } from '../useKeepAlive';
 
 /**
  * Stable container for the YouTube iframe. The YT IFrame API replaces this div's
@@ -34,6 +35,12 @@ const SignagePlayer = () => {
     const [searchParams] = useSearchParams();
     const tvId = searchParams.get('tvId') || 'default';
     const orientation = searchParams.get('orientation') || 'landscape';
+
+    // Keep the always-on Amazon (Silk/Fire) lobby browser from closing, including
+    // after hours (10pm-10am) when the main video is paused. Plays real, very
+    // low-volume looping audio in the background so the device registers active
+    // media and doesn't suspend the tab, letting it survive to auto-reload at 10am.
+    useKeepAlive({ audio: true });
 
     const [mainVideos, setMainVideos] = useState([]); // all items marked as main
     const [mainStream, setMainStream] = useState(null); // the currently-playing main video
