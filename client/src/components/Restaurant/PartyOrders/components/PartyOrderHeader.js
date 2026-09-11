@@ -13,8 +13,15 @@ const { Meta } = Card;
 const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae', '#007bff'];
 const GapList = [4, 3, 2, 1];
 
+// Normalize location to the Title-case Firestore doc id (URL casing may vary).
+const toRestaurantDocId = (location) => {
+    if (!location) return location;
+    return location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
+};
+
 const PartyOrderHeader = ({ managerData }) => {
-    const { restaurantId } = useParams();
+    const { restaurantId: restaurantIdParam } = useParams();
+    const restaurantId = toRestaurantDocId(restaurantIdParam);
     const navigate = useNavigate();
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);

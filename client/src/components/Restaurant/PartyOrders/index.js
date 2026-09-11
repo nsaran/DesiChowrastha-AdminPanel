@@ -35,8 +35,18 @@ const dedupeByInvoice = (orders) => {
     });
 };
 
+// Normalize a location to the Title-case document id used in Firestore
+// (e.g. "nashua" / "NASHUA" -> "Nashua"). The URL casing can vary depending on
+// how a user (esp. a manager) reached the page; party-order docs live under the
+// Title-case id, so querying with the raw URL value returns nothing (silently).
+const toRestaurantDocId = (location) => {
+    if (!location) return location;
+    return location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
+};
+
 const RestaurantPartyOrdersComponent = () => {
-    const { restaurantId } = useParams();
+    const { restaurantId: restaurantIdParam } = useParams();
+    const restaurantId = toRestaurantDocId(restaurantIdParam);
     const [partyOrdersData, setPartyOrdersData] = useState([]);
     const [allOrders, setAllOrders] = useState([]); // raw fetched list; filtered client-side
     const [loading, setLoading] = useState(false);

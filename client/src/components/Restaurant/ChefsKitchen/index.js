@@ -10,7 +10,12 @@ import { useKeepAlive } from '../TvMenu/useKeepAlive';
 
 
 const ChefsKitchen = () => {
-    const { restaurantId } = useParams();
+    const { restaurantId: restaurantIdParam } = useParams();
+    // Normalize URL casing to the Title-case Firestore doc id so party-order
+    // reads work regardless of how the page was reached (e.g. /dashboard/nashua).
+    const restaurantId = restaurantIdParam
+        ? restaurantIdParam.charAt(0).toUpperCase() + restaurantIdParam.slice(1).toLowerCase()
+        : restaurantIdParam;
     useKeepAlive(); // keep the browser awake on always-on kitchen displays
     const [activeKey, setActiveKey] = useState('todayOrders');
     const [todayOrders, setTodayOrders] = useState([]);

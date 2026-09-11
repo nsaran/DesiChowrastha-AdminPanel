@@ -10,7 +10,11 @@ import ThemeToggle from '../../../common/ThemeToggle';
 const ChefsKitchenHeader = ({ managerData }) => {
     const [invoiceNumbers, setInvoiceNumbers] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const { restaurantId } = useParams();
+    const { restaurantId: restaurantIdParam } = useParams();
+    // Normalize URL casing to the Title-case Firestore doc id.
+    const restaurantId = restaurantIdParam
+        ? restaurantIdParam.charAt(0).toUpperCase() + restaurantIdParam.slice(1).toLowerCase()
+        : restaurantIdParam;
     const [newRowVisible, setNewRowVisible] = useState(false);
     const [invoiceDetails, setInvoiceDetails] = useState({});
     const [selectedInvoice, setSelectedInvoice] = useState(null);
