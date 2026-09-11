@@ -34,10 +34,22 @@ const ChefsKitchen = () => {
                     .doc(restaurantId)
                     .collection('partyOrders')
                     .get();
-                const allPartyOrders = snapshot.docs.map(doc => ({
+                const rawPartyOrders = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 }));
+
+                // Defensive de-duplication: if the same order was imported more than
+                // once (duplicate documents sharing a cInvoiceNumber), collapse them
+                // to a single card. Keeps the first occurrence for each invoice.
+                const seenInvoices = new Set();
+                const allPartyOrders = rawPartyOrders.filter((order) => {
+                    const key = order.cInvoiceNumber;
+                    if (!key) return true; // no invoice number: leave as-is
+                    if (seenInvoices.has(key)) return false;
+                    seenInvoices.add(key);
+                    return true;
+                });
 
                 const todayDate = moment().format('YYYY-MM-DD');
                 const todayOrders = allPartyOrders.filter((order) => order.cPartyDate === todayDate);
@@ -97,7 +109,7 @@ const ChefsKitchen = () => {
             {activeKey === 'todayOrders' && (
                 <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                     {todayOrders.map(order => (
-                        <div className="card-container">
+                        <div className="card-container" key={order.id}>
                             <Card key={order.cInvoiceNumber} title={'#' + order.cInvoiceNumber} style={{ width: 700, margin: 20 }} hoverable>
                                 <p>Name: {order.cName} {'(' + 'Ready at ' + order.cOrderDeliveryTime + ')'}</p>
                                 <p><CalendarOutlined /> {'Order Date: ' + order.cOrderDate}</p>
@@ -139,7 +151,7 @@ const ChefsKitchen = () => {
             {activeKey === 'tomorrowOrders' && (
                 <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                     {tomorrowOrders.map(order => (
-                        <div className="card-container">
+                        <div className="card-container" key={order.id}>
                             <Card key={order.cInvoiceNumber} title={'#' + order.cInvoiceNumber} style={{ width: 700, margin: 20 }} hoverable>
                                 <p>Name: {order.cName} {'(' + 'Ready at ' + order.cOrderDeliveryTime + ')'}</p>
                                 <p><CalendarOutlined /> {'Order Date: ' + order.cOrderDate}</p>
@@ -181,7 +193,7 @@ const ChefsKitchen = () => {
             {activeKey === 'upcomingOrders' && (
                 <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                     {upcomingOrders.map(order => (
-                        <div className="card-container">
+                        <div className="card-container" key={order.id}>
                             <Card key={order.cInvoiceNumber} title={'#' + order.cInvoiceNumber} style={{ width: 700, margin: 20 }} hoverable>
                                 <p>Name: {order.cName} {'(' + 'Ready at ' + order.cOrderDeliveryTime + ')'}</p>
                                 <p><CalendarOutlined /> {'Order Date: ' + order.cOrderDate}</p>

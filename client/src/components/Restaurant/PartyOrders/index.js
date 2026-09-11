@@ -19,6 +19,22 @@ import { useKeepAlive } from '../TvMenu/useKeepAlive';
 
 const { RangePicker } = DatePicker;
 
+/**
+ * Collapse orders that share the same cInvoiceNumber to a single entry.
+ * Duplicate documents (same invoice, different doc id) can exist from repeated
+ * CSV imports; this keeps the first occurrence so every view shows one order.
+ */
+const dedupeByInvoice = (orders) => {
+    const seen = new Set();
+    return orders.filter((order) => {
+        const key = order.cInvoiceNumber;
+        if (!key) return true; // no invoice number: leave as-is
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+};
+
 const RestaurantPartyOrdersComponent = () => {
     const { restaurantId } = useParams();
     const [partyOrdersData, setPartyOrdersData] = useState([]);
@@ -81,7 +97,7 @@ const RestaurantPartyOrdersComponent = () => {
                 .collection('partyOrders')
                 .get();
             const orders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-            setAllOrders(orders);
+            setAllOrders(dedupeByInvoice(orders));
         } catch (error) {
             message.error('Failed to fetch party orders data.');
             console.error('Error fetching party orders:', error);
@@ -314,6 +330,66 @@ const RestaurantPartyOrdersComponent = () => {
             } else {
                 message.error('Failed to delete party order. Please try again.');
             }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Owner-only: find and delete duplicate party-order documents that share a
+    // cInvoiceNumber (a side effect of the CSV import having been run more than
+    // once). Keeps the first document per invoice and removes the rest.
+    const handleRemoveDuplicates = async () => {
+        if (!canDelete) {
+            message.error('You are not authorized to remove duplicate orders.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const colRef = firestore.collection('restaurants').doc(restaurantId).collection('partyOrders');
+            const snapshot = await colRef.get();
+            const docs = snapshot.docs.map((d) => ({ id: d.id, cInvoiceNumber: d.data().cInvoiceNumber }));
+
+            // Group doc ids by invoice number; anything after the first is a dup.
+            const seen = new Set();
+            const dupIds = [];
+            for (const d of docs) {
+                if (!d.cInvoiceNumber) continue; // never touch docs without an invoice number
+                if (seen.has(d.cInvoiceNumber)) dupIds.push(d.id);
+                else seen.add(d.cInvoiceNumber);
+            }
+
+            if (dupIds.length === 0) {
+                message.success('No duplicate orders found.');
+                return;
+            }
+
+            Modal.confirm({
+                title: 'Remove duplicate orders?',
+                content: `Found ${dupIds.length} duplicate order document${dupIds.length === 1 ? '' : 's'} across ${seen.size} unique invoice${seen.size === 1 ? '' : 's'}. This will delete the extra copies and keep one per invoice. This cannot be undone.`,
+                okText: `Delete ${dupIds.length} duplicate${dupIds.length === 1 ? '' : 's'}`,
+                okButtonProps: { danger: true },
+                onOk: async () => {
+                    try {
+                        setLoading(true);
+                        // Firestore batches are limited to 500 writes; chunk to be safe.
+                        for (let i = 0; i < dupIds.length; i += 400) {
+                            const batch = firestore.batch();
+                            dupIds.slice(i, i + 400).forEach((id) => batch.delete(colRef.doc(id)));
+                            await batch.commit();
+                        }
+                        message.success(`Removed ${dupIds.length} duplicate order${dupIds.length === 1 ? '' : 's'}.`);
+                        fetchPartyOrders();
+                    } catch (err) {
+                        console.error('Failed to remove duplicates:', err);
+                        message.error('Failed to remove duplicates. Please try again.');
+                    } finally {
+                        setLoading(false);
+                    }
+                },
+            });
+        } catch (error) {
+            console.error('Failed to scan for duplicates:', error);
+            message.error('Failed to scan for duplicate orders.');
         } finally {
             setLoading(false);
         }
@@ -587,21 +663,43 @@ const RestaurantPartyOrdersComponent = () => {
     
                     const restaurantCollection = firestore.collection('restaurants').doc(restaurantId).collection('partyOrders');
     
-                    // Batch add new orders to Firestore
-                    const batch = firestore.batch();
-                    newOrders.forEach((order) => {
-                        const docRef = restaurantCollection.doc(order.id);
-                        batch.set(docRef, order);
+                    // Guard against creating duplicates: skip any invoice numbers that
+                    // already exist in Firestore, and collapse duplicates within the CSV
+                    // itself (first occurrence wins). Re-importing the same file is now a
+                    // no-op instead of multiplying the orders.
+                    const existingSnapshot = await restaurantCollection.get();
+                    const existingInvoices = new Set(
+                        existingSnapshot.docs.map((d) => d.data().cInvoiceNumber).filter(Boolean)
+                    );
+
+                    const seenInCsv = new Set();
+                    const ordersToAdd = newOrders.filter((order) => {
+                        const inv = order.cInvoiceNumber;
+                        if (!inv) return true;
+                        if (existingInvoices.has(inv) || seenInCsv.has(inv)) return false;
+                        seenInCsv.add(inv);
+                        return true;
                     });
+
+                    const skipped = newOrders.length - ordersToAdd.length;
+
+                    if (ordersToAdd.length > 0) {
+                        // Chunk into batches (Firestore limit: 500 writes per batch).
+                        for (let i = 0; i < ordersToAdd.length; i += 400) {
+                            const batch = firestore.batch();
+                            ordersToAdd.slice(i, i + 400).forEach((order) => {
+                                const docRef = restaurantCollection.doc(order.id);
+                                batch.set(docRef, order);
+                            });
+                            await batch.commit();
+                        }
+                    }
     
-                    await batch.commit();
-    
-                    // Fetch all updated orders after import
-                    const updatedSnapshot = await restaurantCollection.get();
-                    const updatedOrders = updatedSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    
-                    setPartyOrdersData(updatedOrders);
-                    message.success('CSV imported successfully!');
+                    // Refresh from Firestore (deduped) so the view is consistent.
+                    fetchPartyOrders();
+                    message.success(
+                        `CSV imported: ${ordersToAdd.length} added${skipped > 0 ? `, ${skipped} duplicate${skipped === 1 ? '' : 's'} skipped` : ''}.`
+                    );
                 } catch (error) {
                     message.error('Failed to import CSV. Please try again.');
                 } finally {
@@ -636,6 +734,12 @@ const RestaurantPartyOrdersComponent = () => {
             <Tooltip title="Refresh party orders">
                 <Button icon={<ReloadOutlined />} onClick={fetchPartyOrders} loading={loading} style={{ float: "right", marginLeft: "16px", marginTop: "8.4px", marginBottom: "22px" }}>Refresh</Button>
             </Tooltip>
+
+            {canDelete && (
+                <Tooltip title="Find and delete duplicate orders (same invoice number)">
+                    <Button danger onClick={handleRemoveDuplicates} loading={loading} style={{ float: "right", marginLeft: "16px", marginTop: "8.4px", marginBottom: "22px" }}>Remove Duplicates</Button>
+                </Tooltip>
+            )}
 
             <Tooltip title="Filter by Party Date">
                 <DatePicker.RangePicker

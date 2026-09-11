@@ -77,7 +77,17 @@ const OrdersComponent = ({ managerData }) => {
     const fetchData = async () => {
       try {
         const snapshot = await firestore.collection('restaurants').doc(restaurantId).collection('partyOrders').get();
-        const allPartyOrders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const rawPartyOrders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+        // De-duplicate by invoice number so analytics don't double-count orders
+        // that have duplicate documents (from repeated CSV imports).
+        const seenInvoices = new Set();
+        const allPartyOrders = rawPartyOrders.filter((order) => {
+          if (!order.cInvoiceNumber) return true;
+          if (seenInvoices.has(order.cInvoiceNumber)) return false;
+          seenInvoices.add(order.cInvoiceNumber);
+          return true;
+        });
 
         let startDate, endDate;
         if (selectedTimeFrame === 'today') {
