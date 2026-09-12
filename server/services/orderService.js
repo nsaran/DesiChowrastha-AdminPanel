@@ -2,6 +2,7 @@ const axios = require('axios');
 const NodeCache = require('node-cache');
 const { getAccessToken } = require('./authService');
 const { toastApiBaseUrl, locations } = require('../config/config');
+const { getItemCategoryMap } = require('./menuService');
 
 const timeZoneOptions = { timeZone: 'America/New_York' };
 
@@ -12,6 +13,19 @@ const timeZoneOptions = { timeZone: 'America/New_York' };
 // memory — nothing is written to disk. TTL is 20 seconds.
 const PENDING_ORDERS_TTL_SECONDS = 20;
 const pendingOrdersCache = new NodeCache({ stdTTL: PENDING_ORDERS_TTL_SECONDS });
+
+// Kitchen categories the Live Orders page should track. Only orders containing
+// items from these exact Toast menu groups are shown, so the chef sees only
+// food that needs cooking (appetizers, curries, wok, tandoor) and not drinks,
+// desserts, or counter items. Values must match the Toast menu group names exactly.
+const KITCHEN_CATEGORIES = new Set([
+    'Veg Appetizers',
+    'Non-Veg Appetizers',
+    'Veg Curries',
+    'Non-Veg Curries',
+    'Indian Wok',
+    'Tandoor',
+]);
 
 async function getOrders(location) {
     return "orders";
@@ -64,9 +78,38 @@ async function getPendingOrders(location) {
     if (cached !== undefined) {
         return cached;
     }
-    const pendingOrders = await fetchPendingOrders(location);
-    pendingOrdersCache.set(cacheKey, pendingOrders);
-    return pendingOrders;
+    const allPending = await fetchPendingOrders(location);
+
+    // Filter to kitchen categories only. Build a name→category map from the
+    // cached menu (populated by the menu service; no extra Toast call if already
+    // warm). Items whose category doesn't match any KITCHEN_CATEGORIES entry are
+    // excluded so the chef sees only food that needs cooking.
+    let filtered = allPending;
+    try {
+        const categoryMap = await getItemCategoryMap(location);
+        console.log('[PendingOrders] categoryMap size:', categoryMap.size, 'for', location);
+        if (categoryMap.size > 0) {
+            const isKitchenCategory = (groupName) => KITCHEN_CATEGORIES.has(groupName);
+
+            filtered = allPending
+                .map((order) => ({
+                    ...order,
+                    items: order.items.filter((item) => {
+                        const group = categoryMap.get((item.displayName || '').toLowerCase());
+                        return group ? isKitchenCategory(group) : false;
+                    }),
+                }))
+                .filter((order) => order.items.length > 0);
+            console.log('[PendingOrders] filtered from', allPending.length, 'to', filtered.length, 'orders');
+        }
+    } catch (e) {
+        console.error('[PendingOrders] category filter failed:', e.message);
+        // Category map unavailable — fall back to the unfiltered list so the
+        // page still shows something rather than nothing.
+    }
+
+    pendingOrdersCache.set(cacheKey, filtered);
+    return filtered;
 }
 
 async function fetchPendingOrders(location) {

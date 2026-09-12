@@ -422,8 +422,43 @@ function clearMenuCache(location) {
     }
 }
 
+/**
+ * Build a map of item name → menu group (category) name for a location,
+ * using the already-cached raw menu. If the cache is empty, fetches the menu
+ * first (which populates it). Used to filter pending orders by category.
+ * @returns {Promise<Map<string, string>>} item name (lowercase) → group name
+ */
+async function getItemCategoryMap(location) {
+    // Ensure the raw menu cache is populated for this location.
+    let rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache
+                : location === 'NASHUA'      ? nashuaRawMenuCache
+                : null;
+
+    if (!rawMenu) {
+        await fetchMenuData(location);
+        rawMenu = location === 'WESTBOROUGH' ? westboroughRawMenuCache
+                : location === 'NASHUA'      ? nashuaRawMenuCache
+                : null;
+    }
+
+    const map = new Map(); // key: lowercase item name, value: group name
+    if (!rawMenu) return map;
+
+    for (const menu of rawMenu.menus || []) {
+        for (const group of menu.menuGroups || []) {
+            for (const item of group.menuItems || []) {
+                if (item.name) {
+                    map.set(item.name.toLowerCase(), group.name);
+                }
+            }
+        }
+    }
+    return map;
+}
+
 module.exports = {
     fetchMenuData,
     clearMenuCache,
-    handleStockWebhook
+    handleStockWebhook,
+    getItemCategoryMap,
 };
