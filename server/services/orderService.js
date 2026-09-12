@@ -1,8 +1,17 @@
 const axios = require('axios');
+const NodeCache = require('node-cache');
 const { getAccessToken } = require('./authService');
 const { toastApiBaseUrl, locations } = require('../config/config');
 
 const timeZoneOptions = { timeZone: 'America/New_York' };
+
+// In-memory cache for the pending-orders result, keyed by location. Fetching
+// pending orders hits the Toast API across multiple pages and returns a large
+// payload, so caching for a short window keeps repeated polls (auto-refreshing
+// Live Orders page, multiple kitchen tablets) from hammering Toast. Purely in
+// memory — nothing is written to disk. TTL is 20 seconds.
+const PENDING_ORDERS_TTL_SECONDS = 20;
+const pendingOrdersCache = new NodeCache({ stdTTL: PENDING_ORDERS_TTL_SECONDS });
 
 async function getOrders(location) {
     return "orders";
@@ -48,6 +57,19 @@ async function getOrdersBulk(location, page = 1, businessDate) {
 }
 
 async function getPendingOrders(location) {
+    // Serve from the in-memory cache when a fresh (< TTL) result exists for this
+    // location; otherwise fetch from Toast and cache it.
+    const cacheKey = `pending:${location}`;
+    const cached = pendingOrdersCache.get(cacheKey);
+    if (cached !== undefined) {
+        return cached;
+    }
+    const pendingOrders = await fetchPendingOrders(location);
+    pendingOrdersCache.set(cacheKey, pendingOrders);
+    return pendingOrders;
+}
+
+async function fetchPendingOrders(location) {
     let currentPage = 1;
     let pendingOrders = [];
     let dataExists = true;
