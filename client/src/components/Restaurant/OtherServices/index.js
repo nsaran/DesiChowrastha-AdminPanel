@@ -51,6 +51,9 @@ const OtherServices = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('OtherServices/SoftLaunchManage')}>Manage Soft Launch Menu</Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('OtherServices/LiveOrders')}>Live Orders</Button>
+                </Form.Item>
             </Form>
         </div>
     );

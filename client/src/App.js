@@ -45,6 +45,7 @@ import SignagePlayer from './components/Restaurant/TvMenu/pages/SignagePlayer';
 import ManageSignage from './components/Restaurant/TvMenu/pages/ManageSignage';
 import StockOrders from './components/Restaurant/TvMenu/pages/StockOrders';
 import OtherServices from './components/Restaurant/OtherServices';
+import LiveOrders from './components/Restaurant/LiveOrders';
 import Financials from './components/Restaurant/Financials';
 import YearlyReport from './components/Restaurant/Financials/YearlyReport';
 import BalanceSheet from './components/Restaurant/Financials/BalanceSheet';
@@ -126,6 +127,7 @@ const App = () => {
           {/* Chef routes */}
           <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<RoleProtectedRoute allowedRoles={['owner', 'chef']}><TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices/StockOrders" element={<RoleProtectedRoute allowedRoles={['owner', 'chef', 'manager']}><StockOrders /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/OtherServices/LiveOrders" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><LiveOrders /></RoleProtectedRoute>} />
 
           {/* Manager routes */}
           <Route path="/dashboard/:restaurantId/menu" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><MenuComponent /></RoleProtectedRoute>} />
