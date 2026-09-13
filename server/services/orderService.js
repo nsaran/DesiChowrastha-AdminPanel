@@ -42,26 +42,33 @@ async function getOrders(location) {
     return "orders";
 }
 
-async function getOrdersBulk(location, page = 1, businessDate) {
+async function getOrdersBulk(location, page = 1, businessDate, dateRange) {
     try {
-        const today = new Date();
-        const year = today.toLocaleString("default", { ...timeZoneOptions, year: "numeric" });
-        const month = today.toLocaleString("default", { ...timeZoneOptions, month: "2-digit" });
-        const day = today.toLocaleString("default", { ...timeZoneOptions, day: "2-digit" });
-        businessDate = businessDate || year + month + day;
-
         const accessToken = await getAccessToken(location);
         const { restaurantExternalId } = locations[location];
-        
+
+        // Two mutually-exclusive Toast selection modes:
+        //  - startDate/endDate (ISO-8601 UTC): orders created OR modified in the
+        //    window, by modification time. Used for incremental (delta) refresh.
+        //  - businessDate (YYYYMMDD): all of a business day, by creation date.
+        const params = { page };
+        if (dateRange && dateRange.startDate && dateRange.endDate) {
+            params.startDate = dateRange.startDate;
+            params.endDate = dateRange.endDate;
+        } else {
+            const today = new Date();
+            const year = today.toLocaleString("default", { ...timeZoneOptions, year: "numeric" });
+            const month = today.toLocaleString("default", { ...timeZoneOptions, month: "2-digit" });
+            const day = today.toLocaleString("default", { ...timeZoneOptions, day: "2-digit" });
+            params.businessDate = businessDate || year + month + day;
+        }
+
         const response = await axios.get(`${toastApiBaseUrl}/orders/v2/ordersBulk`, {
             headers: {
                 'Toast-Restaurant-External-ID': restaurantExternalId,
                 'Authorization': `Bearer ${accessToken}`
             },
-            params: {
-                page,
-                businessDate
-            }
+            params
         });
 
         const orders = response.data.map(order => 
@@ -166,10 +173,25 @@ function derivePending(ws) {
     return result;
 }
 
-async function getPendingOrders(location) {
+/**
+ * @param {string} location
+ * @param {string[]} [categoriesOverride] - optional list of Toast menu group
+ *   names to filter by. When omitted, the default KITCHEN_CATEGORIES set is used
+ *   (Veg/Non-Veg Appetizers, Curries, Indian Wok, Tandoor). Lets the same page
+ *   serve other category views (e.g. ?categories=Tandoor,Breads).
+ */
+async function getPendingOrders(location, categoriesOverride) {
+    // Normalize the requested categories into a Set for matching, and a stable
+    // string for the cache key so different category views don't collide.
+    const hasOverride = Array.isArray(categoriesOverride) && categoriesOverride.length > 0;
+    const categorySet = hasOverride ? new Set(categoriesOverride) : KITCHEN_CATEGORIES;
+    const catKey = hasOverride
+        ? [...categorySet].map((c) => c.toLowerCase()).sort().join('|')
+        : 'default';
+
     // Serve from the short-lived response cache when fresh, so rapid polls don't
-    // even trigger a delta fetch.
-    const cacheKey = `pending:${location}`;
+    // even trigger a delta fetch. Keyed by location + the category view.
+    const cacheKey = `pending:${location}:${catKey}`;
     const cached = pendingOrdersCache.get(cacheKey);
     if (cached !== undefined) {
         return cached;
@@ -177,18 +199,17 @@ async function getPendingOrders(location) {
 
     const allPending = await refreshPendingWorkingSet(location);
 
-    // Filter to kitchen categories only, using the menu-derived name→category map.
+    // Filter to the requested categories, using the menu-derived name→category map.
     let filtered = allPending;
     try {
         const categoryMap = await getItemCategoryMap(location);
         if (categoryMap.size > 0) {
-            const isKitchenCategory = (groupName) => KITCHEN_CATEGORIES.has(groupName);
             filtered = allPending
                 .map((order) => ({
                     ...order,
                     items: order.items.filter((item) => {
                         const group = categoryMap.get((item.displayName || '').toLowerCase());
-                        return group ? isKitchenCategory(group) : false;
+                        return group ? categorySet.has(group) : false;
                     }),
                 }))
                 .filter((order) => order.items.length > 0);

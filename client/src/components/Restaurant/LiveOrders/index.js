@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { Card, Typography, Button, Tag, Space, Empty, Spin, message, Switch, Table } from 'antd';
 import { ReloadOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import API_BASE_URL from '../../../config/api';
@@ -26,6 +26,10 @@ const REFRESH_MS = 30000;
  */
 const LiveOrders = () => {
     const { restaurantId } = useParams();
+    const [searchParams] = useSearchParams();
+    // Optional ?categories=Tandoor,Breads to show a different category view on
+    // the same page. When absent, the server uses its default kitchen categories.
+    const categoriesParam = (searchParams.get('categories') || '').trim();
     useKeepAlive({ audio: true }); // always-on kitchen display
 
     const [orders, setOrders] = useState([]);
@@ -72,7 +76,8 @@ const LiveOrders = () => {
     const fetchPending = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${API_BASE_URL}/api/pendingOrders?location=${restaurantId}`);
+            const catQuery = categoriesParam ? `&categories=${encodeURIComponent(categoriesParam)}` : '';
+            const res = await fetch(`${API_BASE_URL}/api/pendingOrders?location=${restaurantId}${catQuery}`);
             const data = await res.json();
             // The endpoint returns an array of pending orders, or a status string
             // when there are none — normalize to an array.
@@ -115,7 +120,7 @@ const LiveOrders = () => {
         } finally {
             setLoading(false);
         }
-    }, [restaurantId]);
+    }, [restaurantId, categoriesParam]);
 
     useEffect(() => {
         fetchPending();
@@ -240,7 +245,9 @@ const LiveOrders = () => {
                 }
             `}</style>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
-                <Title level={3} style={{ margin: 0 }}>Live Orders</Title>
+                <Title level={3} style={{ margin: 0 }}>
+                    Live Orders{categoriesParam ? ` — ${categoriesParam}` : ''}
+                </Title>
                 <Tag color="blue">{orders.length} order{orders.length === 1 ? '' : 's'}</Tag>
                 <Tag color="geekblue">{totalItems} item{totalItems === 1 ? '' : 's'}</Tag>
                 <Space>

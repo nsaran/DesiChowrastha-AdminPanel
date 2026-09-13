@@ -26,7 +26,13 @@ module.exports = {
     getPendingOrders: async (req, res) => {
         try {
             const location = req.query.location.toUpperCase();
-            const pendingOrders = await getPendingOrders(location);
+            // Optional ?categories=Tandoor,Breads to override the default kitchen
+            // categories, so the same endpoint/page can show a different view.
+            const categories = (req.query.categories || '')
+                .split(',')
+                .map((c) => c.trim())
+                .filter(Boolean);
+            const pendingOrders = await getPendingOrders(location, categories);
             res.send(pendingOrders);
         } catch (err) {
             console.error(err);
