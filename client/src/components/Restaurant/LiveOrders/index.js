@@ -75,15 +75,18 @@ const LiveOrders = () => {
     // Prep summary: total quantity of EACH item across all pending orders, so the
     // chef can batch-prepare (e.g. "Irani Chai x 14"). Sorted by highest quantity.
     const prepSummary = (() => {
-        const totals = {};
+        const byItem = {}; // name -> { qty, orders: [{ orderNumber, qty }] }
         orders.forEach((o) => {
             (o.items || []).forEach((it) => {
                 const name = it.displayName || 'Unknown item';
-                totals[name] = (totals[name] || 0) + (Number(it.quantity) || 0);
+                const q = Number(it.quantity) || 0;
+                if (!byItem[name]) byItem[name] = { qty: 0, orders: [] };
+                byItem[name].qty += q;
+                byItem[name].orders.push({ orderNumber: o.orderNumber, qty: q });
             });
         });
-        return Object.entries(totals)
-            .map(([name, qty], i) => ({ key: `${name}-${i}`, name, qty }))
+        return Object.entries(byItem)
+            .map(([name, info], i) => ({ key: `${name}-${i}`, name, qty: info.qty, orders: info.orders }))
             .sort((a, b) => b.qty - a.qty || a.name.localeCompare(b.name));
     })();
 
@@ -92,7 +95,23 @@ const LiveOrders = () => {
             title: 'Item',
             dataIndex: 'name',
             key: 'name',
-            render: (name) => <span style={{ fontSize: 18 }}>{name}</span>,
+            render: (name, record) => {
+                const orderNums = (record.orders || [])
+                    .slice()
+                    .sort((a, b) => Number(a.orderNumber) - Number(b.orderNumber))
+                    .map((o) => `#${o.orderNumber}${o.qty > 1 ? ` (${o.qty})` : ''}`)
+                    .join(', ');
+                return (
+                    <span style={{ fontSize: 18 }}>
+                        {name}
+                        {orderNums && (
+                            <Text type="secondary" style={{ fontSize: 14, marginLeft: 8 }}>
+                                ({orderNums})
+                            </Text>
+                        )}
+                    </span>
+                );
+            },
         },
         {
             title: 'Qty to Prepare',
