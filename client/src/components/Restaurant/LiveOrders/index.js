@@ -35,10 +35,39 @@ const LiveOrders = () => {
     // Item names that are newly arrived or increased in quantity since the last
     // refresh — highlighted so the chef notices them. Cleared a few seconds later.
     const [newItems, setNewItems] = useState(new Set());
+    const [now, setNow] = useState(Date.now()); // live clock for wait-time ticking
     const timerRef = useRef(null);
     const prevQtyByItemRef = useRef(null); // { itemName: totalQty } from the previous fetch
     const highlightTimerRef = useRef(null);
     const isFirstLoadRef = useRef(true);
+
+    // Tick every second so displayed wait times advance between server refreshes.
+    useEffect(() => {
+        const id = setInterval(() => setNow(Date.now()), 1000);
+        return () => clearInterval(id);
+    }, []);
+
+    // Minutes an order has been waiting, from its openedDate to now.
+    const waitMinutes = (openedDate) => {
+        if (!openedDate) return null;
+        const ms = now - new Date(openedDate).getTime();
+        if (Number.isNaN(ms) || ms < 0) return 0;
+        return Math.floor(ms / 60000);
+    };
+
+    // Color-code the wait: green < 10 min, orange 10-20, red > 20.
+    const waitColor = (mins) => {
+        if (mins === null) return 'default';
+        if (mins > 20) return 'red';
+        if (mins >= 10) return 'orange';
+        return 'green';
+    };
+
+    const formatWait = (mins) => {
+        if (mins === null) return '';
+        if (mins < 60) return `${mins}m`;
+        return `${Math.floor(mins / 60)}h ${mins % 60}m`;
+    };
 
     const fetchPending = useCallback(async () => {
         setLoading(true);
@@ -118,43 +147,57 @@ const LiveOrders = () => {
     // Prep summary: total quantity of EACH item across all pending orders, so the
     // chef can batch-prepare (e.g. "Irani Chai x 14"). Sorted by highest quantity.
     const prepSummary = (() => {
-        const byItem = {}; // name -> { qty, orders: [{ orderNumber, qty }] }
+        const byItem = {}; // name -> { qty, earliest, orders: [{ orderNumber, qty, openedDate }] }
         orders.forEach((o) => {
             (o.items || []).forEach((it) => {
                 const name = it.displayName || 'Unknown item';
                 const q = Number(it.quantity) || 0;
-                if (!byItem[name]) byItem[name] = { qty: 0, orders: [] };
+                if (!byItem[name]) byItem[name] = { qty: 0, orders: [], earliest: Infinity };
                 byItem[name].qty += q;
-                byItem[name].orders.push({ orderNumber: o.orderNumber, qty: q });
+                byItem[name].orders.push({ orderNumber: o.orderNumber, qty: q, openedDate: o.openedDate });
+                const t = o.openedDate ? new Date(o.openedDate).getTime() : Infinity;
+                if (t < byItem[name].earliest) byItem[name].earliest = t;
             });
         });
         return Object.entries(byItem)
-            .map(([name, info], i) => ({ key: `${name}-${i}`, name, qty: info.qty, orders: info.orders }))
-            .sort((a, b) => b.qty - a.qty || a.name.localeCompare(b.name));
+            .map(([name, info], i) => ({
+                key: `${name}-${i}`,
+                name,
+                qty: info.qty,
+                earliest: info.earliest,
+                // Each item's contributing orders, sorted by arrival (oldest first).
+                orders: info.orders.slice().sort((a, b) => {
+                    const ta = a.openedDate ? new Date(a.openedDate).getTime() : Infinity;
+                    const tb = b.openedDate ? new Date(b.openedDate).getTime() : Infinity;
+                    return ta - tb;
+                }),
+            }))
+            // Order the whole list by arrival: the item whose oldest ticket is
+            // waiting longest comes first, so the chef works oldest-first.
+            .sort((a, b) => a.earliest - b.earliest || b.qty - a.qty || a.name.localeCompare(b.name));
     })();
 
     const prepColumns = [
         {
-            title: 'Item',
+            title: 'Item (oldest first)',
             dataIndex: 'name',
             key: 'name',
-            render: (name, record) => {
-                const orderNums = (record.orders || [])
-                    .slice()
-                    .sort((a, b) => Number(a.orderNumber) - Number(b.orderNumber))
-                    .map((o) => `#${o.orderNumber}${o.qty > 1 ? ` (${o.qty})` : ''}`)
-                    .join(', ');
-                return (
-                    <span style={{ fontSize: 18 }}>
-                        {name}
-                        {orderNums && (
-                            <Text type="secondary" style={{ fontSize: 14, marginLeft: 8 }}>
-                                ({orderNums})
-                            </Text>
-                        )}
-                    </span>
-                );
-            },
+            render: (name, record) => (
+                <div>
+                    <div style={{ fontSize: 18, fontWeight: 600 }}>{name}</div>
+                    <Space size={[4, 4]} wrap style={{ marginTop: 4 }}>
+                        {(record.orders || []).map((o, i) => {
+                            const mins = waitMinutes(o.openedDate);
+                            return (
+                                <Tag key={i} color={waitColor(mins)}>
+                                    #{o.orderNumber}{o.qty > 1 ? ` x${o.qty}` : ''}
+                                    {mins !== null ? ` · ${formatWait(mins)}` : ''}
+                                </Tag>
+                            );
+                        })}
+                    </Space>
+                </div>
+            ),
         },
         {
             title: 'Qty to Prepare',
@@ -166,7 +209,6 @@ const LiveOrders = () => {
                 <Tag color="orange" style={{ fontSize: 20, padding: '4px 14px', fontWeight: 700 }}>{q}</Tag>
             ),
             sorter: (a, b) => a.qty - b.qty,
-            defaultSortOrder: 'descend',
         },
     ];
 
@@ -213,15 +255,25 @@ const LiveOrders = () => {
                         headStyle={{ background: '#fff7e6', fontWeight: 600, fontSize: 18 }}
                         style={{ marginBottom: 16 }}
                     >
-                        <div style={{ marginBottom: 12, fontSize: 16 }}>
-                            <Text strong>Pending orders: </Text>
-                            <Text>
-                                ({orders
-                                    .map((o) => o.orderNumber)
-                                    .sort((a, b) => Number(a) - Number(b))
-                                    .map((n) => `#${n}`)
-                                    .join(', ')})
-                            </Text>
+                        <div style={{ marginBottom: 12 }}>
+                            <Text strong style={{ marginRight: 8 }}>Pending orders (oldest first):</Text>
+                            <Space size={[4, 4]} wrap>
+                                {orders
+                                    .slice()
+                                    .sort((a, b) => {
+                                        const ta = a.openedDate ? new Date(a.openedDate).getTime() : Infinity;
+                                        const tb = b.openedDate ? new Date(b.openedDate).getTime() : Infinity;
+                                        return ta - tb;
+                                    })
+                                    .map((o) => {
+                                        const mins = waitMinutes(o.openedDate);
+                                        return (
+                                            <Tag key={o.orderID || o.orderNumber} color={waitColor(mins)}>
+                                                #{o.orderNumber}{mins !== null ? ` · ${formatWait(mins)}` : ''}
+                                            </Tag>
+                                        );
+                                    })}
+                            </Space>
                         </div>
                         <Table
                             dataSource={prepSummary}
@@ -237,11 +289,29 @@ const LiveOrders = () => {
                     <Collapse>
                         <Collapse.Panel header={`Individual orders (${orders.length})`} key="orders">
                             <Row gutter={[12, 12]}>
-                                {orders.map((order) => (
+                                {orders
+                                    .slice()
+                                    .sort((a, b) => {
+                                        const ta = a.openedDate ? new Date(a.openedDate).getTime() : Infinity;
+                                        const tb = b.openedDate ? new Date(b.openedDate).getTime() : Infinity;
+                                        return ta - tb;
+                                    })
+                                    .map((order) => {
+                                    const mins = waitMinutes(order.openedDate);
+                                    return (
                                     <Col key={order.orderID || order.orderNumber} xs={24} sm={12} md={8} lg={6}>
                                         <Card
                                             size="small"
-                                            title={<span>Order #{order.orderNumber}</span>}
+                                            title={
+                                                <span>
+                                                    Order #{order.orderNumber}
+                                                    {mins !== null && (
+                                                        <Tag color={waitColor(mins)} style={{ marginLeft: 8 }}>
+                                                            {formatWait(mins)}
+                                                        </Tag>
+                                                    )}
+                                                </span>
+                                            }
                                             hoverable
                                         >
                                             {(order.items || []).map((item, idx) => (
@@ -260,7 +330,8 @@ const LiveOrders = () => {
                                             ))}
                                         </Card>
                                     </Col>
-                                ))}
+                                    );
+                                })}
                             </Row>
                         </Collapse.Panel>
                     </Collapse>

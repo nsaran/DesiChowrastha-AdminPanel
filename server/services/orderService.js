@@ -70,7 +70,10 @@ async function getOrdersBulk(location, page = 1, businessDate) {
                 orderGuid: order.guid,
                 orderNumber: check.displayNumber,
                 orderDetails: check.selections,
-                payments: check.payments
+                payments: check.payments,
+                // When the order was placed (ISO-8601 UTC). Used to sort the
+                // kitchen queue by arrival and compute each order's wait time.
+                openedDate: order.openedDate || order.createdDate || check.openedDate || order.modifiedDate || null,
             }))
         ).flat();
         
@@ -115,6 +118,7 @@ function upsertOrders(ws, orders) {
             orderGuid: order.orderGuid,
             orderNumber: order.orderNumber,
             orderDetails: order.orderDetails || [],
+            openedDate: order.openedDate || null,
         });
     });
 }
@@ -129,6 +133,7 @@ function derivePending(ws) {
             result.push({
                 orderID: order.orderID,
                 orderNumber: order.orderNumber,
+                openedDate: order.openedDate || null,
                 items: pendingItems.map((item) => ({
                     displayName: item.displayName,
                     quantity: item.quantity,
