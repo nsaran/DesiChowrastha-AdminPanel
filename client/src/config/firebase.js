@@ -21,11 +21,13 @@ export const firestore = firebase.firestore();
 
 // Older browsers such as Amazon Silk (Fire tablets / Fire TV) don't reliably
 // support Firestore's default streaming WebChannel transport, so reads can stall
-// silently and data never appears. Auto-detect long polling falls back to plain
-// HTTP long-polling on those clients while keeping the faster transport where it
-// works. Must be set before any Firestore call.
+// silently and data never appears. Auto-detect didn't reliably trigger on Silk,
+// so we FORCE long polling: every client uses plain HTTP long-polling, which
+// Silk handles correctly. Normal browsers work fine with this too (they just
+// don't use the marginally faster streaming transport). Must be set before any
+// Firestore call.
 try {
-  firestore.settings({ experimentalAutoDetectLongPolling: true, merge: true });
+  firestore.settings({ experimentalForceLongPolling: true, merge: true });
 } catch (e) {
   // settings() throws if called after Firestore is already in use — safe to ignore.
 }
