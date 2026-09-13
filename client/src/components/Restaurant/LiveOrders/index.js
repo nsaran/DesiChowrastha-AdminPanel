@@ -32,7 +32,13 @@ const LiveOrders = () => {
     const [loading, setLoading] = useState(false);
     const [lastUpdated, setLastUpdated] = useState(null);
     const [autoRefresh, setAutoRefresh] = useState(true);
+    // Item names that are newly arrived or increased in quantity since the last
+    // refresh — highlighted so the chef notices them. Cleared a few seconds later.
+    const [newItems, setNewItems] = useState(new Set());
     const timerRef = useRef(null);
+    const prevQtyByItemRef = useRef(null); // { itemName: totalQty } from the previous fetch
+    const highlightTimerRef = useRef(null);
+    const isFirstLoadRef = useRef(true);
 
     const fetchPending = useCallback(async () => {
         setLoading(true);
@@ -41,7 +47,39 @@ const LiveOrders = () => {
             const data = await res.json();
             // The endpoint returns an array of pending orders, or a status string
             // when there are none — normalize to an array.
-            setOrders(Array.isArray(data) ? data : []);
+            const list = Array.isArray(data) ? data : [];
+
+            // Compute current per-item totals so we can detect what's new/increased.
+            const currentQty = {};
+            list.forEach((o) => {
+                (o.items || []).forEach((it) => {
+                    const name = it.displayName || 'Unknown item';
+                    currentQty[name] = (currentQty[name] || 0) + (Number(it.quantity) || 0);
+                });
+            });
+
+            // On the first load we don't highlight anything (everything would be
+            // "new"). On later loads, flag items that appeared or grew in quantity.
+            if (!isFirstLoadRef.current && prevQtyByItemRef.current) {
+                const prev = prevQtyByItemRef.current;
+                const flagged = new Set();
+                Object.keys(currentQty).forEach((name) => {
+                    if (!(name in prev) || currentQty[name] > prev[name]) {
+                        flagged.add(name);
+                    }
+                });
+                if (flagged.size > 0) {
+                    setNewItems(flagged);
+                    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+                    // Keep the highlight visible long enough to be noticed, but
+                    // clear it before the next refresh so it only marks fresh arrivals.
+                    highlightTimerRef.current = setTimeout(() => setNewItems(new Set()), 15000);
+                }
+            }
+            prevQtyByItemRef.current = currentQty;
+            isFirstLoadRef.current = false;
+
+            setOrders(list);
             setLastUpdated(new Date());
         } catch (err) {
             message.error('Failed to load pending orders.');
@@ -65,6 +103,11 @@ const LiveOrders = () => {
             if (timerRef.current) clearInterval(timerRef.current);
         };
     }, [autoRefresh, fetchPending]);
+
+    // Clean up the highlight timer on unmount.
+    useEffect(() => () => {
+        if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+    }, []);
 
     // Total item count across all pending orders (quantity-aware).
     const totalItems = orders.reduce(
@@ -129,6 +172,16 @@ const LiveOrders = () => {
 
     return (
         <div style={{ margin: 16 }}>
+            <style>{`
+                .live-orders-new-row > td {
+                    background-color: #e6fffb !important;
+                    animation: liveOrdersFlash 1s ease-in-out 2;
+                }
+                @keyframes liveOrdersFlash {
+                    0%, 100% { background-color: #e6fffb; }
+                    50% { background-color: #b5f5ec; }
+                }
+            `}</style>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
                 <Title level={3} style={{ margin: 0 }}>Live Orders</Title>
                 <Tag color="blue">{orders.length} order{orders.length === 1 ? '' : 's'}</Tag>
@@ -142,6 +195,9 @@ const LiveOrders = () => {
                     <Text type="secondary">
                         <ClockCircleOutlined /> Updated {lastUpdated.toLocaleTimeString()}
                     </Text>
+                )}
+                {newItems.size > 0 && (
+                    <Tag color="cyan">{newItems.size} newly arrived / increased</Tag>
                 )}
             </div>
 
@@ -173,6 +229,7 @@ const LiveOrders = () => {
                             pagination={false}
                             size="middle"
                             rowKey="key"
+                            rowClassName={(record) => (newItems.has(record.name) ? 'live-orders-new-row' : '')}
                         />
                     </Card>
 
