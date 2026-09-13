@@ -123,6 +123,23 @@ function upsertOrders(ws, orders) {
     });
 }
 
+// Recursively collect applied modifier/option display names from a selection's
+// `modifiers` array. Modifiers can be nested (a modifier can have its own
+// modifiers), so we walk the whole tree. Returns a flat array of strings, e.g.
+// ["Medium", "Extra Onion"].
+function flattenModifiers(modifiers) {
+    const names = [];
+    const walk = (mods) => {
+        if (!Array.isArray(mods)) return;
+        for (const m of mods) {
+            if (m && m.displayName) names.push(m.displayName);
+            if (m && Array.isArray(m.modifiers) && m.modifiers.length) walk(m.modifiers);
+        }
+    };
+    walk(modifiers);
+    return names;
+}
+
 // Derive the list of orders that still have SENT (pending) items, from a
 // working set. Fulfilled orders (no SENT items left) are naturally excluded.
 function derivePending(ws) {
@@ -138,6 +155,10 @@ function derivePending(ws) {
                     displayName: item.displayName,
                     quantity: item.quantity,
                     status: item.fulfillmentStatus,
+                    // Applied modifiers/options (spice level, add-ons, etc.).
+                    // Modifiers can be nested arbitrarily deep; flatten to a list
+                    // of their display names so the chef sees every option.
+                    modifiers: flattenModifiers(item.modifiers),
                 })),
             });
         }

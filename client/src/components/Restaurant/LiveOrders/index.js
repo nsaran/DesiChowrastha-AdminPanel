@@ -147,25 +147,33 @@ const LiveOrders = () => {
     // Prep summary: total quantity of EACH item across all pending orders, so the
     // chef can batch-prepare (e.g. "Irani Chai x 14"). Sorted by highest quantity.
     const prepSummary = (() => {
-        const byItem = {}; // name -> { qty, earliest, orders: [{ orderNumber, qty, openedDate }] }
+        // Group by item name + its modifiers (spice level, add-ons, etc.), so
+        // "Chicken 65 (Medium)" and "Chicken 65 (Spicy)" are counted separately —
+        // the chef prepares them differently.
+        const byVariant = {}; // key -> { name, modifiers, qty, earliest, orders: [...] }
         orders.forEach((o) => {
             (o.items || []).forEach((it) => {
                 const name = it.displayName || 'Unknown item';
+                const modifiers = Array.isArray(it.modifiers) ? it.modifiers : [];
+                const variantKey = `${name}||${modifiers.join(',')}`;
                 const q = Number(it.quantity) || 0;
-                if (!byItem[name]) byItem[name] = { qty: 0, orders: [], earliest: Infinity };
-                byItem[name].qty += q;
-                byItem[name].orders.push({ orderNumber: o.orderNumber, qty: q, openedDate: o.openedDate });
+                if (!byVariant[variantKey]) {
+                    byVariant[variantKey] = { name, modifiers, qty: 0, orders: [], earliest: Infinity };
+                }
+                byVariant[variantKey].qty += q;
+                byVariant[variantKey].orders.push({ orderNumber: o.orderNumber, qty: q, openedDate: o.openedDate });
                 const t = o.openedDate ? new Date(o.openedDate).getTime() : Infinity;
-                if (t < byItem[name].earliest) byItem[name].earliest = t;
+                if (t < byVariant[variantKey].earliest) byVariant[variantKey].earliest = t;
             });
         });
-        return Object.entries(byItem)
-            .map(([name, info], i) => ({
-                key: `${name}-${i}`,
-                name,
+        return Object.entries(byVariant)
+            .map(([variantKey, info], i) => ({
+                key: `${variantKey}-${i}`,
+                name: info.name,
+                modifiers: info.modifiers,
                 qty: info.qty,
                 earliest: info.earliest,
-                // Each item's contributing orders, sorted by arrival (oldest first).
+                // Each variant's contributing orders, sorted by arrival (oldest first).
                 orders: info.orders.slice().sort((a, b) => {
                     const ta = a.openedDate ? new Date(a.openedDate).getTime() : Infinity;
                     const tb = b.openedDate ? new Date(b.openedDate).getTime() : Infinity;
@@ -185,6 +193,13 @@ const LiveOrders = () => {
             render: (name, record) => (
                 <div>
                     <div style={{ fontSize: 18, fontWeight: 600 }}>{name}</div>
+                    {record.modifiers && record.modifiers.length > 0 && (
+                        <div style={{ marginTop: 2 }}>
+                            {record.modifiers.map((m, i) => (
+                                <Tag key={i} color="purple" style={{ marginBottom: 2 }}>{m}</Tag>
+                            ))}
+                        </div>
+                    )}
                     <Space size={[4, 4]} wrap style={{ marginTop: 4 }}>
                         {(record.orders || []).map((o, i) => {
                             const mins = waitMinutes(o.openedDate);
@@ -324,7 +339,16 @@ const LiveOrders = () => {
                                                         borderBottom: idx < order.items.length - 1 ? '1px solid #f0f0f0' : 'none',
                                                     }}
                                                 >
-                                                    <span>{item.displayName}</span>
+                                                    <div>
+                                                        <span>{item.displayName}</span>
+                                                        {Array.isArray(item.modifiers) && item.modifiers.length > 0 && (
+                                                            <div style={{ marginTop: 2 }}>
+                                                                {item.modifiers.map((m, i) => (
+                                                                    <Tag key={i} color="purple" style={{ marginBottom: 2 }}>{m}</Tag>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                     <Tag color="orange" style={{ marginLeft: 8 }}>x{item.quantity}</Tag>
                                                 </div>
                                             ))}
