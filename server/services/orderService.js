@@ -14,6 +14,17 @@ const timeZoneOptions = { timeZone: 'America/New_York' };
 const PENDING_ORDERS_TTL_SECONDS = 20;
 const pendingOrdersCache = new NodeCache({ stdTTL: PENDING_ORDERS_TTL_SECONDS });
 
+// Per-location working set of orders for incremental (delta) refresh.
+// Instead of re-pulling the whole business day on every poll, we seed once with
+// the full day, then fetch only orders modified since the last poll and merge
+// them in. Each entry: location -> { orders: Map<orderID, orderSnapshot>,
+// lastFetch: Date, businessDate: 'YYYYMMDD' }. In memory only.
+const pendingWorkingSet = {};
+
+// A small look-back added to the delta window so we never miss an order that was
+// modified between fetches due to clock skew / processing lag.
+const DELTA_OVERLAP_MS = 60 * 1000; // 1 minute
+
 // Kitchen categories the Live Orders page should track. Only orders containing
 // items from these exact Toast menu groups are shown, so the chef sees only
 // food that needs cooking (appetizers, curries, wok, tandoor) and not drinks,
@@ -70,27 +81,82 @@ async function getOrdersBulk(location, page = 1, businessDate) {
     }
 }
 
+// Today's business date (YYYYMMDD) in the restaurant timezone.
+function currentBusinessDate() {
+    const today = new Date();
+    const year = today.toLocaleString('default', { ...timeZoneOptions, year: 'numeric' });
+    const month = today.toLocaleString('default', { ...timeZoneOptions, month: '2-digit' });
+    const day = today.toLocaleString('default', { ...timeZoneOptions, day: '2-digit' });
+    return `${year}${month}${day}`;
+}
+
+// Fetch ALL pages of orders for a given selection (business day or delta window)
+// and return the raw flattened order snapshots.
+async function fetchAllPages(location, { businessDate, dateRange } = {}) {
+    let page = 1;
+    const all = [];
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const orders = await getOrdersBulk(location, page, businessDate, dateRange);
+        if (!orders || orders.length === 0) break;
+        all.push(...orders);
+        page++;
+    }
+    return all;
+}
+
+// Merge order snapshots into the working set (keyed by orderID). Newer snapshots
+// replace older ones, so a status change (e.g. SENT -> READY) overwrites the
+// stale copy.
+function upsertOrders(ws, orders) {
+    orders.forEach((order) => {
+        ws.orders.set(order.orderID, {
+            orderID: order.orderID,
+            orderGuid: order.orderGuid,
+            orderNumber: order.orderNumber,
+            orderDetails: order.orderDetails || [],
+        });
+    });
+}
+
+// Derive the list of orders that still have SENT (pending) items, from a
+// working set. Fulfilled orders (no SENT items left) are naturally excluded.
+function derivePending(ws) {
+    const result = [];
+    for (const order of ws.orders.values()) {
+        const pendingItems = (order.orderDetails || []).filter((item) => item.fulfillmentStatus === 'SENT');
+        if (pendingItems.length > 0) {
+            result.push({
+                orderID: order.orderID,
+                orderNumber: order.orderNumber,
+                items: pendingItems.map((item) => ({
+                    displayName: item.displayName,
+                    quantity: item.quantity,
+                    status: item.fulfillmentStatus,
+                })),
+            });
+        }
+    }
+    return result;
+}
+
 async function getPendingOrders(location) {
-    // Serve from the in-memory cache when a fresh (< TTL) result exists for this
-    // location; otherwise fetch from Toast and cache it.
+    // Serve from the short-lived response cache when fresh, so rapid polls don't
+    // even trigger a delta fetch.
     const cacheKey = `pending:${location}`;
     const cached = pendingOrdersCache.get(cacheKey);
     if (cached !== undefined) {
         return cached;
     }
-    const allPending = await fetchPendingOrders(location);
 
-    // Filter to kitchen categories only. Build a name→category map from the
-    // cached menu (populated by the menu service; no extra Toast call if already
-    // warm). Items whose category doesn't match any KITCHEN_CATEGORIES entry are
-    // excluded so the chef sees only food that needs cooking.
+    const allPending = await refreshPendingWorkingSet(location);
+
+    // Filter to kitchen categories only, using the menu-derived name→category map.
     let filtered = allPending;
     try {
         const categoryMap = await getItemCategoryMap(location);
-        console.log('[PendingOrders] categoryMap size:', categoryMap.size, 'for', location);
         if (categoryMap.size > 0) {
             const isKitchenCategory = (groupName) => KITCHEN_CATEGORIES.has(groupName);
-
             filtered = allPending
                 .map((order) => ({
                     ...order,
@@ -100,54 +166,48 @@ async function getPendingOrders(location) {
                     }),
                 }))
                 .filter((order) => order.items.length > 0);
-            console.log('[PendingOrders] filtered from', allPending.length, 'to', filtered.length, 'orders');
         }
     } catch (e) {
-        console.error('[PendingOrders] category filter failed:', e.message);
-        // Category map unavailable — fall back to the unfiltered list so the
-        // page still shows something rather than nothing.
+        // Category map unavailable — fall back to the unfiltered list.
     }
 
     pendingOrdersCache.set(cacheKey, filtered);
     return filtered;
 }
 
-async function fetchPendingOrders(location) {
-    let currentPage = 1;
-    let pendingOrders = [];
-    let dataExists = true;
+/**
+ * Refresh the per-location working set and return the current pending orders.
+ * - Cold start (or new business day): seed with a full-day fetch.
+ * - Warm: fetch only orders modified since the last poll (delta) and merge.
+ * Returns the derived pending list (orders with SENT items).
+ */
+async function refreshPendingWorkingSet(location) {
+    const today = currentBusinessDate();
+    let ws = pendingWorkingSet[location];
 
-    while (dataExists) {
-        try {
-            const orders = await getOrdersBulk(location, currentPage);
-            if (orders.length === 0) {
-                dataExists = false;
-                continue;
-            }
-
-            orders.forEach(order => {
-                const orderNumber = order.orderNumber;
-                const pendingItems = order.orderDetails.filter(item => item.fulfillmentStatus === 'SENT');
-
-                if (pendingItems.length > 0) {
-                    pendingOrders.push({
-                        orderID: order.orderID,
-                        orderNumber,
-                        items: pendingItems.map(item => ({
-                            displayName: item.displayName,
-                            quantity: item.quantity,
-                            status: item.fulfillmentStatus
-                        }))
-                    });
-                }
-            });
-            currentPage++;
-        } catch (error) {
-            console.error(error);
-            throw new Error('An error occurred while fetching pending orders');
-        }
+    // (Re)seed on cold start or when the business day rolls over.
+    if (!ws || ws.businessDate !== today) {
+        ws = { orders: new Map(), lastFetch: null, businessDate: today };
+        const dayOrders = await fetchAllPages(location, { businessDate: today });
+        upsertOrders(ws, dayOrders);
+        ws.lastFetch = new Date();
+        pendingWorkingSet[location] = ws;
+        return derivePending(ws);
     }
-    return pendingOrders;
+
+    // Warm: pull only what changed since the last fetch (minus a small overlap).
+    const startDate = new Date(ws.lastFetch.getTime() - DELTA_OVERLAP_MS).toISOString();
+    const endDate = new Date().toISOString();
+    try {
+        const delta = await fetchAllPages(location, { dateRange: { startDate, endDate } });
+        upsertOrders(ws, delta);
+        ws.lastFetch = new Date();
+    } catch (e) {
+        // On a delta failure, keep serving the existing working set rather than
+        // failing the whole request.
+        console.error('[PendingOrders] delta refresh failed:', e.message);
+    }
+    return derivePending(ws);
 }
 
 async function getCompletedOrders(location, req) {
@@ -252,11 +312,30 @@ const setNotification = async (req, res) => {
     res.json([responseObject]);
 };
 
+/**
+ * Called when an order webhook (created/updated/fulfilled) arrives for a
+ * location. Invalidates the short-lived response cache and forces the next
+ * getPendingOrders() call to run a delta fetch immediately, so the Live Orders
+ * prep summary reflects the change in near real time instead of waiting for the
+ * next scheduled poll.
+ */
+function invalidatePendingOrders(location) {
+    if (!location) return;
+    pendingOrdersCache.del(`pending:${location}`);
+    const ws = pendingWorkingSet[location];
+    if (ws) {
+        // Rewind lastFetch so the next refresh pulls a fresh delta window that
+        // definitely includes this change.
+        ws.lastFetch = new Date(Date.now() - DELTA_OVERLAP_MS);
+    }
+}
+
 module.exports = {
     getOrders,
     getOrdersBulk,
     getPendingOrders,
     getCompletedOrders,
     getNotification,
-    setNotification
+    setNotification,
+    invalidatePendingOrders
 };

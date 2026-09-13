@@ -247,6 +247,18 @@ app.post('/api/orders/webhook', (req, res) => {
 
         logger.info(`[OrderWebhook] ${location || 'UNKNOWN'}: Order ${displayNumber || orderGuid} - ${eventType} (${status})`);
 
+        // Any order create/update/fulfillment affects the pending kitchen queue.
+        // Invalidate the Live Orders working set so the next poll picks up this
+        // change immediately (near real-time), instead of waiting for the timer.
+        if (location) {
+            try {
+                const { invalidatePendingOrders } = require('./services/orderService');
+                invalidatePendingOrders(location);
+            } catch (e) {
+                logger.warn(`[OrderWebhook] could not invalidate pending orders: ${e.message}`);
+            }
+        }
+
         // Push to SSE clients if order is ready/completed
         const isReady = status === 'READY' || status === 'COMPLETED' ||
             eventType === 'ORDER_FULFILLMENT_UPDATE' ||
