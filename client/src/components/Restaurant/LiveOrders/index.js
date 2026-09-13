@@ -138,6 +138,16 @@ const LiveOrders = () => {
                         headStyle={{ background: '#fff7e6', fontWeight: 600, fontSize: 18 }}
                         style={{ marginBottom: 16 }}
                     >
+                        <div style={{ marginBottom: 12, fontSize: 16 }}>
+                            <Text strong>Pending orders: </Text>
+                            <Text>
+                                ({orders
+                                    .map((o) => o.orderNumber)
+                                    .sort((a, b) => Number(a) - Number(b))
+                                    .map((n) => `#${n}`)
+                                    .join(', ')})
+                            </Text>
+                        </div>
                         <Table
                             dataSource={prepSummary}
                             columns={prepColumns}
