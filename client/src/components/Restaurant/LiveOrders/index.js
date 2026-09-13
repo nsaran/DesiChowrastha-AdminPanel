@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, Row, Col, Typography, Button, Tag, Space, Empty, Spin, message, Switch, Table } from 'antd';
+import { Card, Row, Col, Typography, Button, Tag, Space, Empty, Spin, message, Switch, Table, Collapse } from 'antd';
 import { ReloadOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import API_BASE_URL from '../../../config/api';
 import { useKeepAlive } from '../TvMenu/useKeepAlive';
@@ -88,15 +88,23 @@ const LiveOrders = () => {
     })();
 
     const prepColumns = [
-        { title: 'Item', dataIndex: 'name', key: 'name' },
         {
-            title: 'Total Qty',
+            title: 'Item',
+            dataIndex: 'name',
+            key: 'name',
+            render: (name) => <span style={{ fontSize: 18 }}>{name}</span>,
+        },
+        {
+            title: 'Qty to Prepare',
             dataIndex: 'qty',
             key: 'qty',
-            width: 120,
+            width: 160,
             align: 'right',
-            render: (q) => <Tag color="orange" style={{ fontSize: 16, padding: '2px 10px' }}>{q}</Tag>,
+            render: (q) => (
+                <Tag color="orange" style={{ fontSize: 20, padding: '4px 14px', fontWeight: 700 }}>{q}</Tag>
+            ),
             sorter: (a, b) => a.qty - b.qty,
+            defaultSortOrder: 'descend',
         },
     ];
 
@@ -123,54 +131,54 @@ const LiveOrders = () => {
             ) : orders.length === 0 ? (
                 <Empty description="No pending orders right now." />
             ) : (
-                <Row gutter={[16, 16]}>
-                    {/* Prep summary: what to cook and how many, aggregated across orders. */}
-                    <Col xs={24} lg={10}>
-                        <Card
-                            title="Prep Summary — total quantity to prepare"
-                            size="small"
-                            headStyle={{ background: '#fff7e6', fontWeight: 600 }}
-                        >
-                            <Table
-                                dataSource={prepSummary}
-                                columns={prepColumns}
-                                pagination={false}
-                                size="small"
-                                rowKey="key"
-                            />
-                        </Card>
-                    </Col>
+                <>
+                    {/* Primary view: what to cook, how many, and which orders. */}
+                    <Card
+                        title="Prep Summary — total quantity to prepare"
+                        headStyle={{ background: '#fff7e6', fontWeight: 600, fontSize: 18 }}
+                        style={{ marginBottom: 16 }}
+                    >
+                        <Table
+                            dataSource={prepSummary}
+                            columns={prepColumns}
+                            pagination={false}
+                            size="middle"
+                            rowKey="key"
+                        />
+                    </Card>
 
-                    {/* Individual orders for reference. */}
-                    <Col xs={24} lg={14}>
-                        <Row gutter={[12, 12]}>
-                            {orders.map((order) => (
-                                <Col key={order.orderID || order.orderNumber} xs={24} sm={12}>
-                                    <Card
-                                        size="small"
-                                        title={<span>Order #{order.orderNumber}</span>}
-                                        hoverable
-                                    >
-                                        {(order.items || []).map((item, idx) => (
-                                            <div
-                                                key={idx}
-                                                style={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    padding: '4px 0',
-                                                    borderBottom: idx < order.items.length - 1 ? '1px solid #f0f0f0' : 'none',
-                                                }}
-                                            >
-                                                <span>{item.displayName}</span>
-                                                <Tag color="orange" style={{ marginLeft: 8 }}>x{item.quantity}</Tag>
-                                            </div>
-                                        ))}
-                                    </Card>
-                                </Col>
-                            ))}
-                        </Row>
-                    </Col>
-                </Row>
+                    {/* Individual orders, collapsed by default for reference. */}
+                    <Collapse>
+                        <Collapse.Panel header={`Individual orders (${orders.length})`} key="orders">
+                            <Row gutter={[12, 12]}>
+                                {orders.map((order) => (
+                                    <Col key={order.orderID || order.orderNumber} xs={24} sm={12} md={8} lg={6}>
+                                        <Card
+                                            size="small"
+                                            title={<span>Order #{order.orderNumber}</span>}
+                                            hoverable
+                                        >
+                                            {(order.items || []).map((item, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        padding: '4px 0',
+                                                        borderBottom: idx < order.items.length - 1 ? '1px solid #f0f0f0' : 'none',
+                                                    }}
+                                                >
+                                                    <span>{item.displayName}</span>
+                                                    <Tag color="orange" style={{ marginLeft: 8 }}>x{item.quantity}</Tag>
+                                                </div>
+                                            ))}
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
+                        </Collapse.Panel>
+                    </Collapse>
+                </>
             )}
         </div>
     );
