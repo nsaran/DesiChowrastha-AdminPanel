@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, Row, Col, Typography, Button, Tag, Space, Empty, Spin, message, Switch, Table, Collapse } from 'antd';
+import { Card, Typography, Button, Tag, Space, Empty, Spin, message, Switch, Table } from 'antd';
 import { ReloadOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import API_BASE_URL from '../../../config/api';
 import { useKeepAlive } from '../TvMenu/useKeepAlive';
@@ -263,8 +263,7 @@ const LiveOrders = () => {
             ) : orders.length === 0 ? (
                 <Empty description="No pending orders right now." />
             ) : (
-                <>
-                    {/* Primary view: what to cook, how many, and which orders. */}
+                    /* What to cook, how many, and which orders. */
                     <Card
                         title="Prep Summary — total quantity to prepare"
                         headStyle={{ background: '#fff7e6', fontWeight: 600, fontSize: 18 }}
@@ -299,67 +298,6 @@ const LiveOrders = () => {
                             rowClassName={(record) => (newItems.has(record.name) ? 'live-orders-new-row' : '')}
                         />
                     </Card>
-
-                    {/* Individual orders, collapsed by default for reference. */}
-                    <Collapse>
-                        <Collapse.Panel header={`Individual orders (${orders.length})`} key="orders">
-                            <Row gutter={[12, 12]}>
-                                {orders
-                                    .slice()
-                                    .sort((a, b) => {
-                                        const ta = a.openedDate ? new Date(a.openedDate).getTime() : Infinity;
-                                        const tb = b.openedDate ? new Date(b.openedDate).getTime() : Infinity;
-                                        return ta - tb;
-                                    })
-                                    .map((order) => {
-                                    const mins = waitMinutes(order.openedDate);
-                                    return (
-                                    <Col key={order.orderID || order.orderNumber} xs={24} sm={12} md={8} lg={6}>
-                                        <Card
-                                            size="small"
-                                            title={
-                                                <span>
-                                                    Order #{order.orderNumber}
-                                                    {mins !== null && (
-                                                        <Tag color={waitColor(mins)} style={{ marginLeft: 8 }}>
-                                                            {formatWait(mins)}
-                                                        </Tag>
-                                                    )}
-                                                </span>
-                                            }
-                                            hoverable
-                                        >
-                                            {(order.items || []).map((item, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    style={{
-                                                        display: 'flex',
-                                                        justifyContent: 'space-between',
-                                                        padding: '4px 0',
-                                                        borderBottom: idx < order.items.length - 1 ? '1px solid #f0f0f0' : 'none',
-                                                    }}
-                                                >
-                                                    <div>
-                                                        <span>{item.displayName}</span>
-                                                        {Array.isArray(item.modifiers) && item.modifiers.length > 0 && (
-                                                            <div style={{ marginTop: 2 }}>
-                                                                {item.modifiers.map((m, i) => (
-                                                                    <Tag key={i} color="purple" style={{ marginBottom: 2 }}>{m}</Tag>
-                                                                ))}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <Tag color="orange" style={{ marginLeft: 8 }}>x{item.quantity}</Tag>
-                                                </div>
-                                            ))}
-                                        </Card>
-                                    </Col>
-                                    );
-                                })}
-                            </Row>
-                        </Collapse.Panel>
-                    </Collapse>
-                </>
             )}
         </div>
     );
