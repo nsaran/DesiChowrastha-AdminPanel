@@ -125,7 +125,6 @@ const ChefsKitchen = () => {
                                         <tr>
                                             <th>Item Name</th>
                                             <th>Quantity</th>
-                                            <th>Price</th>
                                             <th>Spice Level</th>
                                             <th>Tray Type</th>
                                             <th>Comments</th>
@@ -136,7 +135,6 @@ const ChefsKitchen = () => {
                                             <tr key={index}>
                                                 <td>{item.itemName}</td>
                                                 <td>{item.qty}</td>
-                                                <td>{item.price}</td>
                                                 <td>{item.spiceLevel}</td>
                                                 <td>{item.trayType}</td>
                                                 <td>{item.itemComments}</td>
@@ -167,7 +165,6 @@ const ChefsKitchen = () => {
                                         <tr>
                                             <th>Item Name</th>
                                             <th>Quantity</th>
-                                            <th>Price</th>
                                             <th>Spice Level</th>
                                             <th>Tray Type</th>
                                             <th>Comments</th>
@@ -178,7 +175,6 @@ const ChefsKitchen = () => {
                                             <tr key={index}>
                                                 <td>{item.itemName}</td>
                                                 <td>{item.qty}</td>
-                                                <td>{item.price}</td>
                                                 <td>{item.spiceLevel}</td>
                                                 <td>{item.trayType}</td>
                                                 <td>{item.itemComments}</td>
@@ -209,7 +205,6 @@ const ChefsKitchen = () => {
                                         <tr>
                                             <th>Item Name</th>
                                             <th>Quantity</th>
-                                            <th>Price</th>
                                             <th>Spice Level</th>
                                             <th>Tray Type</th>
                                             <th>Comments</th>
@@ -220,7 +215,6 @@ const ChefsKitchen = () => {
                                             <tr key={index}>
                                                 <td>{item.itemName}</td>
                                                 <td>{item.qty}</td>
-                                                <td>{item.price}</td>
                                                 <td>{item.spiceLevel}</td>
                                                 <td>{item.trayType}</td>
                                                 <td>{item.itemComments}</td>
