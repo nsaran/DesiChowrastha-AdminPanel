@@ -62,8 +62,9 @@ const RestaurantPartyOrdersComponent = () => {
     const { role, currentUser } = useContext(AuthContext);
     const canDelete = role === 'owner'; // only owners may delete party orders
     // Keep the always-on Amazon (Silk/Fire) browser from closing: play real,
-    // low-volume looping audio in the background (strongest keep-alive signal).
-    useKeepAlive({ audio: true });
+    // low-volume looping audio in the background (strongest keep-alive signal),
+    // and reload after 30 min idle as a self-recovery safety net.
+    useKeepAlive({ audio: true, reloadMinutes: 30 });
 
 
     const formatDate = (value) => {
