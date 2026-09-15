@@ -16,7 +16,10 @@ const ChefsKitchen = () => {
     const restaurantId = restaurantIdParam
         ? restaurantIdParam.charAt(0).toUpperCase() + restaurantIdParam.slice(1).toLowerCase()
         : restaurantIdParam;
-    useKeepAlive(); // keep the browser awake on always-on kitchen displays
+    // Keep the always-on Amazon (Silk/Fire) kitchen browser from closing: play
+    // real, low-volume looping audio in the background (strongest keep-alive
+    // signal), and reload after 30 min idle as a self-recovery safety net.
+    useKeepAlive({ audio: true, reloadMinutes: 30 });
     const [activeKey, setActiveKey] = useState('todayOrders');
     const [todayOrders, setTodayOrders] = useState([]);
     const [tomorrowOrders, setTomorrowOrders] = useState([]);
