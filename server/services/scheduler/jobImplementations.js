@@ -781,6 +781,198 @@ async function bank_statement_reminder(job) {
     return [monthLabel, uploadUrl];
 }
 
+/**
+ * End-of-Day Void Report
+ *
+ * Runs daily (e.g. 10pm). Fetches all of today's orders from Toast, collects
+ * every voided menu-item selection, builds an itemized CSV, and sends it to the
+ * owners as a WhatsApp document (same delivery pattern as the party-orders CSV).
+ *
+ * Note: Toast's voidReason is only a GUID reference (no readable text) on the
+ * order data, so the reason column shows the reason GUID. Resolving it to a
+ * human label would need a separate call to Toast's config API — can be added later.
+ */
+async function void_transactions_report(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running void_transactions_report for ${location}`);
+
+    try {
+        const requestOptions = await getToastRequestOptions(location);
+
+        // Full business day window in EST.
+        const today = getTodayEST(); // YYYY-MM-DD
+        const startDate = `${today}T00:00:00.000-0500`;
+        const endDate = `${today}T23:59:59.000-0500`;
+
+        // Paginate all orders for the day.
+        let allOrders = [];
+        let page = 1;
+        let hasMore = true;
+        while (hasMore) {
+            const response = await axios.get(
+                `${toastApiBaseUrl}/orders/v2/ordersBulk?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&pageSize=100&page=${page}`,
+                requestOptions
+            );
+            const orders = response.data || [];
+            allOrders = allOrders.concat(orders);
+            if (orders.length < 100) hasMore = false; else page++;
+        }
+
+        // Collect voided selections across all checks.
+        const voids = [];
+        let totalVoidAmount = 0;
+        for (const order of allOrders) {
+            for (const check of order.checks || []) {
+                const orderNumber = check.displayNumber || '';
+                const server = check.createdByClientName || order.createdByClientName || '';
+                for (const sel of check.selections || []) {
+                    if (!sel.voided) continue;
+                    const qty = Number(sel.quantity) || 0;
+                    const amount = Number(sel.preDiscountPrice ?? sel.price) || 0;
+                    totalVoidAmount += amount;
+                    voids.push({
+                        orderNumber,
+                        item: sel.displayName || '',
+                        quantity: qty,
+                        amount,
+                        voidedAt: sel.voidDate
+                            ? new Date(sel.voidDate).toLocaleString('en-US', { timeZone: 'America/New_York' })
+                            : '',
+                        server,
+                        reasonGuid: sel.voidReason?.guid || '',
+                    });
+                }
+            }
+        }
+
+        logger.info(`[Scheduler] void_transactions_report: ${voids.length} voided items, $${totalVoidAmount.toFixed(2)} for ${location} on ${today}`);
+
+        const csv = buildVoidReportCsv(voids, totalVoidAmount);
+        const dateLabel = getFormattedDate();
+        await sendVoidReportToOwners(location, csv, dateLabel, voids.length, totalVoidAmount, job);
+
+        return null; // custom document send; skip the scheduler's default text send
+    } catch (error) {
+        logger.error(`[Scheduler] void_transactions_report error: ${error.message}`);
+        return null;
+    }
+}
+
+/** Build an itemized CSV of voided transactions with a totals row. */
+function buildVoidReportCsv(voids, totalVoidAmount) {
+    const headers = ['Order #', 'Item', 'Quantity', 'Amount', 'Voided At (EST)', 'Server', 'Void Reason (GUID)'];
+    const esc = (val) => {
+        const s = val === undefined || val === null ? '' : String(val);
+        return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const rows = voids.map((v) => [
+        v.orderNumber,
+        v.item,
+        v.quantity,
+        `$ ${Number(v.amount).toFixed(2)}`,
+        v.voidedAt,
+        v.server,
+        v.reasonGuid,
+    ].map(esc).join(','));
+
+    const totalRow = ['', 'TOTAL', voids.length, `$ ${Number(totalVoidAmount).toFixed(2)}`, '', '', ''].map(esc).join(',');
+    return [headers.map(esc).join(','), ...rows, totalRow].join('\n');
+}
+
+/**
+ * Send the void report CSV to owners via WhatsApp document, reusing the
+ * `party_order_invoice` template (document header + 2 body text params).
+ */
+async function sendVoidReportToOwners(location, csv, dateLabel, voidCount, totalVoidAmount, job) {
+    const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
+    const locationKey = location.toUpperCase();
+    const phoneNumberId = locationKey === 'NASHUA'
+        ? process.env.WA_PHONE_NUMBER_ID_NASHUA
+        : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
+
+    const recipients = (job.recipients && job.recipients.length > 0)
+        ? job.recipients
+        : (process.env.OWNER_PHONE_NUMBER || '').split(',').map((n) => n.trim()).filter(Boolean);
+
+    if (!WA_ACCESS_TOKEN || !phoneNumberId) {
+        logger.error(`[Scheduler] void_transactions_report: WhatsApp not configured for ${locationKey}`);
+        return;
+    }
+    if (recipients.length === 0) {
+        logger.error('[Scheduler] void_transactions_report: no owner recipients configured');
+        return;
+    }
+
+    const safeDate = String(dateLabel).replace(/[\s,]+/g, '_');
+    const fileName = `VoidReport_${locationKey}_${safeDate}.csv`;
+
+    // Upload CSV as media.
+    const FormData = require('form-data');
+    const form = new FormData();
+    form.append('file', Buffer.from(csv, 'utf8'), { filename: fileName, contentType: 'text/csv' });
+    form.append('messaging_product', 'whatsapp');
+    form.append('type', 'text/csv');
+
+    let mediaId;
+    try {
+        const mediaResponse = await axios.post(
+            `https://graph.facebook.com/v21.0/${phoneNumberId}/media`,
+            form,
+            { headers: { Authorization: `Bearer ${WA_ACCESS_TOKEN}`, ...form.getHeaders() } }
+        );
+        mediaId = mediaResponse.data.id;
+    } catch (error) {
+        const msg = error.response?.data?.error?.message || error.message;
+        logger.error(`[Scheduler] void_transactions_report: media upload failed: ${msg}`);
+        return;
+    }
+    if (!mediaId) {
+        logger.error('[Scheduler] void_transactions_report: media upload returned no id');
+        return;
+    }
+
+    const templateName = job.templateName || 'party_order_invoice';
+    const templateLanguage = job.templateLanguage || process.env.WA_TEMPLATE_LANGUAGE || 'en';
+    const messagesUrl = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
+
+    for (const recipient of recipients) {
+        try {
+            await axios.post(messagesUrl, {
+                messaging_product: 'whatsapp',
+                to: recipient,
+                type: 'template',
+                template: {
+                    name: templateName,
+                    language: { code: templateLanguage },
+                    components: [
+                        {
+                            type: 'header',
+                            parameters: [
+                                { type: 'document', document: { id: mediaId, filename: fileName } },
+                            ],
+                        },
+                        {
+                            type: 'body',
+                            parameters: [
+                                { type: 'text', text: `${location} Void Report - ${dateLabel}` },
+                                { type: 'text', text: `${voidCount} voids, $${Number(totalVoidAmount).toFixed(2)}` },
+                            ],
+                        },
+                    ],
+                },
+            }, {
+                headers: { Authorization: `Bearer ${WA_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
+            });
+
+            logger.info(`[Scheduler] void_transactions_report: sent to ${recipient} for ${location} (${dateLabel})`);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+        } catch (error) {
+            const msg = error.response?.data?.error?.message || error.message;
+            logger.error(`[Scheduler] void_transactions_report: failed to send to ${recipient}: ${msg}`);
+        }
+    }
+}
+
 // ============================================================
 // REGISTRY - Maps job IDs to implementation functions
 // ============================================================
@@ -796,7 +988,10 @@ const jobRegistry = {
     westborough_party_orders_monthly_csv: party_orders_monthly_csv,
     bank_statement_reminder,
     nashua_bank_statement_reminder: bank_statement_reminder,
-    westborough_bank_statement_reminder: bank_statement_reminder
+    westborough_bank_statement_reminder: bank_statement_reminder,
+    void_transactions_report,
+    nashua_void_transactions_report: void_transactions_report,
+    westborough_void_transactions_report: void_transactions_report
 };
 
 /**

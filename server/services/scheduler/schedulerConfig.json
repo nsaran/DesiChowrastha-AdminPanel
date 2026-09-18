@@ -146,6 +146,28 @@
       "templateName": "bank_statement_reminder",
       "templateLanguage": "en",
       "recipients": []
+    },
+    {
+      "id": "westborough_void_transactions_report",
+      "name": "Westborough Void Transactions Report",
+      "enabled": true,
+      "schedule": "daily",
+      "cronExpression": "10 22 * * *",
+      "location": "WESTBOROUGH",
+      "templateName": "party_order_invoice",
+      "templateLanguage": "en",
+      "recipients": []
+    },
+    {
+      "id": "nashua_void_transactions_report",
+      "name": "Nashua Void Transactions Report",
+      "enabled": true,
+      "schedule": "daily",
+      "cronExpression": "15 22 * * *",
+      "location": "NASHUA",
+      "templateName": "party_order_invoice",
+      "templateLanguage": "en",
+      "recipients": []
     }
   ]
 }
