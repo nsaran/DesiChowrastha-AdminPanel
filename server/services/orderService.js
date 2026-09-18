@@ -223,37 +223,24 @@ async function getPendingOrders(location, categoriesOverride) {
 }
 
 /**
- * Refresh the per-location working set and return the current pending orders.
- * - Cold start (or new business day): seed with a full-day fetch.
- * - Warm: fetch only orders modified since the last poll (delta) and merge.
- * Returns the derived pending list (orders with SENT items).
+ * Return the current pending orders for a location by fetching the full business
+ * day fresh each time and deriving the still-SENT items.
+ *
+ * Why a full-day fetch instead of an incremental delta merge: the live queue's
+ * key event is REMOVAL (an item goes SENT -> READY when fulfilled). A delta that
+ * only pulls recently-modified orders can't reliably remove an order that was
+ * fulfilled outside the delta window, so stale "pending" tickets accumulated and
+ * the board looked like it wasn't refreshing. A full-day fetch is the source of
+ * truth: fulfilled orders simply aren't SENT anymore and drop off, and new
+ * orders appear. The 20s response cache keeps this from hammering Toast even
+ * when several kitchen tablets poll at once.
  */
 async function refreshPendingWorkingSet(location) {
     const today = currentBusinessDate();
-    let ws = pendingWorkingSet[location];
-
-    // (Re)seed on cold start or when the business day rolls over.
-    if (!ws || ws.businessDate !== today) {
-        ws = { orders: new Map(), lastFetch: null, businessDate: today };
-        const dayOrders = await fetchAllPages(location, { businessDate: today });
-        upsertOrders(ws, dayOrders);
-        ws.lastFetch = new Date();
-        pendingWorkingSet[location] = ws;
-        return derivePending(ws);
-    }
-
-    // Warm: pull only what changed since the last fetch (minus a small overlap).
-    const startDate = new Date(ws.lastFetch.getTime() - DELTA_OVERLAP_MS).toISOString();
-    const endDate = new Date().toISOString();
-    try {
-        const delta = await fetchAllPages(location, { dateRange: { startDate, endDate } });
-        upsertOrders(ws, delta);
-        ws.lastFetch = new Date();
-    } catch (e) {
-        // On a delta failure, keep serving the existing working set rather than
-        // failing the whole request.
-        console.error('[PendingOrders] delta refresh failed:', e.message);
-    }
+    const ws = { orders: new Map(), lastFetch: new Date(), businessDate: today };
+    const dayOrders = await fetchAllPages(location, { businessDate: today });
+    upsertOrders(ws, dayOrders);
+    pendingWorkingSet[location] = ws; // kept for the webhook-invalidation hook
     return derivePending(ws);
 }
 
