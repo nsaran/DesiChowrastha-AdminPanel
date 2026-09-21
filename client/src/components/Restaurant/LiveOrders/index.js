@@ -210,7 +210,7 @@ const LiveOrders = () => {
                             const mins = waitMinutes(o.openedDate);
                             return (
                                 <Tag key={i} color={waitColor(mins)}>
-                                    #{o.orderNumber}{o.qty > 1 ? ` x${o.qty}` : ''}
+                                    #{o.orderNumber} x{o.qty}
                                     {mins !== null ? ` · ${formatWait(mins)}` : ''}
                                 </Tag>
                             );
