@@ -65,13 +65,26 @@
     box-shadow: 0 0 0 2px rgba(82, 196, 26, 0.25), 0 12px 30px -12px rgba(82, 196, 26, 0.4);
 }
 
+.ot-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
 .ot-num {
     font-size: clamp(1.8rem, 2.6vw, 2.6rem);
     font-weight: 800;
-    margin-bottom: 20px;
     letter-spacing: 0.5px;
 }
 .ot-card.stage-ready .ot-num { color: #52c41a; }
+.ot-elapsed {
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
+    font-weight: 700;
+    color: #9aa4b2;
+    white-space: nowrap;
+}
+.ot-card.stage-ready .ot-elapsed { color: #52c41a; }
 
 /* Stage track */
 .ot-track {

@@ -32,7 +32,24 @@ const OrderTracker = () => {
 
     const [orders, setOrders] = useState([]);
     const [connected, setConnected] = useState(false);
+    const [now, setNow] = useState(Date.now()); // ticks so elapsed time advances live
     const pollRef = useRef(null);
+
+    // Tick every second so the elapsed timers count up in real time.
+    useEffect(() => {
+        const id = setInterval(() => setNow(Date.now()), 1000);
+        return () => clearInterval(id);
+    }, []);
+
+    // Elapsed time since the order was placed, e.g. "8m" or "1h 05m".
+    const elapsedOf = (openedDate) => {
+        if (!openedDate) return null;
+        const ms = now - new Date(openedDate).getTime();
+        if (Number.isNaN(ms) || ms < 0) return '0m';
+        const mins = Math.floor(ms / 60000);
+        if (mins < 60) return `${mins}m`;
+        return `${Math.floor(mins / 60)}h ${String(mins % 60).padStart(2, '0')}m`;
+    };
 
     const load = useCallback(async () => {
         try {
@@ -128,7 +145,14 @@ const OrderTracker = () => {
                         const active = STAGE_INDEX[o.stage] ?? 0;
                         return (
                             <div className={`ot-card stage-${o.stage}`} key={o.orderGuid || o.orderNumber}>
-                                <div className="ot-num">#{o.orderNumber}</div>
+                                <div className="ot-card-head">
+                                    <div className="ot-num">#{o.orderNumber}</div>
+                                    {elapsedOf(o.openedDate) !== null && (
+                                        <div className="ot-elapsed" title="Time since order was placed">
+                                            ⏱ {elapsedOf(o.openedDate)}
+                                        </div>
+                                    )}
+                                </div>
                                 <div className="ot-track">
                                     {STAGES.map((s, i) => {
                                         const state = i < active ? 'done' : i === active ? 'current' : 'todo';
