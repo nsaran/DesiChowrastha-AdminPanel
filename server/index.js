@@ -257,6 +257,31 @@ app.post('/api/orders/webhook', (req, res) => {
             } catch (e) {
                 logger.warn(`[OrderWebhook] could not invalidate pending orders: ${e.message}`);
             }
+
+            // Update the lobby order-tracker board for this single order and push
+            // the change to any connected board screens over SSE (near real-time,
+            // fetches just this one order — not the whole day).
+            if (orderGuid) {
+                (async () => {
+                    try {
+                        const { applyOrderWebhookToBoard } = require('./services/orderService');
+                        const update = await applyOrderWebhookToBoard(location, orderGuid);
+                        if (update) {
+                            orderSSEClients.forEach(client => {
+                                if (!client.location || client.location === location) {
+                                    client.res.write(`data: ${JSON.stringify({
+                                        type: 'board_update',
+                                        location,
+                                        ...update
+                                    })}\n\n`);
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        logger.warn(`[OrderWebhook] board update failed: ${e.message}`);
+                    }
+                })();
+            }
         }
 
         // Push to SSE clients if order is ready/completed
@@ -293,6 +318,21 @@ app.post('/api/orders/webhook', (req, res) => {
         res.status(200).json({ success: true });
     } catch (error) {
         logger.error('Order webhook error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Active-orders board (lobby tracker) — initial load. The board then stays live
+// via the /api/orders/stream SSE 'board_update' events driven by Toast webhooks.
+app.get('/api/activeOrders', async (req, res) => {
+    try {
+        const location = (req.query.location || '').toUpperCase();
+        if (!location) return res.status(400).json({ error: 'location is required' });
+        const { getActiveOrders } = require('./services/orderService');
+        const orders = await getActiveOrders(location);
+        res.json(orders);
+    } catch (error) {
+        logger.error(`Active orders error: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 });

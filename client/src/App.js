@@ -41,6 +41,7 @@ import SoftLaunch from './components/Restaurant/TvMenu/pages/SoftLaunch';
 import SoftLaunchManage from './components/Restaurant/TvMenu/pages/SoftLaunchManage';
 import QRCodes from './components/Restaurant/TvMenu/pages/QRCodes';
 import OrderStatus from './components/Restaurant/TvMenu/pages/OrderStatus';
+import OrderTracker from './components/Restaurant/TvMenu/pages/OrderTracker';
 import SignagePlayer from './components/Restaurant/TvMenu/pages/SignagePlayer';
 import ManageSignage from './components/Restaurant/TvMenu/pages/ManageSignage';
 import StockOrders from './components/Restaurant/TvMenu/pages/StockOrders';
@@ -76,6 +77,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/OtherServices/TabletMenu" element={<TabletMenu />} />
           <Route path="/dashboard/:restaurantId/OtherServices/QRCodes" element={<QRCodes />} />
           <Route path="/dashboard/:restaurantId/OtherServices/OrderStatus" element={<OrderStatus />} />
+          <Route path="/dashboard/:restaurantId/OtherServices/OrderTracker" element={<OrderTracker />} />
           <Route path="/dashboard/:restaurantId/OtherServices/CustomerFeedback" element={<TvMenuErrorBoundary><CustomerFeedback /></TvMenuErrorBoundary>} />
           <Route path="/dashboard/:restaurantId/OtherServices/TodaysSpecial" element={<TvMenuErrorBoundary><TodaysSpecial /></TvMenuErrorBoundary>} />
 

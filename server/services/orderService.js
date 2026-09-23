@@ -244,6 +244,127 @@ async function refreshPendingWorkingSet(location) {
     return derivePending(ws);
 }
 
+// ============================================================
+// Active-orders board (Domino's-style lobby tracker) — webhook driven
+// ============================================================
+// In-memory board per location: Map<orderGuid, { orderNumber, stage, openedDate,
+// updatedAt }>. Seeded from a full-day fetch on first use / server start, then
+// kept fresh by Toast order webhooks — each event updates a single order and an
+// SSE push refreshes the lobby screen. Nothing is polled on a timer.
+//   stage: 'received' | 'preparing' | 'ready'  (completed/voided are removed)
+const activeBoard = {};        // location -> Map<orderGuid, entry>
+const activeBoardSeeded = {};  // location -> boolean
+
+// Compute a board stage from an order's items. Returns null when the order
+// should NOT be on the board (voided, or done: closed + all items ready).
+function stageForOrder(order) {
+    if (order.voided) return null;
+    const items = order.orderDetails || [];
+    if (items.length === 0) return null;
+    const statuses = items.map((it) => it.fulfillmentStatus);
+    const hasSent = statuses.includes('SENT');
+    const hasHold = statuses.includes('HOLD');
+    const allReady = statuses.length > 0 && statuses.every((s) => s === 'READY');
+    if (order.closedDate && allReady) return null; // picked up / done
+    if (hasSent || hasHold) return 'preparing';
+    if (allReady) return 'ready';
+    return 'received';
+}
+
+// Seed the board for a location from the full business day (one time / cold start).
+async function seedActiveBoard(location) {
+    const board = new Map();
+    const dayOrders = await fetchAllPages(location, { businessDate: currentBusinessDate() });
+    for (const order of dayOrders) {
+        const stage = stageForOrder(order);
+        if (!stage) continue;
+        board.set(order.orderGuid || order.orderID, {
+            orderNumber: order.orderNumber,
+            stage,
+            openedDate: order.openedDate || null,
+            updatedAt: Date.now(),
+        });
+    }
+    activeBoard[location] = board;
+    activeBoardSeeded[location] = true;
+    return board;
+}
+
+// Return the current board (oldest-first), seeding on first use.
+async function getActiveOrders(location) {
+    if (!activeBoardSeeded[location]) {
+        await seedActiveBoard(location);
+    }
+    const board = activeBoard[location] || new Map();
+    const list = [...board.entries()].map(([orderGuid, e]) => ({
+        orderGuid,
+        orderNumber: e.orderNumber,
+        stage: e.stage,
+        openedDate: e.openedDate,
+    }));
+    list.sort((a, b) => {
+        const ta = a.openedDate ? new Date(a.openedDate).getTime() : Infinity;
+        const tb = b.openedDate ? new Date(b.openedDate).getTime() : Infinity;
+        return ta - tb;
+    });
+    return list;
+}
+
+/**
+ * Apply a Toast order webhook to the board: fetch that single order's current
+ * detail, recompute its stage, and update/remove it on the board. Returns the
+ * updated entry (or { removed: true }) so the caller can push it via SSE.
+ * Fetches only ONE order (cheap) — not the whole day.
+ */
+async function applyOrderWebhookToBoard(location, orderGuid) {
+    if (!orderGuid) return null;
+    if (!activeBoardSeeded[location]) {
+        try { await seedActiveBoard(location); } catch (e) { /* best effort */ }
+    }
+    const board = activeBoard[location] || (activeBoard[location] = new Map());
+
+    let order;
+    try {
+        const accessToken = await getAccessToken(location);
+        const { restaurantExternalId } = locations[location];
+        const res = await axios.get(`${toastApiBaseUrl}/orders/v2/orders/${orderGuid}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Toast-Restaurant-External-ID': restaurantExternalId,
+            },
+        });
+        order = res.data;
+    } catch (e) {
+        return null; // couldn't fetch; leave board unchanged
+    }
+
+    const firstCheck = (order.checks || [])[0] || {};
+    const normalized = {
+        voided: order.voided,
+        closedDate: order.closedDate,
+        openedDate: order.openedDate,
+        orderNumber: firstCheck.displayNumber || order.displayNumber,
+        orderDetails: (order.checks || []).flatMap((c) => c.selections || []),
+    };
+
+    const stage = stageForOrder(normalized);
+    if (!stage) {
+        if (board.has(orderGuid)) {
+            board.delete(orderGuid);
+            return { orderGuid, removed: true };
+        }
+        return null;
+    }
+
+    board.set(orderGuid, {
+        orderNumber: normalized.orderNumber,
+        stage,
+        openedDate: normalized.openedDate || null,
+        updatedAt: Date.now(),
+    });
+    return { orderGuid, orderNumber: normalized.orderNumber, stage, openedDate: normalized.openedDate || null };
+}
+
 async function getCompletedOrders(location, req) {
     let currentPage = 1;
     let completedOrders = [];
@@ -371,5 +492,7 @@ module.exports = {
     getCompletedOrders,
     getNotification,
     setNotification,
-    invalidatePendingOrders
+    invalidatePendingOrders,
+    getActiveOrders,
+    applyOrderWebhookToBoard
 };
