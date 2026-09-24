@@ -6,6 +6,18 @@ const { getItemCategoryMap } = require('./menuService');
 
 const timeZoneOptions = { timeZone: 'America/New_York' };
 
+// Toast returns the epoch sentinel "1970-01-01T00:00:00.000+0000" for unset date
+// fields (e.g. deletedDate/closedDate/paidDate on orders that aren't
+// deleted/closed/paid). Treating that truthy string as "set" wrongly filtered
+// out every order. realDate() returns the ISO string only when it's a genuine
+// timestamp (after ~1971), otherwise null.
+function realDate(value) {
+    if (!value) return null;
+    const t = new Date(value).getTime();
+    if (Number.isNaN(t) || t < 31536000000) return null; // < 1971 => sentinel/epoch
+    return value;
+}
+
 // In-memory cache for the pending-orders result, keyed by location. Fetching
 // pending orders hits the Toast API across multiple pages and returns a large
 // payload, so caching for a short window keeps repeated polls (auto-refreshing
@@ -83,9 +95,11 @@ async function getOrdersBulk(location, page = 1, businessDate, dateRange) {
                 openedDate: order.openedDate || order.createdDate || check.openedDate || order.modifiedDate || null,
                 // Close / void state — used to drop finished orders from the
                 // live queue even if a stray item is still flagged SENT.
-                closedDate: order.closedDate || check.closedDate || null,
-                paidDate: check.paidDate || null,
-                deletedDate: check.deletedDate || null,
+                // NOTE: Toast returns the epoch sentinel "1970-01-01T00:00:00.000+0000"
+                // for unset date fields, so we normalize those to null via realDate().
+                closedDate: realDate(order.closedDate) || realDate(check.closedDate),
+                paidDate: realDate(check.paidDate),
+                deletedDate: realDate(check.deletedDate),
                 paymentStatus: check.paymentStatus || null,
                 voided: !!(order.voided || check.voided),
             }))
@@ -159,19 +173,30 @@ function flattenModifiers(modifiers) {
     return names;
 }
 
+// How long an order with SENT items stays on the live board, measured from when
+// it was opened. This location closes/pays tickets while items are still SENT
+// (the kitchen doesn't mark items READY), so filtering purely on "closed" hid
+// genuinely-active orders. Instead we show recent SENT orders and let older ones
+// age off. Tune as needed.
+const ACTIVE_WINDOW_MINUTES = 30;
+
 // Derive the list of orders that still have SENT (pending) items, from a
-// working set. Fulfilled orders (no SENT items left) are naturally excluded.
+// working set. An order shows if it has SENT items AND was opened within the
+// active window; voided/deleted orders are always excluded. This keeps
+// just-placed orders visible (even if paid immediately) while stale orders from
+// earlier in the day drop off on their own.
 function derivePending(ws) {
     const result = [];
+    const cutoff = Date.now() - ACTIVE_WINDOW_MINUTES * 60 * 1000;
     for (const order of ws.orders.values()) {
-        // Skip orders that are finished or gone: closed, paid, voided, or deleted.
-        // Toast doesn't always flip every item to READY when a ticket is closed,
-        // so an item can linger as SENT — filtering on order state prevents those
-        // already-closed orders from showing on the live queue.
-        if (order.voided || order.closedDate || order.paidDate || order.deletedDate
-            || order.paymentStatus === 'PAID' || order.paymentStatus === 'CLOSED') {
-            continue;
-        }
+        // Always exclude voided / deleted orders — they're gone, not pending.
+        if (order.voided || order.deletedDate) continue;
+
+        // Age off orders opened before the active window (handles the fact that
+        // tickets here get closed/paid while items are still flagged SENT).
+        const openedMs = order.openedDate ? new Date(order.openedDate).getTime() : null;
+        if (openedMs !== null && openedMs < cutoff) continue;
+
         const pendingItems = (order.orderDetails || []).filter((item) => item.fulfillmentStatus === 'SENT');
         if (pendingItems.length > 0) {
             result.push({
@@ -272,20 +297,25 @@ async function refreshPendingWorkingSet(location) {
 // kept fresh by Toast order webhooks — each event updates a single order and an
 // SSE push refreshes the lobby screen. Nothing is polled on a timer.
 //   stage: 'received' | 'preparing' | 'ready'  (completed/voided are removed)
-const activeBoard = {};        // location -> Map<orderGuid, entry>
-const activeBoardSeeded = {};  // location -> boolean
+const activeBoard = {};          // location -> Map<orderGuid, entry>
+const activeBoardSeeded = {};    // location -> boolean
+const activeBoardSeededAt = {};  // location -> timestamp of last seed (for TTL re-seed)
 
 // Compute a board stage from an order's items. Returns null when the order
-// should NOT be on the board (voided, or done: closed + all items ready).
+// should NOT be on the board. Voided/deleted are always excluded; otherwise the
+// order stays on the board while it's within the active window (this location
+// closes tickets while items are still SENT, so we age off by time, not by the
+// closed flag).
 function stageForOrder(order) {
-    // Finished or gone: closed, paid, voided, or deleted. Toast may leave a stray
-    // item flagged SENT after a ticket is closed, so we gate on order state.
-    if (order.voided || order.closedDate || order.paidDate || order.deletedDate
-        || order.paymentStatus === 'PAID' || order.paymentStatus === 'CLOSED') {
-        return null;
-    }
+    if (order.voided || order.deletedDate) return null;
     const items = order.orderDetails || [];
     if (items.length === 0) return null;
+
+    const openedMs = order.openedDate ? new Date(order.openedDate).getTime() : null;
+    if (openedMs !== null && openedMs < Date.now() - ACTIVE_WINDOW_MINUTES * 60 * 1000) {
+        return null; // aged off the board
+    }
+
     const statuses = items.map((it) => it.fulfillmentStatus);
     const hasSent = statuses.includes('SENT');
     const hasHold = statuses.includes('HOLD');
@@ -311,21 +341,38 @@ async function seedActiveBoard(location) {
     }
     activeBoard[location] = board;
     activeBoardSeeded[location] = true;
+    activeBoardSeededAt[location] = Date.now();
     return board;
 }
 
-// Return the current board (oldest-first), seeding on first use.
+// How long a seed stays fresh before getActiveOrders re-seeds from Toast.
+// Webhooks keep the board live between loads; this is a self-healing refresh so
+// the board never gets stuck (e.g. if webhooks aren't firing) and aged-off
+// orders get re-evaluated. Behind this, the whole-day fetch is the source of truth.
+const ACTIVE_BOARD_TTL_MS = 20 * 1000;
+
+// Return the current board (oldest-first). Re-seeds from Toast when the board
+// hasn't been refreshed within the TTL, otherwise serves the in-memory board
+// (kept live by webhooks). Also drops any entries that have aged out.
 async function getActiveOrders(location) {
-    if (!activeBoardSeeded[location]) {
-        await seedActiveBoard(location);
+    const seededAt = activeBoardSeededAt[location] || 0;
+    if (!activeBoardSeeded[location] || Date.now() - seededAt > ACTIVE_BOARD_TTL_MS) {
+        try { await seedActiveBoard(location); } catch (e) { /* keep existing board on failure */ }
     }
     const board = activeBoard[location] || new Map();
-    const list = [...board.entries()].map(([orderGuid, e]) => ({
-        orderGuid,
-        orderNumber: e.orderNumber,
-        stage: e.stage,
-        openedDate: e.openedDate,
-    }));
+    const cutoff = Date.now() - ACTIVE_WINDOW_MINUTES * 60 * 1000;
+    const list = [...board.entries()]
+        .filter(([, e]) => {
+            // Drop entries that have aged out of the active window.
+            const t = e.openedDate ? new Date(e.openedDate).getTime() : null;
+            return t === null || t >= cutoff;
+        })
+        .map(([orderGuid, e]) => ({
+            orderGuid,
+            orderNumber: e.orderNumber,
+            stage: e.stage,
+            openedDate: e.openedDate,
+        }));
     list.sort((a, b) => {
         const ta = a.openedDate ? new Date(a.openedDate).getTime() : Infinity;
         const tb = b.openedDate ? new Date(b.openedDate).getTime() : Infinity;
@@ -364,10 +411,10 @@ async function applyOrderWebhookToBoard(location, orderGuid) {
 
     const firstCheck = (order.checks || [])[0] || {};
     const normalized = {
-        voided: order.voided || firstCheck.voided,
-        closedDate: order.closedDate || firstCheck.closedDate || null,
-        paidDate: firstCheck.paidDate || null,
-        deletedDate: firstCheck.deletedDate || null,
+        voided: !!(order.voided || firstCheck.voided),
+        closedDate: realDate(order.closedDate) || realDate(firstCheck.closedDate),
+        paidDate: realDate(firstCheck.paidDate),
+        deletedDate: realDate(firstCheck.deletedDate),
         paymentStatus: firstCheck.paymentStatus || null,
         openedDate: order.openedDate,
         orderNumber: firstCheck.displayNumber || order.displayNumber,
