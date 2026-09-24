@@ -27,9 +27,15 @@ const REFRESH_MS = 30000;
 const LiveOrders = () => {
     const { restaurantId } = useParams();
     const [searchParams] = useSearchParams();
-    // Optional ?categories=Tandoor,Breads to show a different category view on
-    // the same page. When absent, the server uses its default kitchen categories.
-    const categoriesParam = (searchParams.get('categories') || '').trim();
+    // Optional category override so the same page can show a different view.
+    // Accepts any URL form: repeated ?categories=Tandoor&categories=Breads,
+    // comma-separated ?categories=Tandoor,Breads, or pipe-separated.
+    // When absent, the server uses its default kitchen categories.
+    const categoryList = searchParams.getAll('categories')
+        .flatMap((v) => String(v).split(/[,|]/))
+        .map((c) => c.trim())
+        .filter(Boolean);
+    const categoriesParam = categoryList.join(', '); // for display in the title
     useKeepAlive({ audio: true }); // always-on kitchen display
 
     const [orders, setOrders] = useState([]);
@@ -76,7 +82,9 @@ const LiveOrders = () => {
     const fetchPending = useCallback(async () => {
         setLoading(true);
         try {
-            const catQuery = categoriesParam ? `&categories=${encodeURIComponent(categoriesParam)}` : '';
+            const catQuery = categoryList
+                .map((c) => `&categories=${encodeURIComponent(c)}`)
+                .join('');
             const res = await fetch(`${API_BASE_URL}/api/pendingOrders?location=${restaurantId}${catQuery}`);
             const data = await res.json();
             // The endpoint returns an array of pending orders, or a status string

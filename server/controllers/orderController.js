@@ -26,10 +26,15 @@ module.exports = {
     getPendingOrders: async (req, res) => {
         try {
             const location = req.query.location.toUpperCase();
-            // Optional ?categories=Tandoor,Breads to override the default kitchen
-            // categories, so the same endpoint/page can show a different view.
-            const categories = (req.query.categories || '')
-                .split(',')
+            // Optional category override so the same page can show a different view.
+            // Accepts any of these URL forms:
+            //   ?categories=Tandoor&categories=Breads   (repeated param — Express gives an array)
+            //   ?categories=Tandoor,Breads              (comma-separated)
+            //   ?categories=Tandoor|Breads              (pipe-separated)
+            const raw = req.query.categories;
+            const categories = (Array.isArray(raw) ? raw : [raw])
+                .filter(Boolean)
+                .flatMap((v) => String(v).split(/[,|]/))
                 .map((c) => c.trim())
                 .filter(Boolean);
             const pendingOrders = await getPendingOrders(location, categories);
