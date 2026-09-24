@@ -812,7 +812,7 @@ const SignagePlayer = () => {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    height: '120px',
+                    height: '240px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -825,10 +825,10 @@ const SignagePlayer = () => {
                     zIndex: 200,
                     boxShadow: '0 -4px 20px rgba(0,0,0,0.3)',
                 }}>
-                    <span style={{ fontSize: '2.5rem', marginRight: '15px' }}>🔔</span>
+                    <span style={{ fontSize: '4.5rem', marginRight: '24px' }}>🔔</span>
                     <span style={{
                         fontFamily: "'Lobster', cursive",
-                        fontSize: '3.5rem',
+                        fontSize: '6rem',
                         color: '#fff',
                         textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
                         letterSpacing: '2px',
@@ -836,7 +836,7 @@ const SignagePlayer = () => {
                     }}>
                         Order #{readyOrderNum} is Ready!
                     </span>
-                    <span style={{ fontSize: '2.5rem', marginLeft: '15px' }}>🎉</span>
+                    <span style={{ fontSize: '4.5rem', marginLeft: '24px' }}>🎉</span>
                 </div>
             )}
 
