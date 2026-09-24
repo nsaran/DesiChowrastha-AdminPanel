@@ -81,6 +81,13 @@ async function getOrdersBulk(location, page = 1, businessDate, dateRange) {
                 // When the order was placed (ISO-8601 UTC). Used to sort the
                 // kitchen queue by arrival and compute each order's wait time.
                 openedDate: order.openedDate || order.createdDate || check.openedDate || order.modifiedDate || null,
+                // Close / void state — used to drop finished orders from the
+                // live queue even if a stray item is still flagged SENT.
+                closedDate: order.closedDate || check.closedDate || null,
+                paidDate: check.paidDate || null,
+                deletedDate: check.deletedDate || null,
+                paymentStatus: check.paymentStatus || null,
+                voided: !!(order.voided || check.voided),
             }))
         ).flat();
         
@@ -126,6 +133,11 @@ function upsertOrders(ws, orders) {
             orderNumber: order.orderNumber,
             orderDetails: order.orderDetails || [],
             openedDate: order.openedDate || null,
+            closedDate: order.closedDate || null,
+            paidDate: order.paidDate || null,
+            deletedDate: order.deletedDate || null,
+            paymentStatus: order.paymentStatus || null,
+            voided: !!order.voided,
         });
     });
 }
@@ -152,6 +164,14 @@ function flattenModifiers(modifiers) {
 function derivePending(ws) {
     const result = [];
     for (const order of ws.orders.values()) {
+        // Skip orders that are finished or gone: closed, paid, voided, or deleted.
+        // Toast doesn't always flip every item to READY when a ticket is closed,
+        // so an item can linger as SENT — filtering on order state prevents those
+        // already-closed orders from showing on the live queue.
+        if (order.voided || order.closedDate || order.paidDate || order.deletedDate
+            || order.paymentStatus === 'PAID' || order.paymentStatus === 'CLOSED') {
+            continue;
+        }
         const pendingItems = (order.orderDetails || []).filter((item) => item.fulfillmentStatus === 'SENT');
         if (pendingItems.length > 0) {
             result.push({
@@ -258,14 +278,18 @@ const activeBoardSeeded = {};  // location -> boolean
 // Compute a board stage from an order's items. Returns null when the order
 // should NOT be on the board (voided, or done: closed + all items ready).
 function stageForOrder(order) {
-    if (order.voided) return null;
+    // Finished or gone: closed, paid, voided, or deleted. Toast may leave a stray
+    // item flagged SENT after a ticket is closed, so we gate on order state.
+    if (order.voided || order.closedDate || order.paidDate || order.deletedDate
+        || order.paymentStatus === 'PAID' || order.paymentStatus === 'CLOSED') {
+        return null;
+    }
     const items = order.orderDetails || [];
     if (items.length === 0) return null;
     const statuses = items.map((it) => it.fulfillmentStatus);
     const hasSent = statuses.includes('SENT');
     const hasHold = statuses.includes('HOLD');
     const allReady = statuses.length > 0 && statuses.every((s) => s === 'READY');
-    if (order.closedDate && allReady) return null; // picked up / done
     if (hasSent || hasHold) return 'preparing';
     if (allReady) return 'ready';
     return 'received';
@@ -340,8 +364,11 @@ async function applyOrderWebhookToBoard(location, orderGuid) {
 
     const firstCheck = (order.checks || [])[0] || {};
     const normalized = {
-        voided: order.voided,
-        closedDate: order.closedDate,
+        voided: order.voided || firstCheck.voided,
+        closedDate: order.closedDate || firstCheck.closedDate || null,
+        paidDate: firstCheck.paidDate || null,
+        deletedDate: firstCheck.deletedDate || null,
+        paymentStatus: firstCheck.paymentStatus || null,
         openedDate: order.openedDate,
         orderNumber: firstCheck.displayNumber || order.displayNumber,
         orderDetails: (order.checks || []).flatMap((c) => c.selections || []),
