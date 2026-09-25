@@ -7,6 +7,7 @@ const fs = require('fs');
 const { fetchMenu } = require('./controllers/menuController');
 const { getOrders, getOrdersBulk, getPendingOrders, getCompletedOrders, getNotification, setNotification } = require('./controllers/orderController');
 const { sendFeedbackToOwner } = require('./services/feedbackService');
+const { getRecipients } = require('./services/recipients');
 const { initializeScheduler, getJobs, upsertJob, deleteJob, triggerJob } = require('./services/scheduler/scheduler');
 const { addSubscriber } = require('./services/googleSheetsService');
 const NodeCache = require("node-cache");
@@ -1294,7 +1295,7 @@ app.post('/api/send-invoice-whatsapp', verifyToken, requireRole(['owner']), invo
         // Step 2: Determine recipient phone number(s)
         let recipients = [];
         if (recipient === 'owner') {
-            const ownerNumbers = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+            const ownerNumbers = getRecipients('owner', locationKey);
             if (ownerNumbers.length === 0) {
                 return res.status(400).json({ error: 'OWNER_PHONE_NUMBER not configured' });
             }

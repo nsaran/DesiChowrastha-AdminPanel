@@ -1,5 +1,6 @@
 const axios = require('axios');
 const logger = require('../utils/logger');
+const { getRecipientsForRoles } = require('./recipients');
 
 /**
  * Send customer feedback to the restaurant owner via WhatsApp
@@ -18,9 +19,6 @@ const WA_PHONE_NUMBER_IDS = {
     NASHUA: process.env.WA_PHONE_NUMBER_ID_NASHUA
 };
 const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
-const OWNER_PHONE_NUMBERS = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
-const MANAGER_PHONE_NUMBERS = (process.env.MANAGER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
-const ALL_RECIPIENTS = [...new Set([...OWNER_PHONE_NUMBERS, ...MANAGER_PHONE_NUMBERS])];
 const WA_FEEDBACK_TEMPLATE_NAME = process.env.WA_FEEDBACK_TEMPLATE_NAME || 'customer_feedback';
 const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en';
 const WA_API_VERSION = 'v21.0';
@@ -42,6 +40,7 @@ async function sendFeedbackToOwner(feedback) {
     // Determine the correct WA phone number ID based on location
     const locationKey = (location || 'WESTBOROUGH').toUpperCase();
     const phoneNumberId = WA_PHONE_NUMBER_IDS[locationKey] || WA_PHONE_NUMBER_IDS.WESTBOROUGH;
+    const ALL_RECIPIENTS = getRecipientsForRoles(['owner', 'manager'], locationKey);
 
     if (!phoneNumberId || !WA_ACCESS_TOKEN || ALL_RECIPIENTS.length === 0) {
         logger.error(`WhatsApp API credentials not configured for ${locationKey}. Check WA_PHONE_NUMBER_ID_${locationKey}, WA_ACCESS_TOKEN, and OWNER_PHONE_NUMBER/MANAGER_PHONE_NUMBER in .env`);

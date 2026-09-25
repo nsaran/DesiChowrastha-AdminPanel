@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const logger = require('../../utils/logger');
 const { executeJob } = require('./jobImplementations');
+const { getRecipients } = require('../recipients');
 
 const CONFIG_PATH = path.join(__dirname, 'schedulerConfig.json');
 
@@ -54,7 +55,7 @@ async function sendWhatsAppMessage(job, templateParams) {
     const phoneNumberId = getPhoneNumberId(job.location);
     const recipients = job.recipients.length > 0
         ? job.recipients
-        : (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+        : getRecipients('owner', job.location);
 
     if (!phoneNumberId || !WA_ACCESS_TOKEN || recipients.length === 0) {
         logger.error(`[Scheduler] WhatsApp not configured for job: ${job.id}`);

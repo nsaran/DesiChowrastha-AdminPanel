@@ -1,5 +1,6 @@
 const axios = require('axios');
 const logger = require('../utils/logger');
+const { getRecipients } = require('./recipients');
 
 /**
  * Stock Order WhatsApp Notification Service
@@ -22,11 +23,6 @@ function getPhoneNumberId(location) {
     const loc = location.toUpperCase();
     if (loc === 'NASHUA') return process.env.WA_PHONE_NUMBER_ID_NASHUA;
     return process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID;
-}
-
-function getRecipients(role) {
-    const envVar = role === 'chef' ? 'CHEF_PHONE_NUMBER' : 'PURCHASER_PHONE_NUMBER';
-    return (process.env[envVar] || '').split(',').map(n => n.trim()).filter(Boolean);
 }
 
 function getOrderUrl(location, orderId) {
@@ -58,10 +54,10 @@ async function sendStockOrderNotification(location, order, event, notifyRole = '
     // Determine recipients
     let recipients = [];
     if (notifyRole === 'chef' || notifyRole === 'both') {
-        recipients.push(...getRecipients('chef'));
+        recipients.push(...getRecipients('chef', location));
     }
     if (notifyRole === 'purchaser' || notifyRole === 'both') {
-        recipients.push(...getRecipients('purchaser'));
+        recipients.push(...getRecipients('purchaser', location));
     }
     // Deduplicate
     recipients = [...new Set(recipients)];

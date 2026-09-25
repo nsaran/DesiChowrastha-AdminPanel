@@ -4,6 +4,7 @@ const path = require('path');
 const { getAccessToken } = require('./authService');
 const { toastApiBaseUrl, locations } = require('../config/config');
 const logger = require('../utils/logger');
+const { getRecipientsForRoles } = require('./recipients');
 
 const retryDelay = (retryCount) => Math.pow(2, retryCount) * 1000;
 
@@ -352,9 +353,7 @@ async function sendOutOfStockNotification(outOfStockItems, location) {
         ? process.env.WA_PHONE_NUMBER_ID_NASHUA
         : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
     const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
-    const OWNER_PHONE_NUMBERS = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
-    const MANAGER_PHONE_NUMBERS = (process.env.MANAGER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
-    const ALL_RECIPIENTS = [...new Set([...OWNER_PHONE_NUMBERS, ...MANAGER_PHONE_NUMBERS])];
+    const ALL_RECIPIENTS = getRecipientsForRoles(['owner', 'manager'], location);
     const WA_OUT_OF_STOCK_TEMPLATE = process.env.WA_OUT_OF_STOCK_TEMPLATE_NAME;
     const WA_TEMPLATE_LANGUAGE = process.env.WA_TEMPLATE_LANGUAGE || 'en';
 

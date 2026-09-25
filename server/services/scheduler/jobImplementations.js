@@ -6,6 +6,7 @@ const { generateTodaysSpecialImage } = require('../todaysSpecialImage');
 const logger = require('../../utils/logger');
 require('../../config/firebaseAdmin'); // ensure Admin SDK is initialized
 const { getFirestore } = require('firebase-admin/firestore');
+const { getRecipients } = require('../recipients');
 
 /**
  * Job Implementation Functions
@@ -176,7 +177,7 @@ async function sendTodaysSpecialNotification(location) {
     const phoneNumberId = locationKey === 'NASHUA'
         ? process.env.WA_PHONE_NUMBER_ID_NASHUA
         : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
-    const recipients = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+    const recipients = getRecipients('owner', locationKey);
 
     const url = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
 
@@ -260,7 +261,7 @@ async function sendTomorrowsSpecialImage(location) {
         const phoneNumberId = locationKey === 'NASHUA'
             ? process.env.WA_PHONE_NUMBER_ID_NASHUA
             : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
-        const recipients = (process.env.OWNER_PHONE_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+        const recipients = getRecipients('owner', locationKey);
 
         // Use the public URL to serve the image
         const serverUrl = process.env.SERVER_PUBLIC_URL || 'http://96.32.117.226:3000';
@@ -652,7 +653,7 @@ async function sendPartyOrdersCsvToOwners(location, csv, monthLabel, orderCount,
 
     const recipients = (job.recipients && job.recipients.length > 0)
         ? job.recipients
-        : (process.env.OWNER_PHONE_NUMBER || '').split(',').map((n) => n.trim()).filter(Boolean);
+        : getRecipients('owner', locationKey);
 
     if (!WA_ACCESS_TOKEN || !phoneNumberId) {
         logger.error(`[Scheduler] party_orders_monthly_csv: WhatsApp not configured for ${locationKey}`);
@@ -892,7 +893,7 @@ async function sendVoidReportToOwners(location, csv, dateLabel, voidCount, total
 
     const recipients = (job.recipients && job.recipients.length > 0)
         ? job.recipients
-        : (process.env.OWNER_PHONE_NUMBER || '').split(',').map((n) => n.trim()).filter(Boolean);
+        : getRecipients('owner', locationKey);
 
     if (!WA_ACCESS_TOKEN || !phoneNumberId) {
         logger.error(`[Scheduler] void_transactions_report: WhatsApp not configured for ${locationKey}`);
