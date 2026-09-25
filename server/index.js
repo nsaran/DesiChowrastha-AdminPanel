@@ -996,7 +996,50 @@ app.post('/api/stock-orders/:orderId/receipts', receiptUpload.array('receipts', 
         uploadedAt: new Date().toISOString()
     }));
     logger.info(`[Receipts] ${files.length} receipt(s) uploaded for order ${req.params.orderId}`);
+
+    // Respond immediately, then scan each receipt in the background (upload to
+    // Firebase Storage + gpt-4o extraction + Firestore transaction). Vision calls
+    // take a few seconds, so we don't block the upload response on them.
+    const location = (req.query.location || req.body.location || '').toUpperCase();
+    if (location) {
+        const { scanAndStoreReceipt } = require('./services/receiptScanService');
+        const orderId = req.params.orderId;
+        (async () => {
+            for (const f of req.files) {
+                try {
+                    await scanAndStoreReceipt({
+                        location,
+                        orderId,
+                        filePath: f.path,
+                        filename: f.filename,
+                        originalName: f.originalname,
+                        size: f.size,
+                    });
+                } catch (e) {
+                    logger.error(`[Receipts] scan failed for ${f.filename}: ${e.message}`);
+                }
+            }
+        })();
+    } else {
+        logger.warn('[Receipts] no location provided; skipping AI scan (receipt saved locally only)');
+    }
+
     res.json({ success: true, files });
+});
+
+// List AI-scanned receipt transactions (optionally filtered by order).
+// GET /api/stock-orders/:orderId/receipt-transactions?location=..
+app.get('/api/stock-orders/:orderId/receipt-transactions', async (req, res) => {
+    try {
+        const location = (req.query.location || '').toUpperCase();
+        if (!location) return res.status(400).json({ error: 'location is required' });
+        const { listReceiptTransactions } = require('./services/receiptScanService');
+        const items = await listReceiptTransactions(location, req.params.orderId);
+        res.json(items);
+    } catch (error) {
+        logger.error(`[Receipts] list transactions failed: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // List receipts for an order
