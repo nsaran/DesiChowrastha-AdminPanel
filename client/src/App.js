@@ -53,6 +53,7 @@ import Employees from './components/Restaurant/Financials/Employees';
 import SalaryLedger from './components/Restaurant/Financials/SalaryLedger';
 import SalaryYearView from './components/Restaurant/Financials/SalaryYearView';
 import CashPayments from './components/Restaurant/Financials/CashPayments';
+import ReceiptTransactions from './components/Restaurant/Financials/ReceiptTransactions';
 import BankTransactions from './components/Restaurant/OtherServices/BankTransactions';
 import TvMenuErrorBoundary from './components/Restaurant/TvMenu/ErrorBoundary';
 
@@ -120,6 +121,7 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/Financials/SalaryLedger" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><SalaryLedger /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/SalaryYearView" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><SalaryYearView /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/CashPayments" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><CashPayments /></RoleProtectedRoute>} />
+          <Route path="/dashboard/:restaurantId/Financials/ReceiptTransactions" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><ReceiptTransactions /></RoleProtectedRoute>} />
 
           {/* Chef routes */}
           <Route path="/dashboard/:restaurantId/OtherServices/ManageTodaysSpecial" element={<RoleProtectedRoute allowedRoles={['owner', 'chef']}><TvMenuErrorBoundary><ManageTodaysSpecial /></TvMenuErrorBoundary></RoleProtectedRoute>} />

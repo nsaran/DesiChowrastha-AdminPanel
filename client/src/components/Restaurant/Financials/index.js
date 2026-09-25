@@ -39,6 +39,9 @@ const Financials = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="menu4-button" onClick={() => handleNavigate('Financials/CashPayments')}>Cash Payments</Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className="menu1-button" onClick={() => handleNavigate('Financials/ReceiptTransactions')}>Receipt Transactions</Button>
+                </Form.Item>
             </Form>
         </div>
     );

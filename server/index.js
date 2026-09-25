@@ -74,6 +74,10 @@ app.use('/api/payroll', payrollRoutes);
 const cashPaymentRoutes = require('./routes/cashPayments');
 app.use('/api/cash-payments', cashPaymentRoutes);
 
+// Receipt transactions: view/analyze AI-scanned receipts (owner + accountsManager)
+const receiptTransactionRoutes = require('./routes/receiptTransactions');
+app.use('/api/receipt-transactions', receiptTransactionRoutes);
+
 
 // Strict limit for feedback: 5 per 15 minutes per IP
 const feedbackLimiter = rateLimit({
