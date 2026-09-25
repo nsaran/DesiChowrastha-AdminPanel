@@ -74,9 +74,6 @@ app.use('/api/payroll', payrollRoutes);
 const cashPaymentRoutes = require('./routes/cashPayments');
 app.use('/api/cash-payments', cashPaymentRoutes);
 
-// Soft launch menu (public GET; owner/manager edit)
-const softLaunchRoutes = require('./routes/softLaunch');
-app.use('/api/soft-launch', softLaunchRoutes);
 
 // Strict limit for feedback: 5 per 15 minutes per IP
 const feedbackLimiter = rateLimit({

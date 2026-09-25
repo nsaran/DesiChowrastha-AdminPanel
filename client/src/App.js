@@ -37,8 +37,6 @@ import CustomTvMenuLanding from './components/Restaurant/CustomTvMenu/CustomTvMe
 import CustomTvMenuPageView from './components/Restaurant/CustomTvMenu/CustomTvMenuPageView';
 import WhatsAppOrders from './components/Restaurant/TvMenu/pages/WhatsAppOrders';
 import TabletMenu from './components/Restaurant/TvMenu/pages/TabletMenu';
-import SoftLaunch from './components/Restaurant/TvMenu/pages/SoftLaunch';
-import SoftLaunchManage from './components/Restaurant/TvMenu/pages/SoftLaunchManage';
 import QRCodes from './components/Restaurant/TvMenu/pages/QRCodes';
 import OrderStatus from './components/Restaurant/TvMenu/pages/OrderStatus';
 import OrderTracker from './components/Restaurant/TvMenu/pages/OrderTracker';
@@ -70,8 +68,6 @@ const App = () => {
           <Route path="/login/:restaurantId" element={<RestaurantLoginPage />} />
 
           {/* Customer-facing routes (no auth required) */}
-          {/* Temporary soft-launch notice (limited menu) */}
-          <Route path="/dashboard/:restaurantId/SoftLaunch" element={<SoftLaunch />} />
           {/* TabletMenu directly under the location (matches the printed QR code URL) */}
           <Route path="/dashboard/:restaurantId/TabletMenu" element={<TabletMenu />} />
           <Route path="/dashboard/:restaurantId/OtherServices/TabletMenu" element={<TabletMenu />} />
@@ -115,7 +111,6 @@ const App = () => {
           <Route path="/dashboard/:restaurantId/OtherServices" element={<RoleProtectedRoute allowedRoles={['owner', 'manager', 'chef']}><OtherServices /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices/FacebookPost" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><TvMenuErrorBoundary><FacebookPost /></TvMenuErrorBoundary></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/OtherServices/WhatsAppOrders" element={<RoleProtectedRoute allowedRoles={['owner']}><WhatsAppOrders /></RoleProtectedRoute>} />
-          <Route path="/dashboard/:restaurantId/OtherServices/SoftLaunchManage" element={<RoleProtectedRoute allowedRoles={['owner', 'manager']}><SoftLaunchManage /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><Financials /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/BankTransactions" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><BankTransactions /></RoleProtectedRoute>} />
           <Route path="/dashboard/:restaurantId/Financials/YearlyReport" element={<RoleProtectedRoute allowedRoles={['owner', 'accountsManager']}><YearlyReport /></RoleProtectedRoute>} />
