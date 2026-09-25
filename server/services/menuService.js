@@ -426,7 +426,7 @@ function clearMenuCache(location) {
  * Build a map of item name → menu group (category) name for a location,
  * using the already-cached raw menu. If the cache is empty, fetches the menu
  * first (which populates it). Used to filter pending orders by category.
- * @returns {Promise<Map<string, string>>} item name (lowercase) → group name
+ * @returns {Promise<Map<string, Set<string>>>} item name (lowercase) → set of group names
  */
 async function getItemCategoryMap(location) {
     // Ensure the raw menu cache is populated for this location.
@@ -441,14 +441,20 @@ async function getItemCategoryMap(location) {
                 : null;
     }
 
-    const map = new Map(); // key: lowercase item name, value: group name
+    // key: lowercase item name, value: Set of group names it belongs to.
+    // An item can appear in more than one menu group (e.g. "Chicken Malai Kabab"
+    // under both "Tandoor" and the bar menu's "APPITIZER"), so we collect ALL of
+    // its groups rather than letting the last one overwrite the earlier ones.
+    const map = new Map();
     if (!rawMenu) return map;
 
     for (const menu of rawMenu.menus || []) {
         for (const group of menu.menuGroups || []) {
             for (const item of group.menuItems || []) {
                 if (item.name) {
-                    map.set(item.name.toLowerCase(), group.name);
+                    const key = item.name.toLowerCase();
+                    if (!map.has(key)) map.set(key, new Set());
+                    map.get(key).add(group.name);
                 }
             }
         }

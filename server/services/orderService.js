@@ -253,8 +253,12 @@ async function getPendingOrders(location, categoriesOverride) {
                 .map((order) => ({
                     ...order,
                     items: order.items.filter((item) => {
-                        const group = categoryMap.get((item.displayName || '').toLowerCase());
-                        return group ? categorySet.has(group) : false;
+                        // An item may belong to multiple menu groups; match if ANY
+                        // of its groups is one of the requested categories.
+                        const groups = categoryMap.get((item.displayName || '').toLowerCase());
+                        if (!groups) return false;
+                        for (const g of groups) if (categorySet.has(g)) return true;
+                        return false;
                     }),
                 }))
                 .filter((order) => order.items.length > 0);
