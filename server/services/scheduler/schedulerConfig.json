@@ -168,6 +168,26 @@
       "templateName": "party_order_invoice",
       "templateLanguage": "en",
       "recipients": []
+    },
+    {
+      "id": "westborough_party_orders_tomorrow_notify",
+      "name": "Westborough Tomorrow's Party Orders (Chef + Manager)",
+      "enabled": true,
+      "schedule": "daily",
+      "cronExpression": "0 18 * * *",
+      "location": "WESTBOROUGH",
+      "templateLanguage": "en",
+      "recipients": []
+    },
+    {
+      "id": "nashua_party_orders_tomorrow_notify",
+      "name": "Nashua Tomorrow's Party Orders (Chef + Manager)",
+      "enabled": true,
+      "schedule": "daily",
+      "cronExpression": "5 18 * * *",
+      "location": "NASHUA",
+      "templateLanguage": "en",
+      "recipients": []
     }
   ]
 }

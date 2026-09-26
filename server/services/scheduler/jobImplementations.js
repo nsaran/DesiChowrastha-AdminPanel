@@ -6,7 +6,7 @@ const { generateTodaysSpecialImage } = require('../todaysSpecialImage');
 const logger = require('../../utils/logger');
 require('../../config/firebaseAdmin'); // ensure Admin SDK is initialized
 const { getFirestore } = require('firebase-admin/firestore');
-const { getRecipients } = require('../recipients');
+const { getRecipients, getRecipientsForRoles } = require('../recipients');
 
 /**
  * Job Implementation Functions
@@ -974,6 +974,174 @@ async function sendVoidReportToOwners(location, csv, dateLabel, voidCount, total
     }
 }
 
+/**
+ * Tomorrow's Party Orders — Kitchen Prep Notification
+ *
+ * Runs daily (early morning). Pulls TOMORROW's party orders from Firestore
+ * (restaurants/{location}/partyOrders, filtered by cPartyDate), renders a
+ * formatted PDF prep sheet, and sends it to the CHEF + MANAGER for that
+ * location via WhatsApp as a document (party_order_invoice template header).
+ *
+ * Returns null so the scheduler skips its default text-template send.
+ */
+async function party_orders_tomorrow_notify(job) {
+    const location = job.location;
+    logger.info(`[Scheduler] Running party_orders_tomorrow_notify for ${location}`);
+
+    try {
+        // ---- Tomorrow (America/New_York) ----
+        const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const toYmd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const tomorrowYmd = toYmd(tomorrow);
+        const dateLabel = tomorrow.toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'short', day: 'numeric',
+        });
+
+        // ---- Read party orders for this location from Firestore ----
+        const db = getFirestore();
+        const candidateIds = [
+            location.charAt(0).toUpperCase() + location.slice(1).toLowerCase(), // Nashua
+            location,                                                            // NASHUA
+            location.toLowerCase(),                                              // nashua
+        ].filter((v, i, arr) => arr.indexOf(v) === i);
+
+        let allOrders = [];
+        for (const candidate of candidateIds) {
+            const snap = await db
+                .collection('restaurants').doc(candidate)
+                .collection('partyOrders').get();
+            if (!snap.empty) {
+                allOrders = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+                break;
+            }
+        }
+
+        // Filter to tomorrow by Party Date (YYYY-MM-DD string compare)
+        const orders = allOrders.filter((o) => (o.cPartyDate || '').slice(0, 10) === tomorrowYmd);
+
+        logger.info(`[Scheduler] party_orders_tomorrow_notify: ${location} ${tomorrowYmd} -> ${orders.length} orders`);
+
+        // Nothing to send if there are no party orders tomorrow.
+        if (orders.length === 0) {
+            return null;
+        }
+
+        // ---- Build PDF prep sheet ----
+        const { generatePartyOrdersPdf } = require('../partyOrderPdf');
+        const pdfBuffer = await generatePartyOrdersPdf({ location, dateLabel, orders });
+
+        // ---- Send to chef + manager via WhatsApp document ----
+        await sendPartyOrdersPdf(location, pdfBuffer, dateLabel, orders.length, job);
+
+        return null; // skip the scheduler's default text send
+    } catch (error) {
+        logger.error(`[Scheduler] party_orders_tomorrow_notify error: ${error.message}`);
+        return null;
+    }
+}
+
+/**
+ * Upload the party-orders PDF to the WhatsApp Media API and send it to the
+ * CHEF + MANAGER as a document using the existing `party_order_invoice`
+ * template (document header + 2 body text params: [date label, order count]).
+ */
+async function sendPartyOrdersPdf(location, pdfBuffer, dateLabel, orderCount, job) {
+    const WA_ACCESS_TOKEN = process.env.WA_ACCESS_TOKEN;
+    const locationKey = location.toUpperCase();
+    const phoneNumberId = locationKey === 'NASHUA'
+        ? process.env.WA_PHONE_NUMBER_ID_NASHUA
+        : (process.env.WA_PHONE_NUMBER_ID_WESTBOROUGH || process.env.WA_PHONE_NUMBER_ID);
+
+    // Recipients: explicit job.recipients override, else chef + manager for this location.
+    const recipients = (job.recipients && job.recipients.length > 0)
+        ? job.recipients
+        : getRecipientsForRoles(['chef', 'manager'], locationKey);
+
+    if (!WA_ACCESS_TOKEN || !phoneNumberId) {
+        logger.error(`[Scheduler] party_orders_tomorrow_notify: WhatsApp not configured for ${locationKey}`);
+        return;
+    }
+    if (recipients.length === 0) {
+        logger.error(`[Scheduler] party_orders_tomorrow_notify: no chef/manager recipients for ${locationKey}`);
+        return;
+    }
+
+    const safeDate = dateLabel.replace(/[^A-Za-z0-9]+/g, '_');
+    const fileName = `PartyOrders_${locationKey}_${safeDate}.pdf`;
+
+    // Step 1: upload the PDF as media
+    const FormData = require('form-data');
+    const form = new FormData();
+    form.append('file', pdfBuffer, { filename: fileName, contentType: 'application/pdf' });
+    form.append('messaging_product', 'whatsapp');
+    form.append('type', 'application/pdf');
+
+    let mediaId;
+    try {
+        const mediaResponse = await axios.post(
+            `https://graph.facebook.com/v21.0/${phoneNumberId}/media`,
+            form,
+            { headers: { Authorization: `Bearer ${WA_ACCESS_TOKEN}`, ...form.getHeaders() } }
+        );
+        mediaId = mediaResponse.data.id;
+    } catch (error) {
+        const msg = error.response?.data?.error?.message || error.message;
+        logger.error(`[Scheduler] party_orders_tomorrow_notify: media upload failed: ${msg}`);
+        return;
+    }
+
+    if (!mediaId) {
+        logger.error('[Scheduler] party_orders_tomorrow_notify: media upload returned no id');
+        return;
+    }
+
+    // Prefer a purpose-built prep-sheet template if configured, else reuse the
+    // approved party_order_invoice template (document header + 2 body params).
+    const templateName = job.templateName
+        || process.env.WA_PARTY_ORDER_PREP_TEMPLATE_NAME
+        || 'party_order_invoice';
+    const templateLanguage = job.templateLanguage || process.env.WA_TEMPLATE_LANGUAGE || 'en';
+    const messagesUrl = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
+
+    for (const recipient of recipients) {
+        try {
+            await axios.post(messagesUrl, {
+                messaging_product: 'whatsapp',
+                to: recipient,
+                type: 'template',
+                template: {
+                    name: templateName,
+                    language: { code: templateLanguage },
+                    components: [
+                        {
+                            type: 'header',
+                            parameters: [
+                                { type: 'document', document: { id: mediaId, filename: fileName } },
+                            ],
+                        },
+                        {
+                            type: 'body',
+                            parameters: [
+                                { type: 'text', text: `Party Orders for ${dateLabel}` },
+                                { type: 'text', text: `${orderCount} order${orderCount === 1 ? '' : 's'}` },
+                            ],
+                        },
+                    ],
+                },
+            }, {
+                headers: { Authorization: `Bearer ${WA_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
+            });
+
+            logger.info(`[Scheduler] party_orders_tomorrow_notify: sent to ${recipient} for ${locationKey} (${dateLabel})`);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+        } catch (error) {
+            const msg = error.response?.data?.error?.message || error.message;
+            logger.error(`[Scheduler] party_orders_tomorrow_notify: failed to send to ${recipient}: ${msg}`);
+        }
+    }
+}
+
 // ============================================================
 // REGISTRY - Maps job IDs to implementation functions
 // ============================================================
@@ -992,7 +1160,10 @@ const jobRegistry = {
     westborough_bank_statement_reminder: bank_statement_reminder,
     void_transactions_report,
     nashua_void_transactions_report: void_transactions_report,
-    westborough_void_transactions_report: void_transactions_report
+    westborough_void_transactions_report: void_transactions_report,
+    party_orders_tomorrow_notify,
+    nashua_party_orders_tomorrow_notify: party_orders_tomorrow_notify,
+    westborough_party_orders_tomorrow_notify: party_orders_tomorrow_notify
 };
 
 /**
