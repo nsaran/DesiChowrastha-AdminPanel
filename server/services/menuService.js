@@ -24,6 +24,63 @@ const outOfStockByLocation = {
     NASHUA: new Set()
 };
 
+// ── Out-of-stock notification batching ──────────────────────────────────────
+// Workers often disable several items over a few minutes. Rather than send one
+// WhatsApp message per item, we pool newly out-of-stock items per location for
+// a fixed window (default 10 min) starting from the first item, then send ONE
+// consolidated message. The window does NOT extend on each new item so that a
+// steady trickle can't delay the message indefinitely.
+const OUT_OF_STOCK_BATCH_MS = parseInt(process.env.OUT_OF_STOCK_BATCH_MS, 10) || 10 * 60 * 1000;
+const outOfStockBatch = {
+    WESTBOROUGH: { items: new Map(), timer: null }, // Map<guid, name>
+    NASHUA: { items: new Map(), timer: null }
+};
+
+/**
+ * Add a newly out-of-stock item to the location's pending batch and ensure a
+ * flush timer is running. Deduped by guid.
+ */
+function queueOutOfStockNotification(location, itemGuid, itemName) {
+    const batch = outOfStockBatch[location];
+    if (!batch) return;
+
+    batch.items.set(itemGuid, itemName || itemGuid);
+
+    if (!batch.timer) {
+        logger.info(`[StockWebhook] ${location}: started ${Math.round(OUT_OF_STOCK_BATCH_MS / 1000)}s out-of-stock batch window`);
+        batch.timer = setTimeout(() => flushOutOfStockBatch(location), OUT_OF_STOCK_BATCH_MS);
+        if (typeof batch.timer.unref === 'function') batch.timer.unref();
+    }
+}
+
+/**
+ * Send the pooled out-of-stock items for a location as a single message and
+ * reset the batch. Skips items that were restocked before the window elapsed.
+ */
+function flushOutOfStockBatch(location) {
+    const batch = outOfStockBatch[location];
+    if (!batch) return;
+
+    batch.timer = null;
+
+    // Only report items that are still out of stock at flush time.
+    const items = [];
+    for (const [guid, name] of batch.items.entries()) {
+        if (outOfStockByLocation[location].has(guid)) {
+            items.push({ guid, name });
+        }
+    }
+    batch.items.clear();
+
+    if (items.length === 0) {
+        logger.info(`[StockWebhook] ${location}: out-of-stock batch empty at flush (all restocked), nothing to send`);
+        return;
+    }
+
+    logger.info(`[StockWebhook] ${location}: flushing out-of-stock batch (${items.length} item(s))`);
+    sendOutOfStockNotification(items, location);
+}
+
 function determineItemType(itemName) {
     const nonVegKeywords = ['boneless', 'non-veg', 'chicken', 'mutton', 'goat', 'fish', 'shrimp', 'beef', 'pork', 'keema', 'haleem', 'mandi'];
     const eggKeywords = ['egg', 'omelette'];
@@ -147,12 +204,15 @@ function handleStockWebhook(payload) {
                         if (itemName !== itemGuid) break;
                     }
                 }
-                sendOutOfStockNotification([{ guid: itemGuid, name: itemName }], location);
+                queueOutOfStockNotification(location, itemGuid, itemName);
             };
             lookupAndNotify();
         }
     } else if (eventType === 'in_stock' || details.status === 'IN_STOCK') {
         outOfStockByLocation[location].delete(itemGuid);
+        // If it was pending in the batch and hasn't been sent yet, drop it so we
+        // don't alarm about an item that's already back in stock.
+        outOfStockBatch[location]?.items.delete(itemGuid);
         logger.info(`[StockWebhook] ${location}: Item ${itemGuid} marked IN_STOCK`);
     }
 
