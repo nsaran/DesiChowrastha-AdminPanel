@@ -21,7 +21,7 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
             // Step 1: Generate PDF
             let pdfBlob;
             try {
-                pdfBlob = generateInvoicePdf(record, true);
+                pdfBlob = generateInvoicePdf(record, true, restaurantId);
             } catch (pdfError) {
                 console.error('PDF generation failed:', pdfError);
                 message.error({ content: 'Failed to generate invoice PDF.', key: 'shareInvoice' });
@@ -191,7 +191,7 @@ const PartyOrderColumns = ({ handleModalOpen, handleDeletePartyOrder, setModalVi
                         key: 'generateInvoice',
                         icon: <FilePdfOutlined />,
                         label: 'Generate Invoice',
-                        onClick: () => generateInvoicePdf(record),
+                        onClick: () => generateInvoicePdf(record, false, restaurantId),
                     },
                     { type: 'divider' },
                     {

@@ -276,7 +276,7 @@ const RestaurantPartyOrdersComponent = () => {
     // Failures here do NOT block the save — they only log/warn.
     const sendInvoiceToOwner = async (record) => {
         try {
-            const pdfBlob = generateInvoicePdf(record, true);
+            const pdfBlob = generateInvoicePdf(record, true, restaurantId);
             const formData = new FormData();
             formData.append('pdf', pdfBlob, `Invoice_${record.cInvoiceNumber}.pdf`);
             formData.append('phoneNumber', record.cPhoneNumber || '');

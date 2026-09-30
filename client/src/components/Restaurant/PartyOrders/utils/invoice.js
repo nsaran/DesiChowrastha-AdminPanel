@@ -5,7 +5,27 @@ import dcLogo from '../../../../assets/images/logo.png';
 import eSignature from '../../../../assets/images/eSignature.png';
 import reviewQR from '../../../../assets/images/qr-code.png';
 
-export const generateInvoicePdf = (order, returnBlob = false) => {
+// Per-location restaurant address blocks shown in the invoice header.
+// Keyed by lowercased location name (matches the `restaurantId` URL param).
+const RESTAURANT_ADDRESSES = {
+    nashua: [
+        '274 Daniel Webster Hwy,',
+        'Nashua, NH 03060, US',
+        '(+1) 603-722-0770',
+    ],
+    westborough: [
+        '225 Turnpike Road,',
+        'Westborough, MA 01581, US',
+        '(+1) 508-257-1127',
+    ],
+};
+
+const getAddressLines = (location) => {
+    const key = (location || '').toString().trim().toLowerCase();
+    return RESTAURANT_ADDRESSES[key] || RESTAURANT_ADDRESSES.nashua;
+};
+
+export const generateInvoicePdf = (order, returnBlob = false, location = null) => {
     const invoiceData = {
         invoiceNumber: order.cInvoiceNumber,
         orderDate: order.cOrderDate,
@@ -25,11 +45,12 @@ export const generateInvoicePdf = (order, returnBlob = false) => {
     // Add Logo
     doc.addImage(dcLogo, 'PNG', 15, 10, 48, 50);
 
-    // Add Restaurant Address and Phone
+    // Add Restaurant Address and Phone (location-specific)
+    const addressLines = getAddressLines(location || order.location || order.restaurantId);
     doc.setFontSize(14);
-    doc.text('274 Daniel Webster Hwy,', pageWidth - 15, 30, { align: 'right' });
-    doc.text('Nashua, NH 03060, US', pageWidth - 15, 38, { align: 'right' });
-    doc.text('(+1) 603-722-0770', pageWidth - 15, 46, { align: 'right' });
+    doc.text(addressLines[0], pageWidth - 15, 30, { align: 'right' });
+    doc.text(addressLines[1], pageWidth - 15, 38, { align: 'right' });
+    doc.text(addressLines[2], pageWidth - 15, 46, { align: 'right' });
 
     // Invoice Details and Billing Information
     doc.setFontSize(12);

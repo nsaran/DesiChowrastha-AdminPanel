@@ -144,7 +144,7 @@ const PartyOrderHeader = ({ managerData }) => {
                 message.success('Party order status updated successfully for ' + orderId);
 
                 // Generate PDF and shorten URL
-                const pdfBlob = generateInvoicePdf({ cName, cInvoiceNumber }, true);
+                const pdfBlob = generateInvoicePdf({ cName, cInvoiceNumber }, true, restaurantId);
                 const storageRef = storage.ref();
                 const pdfRef = storageRef.child(`invoices/partyOrders/${restaurantId}/Invoice_${cInvoiceNumber}.pdf`);
                 await pdfRef.put(pdfBlob);
