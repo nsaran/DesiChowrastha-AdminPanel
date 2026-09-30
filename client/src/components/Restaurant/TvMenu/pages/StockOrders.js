@@ -41,6 +41,8 @@ const StockOrders = () => {
     const [currentOrder, setCurrentOrder] = useState(null);
     const [receipts, setReceipts] = useState([]);
     const [uploadingReceipt, setUploadingReceipt] = useState(false);
+    const [receiptTxns, setReceiptTxns] = useState([]);       // AI-scanned transactions for the open order
+    const [txnsLoading, setTxnsLoading] = useState(false);
 
     // Add item modal
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
@@ -175,6 +177,34 @@ const StockOrders = () => {
             .then(res => res.json())
             .then(data => setReceipts(Array.isArray(data) ? data : []))
             .catch(() => setReceipts([]));
+        // Fetch AI-scanned receipt transactions for this order
+        fetchReceiptTransactions(order.id);
+    };
+
+    // Load the AI-scanned receipt transactions for an order.
+    const fetchReceiptTransactions = async (orderId) => {
+        setTxnsLoading(true);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/stock-orders/${orderId}/receipt-transactions?location=${encodeURIComponent(restaurantId)}`);
+            const data = await res.json();
+            setReceiptTxns(Array.isArray(data) ? data : []);
+        } catch (e) {
+            setReceiptTxns([]);
+        }
+        setTxnsLoading(false);
+    };
+
+    // Background scanning (gpt-4o vision) takes a few seconds per receipt, so
+    // poll the transactions a handful of times after an upload so they appear
+    // without the purchaser having to reopen the order.
+    const pollReceiptTransactions = (orderId, attempts = 6) => {
+        let remaining = attempts;
+        const tick = async () => {
+            await fetchReceiptTransactions(orderId);
+            remaining -= 1;
+            if (remaining > 0) setTimeout(tick, 4000);
+        };
+        setTimeout(tick, 3000);
     };
 
     const updateCurrentOrderItem = (index, field, value) => {
@@ -609,18 +639,27 @@ const StockOrders = () => {
                                     for (let i = 0; i < files.length; i++) {
                                         formData.append('receipts', files[i]);
                                     }
+                                    // Pass the location so the server runs AI parsing
+                                    // and creates a receiptTransaction per receipt.
+                                    formData.append('location', restaurantId);
                                     try {
-                                        const res = await fetch(`${API_BASE_URL}/api/stock-orders/${currentOrder.id}/receipts`, {
+                                        const res = await fetch(`${API_BASE_URL}/api/stock-orders/${currentOrder.id}/receipts?location=${encodeURIComponent(restaurantId)}`, {
                                             method: 'POST',
                                             body: formData
                                         });
                                         const data = await res.json();
                                         if (data.success) {
-                                            message.success(`${data.files.length} receipt(s) uploaded`);
+                                            message.success(`${data.files.length} receipt(s) uploaded. Scanning and creating transactions…`);
                                             // Refresh receipts list
                                             const listRes = await fetch(`${API_BASE_URL}/api/stock-orders/${currentOrder.id}/receipts`);
                                             const listData = await listRes.json();
                                             setReceipts(Array.isArray(listData) ? listData : []);
+                                            // Scanning happens in the background (gpt-4o vision takes a few
+                                            // seconds each). Poll the transactions a few times so the purchaser
+                                            // sees them appear without a manual refresh.
+                                            pollReceiptTransactions(currentOrder.id);
+                                        } else {
+                                            message.error(data.error || 'Upload failed');
                                         }
                                     } catch (err) {
                                         message.error('Failed to upload receipt');
@@ -667,6 +706,53 @@ const StockOrders = () => {
                                 ))}
                             </div>
                         )}
+
+                        {/* AI-scanned transactions extracted from the receipts */}
+                        <Divider>🧾 Scanned Transactions</Divider>
+                        <Text type="secondary" style={{ display: 'block', marginBottom: 8 }}>
+                            Each uploaded receipt is auto-scanned and turned into a transaction. Newly
+                            uploaded receipts may take a few seconds to appear.
+                        </Text>
+                        <Table
+                            dataSource={receiptTxns}
+                            rowKey="id"
+                            size="small"
+                            loading={txnsLoading}
+                            pagination={false}
+                            locale={{ emptyText: 'No transactions yet for this order.' }}
+                            columns={[
+                                { title: 'Vendor', dataIndex: 'vendor', render: (v) => v || <Text type="secondary">—</Text> },
+                                { title: 'Date', dataIndex: 'date', width: 110, render: (d) => d || <Text type="secondary">—</Text> },
+                                {
+                                    title: 'Total', dataIndex: 'total', width: 100,
+                                    render: (t, r) => (t != null ? `${r.currency || '$'}${Number(t).toFixed(2)}` : <Text type="secondary">—</Text>)
+                                },
+                                { title: 'Items', dataIndex: 'lineItems', width: 70, render: (li) => (Array.isArray(li) ? li.length : 0) },
+                                {
+                                    title: 'Status', dataIndex: 'status', width: 110,
+                                    render: (s, r) => r.parseError
+                                        ? <Tag color="red">parse error</Tag>
+                                        : <Tag color={s === 'reviewed' ? 'green' : 'blue'}>{(s || 'scanned').toUpperCase()}</Tag>
+                                },
+                            ]}
+                            expandable={{
+                                expandedRowRender: (r) => (
+                                    Array.isArray(r.lineItems) && r.lineItems.length > 0 ? (
+                                        <Table
+                                            dataSource={r.lineItems.map((li, i) => ({ key: i, ...li }))}
+                                            size="small"
+                                            pagination={false}
+                                            columns={[
+                                                { title: 'Description', dataIndex: 'description' },
+                                                { title: 'Qty', dataIndex: 'quantity', width: 70 },
+                                                { title: 'Unit Price', dataIndex: 'unitPrice', width: 100, render: (v) => (v != null ? Number(v).toFixed(2) : '—') },
+                                                { title: 'Amount', dataIndex: 'amount', width: 100, render: (v) => (v != null ? Number(v).toFixed(2) : '—') },
+                                            ]}
+                                        />
+                                    ) : <Text type="secondary">{r.parseError || 'No line items extracted.'}</Text>
+                                ),
+                            }}
+                        />
                     </>
                 )}
             </Modal>

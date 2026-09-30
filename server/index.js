@@ -990,7 +990,7 @@ const receiptStorage = multer.diskStorage({
 const receiptUpload = multer({ storage: receiptStorage, limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB max
 
 // Upload receipt(s) for an order
-app.post('/api/stock-orders/:orderId/receipts', receiptUpload.array('receipts', 5), (req, res) => {
+app.post('/api/stock-orders/:orderId/receipts', receiptUpload.array('receipts', 20), (req, res) => {
     if (!req.files || req.files.length === 0) {
         return res.status(400).json({ error: 'No files uploaded' });
     }
