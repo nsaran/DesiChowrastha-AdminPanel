@@ -701,7 +701,19 @@ const StockOrders = () => {
                                             )
                                         }
                                     >
-                                        <Text style={{ fontSize: '0.75rem' }}>{new Date(receipt.uploadedAt).toLocaleDateString()}</Text>
+                                        <Text style={{ fontSize: '0.75rem', display: 'block' }}>{new Date(receipt.uploadedAt).toLocaleDateString()}</Text>
+                                        {(() => {
+                                            // Show the linked transaction (matched by filename) so the
+                                            // purchaser sees which receipt produced which transaction.
+                                            const txn = receiptTxns.find(t => t.filename === receipt.filename);
+                                            if (!txn) return <Text type="secondary" style={{ fontSize: '0.7rem' }}>Scanning…</Text>;
+                                            if (txn.parseError) return <Tag color="red" style={{ fontSize: '0.65rem' }}>parse error</Tag>;
+                                            return (
+                                                <Text style={{ fontSize: '0.7rem', color: '#52c41a' }}>
+                                                    {txn.vendor || 'Scanned'}{txn.total != null ? ` · ${txn.currency || '$'}${Number(txn.total).toFixed(2)}` : ''}
+                                                </Text>
+                                            );
+                                        })()}
                                     </Card>
                                 ))}
                             </div>
@@ -733,6 +745,20 @@ const StockOrders = () => {
                                     render: (s, r) => r.parseError
                                         ? <Tag color="red">parse error</Tag>
                                         : <Tag color={s === 'reviewed' ? 'green' : 'blue'}>{(s || 'scanned').toUpperCase()}</Tag>
+                                },
+                                {
+                                    title: 'Receipt', key: 'receipt', width: 90,
+                                    render: (_, r) => {
+                                        // Link the transaction back to its source receipt image.
+                                        // Prefer the local file (never expires); fall back to the
+                                        // Firebase signed URL if the filename is missing.
+                                        const href = r.filename
+                                            ? `${API_BASE_URL}/api/stock-orders/${r.orderId || currentOrder.id}/receipts/${r.filename}`
+                                            : r.imageUrl;
+                                        return href
+                                            ? <a href={href} target="_blank" rel="noopener noreferrer">View</a>
+                                            : <Text type="secondary">—</Text>;
+                                    }
                                 },
                             ]}
                             expandable={{
