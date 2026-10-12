@@ -21,6 +21,11 @@ const BankTransactions = () => {
     // automatically each calendar year, and future years are supported).
     const yearOptions = [currentYear, currentYear - 1, currentYear - 2];
 
+    // Entity selector: the same page can manage the restaurant's statements or
+    // the TechMind (IT company) statements. TechMind is single-tenant, so the
+    // location param is ignored server-side when entity === 'techmind'.
+    const [entity, setEntity] = useState('restaurant');
+
     const [categories, setCategories] = useState([]);
     const [months, setMonths] = useState([]);
     const [selectedYear, setSelectedYear] = useState(currentYear);
@@ -30,28 +35,28 @@ const BankTransactions = () => {
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
 
-    // Load category list once.
+    // Load the category list for the selected entity (reloads when entity changes).
     useEffect(() => {
-        protectedApi.get('/api/bank-transactions/categories')
+        protectedApi.get('/api/bank-transactions/categories', { params: { entity } })
             .then((res) => setCategories(res.data.categories || []))
             .catch(() => setCategories([]));
-    }, []);
+    }, [entity]);
 
     const loadMonths = useCallback(async () => {
         try {
-            const res = await protectedApi.get('/api/bank-transactions/months', { params: { location: restaurantId } });
+            const res = await protectedApi.get('/api/bank-transactions/months', { params: { location: restaurantId, entity } });
             setMonths(res.data.months || []);
             return res.data.months || [];
         } catch (err) {
             return [];
         }
-    }, [restaurantId]);
+    }, [restaurantId, entity]);
 
     const loadMonth = useCallback(async (month) => {
         if (!month) return;
         setLoading(true);
         try {
-            const res = await protectedApi.get('/api/bank-transactions', { params: { location: restaurantId, month } });
+            const res = await protectedApi.get('/api/bank-transactions', { params: { location: restaurantId, month, entity } });
             setTransactions(res.data.transactions || []);
             setSummary(res.data.summary || []);
             setSelectedMonth(month);
@@ -60,7 +65,7 @@ const BankTransactions = () => {
         } finally {
             setLoading(false);
         }
-    }, [restaurantId]);
+    }, [restaurantId, entity]);
 
     // Months (YYYY-MM) available for the selected year, most recent first.
     const monthsForYear = months.filter((m) => m.startsWith(`${selectedYear}-`));
@@ -73,6 +78,26 @@ const BankTransactions = () => {
             if (forYear.length > 0) loadMonth(forYear[0]);
         });
     }, [loadMonths, loadMonth, currentYear]);
+
+    // When the user switches entity, clear the view and reload that entity's
+    // months, auto-opening the most recent month of the selected year (if any).
+    const handleEntityChange = (nextEntity) => {
+        setEntity(nextEntity);
+        setSelectedMonth(null);
+        setTransactions([]);
+        setSummary([]);
+        setMonths([]);
+    };
+
+    // Reload months whenever the entity changes; open the most recent month of
+    // the current selected year if data exists.
+    useEffect(() => {
+        loadMonths().then((ms) => {
+            const forYear = ms.filter((m) => m.startsWith(`${selectedYear}-`));
+            if (forYear.length > 0) loadMonth(forYear[0]);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [entity]);
 
     // When the user picks a different year, open its most recent month (or clear).
     const handleYearChange = (year) => {
@@ -93,6 +118,7 @@ const BankTransactions = () => {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('location', restaurantId);
+            formData.append('entity', entity);
             const res = await protectedApi.post('/api/bank-transactions/import', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
@@ -113,6 +139,7 @@ const BankTransactions = () => {
         try {
             const res = await protectedApi.put(`/api/bank-transactions/${selectedMonth}/category`, {
                 location: restaurantId,
+                entity,
                 transactionId: record.id,
                 category,
             });
@@ -131,6 +158,7 @@ const BankTransactions = () => {
         try {
             const res = await protectedApi.put(`/api/bank-transactions/${selectedMonth}/field`, {
                 location: restaurantId,
+                entity,
                 transactionId: record.id,
                 field,
                 value,
@@ -315,6 +343,15 @@ const BankTransactions = () => {
                 </Upload>
 
                 <Space>
+                    <Text>Entity:</Text>
+                    <Select
+                        style={{ width: 160 }}
+                        value={entity}
+                        onChange={handleEntityChange}
+                    >
+                        <Option value="restaurant">Restaurant ({restaurantId})</Option>
+                        <Option value="techmind">TechMind (IT)</Option>
+                    </Select>
                     <Text>Year:</Text>
                     <Select
                         style={{ width: 100 }}

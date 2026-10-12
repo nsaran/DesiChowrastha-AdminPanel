@@ -6,7 +6,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const { verifyToken, requireRole } = require('../middleware/auth');
 const logger = require('../utils/logger');
 const { parseBankCsv } = require('../services/bankStatements/csvParser');
-const { categorizeTransactions, summarize, CATEGORIES } = require('../services/bankStatements/categorizer');
+const { categorizeTransactions, summarize, getEntity } = require('../services/bankStatements/categorizer');
 const { getMonthlyCashTotal } = require('../services/toastCashService');
 const { getMonthlyCashSalary } = require('../services/salaryCashSync');
 const { getMonthlyPartyOrderTotal, syncPartyOrderToMonthlyReport } = require('../services/partyOrderSync');
@@ -25,6 +25,40 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 
 function restaurantDocId(location) {
     if (!location) return location;
     return location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
+}
+
+/**
+ * Resolve the entity + the Firestore `bankTransactions` collection reference for
+ * a request. Backward compatible: when no `entity` is given it behaves exactly
+ * as before (restaurants/{location}/bankTransactions).
+ *
+ *  - entity = 'restaurant' (default): keyed by `location`; collection lives at
+ *    restaurants/{Location}/bankTransactions
+ *  - entity = 'techmind': single tenant; collection lives at
+ *    entities/TechMind/bankTransactions (location is ignored)
+ *
+ * @param {object} db Firestore instance
+ * @param {string} entityType raw entity string from the request (optional)
+ * @param {string} location raw location string (required for restaurant)
+ * @returns {{ entity, scopeId, collection }}
+ */
+function resolveScope(db, entityType, location) {
+    const entity = getEntity(entityType);
+    if (entity.key === 'techmind') {
+        const scopeId = 'TechMind';
+        return {
+            entity,
+            scopeId,
+            collection: db.collection('entities').doc(scopeId).collection('bankTransactions'),
+        };
+    }
+    // Default: restaurant, keyed by location.
+    const scopeId = restaurantDocId(location);
+    return {
+        entity,
+        scopeId,
+        collection: db.collection('restaurants').doc(scopeId).collection('bankTransactions'),
+    };
 }
 
 /**
@@ -64,7 +98,8 @@ function buildStandardRows(month) {
  * Returns the canonical category list (for the review UI dropdown).
  */
 router.get('/categories', (req, res) => {
-    res.json({ categories: CATEGORIES });
+    const entity = getEntity(req.query.entity);
+    res.json({ categories: entity.categories, entity: entity.key });
 });
 
 /**
@@ -77,7 +112,14 @@ router.get('/categories', (req, res) => {
 router.post('/import', upload.single('file'), async (req, res) => {
     try {
         const location = (req.body.location || '').trim();
-        if (!location) return res.status(400).json({ error: 'location is required' });
+        const entityType = (req.body.entity || 'restaurant').trim();
+        const db = getFirestore();
+        const { entity, scopeId, collection } = resolveScope(db, entityType, location);
+
+        // Restaurant is keyed by location; TechMind is single-tenant (no location).
+        if (entity.key === 'restaurant' && !location) {
+            return res.status(400).json({ error: 'location is required' });
+        }
         if (!req.file) return res.status(400).json({ error: 'CSV file is required' });
 
         const csvText = req.file.buffer.toString('utf8');
@@ -93,40 +135,41 @@ router.post('/import', upload.single('file'), async (req, res) => {
             month = firstDate ? firstDate.date.slice(0, 7) : new Date().toISOString().slice(0, 7);
         }
 
-        const categorized = await categorizeTransactions(parsed);
+        const categorized = await categorizeTransactions(parsed, { entityType: entity.key });
 
-        // Append 5 standard manual-entry rows at the end (blank amount; the user
-        // fills Adjusted Amount later). Dated the last day of the imported month.
-        const standardRows = buildStandardRows(month);
+        // Restaurant appends 5 auto-filled standard manual-entry rows. TechMind has none.
+        let standardRows = [];
+        if (entity.key === 'restaurant') {
+            standardRows = buildStandardRows(month);
 
-        // Pre-fill "Cash Payment - Employees" from the Salary Ledger cash total for
-        // this month (kept read-only on the client; synced on ledger changes too).
-        const cashSalary = await getMonthlyCashSalary(location, month);
-        if (cashSalary) {
-            const empRow = standardRows.find((r) => r.description === 'Cash Payment - Employees');
-            if (empRow) {
-                empRow.adjustAmount = -Math.abs(cashSalary); // expense (money out)
-                empRow.categorySource = 'salaryLedger';
+            // Pre-fill "Cash Payment - Employees" from the Salary Ledger cash total.
+            const cashSalary = await getMonthlyCashSalary(location, month);
+            if (cashSalary) {
+                const empRow = standardRows.find((r) => r.description === 'Cash Payment - Employees');
+                if (empRow) {
+                    empRow.adjustAmount = -Math.abs(cashSalary); // expense (money out)
+                    empRow.categorySource = 'salaryLedger';
+                }
             }
-        }
 
-        // Pre-fill "Catering Order - Payment" from party orders paid this month.
-        const cateringPaid = await getMonthlyPartyOrderTotal(location, month);
-        if (cateringPaid) {
-            const catRow = standardRows.find((r) => r.description === 'Catering Order - Payment');
-            if (catRow) {
-                catRow.adjustAmount = Math.abs(cateringPaid); // revenue (money in)
-                catRow.categorySource = 'partyOrders';
+            // Pre-fill "Catering Order - Payment" from party orders paid this month.
+            const cateringPaid = await getMonthlyPartyOrderTotal(location, month);
+            if (cateringPaid) {
+                const catRow = standardRows.find((r) => r.description === 'Catering Order - Payment');
+                if (catRow) {
+                    catRow.adjustAmount = Math.abs(cateringPaid); // revenue (money in)
+                    catRow.categorySource = 'partyOrders';
+                }
             }
-        }
 
-        // Pre-fill "Cash Payment - Others" from the month's miscellaneous cash payments.
-        const otherCash = await getMonthlyOtherCash(location, month);
-        if (otherCash) {
-            const othRow = standardRows.find((r) => r.description === 'Cash Payment - Others');
-            if (othRow) {
-                othRow.adjustAmount = -Math.abs(otherCash); // expense (money out)
-                othRow.categorySource = 'otherCash';
+            // Pre-fill "Cash Payment - Others" from the month's miscellaneous cash payments.
+            const otherCash = await getMonthlyOtherCash(location, month);
+            if (otherCash) {
+                const othRow = standardRows.find((r) => r.description === 'Cash Payment - Others');
+                if (othRow) {
+                    othRow.adjustAmount = -Math.abs(otherCash); // expense (money out)
+                    othRow.categorySource = 'otherCash';
+                }
             }
         }
 
@@ -137,13 +180,11 @@ router.post('/import', upload.single('file'), async (req, res) => {
         // Assign stable ids and persist to Firestore.
         const withIds = allTxns.map((t, i) => ({ id: `${month}-${i}`, ...t }));
 
-        const docId = restaurantDocId(location);
-        const db = getFirestore();
-        const ref = db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').doc(month);
+        const ref = collection.doc(month);
 
         await ref.set({
-            location: docId,
+            location: scopeId,
+            entity: entity.key,
             month,
             transactions: withIds,
             summary,
@@ -152,9 +193,9 @@ router.post('/import', upload.single('file'), async (req, res) => {
             count: withIds.length,
         });
 
-        logger.info(`[BankTxns] Imported ${categorized.length} txns (+${standardRows.length} standard) for ${docId} ${month} by ${req.user?.email || req.user?.uid}`);
+        logger.info(`[BankTxns] Imported ${categorized.length} txns (+${standardRows.length} standard) for ${entity.key}/${scopeId} ${month} by ${req.user?.email || req.user?.uid}`);
 
-        res.json({ success: true, location: docId, month, count: withIds.length, summary, transactions: withIds });
+        res.json({ success: true, location: scopeId, entity: entity.key, month, count: withIds.length, summary, transactions: withIds });
     } catch (error) {
         logger.error(`[BankTxns] import failed: ${error.message}`);
         res.status(500).json({ error: error.message || 'Import failed' });
@@ -215,12 +256,11 @@ router.get('/yearly', async (req, res) => {
     try {
         const location = (req.query.location || '').trim();
         const year = (req.query.year || '').trim();
-        if (!location || !year) return res.status(400).json({ error: 'location and year are required' });
-
-        const docId = restaurantDocId(location);
         const db = getFirestore();
-        const snap = await db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').get();
+        const { scopeId: docId, collection } = resolveScope(db, req.query.entity, location);
+        if (!docId || !year) return res.status(400).json({ error: 'location and year are required' });
+
+        const snap = await collection.get();
 
         // Keep only docs for the requested year (doc id is YYYY-MM).
         const yearDocs = snap.docs
@@ -293,19 +333,22 @@ router.get('/yearly', async (req, res) => {
  *   - capitalInvestment: credits of 'Capital Investment'
  * Returns per-month values (keyed by YYYY-MM) plus yearly totals for each metric.
  */
-const CAPITAL_WITHDRAWAL_CATEGORY = 'Transfers / Owner Draws';
-const CAPITAL_INVESTMENT_CATEGORY = 'Capital Investment';
+// Per-entity capital/draw category names used by the balance sheet.
+const CAPITAL_CATS = {
+    restaurant: { withdrawal: 'Transfers / Owner Draws', investment: 'Capital Investment' },
+    techmind: { withdrawal: 'Owner Draws/Distributions', investment: null },
+};
 
 router.get('/balance-sheet', async (req, res) => {
     try {
         const location = (req.query.location || '').trim();
         const year = (req.query.year || '').trim();
-        if (!location || !year) return res.status(400).json({ error: 'location and year are required' });
-
-        const docId = restaurantDocId(location);
         const db = getFirestore();
-        const snap = await db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').get();
+        const { entity, scopeId: docId, collection } = resolveScope(db, req.query.entity, location);
+        if (!docId || !year) return res.status(400).json({ error: 'location and year are required' });
+
+        const caps = CAPITAL_CATS[entity.key] || CAPITAL_CATS.restaurant;
+        const snap = await collection.get();
 
         const round = (n) => Math.round(n * 100) / 100;
 
@@ -316,9 +359,9 @@ router.get('/balance-sheet', async (req, res) => {
                 const cat = row.category || 'Uncategorized';
                 const credits = row.credits || 0;   // money in (>= 0)
                 const debits = row.debits || 0;      // money out (<= 0)
-                if (cat === CAPITAL_INVESTMENT_CATEGORY) capitalInvestment += credits;
+                if (caps.investment && cat === caps.investment) capitalInvestment += credits;
                 else income += credits;
-                if (cat === CAPITAL_WITHDRAWAL_CATEGORY) capitalWithdrawal += Math.abs(debits);
+                if (cat === caps.withdrawal) capitalWithdrawal += Math.abs(debits);
                 else expense += Math.abs(debits);
             }
             return { income, expense, profitLoss: income - expense, capitalWithdrawal, capitalInvestment };
@@ -392,23 +435,40 @@ router.get('/balance-sheet', async (req, res) => {
  * Returns per-category lines (with per-month values + line total), section
  * subtotals (revenue/expense) per month + total, and net profit/loss.
  */
-const PL_REVENUE_CATEGORIES = ['Sales/Deposits', 'Other Income', 'Catering Order'];
-const PL_EXPENSE_CATEGORIES = [
-    'Food Supplies', 'Utilities', 'Rent/Lease', 'Payroll', 'Payroll Taxes',
-    'Taxes (Govt)', 'Bank & Card Fees', 'Software & Services', 'Insurance',
-    'Wages (Direct/Zelle)', 'Cash Paid', 'Credit Card / Loan Payment',
-];
+// Per-entity Profit & Loss groupings. Excluded from P&L: transfers/draws,
+// capital movements, and Uncategorized.
+const PL_GROUPS = {
+    restaurant: {
+        revenue: ['Sales/Deposits', 'Other Income', 'Catering Order'],
+        expense: [
+            'Food Supplies', 'Utilities', 'Rent/Lease', 'Payroll', 'Payroll Taxes',
+            'Taxes (Govt)', 'Bank & Card Fees', 'Software & Services', 'Insurance',
+            'Wages (Direct/Zelle)', 'Cash Paid', 'Credit Card / Loan Payment',
+        ],
+    },
+    techmind: {
+        revenue: ['Client Revenue', 'Other Income'],
+        expense: [
+            'Payroll/Contractors', 'Payroll Taxes', 'Software & SaaS', 'Cloud/Hosting',
+            'Hardware/Equipment', 'Office/Rent', 'Travel',
+            'Professional Services (Legal/Accounting)', 'Marketing',
+            'Bank & Card Fees', 'Taxes (Govt)',
+        ],
+    },
+};
 
 router.get('/profit-loss', async (req, res) => {
     try {
         const location = (req.query.location || '').trim();
         const year = (req.query.year || '').trim();
-        if (!location || !year) return res.status(400).json({ error: 'location and year are required' });
-
-        const docId = restaurantDocId(location);
         const db = getFirestore();
-        const snap = await db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').get();
+        const { entity, scopeId: docId, collection } = resolveScope(db, req.query.entity, location);
+        if (!docId || !year) return res.status(400).json({ error: 'location and year are required' });
+
+        const groups = PL_GROUPS[entity.key] || PL_GROUPS.restaurant;
+        const PL_REVENUE_CATEGORIES = groups.revenue;
+        const PL_EXPENSE_CATEGORIES = groups.expense;
+        const snap = await collection.get();
 
         const yearDocs = snap.docs
             .filter((d) => d.id.startsWith(`${year}-`))
@@ -493,12 +553,11 @@ router.get('/', async (req, res) => {
     try {
         const location = (req.query.location || '').trim();
         const month = (req.query.month || '').trim();
-        if (!location || !month) return res.status(400).json({ error: 'location and month are required' });
-
-        const docId = restaurantDocId(location);
         const db = getFirestore();
-        const snap = await db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').doc(month).get();
+        const { scopeId: docId, collection } = resolveScope(db, req.query.entity, location);
+        if (!docId || !month) return res.status(400).json({ error: 'location and month are required' });
+
+        const snap = await collection.doc(month).get();
 
         if (!snap.exists) return res.json({ location: docId, month, transactions: [], summary: [], count: 0 });
         res.json(snap.data());
@@ -515,12 +574,11 @@ router.get('/', async (req, res) => {
 router.get('/months', async (req, res) => {
     try {
         const location = (req.query.location || '').trim();
-        if (!location) return res.status(400).json({ error: 'location is required' });
-
-        const docId = restaurantDocId(location);
         const db = getFirestore();
-        const snap = await db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').get();
+        const { scopeId: docId, collection } = resolveScope(db, req.query.entity, location);
+        if (!docId) return res.status(400).json({ error: 'location is required' });
+
+        const snap = await collection.get();
 
         const months = snap.docs.map((d) => d.id).sort().reverse();
         res.json({ location: docId, months });
@@ -539,17 +597,16 @@ router.put('/:month/category', async (req, res) => {
     try {
         const month = req.params.month;
         const { location, transactionId, category } = req.body;
-        if (!location || !transactionId || !category) {
+        const db = getFirestore();
+        const { entity, collection } = resolveScope(db, req.body.entity, location);
+        if ((entity.key === 'restaurant' && !location) || !transactionId || !category) {
             return res.status(400).json({ error: 'location, transactionId, and category are required' });
         }
-        if (!CATEGORIES.includes(category)) {
-            return res.status(400).json({ error: `Invalid category. Must be one of: ${CATEGORIES.join(', ')}` });
+        if (!entity.categories.includes(category)) {
+            return res.status(400).json({ error: `Invalid category. Must be one of: ${entity.categories.join(', ')}` });
         }
 
-        const docId = restaurantDocId(location);
-        const db = getFirestore();
-        const ref = db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').doc(month);
+        const ref = collection.doc(month);
         const snap = await ref.get();
         if (!snap.exists) return res.status(404).json({ error: 'Month not found' });
 
@@ -579,17 +636,16 @@ router.put('/:month/field', async (req, res) => {
         const month = req.params.month;
         const { location, transactionId, field, value } = req.body;
         const allowed = ['adjustAmount', 'comments'];
-        if (!location || !transactionId || !field) {
+        const db = getFirestore();
+        const { entity, collection } = resolveScope(db, req.body.entity, location);
+        if ((entity.key === 'restaurant' && !location) || !transactionId || !field) {
             return res.status(400).json({ error: 'location, transactionId, and field are required' });
         }
         if (!allowed.includes(field)) {
             return res.status(400).json({ error: `Invalid field. Must be one of: ${allowed.join(', ')}` });
         }
 
-        const docId = restaurantDocId(location);
-        const db = getFirestore();
-        const ref = db.collection('restaurants').doc(docId)
-            .collection('bankTransactions').doc(month);
+        const ref = collection.doc(month);
         const snap = await ref.get();
         if (!snap.exists) return res.status(404).json({ error: 'Month not found' });
 
