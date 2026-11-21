@@ -1,0 +1,24 @@
+Category,Item / Description,Institution or Location,Account ID (last 4 digits only),Owned By / Titled In,Approx. Value (USD),Beneficiary on File,Notes
+Real Estate,Primary residence,,,,,,Mortgage balance goes in the Debts section
+Real Estate,Other property,,,,,,
+Bank Accounts,Checking,,,,,,
+Bank Accounts,Savings,,,,,,
+Bank Accounts,Business checking,,,,,,
+Retirement,401(k),,,,,,Beneficiary designation overrides the will
+Retirement,IRA / Roth IRA,,,,,,Beneficiary designation overrides the will
+Investments,Brokerage account,,,,,,
+Investments,Stocks / bonds / funds,,,,,,
+Life Insurance,Policy 1,,,,,,Note face value and owner
+Life Insurance,Employer group policy,,,,,,
+Business,Restaurant entity (LLC / Corp),,,,,,Entity type and ownership %; check the operating agreement for transfer limits
+Business,Other business interest,,,,,,
+Business,Lease (restaurant property),,,,,,Check the lease for assignment-on-death clauses
+Vehicles,Vehicle 1,,,,,,
+Personal Property,Jewelry / art / collectibles,,,,,,
+Digital Assets,Email / cloud / social accounts,,,,,,Where passwords are stored; do not write passwords here
+Digital Assets,Crypto,,,,,,Where keys are stored; do not write keys here
+Other Assets,,,,,,,
+Debts,Mortgage,,,,,,Enter as a positive number; subtract in the summary
+Debts,Business loans / personal guarantees,,,,,,
+Debts,Credit cards,,,,,,
+Debts,Other loans,,,,,,
