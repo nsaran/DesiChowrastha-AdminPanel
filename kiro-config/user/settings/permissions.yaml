@@ -1,0 +1,11 @@
+rules:
+  - capability: shell
+    match:
+      - where python
+      - python -m pip install Pillow
+      - python *
+      - Get-ChildItem *
+      - New-Item *
+      - Copy-Item *
+      - $file *
+    effect: allow
